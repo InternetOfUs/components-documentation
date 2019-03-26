@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "WeNet - Service REST APIs",
+    "contact": {
+      "email": "carlo.caprini@u-hopper.com"
+    }
+  },
+  "paths": {
+    "/object": {
+      "post": {
+        "summary": "Do something",
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
