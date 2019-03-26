@@ -4,6 +4,8 @@ This repository collects the API documentation of the various components of the 
 
 Here's some _quick links_ for accessing the documentation currently available:
 
+* [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/fde155f2ea62c483a579d78823bbd6584564877b/sources/wenet-service-api.json)
+
 ## How to
 
 ### 1. Write your documentation
@@ -34,4 +36,7 @@ The files in this repository are public, in order to view them in the Swagger UI
 * append the url of your documentation file in the UI link (`http://swagger.u-hopper.com?url=<file_url>`);
 * paste the link to the documentation file in the _explore_ tab of the UI.
 
-*Note*: we will be appending the _quick access links_ (already configured with the correct _file url_) at the beginning of this document.
+*Notes*:
+
+* we will be appending the _quick access links_ (already configured with the correct _file url_) at the beginning of this document.
+* the link provided to the Swagger UI must point to the raw version of the file
