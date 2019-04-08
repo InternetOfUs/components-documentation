@@ -1,0 +1,1045 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "wenet-interaction_protocol_engine-api",
+    "description" : "WeNet - Interaction protocol engine APIs",
+    "contact" : {
+      "name" : "UDT-IA, IIIA-CSIC",
+      "url" : "http://www.iiia.csic.es/"
+    },
+    "version" : "0.1.0"
+  },
+  "paths" : {
+    "/status" : {
+      "get" : {
+        "summary" : "Get the status of the API",
+        "description" : "Return the current status information of the API",
+        "operationId" : "getStatusReport",
+        "responses" : {
+          "200" : {
+            "description" : "The API status",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/status"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/composite" : {
+      "get" : {
+        "summary" : "Calculate the number of teams and each sizer that the composite can create",
+        "description" : "Obtain how many teams and their size that will be created",
+        "operationId" : "getTeamsDistribution",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "number_of_people",
+          "in" : "query",
+          "description" : "The number of people that has to be distributed on different teams",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 4
+          },
+          "example" : 10
+        }, {
+          "name" : "people_per_team",
+          "in" : "query",
+          "description" : "The number of people that have to be on each team",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 2
+          },
+          "example" : 2
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to get the teams sizes",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_composite_unauthorized",
+                      "message" : "You are not authorized to get the teams sizes"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_composite_unauthorized",
+                      "message" : "You are not authorized to get the teams sizes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The size of the possible teams",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/teams_distribution"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/teams_distribution"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Create teams",
+        "description" : "It distributes a group of people in different teams taking into account their personality and intelligences",
+        "operationId" : "composite",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "description" : "The information necessary to create the teams",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/composite"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/composite"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to create teams",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_composite_unauthorized",
+                      "message" : "You are not authorized to create teams"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_composite_unauthorized",
+                      "message" : "You are not authorized to create teams"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The created teams",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/composed_teams"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/composed_teams"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/intelligences" : {
+      "get" : {
+        "summary" : "Obtain the intelligences test",
+        "description" : "Return the questionnaire used to obtain the intelligences of a person",
+        "operationId" : "getIntelligencesQuestionnaire",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
+          "schema" : {
+            "type" : "string",
+            "default" : "en"
+          },
+          "example" : "en"
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to get the intelligences questionnaire",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_intelligences_unauthorized",
+                      "message" : "You are not authorized to get the intelligences questionnaire"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_intelligences_unauthorized",
+                      "message" : "You are not authorized to get the intelligences questionnaire"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The questionnaire to evaluate the intelligences of a person",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/questionnaire"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/questionnaire"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Calculate the intelligences of a person",
+        "description" : "Evaluate the answers to the intelligences test to obtain the intelligences of the person",
+        "operationId" : "calculateIntelligences",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/questionnaire_answers"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/questionnaire_answers"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to evaluate the intelligences questionnaire",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_intelligences_unauthorized",
+                      "message" : "You are not authorized to evaluate the intelligences questionnaire"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_intelligences_unauthorized",
+                      "message" : "You are not authorized to evaluate the intelligences questionnaire"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The intelligences of the person",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/intelligences"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/intelligences"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/personality" : {
+      "get" : {
+        "summary" : "Obtain the personality test",
+        "description" : "Return the questionnaire used to obtain the personality of a person",
+        "operationId" : "getPersonalityQuestionnaire",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "Accept-Language",
+          "in" : "header",
+          "description" : "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
+          "schema" : {
+            "type" : "string",
+            "default" : "en"
+          },
+          "example" : "en"
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to get the personality questionnaire",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_personality_unauthorized",
+                      "message" : "You are not authorized to get the personality questionnaire"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_personality_unauthorized",
+                      "message" : "You are not authorized to get the personality questionnaire"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The questionnaire to evaluate the personality of a person",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/questionnaire"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/questionnaire"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Calculate the personality of a person",
+        "description" : "Evaluate the answers to the personality test to obtain the personality of the person",
+        "operationId" : "calculatePersonality",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/questionnaire_answers"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/questionnaire_answers"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized to evaluate the personality questionnaire",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_personality_unauthorized",
+                      "message" : "You are not authorized to evaluate the personality questionnaire"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "teams_personality_unauthorized",
+                      "message" : "You are not authorized to evaluate the personality questionnaire"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "The personality of the person",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/personality"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/personality"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "status" : {
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "type" : "string",
+            "description" : "Contain the version of the API",
+            "example" : "1.0.0"
+          },
+          "vendor" : {
+            "type" : "string",
+            "description" : "Contain information of the organization that has implemented the API",
+            "example" : "UDT-IA, IIIA-CSIC"
+          }
+        },
+        "description" : "Provide information about the current status of the API",
+        "xml" : {
+          "name" : "status"
+        }
+      },
+      "error_message" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Contain code that identifies the error",
+            "example" : "error_code"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Contain a brief description of the error to be read by a human",
+            "example" : "Error readable by a human"
+          }
+        },
+        "description" : "Inform of an error that happens when interacts with the API",
+        "xml" : {
+          "name" : "error_message"
+        }
+      },
+      "composed_teams" : {
+        "type" : "object",
+        "properties" : {
+          "optimal" : {
+            "type" : "boolean",
+            "description" : "If this is 'true' the created teams are the best possible",
+            "example" : true
+          },
+          "teams" : {
+            "type" : "array",
+            "description" : "The teams that have been created",
+            "items" : {
+              "$ref" : "#/components/schemas/team"
+            }
+          }
+        },
+        "description" : "The information of the composed teams",
+        "xml" : {
+          "name" : "composed_teams"
+        }
+      },
+      "team" : {
+        "type" : "object",
+        "properties" : {
+          "peopleIds" : {
+            "type" : "array",
+            "description" : "The identifiers of the people that form the team",
+            "example" : [ "550e8400-e29b-41d4-a716-446655440000", "1db14dd1-ed9a-463d-a518-54c7c38dcec9" ],
+            "xml" : {
+              "name" : "people_ids"
+            },
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "verbal_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the verbal intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "logic_mathematics_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the logic-mathematics intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "visual_spatial_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the visual-spatial intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "kinestesica_corporal_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the kinestesica-corporal intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "musical_rhythmic_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the musical-rhythmic intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "intrapersonal_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the intrapersonal intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "interpersonal_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the interpersonal intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "naturalist_environmental_leader_id" : {
+            "type" : "string",
+            "description" : "The identifier of the person on the team that is the leader of the naturalist-environmental intelligence",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          }
+        },
+        "description" : "A set of people aggregated to do something",
+        "xml" : {
+          "name" : "team"
+        }
+      },
+      "composite" : {
+        "type" : "object",
+        "properties" : {
+          "people_per_team" : {
+            "minimum" : 2,
+            "type" : "integer",
+            "description" : "The size of the teams to create",
+            "format" : "int32",
+            "example" : 2
+          },
+          "at_most" : {
+            "type" : "boolean",
+            "description" : "If this is 'true' the size of the teams cannot be more than the specified on 'people_per_team'",
+            "example" : true
+          },
+          "performance" : {
+            "maximum" : 1,
+            "minimum" : 0,
+            "type" : "number",
+            "description" : "This value allows defining the balancing of the teams. When it is near 0.5 create similar teams, when it is near to 0 the worst are the leaders and when it is near to 1 the bests are the leaders.",
+            "format" : "double",
+            "example" : 0.5
+          },
+          "time" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "description" : "The maximum seconds that it has to calculate the best combination. When it is reached return the best team composition that it has found.",
+            "format" : "int32",
+            "example" : 30
+          },
+          "people" : {
+            "minItems" : 4,
+            "type" : "array",
+            "description" : "Contain the people that have to be distributed on different teams",
+            "items" : {
+              "$ref" : "#/components/schemas/person"
+            }
+          },
+          "requirements" : {
+            "$ref" : "#/components/schemas/requirements"
+          }
+        },
+        "description" : "Provide information about how the teams have to be created",
+        "xml" : {
+          "name" : "composite"
+        }
+      },
+      "intelligences" : {
+        "type" : "object",
+        "properties" : {
+          "verbal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The verbal intelligence",
+            "format" : "double",
+            "example" : 0.1
+          },
+          "logic_mathematics" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The logic-mathematics intelligence",
+            "format" : "double",
+            "example" : 0.2
+          },
+          "visual_spatial" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The visual-spatial intelligence",
+            "format" : "double",
+            "example" : 0.3
+          },
+          "kinestesica_corporal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The kinestesica-corporal intelligence",
+            "format" : "double",
+            "example" : 0.4
+          },
+          "musical_rhythmic" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The musical-rhythmic intelligence",
+            "format" : "double",
+            "example" : 0.5
+          },
+          "intrapersonal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The intrapersonal intelligence",
+            "format" : "double",
+            "example" : 0.6
+          },
+          "interpersonal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The interpersonal intelligence",
+            "format" : "double",
+            "example" : 0.7
+          },
+          "naturalist_environmental" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The naturalist-environmental intelligence",
+            "format" : "double",
+            "example" : 0.8
+          }
+        },
+        "description" : "Provide information about the intelligences of a person",
+        "xml" : {
+          "name" : "intelligences"
+        }
+      },
+      "person" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Contain the identifier of the person",
+            "example" : "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "personality" : {
+            "$ref" : "#/components/schemas/personality"
+          },
+          "intelligences" : {
+            "$ref" : "#/components/schemas/intelligences"
+          }
+        },
+        "description" : "Provide information about a person",
+        "xml" : {
+          "name" : "person"
+        }
+      },
+      "personality" : {
+        "type" : "object",
+        "properties" : {
+          "perception" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The perception grade of a person",
+            "format" : "double",
+            "example" : 0.1
+          },
+          "judgment" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The judgment grade of a person",
+            "format" : "double",
+            "example" : 0.2
+          },
+          "extrovert" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The extrovert grade of a person",
+            "format" : "double",
+            "example" : 0.3
+          },
+          "attitude" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The attitude grade of a person",
+            "format" : "double",
+            "example" : 0.4
+          }
+        },
+        "description" : "Provide information about the personality of a person",
+        "xml" : {
+          "name" : "personality"
+        }
+      },
+      "requirement" : {
+        "type" : "object",
+        "properties" : {
+          "level" : {
+            "maximum" : 1,
+            "minimum" : 0,
+            "type" : "number",
+            "description" : "The level of the intelligence that the team has to reach",
+            "format" : "double",
+            "example" : 0.5
+          },
+          "importance" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "The importance of the intelligence on the team",
+            "format" : "int32",
+            "example" : 1
+          }
+        },
+        "description" : "Describe the required values for intelligence on the team that will be created",
+        "xml" : {
+          "name" : "requirement"
+        }
+      },
+      "requirements" : {
+        "type" : "object",
+        "properties" : {
+          "verbal" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "logic_mathematics" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "visual_spatial" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "kinestesica_corporal" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "musical_rhythmic" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "intrapersonal" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "interpersonal" : {
+            "$ref" : "#/components/schemas/requirement"
+          },
+          "naturalist_environmental" : {
+            "$ref" : "#/components/schemas/requirement"
+          }
+        },
+        "description" : "Describe the requirements of the teams that will be created",
+        "xml" : {
+          "name" : "requirements"
+        }
+      },
+      "team_distribution" : {
+        "type" : "object",
+        "properties" : {
+          "quantity" : {
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "The number of teams of the specified size",
+            "format" : "int32",
+            "example" : 2
+          },
+          "size" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "description" : "The size of each team",
+            "format" : "int32",
+            "example" : 2
+          }
+        },
+        "description" : "Provide information about the distribution of the number of teams of a specific size",
+        "xml" : {
+          "name" : "team_distribution"
+        }
+      },
+      "teams_distribution" : {
+        "required" : [ "number_of_people", "people_per_team" ],
+        "type" : "object",
+        "properties" : {
+          "number_of_people" : {
+            "type" : "integer",
+            "description" : "The number of people that have distributed on the teams",
+            "format" : "int32",
+            "example" : 10
+          },
+          "people_per_team" : {
+            "type" : "integer",
+            "description" : "The expected number of people on each team",
+            "format" : "int32",
+            "example" : 2
+          },
+          "basic" : {
+            "maxItems" : 2,
+            "type" : "array",
+            "description" : "Contain the distribution of the people on teams when the size is a minimum",
+            "items" : {
+              "$ref" : "#/components/schemas/team_distribution"
+            }
+          },
+          "atMost" : {
+            "maxItems" : 2,
+            "type" : "array",
+            "description" : "Contain the distribution of the people on teams when the size is a maximum",
+            "xml" : {
+              "name" : "at_most"
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/team_distribution"
+            }
+          }
+        },
+        "description" : "Describe how a set of people will be distributed on a set of teams",
+        "xml" : {
+          "name" : "teams_distribution"
+        }
+      },
+      "answer" : {
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string",
+            "description" : "The text of the answer",
+            "example" : "Compassionate"
+          },
+          "value" : {
+            "type" : "number",
+            "description" : "The value associated with the answer",
+            "format" : "double",
+            "example" : -1
+          }
+        },
+        "description" : "Provide a possible answer for a question",
+        "xml" : {
+          "name" : "answer"
+        }
+      },
+      "question" : {
+        "type" : "object",
+        "properties" : {
+          "text" : {
+            "type" : "string",
+            "description" : "The text of the question",
+            "example" : "The judges must be"
+          },
+          "help" : {
+            "type" : "string",
+            "description" : "A message to help to answer the question",
+            "example" : "Example: If a judge judges your brother, you must follow the laws that apply to everyone equally."
+          },
+          "answers" : {
+            "type" : "array",
+            "description" : "The possible answers for the question",
+            "items" : {
+              "$ref" : "#/components/schemas/answer"
+            }
+          }
+        },
+        "description" : "A question used to extract information of a person",
+        "xml" : {
+          "name" : "question"
+        }
+      },
+      "questionnaire" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "A name that identifies the questionnaire for a human",
+            "example" : "Personality test"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Explains what attribute of a person it evaluates",
+            "example" : "With this questionnaire is possible to obtain the personality of a person."
+          },
+          "questions" : {
+            "type" : "array",
+            "description" : "The set of questions used to evaluate the person.",
+            "items" : {
+              "$ref" : "#/components/schemas/question"
+            }
+          }
+        },
+        "description" : "A questionnaire used to evaluate a person attribute",
+        "xml" : {
+          "name" : "questionnaire"
+        }
+      },
+      "questionnaire_answers" : {
+        "type" : "object",
+        "properties" : {
+          "answerValues" : {
+            "type" : "array",
+            "description" : "The selected values for the questions on the questionnaire. The answer values are on the same order of the question that refers to the questionnaire.",
+            "example" : [ 1, -1, 0, 1, 1, -1, 1, 0, 0, 0, 1, -1, -1, -1, 1 ],
+            "xml" : {
+              "name" : "answer_values"
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/question"
+            }
+          }
+        },
+        "description" : "Contains the selected answers of a questionnaire",
+        "xml" : {
+          "name" : "questionnaire_answers"
+        }
+      }
+    }
+  }
+}
