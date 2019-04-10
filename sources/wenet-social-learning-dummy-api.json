@@ -1,0 +1,113 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple API",
+    "version": "1.0.0",
+    "title": "CPNET Based Recommendation System",
+    "contact": {
+      "email": "theo.mantadelis@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "internal",
+      "description": "Operations only for internal library use"
+    },
+    {
+      "name": "external",
+      "description": "Operations for external use"
+    }
+  ],
+  "paths": {
+    "/loadcpnetfile": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Loads a CPNET from a file",
+        "operationId": "loadcpnetfile",
+        "description": "By passing in the appropriate options, you load a CPNET from a file\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cpnetfilename",
+            "description": "filename to load as a char *",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "cpnet",
+            "description": "CPNET pointer for loaded cpnet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cpnet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/cpnet"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "cpnet": {
+      "type": "object",
+      "properties": {
+        "varcnt": {
+          "type": "integer",
+          "description": "Number of variables the CPNET has"
+        },
+        "cptsize": {
+          "type": "integer",
+          "description": "Number of rules the CPT has"
+        },
+        "cpnet": {
+          "type": "integer",
+          "description": "Array that contains parent connections of the CPNET"
+        },
+        "cpt": {
+          "type": "integer",
+          "description": "Array that contains the conditional rules"
+        },
+        "varorder": {
+          "type": "integer",
+          "description": "Array that contains CPNET variables order in case it is not ordered"
+        }
+      }
+    },
+    "items": {
+      "type": "object",
+      "properties": {
+        "itemcnt": {
+          "type": "integer",
+          "description": "Blah"
+        }
+      }
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/theomantadelis/cpnet_reasoning/1.0.0",
+  "schemes": [
+    "https"
+  ]
+}
