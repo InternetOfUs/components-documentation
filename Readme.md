@@ -11,7 +11,9 @@ Here's some _quick links_ for accessing the documentation currently available:
 ### 1. Write your documentation
 
 In order to write the documentation for your component you can take advantage of a Swagger editor.
-You can easily run the editor locally on you computer, the easiest way of doing this if you are familiar with Docker is running the following command:
+Swagger offers a public online editor that is available [here](https://editor.swagger.io/).
+
+If you prefer to work locally or offline, it is possible to run the editor locally with Docker by running the following command:
 
 ```
 docker run -p 8080:8080 swaggerapi/swagger-editor
@@ -29,7 +31,9 @@ Simply:
 
 ### 2. Access the documentation of the various components
 
-A dedicated Swagger UI has been deployed and it is available at [here](http://swagger.u-hopper.com/): `http://swagger.u-hopper.com/`.
+It is possible to browse a documentation file by opening it in the same editor interface used for creating it.
+
+A dedicated Swagger UI has also been deployed and it is available at [here](http://swagger.u-hopper.com/).
 
 The files in this repository are public, in order to view them in the Swagger UI you can either:
 
