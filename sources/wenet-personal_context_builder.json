@@ -1,0 +1,43 @@
+{
+   "openapi":"3.0.0",
+   "info":{
+      "description":"",
+      "version":"0.0.1",
+      "title":"WeNet - personal_context_builder",
+      "contact":{
+         "email":"william.droz@idiap.ch"
+      }
+   },
+   "paths":{
+      "/routines":{
+         "get":{
+            "summary":"get the list of routines",
+            "responses":{
+               "200":{
+                  "description":"routines for users"
+               }
+            }
+         }
+      },
+      "/user_clusters":{
+         "get":{
+            "summary":"get the list of user clusters ID",
+            "responses":{
+               "200":{
+                  "description":"cluster ID for each users"
+               }
+            }
+         }
+      },
+      "/profiles":{
+         "get":{
+            "summary":"get the list of user profiles",
+            "responses":{
+               "200":{
+                  "description":"user profiles"
+               }
+            }
+         }
+      }
+   }
+}
