@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a simple description of the Private Data Manager APIs",
     "version": "1.0.0",
-    "title": "i-Log",
+    "title": "Private Data Manager",
     "termsOfService": "http://unitn_something/terms/",
     "contact": {
       "email": "s.decristofaro@unitn.it"
@@ -14,7 +14,7 @@
     }
   },
   "host": "streambase.disi.unitn.it",
-  "basePath": "/i-log/api/v2",
+  "basePath": "/pvm/api/v2",
   "tags": [
     {
       "name": "experiment",
