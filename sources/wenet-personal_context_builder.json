@@ -1,43 +1,45 @@
 {
-   "openapi":"3.0.0",
-   "info":{
-      "description":"",
-      "version":"0.0.1",
-      "title":"WeNet - personal_context_builder",
-      "contact":{
-         "email":"william.droz@idiap.ch"
-      }
+   "openapi": "3.0.0",
+   "info": {
+     "description": "",
+     "version": "0.0.1",
+     "title": "WeNet - personal_context_builder",
+     "contact": {
+       "email": "william.droz@idiap.ch"
+     }
    },
-   "paths":{
-      "/routines":{
-         "get":{
-            "summary":"get the list of routines",
-            "responses":{
-               "200":{
-                  "description":"routines for users"
-               }
-            }
+   "paths": {
+     "/profiles": {
+       "get": {
+         "summary": "get the list of user profiles",
+         "responses": {
+           "200": {
+             "description": "user profiles"
+           }
          }
-      },
-      "/user_clusters":{
-         "get":{
-            "summary":"get the list of user clusters ID",
-            "responses":{
-               "200":{
-                  "description":"cluster ID for each users"
-               }
-            }
+       }
+     },
+     "/profiles/{profileID}": {
+       "get": {
+         "summary": "get specific user profiles",
+         "parameters": [
+           {
+             "name": "profileID",
+             "in": "path",
+             "description": "ID of profile to return",
+             "required": true,
+             "schema": {
+               "type": "integer",
+               "format": "int64"
+             }
+           }
+         ],
+         "responses": {
+           "200": {
+             "description": "specific user profiles"
+           }
          }
-      },
-      "/profiles":{
-         "get":{
-            "summary":"get the list of user profiles",
-            "responses":{
-               "200":{
-                  "description":"user profiles"
-               }
-            }
-         }
-      }
+       }
+     }
    }
-}
+ }
