@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "description": "",
     "version": "1.0.0",
@@ -15,6 +15,123 @@
         "responses": {
           "405": {
             "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique user identifier",
+          "example": "89654yw2",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "First name of the user",
+          "example": "George",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "Last name of the user",
+          "example": "Malaikos",
+          "type": "string"
+        },
+        "email": {
+          "description": "Email of the user",
+          "example": "gmalaikos@gmail.com",
+          "type": "string"
+        },
+        "phone": {
+          "description": "Mobile phone number of the user",
+          "example": "00393541267443",
+          "type": "string"
+        },
+        "locale": {
+          "description": "Locale of the user",
+          "example": "en_US",
+          "type": "string"
+        }
+      }
+    },
+    "ChannelHook": {
+      "title": "ChannelHook",
+      "type": "object",
+      "properties": {
+        "channelType": {
+          "description": "The type of message channel",
+          "example": "messenger",
+          "type": "string"
+        },
+        "channelUserId": {
+          "description": "The unique id of the user on the channel",
+          "example": "9sfsdf",
+          "type": "string"
+        },
+        "channelChatId": {
+          "description": "The unique id of the chat on the channel",
+          "example": "9sgdfhkjs",
+          "type": "string"
+        },
+      }
+    },
+    "Message": {
+      "title": "Message",
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "description": "The unique message identifier",
+          "example": "m_32452378231",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "The unix timestamp identifying the instant the message was sent at",
+          "example": 1548687955,
+          "type": "number"
+        },
+        "text": {
+          "description": "The text of the message",
+          "example": "This is a test message",
+          "type": "string"
+        },
+        "senderId": {
+          "description": "The user id identifying the sender user",
+          "example": "89654yw2",
+          "type": "string"
+        },
+        "recipientId": {
+          "description": "The user id identifying the receiver user",
+          "example": "89654yw3",
+          "type": "string"
+        },
+        "messageType": {
+          "description": "The type of the message",
+          "example": "REQUEST",
+          "type": "string"
+        },
+        "channelHook": {
+          "description": "The associated channel hook",
+          "$ref": "#/definitions/ChannelHook"
+        }
+      }
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "description": "The unique identifier of a conversation",
+          "example": "c_2313121",
+          "type": "string"
+        },
+        "messages": {
+          "description": "The list of messages belonging to the conversation",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Message"
           }
         }
       }
