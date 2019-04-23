@@ -5,7 +5,7 @@ This repository collects the API documentation of the various components of the 
 Here's some _quick links_ for accessing the documentation currently available:
 
 * [Interaction Protocol Engine APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/f856bb044ba902c2842322f76db392950cdf05b1/sources/wenet-interaction_protocol_engine-api.json)
-* [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/f856bb044ba902c2842322f76db392950cdf05b1/sources/wenet-personal_context_builder.json)
+* [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder.json)
 * [Private Data Manager](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/f856bb044ba902c2842322f76db392950cdf05b1/sources/wenet-private_data_manager-api.json)
 * [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/2b5e9f15375c1bd76bc9ee24736625523833fc08/sources/wenet-service-api.json)
 * [Social Learning APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/f856bb044ba902c2842322f76db392950cdf05b1/sources/wenet-social-learning-dummy-api.json)
