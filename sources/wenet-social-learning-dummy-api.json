@@ -23,43 +23,88 @@
     }
   ],
   "paths": {
-    "/loadcpnetfile": {
+    "/profiles": {
       "get": {
         "tags": [
           "external"
         ],
-        "summary": "Loads a CPNET from a file",
-        "operationId": "loadcpnetfile",
-        "description": "By passing in the appropriate options, you load a CPNET from a file\n",
+        "summary": "Gets all user profile IDs",
+        "operationId": "profiles",
+        "description": "Gets all user profile IDs",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All user IDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile_personal": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Get user profile by ID",
+        "operationId": "profile_personal",
+        "description": "Get user profile by ID",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "query",
-            "name": "cpnetfilename",
-            "description": "filename to load as a char *",
+            "name": "ID",
+            "description": "User Profile ID",
             "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "cpnet",
-            "description": "CPNET pointer for loaded cpnet",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/cpnet"
-            }
+            "type": "integer"
           }
         ],
         "responses": {
           "200": {
-            "description": "search results matching criteria",
+            "description": "User Profile",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/cpnet"
-              }
+              "$ref": "#/definitions/user_profile"
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/profile_message_transactions": {
+      "get": {
+        "tags": [
+          "external"
+        ],
+        "summary": "Get user message transactions by user ID",
+        "operationId": "profile_message_transactions",
+        "description": "Get user message transactions by user ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ID",
+            "description": "User Profile ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Message Transactions",
+            "schema": {
+              "$ref": "#/definitions/user_messages"
             }
           },
           "400": {
@@ -70,37 +115,119 @@
     }
   },
   "definitions": {
-    "cpnet": {
+    "user_profile": {
       "type": "object",
+      "description": "User Profile Personal Information. What is filled by user.",
       "properties": {
-        "varcnt": {
+        "id": {
           "type": "integer",
-          "description": "Number of variables the CPNET has"
+          "description": "User ID"
         },
-        "cptsize": {
+        "age": {
           "type": "integer",
-          "description": "Number of rules the CPT has"
+          "description": "User Age (required)."
         },
-        "cpnet": {
-          "type": "integer",
-          "description": "Array that contains parent connections of the CPNET"
+        "sex": {
+          "type": "object",
+          "description": "User Sex (required). Values = Male/Female/Other?"
         },
-        "cpt": {
-          "type": "integer",
-          "description": "Array that contains the conditional rules"
+        "languages": {
+          "type": "object",
+          "description": "A list of user known languages (required 1 min).",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Language Name."
+            },
+            "iso_code": {
+              "type": "string",
+              "description": "Langugage ISO code."
+            },
+            "level": {
+              "type": "integer",
+              "description": "User Proficiency of Language."
+            }
+          }
         },
-        "varorder": {
-          "type": "integer",
-          "description": "Array that contains CPNET variables order in case it is not ordered"
+        "occupation": {
+          "type": "object",
+          "description": "Users main occupation (optional).",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Occupation Title: student, alumni, employee."
+            },
+            "program": {
+              "type": "object",
+              "description": "University related program."
+            }
+          }
+        },
+        "competences": {
+          "type": "object",
+          "description": "A list with user competences and skill level (optional).",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Competence name. Example: cooking, driving etc."
+            },
+            "level": {
+              "type": "integer",
+              "description": "User level."
+            }
+          }
+        },
+        "address": {
+          "type": "object",
+          "description": "User different addresses (optional)."
+        },
+        "other": {
+          "type": "object",
+          "description": "All user related information that we can get!"
         }
       }
     },
-    "items": {
+    "user_metadata": {
       "type": "object",
+      "description": "User Profile Personal Information. What is filled by user.",
       "properties": {
-        "itemcnt": {
+        "id": {
           "type": "integer",
-          "description": "Blah"
+          "description": "User ID"
+        },
+        "app_usage": {
+          "type": "object",
+          "description": "Application Usage History"
+        }
+      }
+    },
+    "user_messages": {
+      "type": "object",
+      "description": "User messages.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Message ID"
+        },
+        "uid": {
+          "type": "integer",
+          "description": "User ID"
+        },
+        "thread_id": {
+          "type": "integer",
+          "description": "Message Thread ID"
+        },
+        "msg_type": {
+          "type": "integer",
+          "description": "Message Type"
+        },
+        "msg_text": {
+          "type": "string",
+          "description": "Message"
+        },
+        "other": {
+          "type": "object",
+          "description": "Other Message information"
         }
       }
     }
