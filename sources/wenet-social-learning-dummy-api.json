@@ -14,19 +14,19 @@
   },
   "tags": [
     {
-      "name": "internal",
-      "description": "Operations only for internal library use"
+      "name": "online",
+      "description": "Operations for on-demand use"
     },
     {
-      "name": "external",
-      "description": "Operations for external use"
+      "name": "offline",
+      "description": "Operations for batch use"
     }
   ],
   "paths": {
     "/profiles": {
       "get": {
         "tags": [
-          "external"
+          "offline"
         ],
         "summary": "Gets all user profile IDs",
         "operationId": "profiles",
@@ -50,7 +50,8 @@
     "/profile_personal": {
       "get": {
         "tags": [
-          "external"
+          "offline",
+          "online"
         ],
         "summary": "Get user profile by ID",
         "operationId": "profile_personal",
@@ -83,7 +84,7 @@
     "/profile_message_transactions": {
       "get": {
         "tags": [
-          "external"
+          "offline"
         ],
         "summary": "Get user message transactions by user ID",
         "operationId": "profile_message_transactions",
@@ -103,12 +104,82 @@
         "responses": {
           "200": {
             "description": "User Message Transactions",
-            "schema": {
+            "type": "array",
+            "items": {
               "$ref": "#/definitions/user_messages"
             }
           },
           "400": {
             "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/willing_users": {
+      "get": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Get users that are willing to assist on a message",
+        "operationId": "willing_users",
+        "description": "Get users that are willing to assist on a message",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "msg_ID",
+            "description": "Message ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Willing User IDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sort_willing_users": {
+      "post": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Returns a sorted list of Users that are willing to assist on a message",
+        "description": "Returns a sorted list of Users that are willing to assist on a message",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "msg_ID",
+            "description": "Message ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sorted Willing User IDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
           }
         }
       }
@@ -128,30 +199,38 @@
           "description": "User Age (required)."
         },
         "sex": {
-          "type": "object",
-          "description": "User Sex (required). Values = Male/Female/Other?"
+          "type": "integer",
+          "enum": [
+            "male",
+            "female",
+            "other?"
+          ],
+          "description": "User Sex (required)."
         },
         "languages": {
-          "type": "object",
           "description": "A list of user known languages (required 1 min).",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "Language Name."
-            },
-            "iso_code": {
-              "type": "string",
-              "description": "Langugage ISO code."
-            },
-            "level": {
-              "type": "integer",
-              "description": "User Proficiency of Language."
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Language Name."
+              },
+              "iso_code": {
+                "type": "string",
+                "description": "Langugage ISO code."
+              },
+              "level": {
+                "type": "integer",
+                "description": "User Proficiency of Language."
+              }
             }
           }
         },
         "occupation": {
-          "type": "object",
           "description": "Users main occupation (optional).",
+          "type": "object",
           "properties": {
             "title": {
               "type": "string",
@@ -164,22 +243,28 @@
           }
         },
         "competences": {
-          "type": "object",
           "description": "A list with user competences and skill level (optional).",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "Competence name. Example: cooking, driving etc."
-            },
-            "level": {
-              "type": "integer",
-              "description": "User level."
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Competence name. Example: cooking, driving etc."
+              },
+              "level": {
+                "type": "integer",
+                "description": "User level."
+              }
             }
           }
         },
         "address": {
-          "type": "object",
-          "description": "User different addresses (optional)."
+          "description": "User different addresses (optional).",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
         },
         "other": {
           "type": "object",
