@@ -81,6 +81,74 @@
         }
       }
     },
+    "/profile_metadata": {
+      "get": {
+        "tags": [
+          "offline",
+          "online"
+        ],
+        "summary": "Get user metadata profile by ID",
+        "operationId": "profile_metadata",
+        "description": "Get user metadata profile by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ID",
+            "description": "User Profile ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Profile",
+            "schema": {
+              "$ref": "#/definitions/user_metadata"
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/profile_friends": {
+      "get": {
+        "tags": [
+          "offline",
+          "online"
+        ],
+        "summary": "Get user friend list by ID",
+        "operationId": "profile_friends",
+        "description": "Get user friend list by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ID",
+            "description": "User Profile ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Friends List",
+            "schema": {
+              "$ref": "#/definitions/user_friends"
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
     "/profile_message_threads": {
       "get": {
         "tags": [
