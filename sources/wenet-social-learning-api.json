@@ -120,6 +120,7 @@
     "/profile_message": {
       "get": {
         "tags": [
+          "online",
           "offline"
         ],
         "summary": "Get a message by message ID",
@@ -153,7 +154,8 @@
     "/profile_thread": {
       "get": {
         "tags": [
-          "offline"
+          "offline",
+          "online"
         ],
         "summary": "Get a thread by thread ID",
         "operationId": "profile_thread",
@@ -197,8 +199,8 @@
         "parameters": [
           {
             "in": "query",
-            "name": "msg_ID",
-            "description": "Message ID",
+            "name": "thread_ID",
+            "description": "Message thread ID",
             "required": true,
             "type": "integer"
           }
@@ -242,6 +244,35 @@
         "responses": {
           "200": {
             "description": "Sorted Willing User IDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/suggest_friends": {
+      "post": {
+        "tags": [
+          "online"
+        ],
+        "summary": "Returns a sorted list of Users that are suggested to be added as friends",
+        "description": "Returns a sorted list of Users that are suggested to be added as friends",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sorted a List of User IDs to be suggested as friends",
             "schema": {
               "type": "array",
               "items": {
@@ -377,6 +408,26 @@
         "other": {
           "type": "object",
           "description": "Whatever other usefull information we can get?"
+        }
+      }
+    },
+    "user_friends": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "added",
+              "removed",
+              "blocked",
+              "suggested"
+            ]
+          }
         }
       }
     },
