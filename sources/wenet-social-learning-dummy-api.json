@@ -3,7 +3,7 @@
   "info": {
     "description": "This is a simple API",
     "version": "1.0.0",
-    "title": "CPNET Based Recommendation System",
+    "title": "Social Learning API",
     "contact": {
       "email": "theo.mantadelis@gmail.com"
     },
@@ -81,14 +81,14 @@
         }
       }
     },
-    "/profile_message_transactions": {
+    "/profile_message_threads": {
       "get": {
         "tags": [
           "offline"
         ],
-        "summary": "Get user message transactions by user ID",
-        "operationId": "profile_message_transactions",
-        "description": "Get user message transactions by user ID",
+        "summary": "Get user message thread IDs by user ID",
+        "operationId": "profile_message_threads",
+        "description": "Get user message thread IDs by user ID",
         "produces": [
           "application/json"
         ],
@@ -103,10 +103,78 @@
         ],
         "responses": {
           "200": {
-            "description": "User Message Transactions",
-            "type": "array",
-            "items": {
+            "description": "All message thread IDs that a user participated",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/profile_message": {
+      "get": {
+        "tags": [
+          "offline"
+        ],
+        "summary": "Get a message by message ID",
+        "operationId": "profile_message",
+        "description": "Get a message by message ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ID",
+            "description": "User Profile ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A message transaction",
+            "schema": {
               "$ref": "#/definitions/user_messages"
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/profile_thread": {
+      "get": {
+        "tags": [
+          "offline"
+        ],
+        "summary": "Get a thread by thread ID",
+        "operationId": "profile_thread",
+        "description": "Get a thread by thread ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ID",
+            "description": "User Profile ID",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A message thread",
+            "schema": {
+              "$ref": "#/definitions/message_thread"
             }
           },
           "400": {
@@ -281,8 +349,51 @@
           "description": "User ID"
         },
         "app_usage": {
+          "type": "array",
+          "description": "Application Usage History",
+          "items": {
+            "type": "object"
+          }
+        },
+        "loc_history": {
+          "type": "array",
+          "description": "User Visited locations",
+          "items": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "integer"
+              },
+              "longtitude": {
+                "type": "integer"
+              },
+              "poi": {
+                "type": "object",
+                "description": "The google pin/business or something"
+              }
+            }
+          }
+        },
+        "other": {
           "type": "object",
-          "description": "Application Usage History"
+          "description": "Whatever other usefull information we can get?"
+        }
+      }
+    },
+    "message_thread": {
+      "type": "object",
+      "description": "An ordered thread of messages",
+      "properties": {
+        "thread_id": {
+          "type": "integer",
+          "description": "Thread ID"
+        },
+        "messages": {
+          "type": "array",
+          "description": "The messages in the thread",
+          "items": {
+            "$ref": "#/definitions/user_messages"
+          }
         }
       }
     },
