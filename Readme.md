@@ -9,7 +9,7 @@ Here's some _quick links_ for accessing the documentation currently available:
 * [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder.json)
 * [Private Data Manager](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-private_data_manager-api.json)
 * [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
-* [Social Learning APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-learning-dummy-api.json)
+* [Social Learning APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-learning-api.json)
 
 *Note*: please, keep the above links updated with the reference to the latest stable version of each documentation file.
 
