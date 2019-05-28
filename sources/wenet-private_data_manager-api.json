@@ -4,7 +4,7 @@
     "description": "This is a simple description of the Private Data Manager APIs",
     "version": "1.0.0",
     "title": "Private Data Manager",
-    "termsOfService": "http://unitn_something/terms/",
+    "termsOfService": "http://unitn/terms/",
     "contact": {
       "email": "s.decristofaro@unitn.it"
     },
@@ -14,7 +14,7 @@
     }
   },
   "host": "streambase.disi.unitn.it",
-  "basePath": "/pvm/api/v2",
+  "basePath": "/pdm/api/v2",
   "tags": [
     {
       "name": "experiment",
@@ -25,16 +25,36 @@
       }
     },
     {
+      "name": "task",
+      "description": "Manage experiment's tasks"
+    },
+    {
+      "name": "question",
+      "description": "Manage experiment's questions"
+    },
+    {
+      "name": "message",
+      "description": "Manage experiment's message"
+    },
+    {
+      "name": "challenge",
+      "description": "Manage experiment's challenge"
+    },
+    {
       "name": "report",
       "description": "Manage data reports"
     },
     {
+      "name": "contributions",
+      "description": "Manage user contributions"
+    },
+    {
       "name": "user",
-      "description": "Operations about the user",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://private_data_manager.disi.unitn.it"
-      }
+      "description": "Operations about the user"
+    },
+    {
+      "name": "subscription",
+      "description": "Subscribe to data"
     }
   ],
   "schemes": [
@@ -58,6 +78,18 @@
           "int"
         ],
         "parameters": [
+          {
+            "in": "header",
+            "name": "user",
+            "type": "string",
+            "description": "System user"
+          },
+          {
+            "in": "header",
+            "name": "password",
+            "description": "System user's password",
+            "type": "string"
+          },
           {
             "in": "body",
             "name": "body",
@@ -122,7 +154,6 @@
         "description": "Multiple status values can be provided with comma separated strings",
         "operationId": "findExperimentsByCode",
         "produces": [
-          "application/xml",
           "application/json"
         ],
         "parameters": [
@@ -333,7 +364,855 @@
             "description": "Invalid ID supplied"
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Experiment not found"
+          }
+        }
+      }
+    },
+    "/experiment/{experimentId}/{userId}": {
+      "get": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Find experiment by ID",
+        "description": "Returns a single experiment",
+        "operationId": "getUserInfo",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "name": "experimentId",
+            "in": "path",
+            "description": "ID of experiment to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of experiment to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Experiment"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Experiment not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/task": {
+      "post": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Send a task to user(s)",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createTask",
+        "consumes": [
+          "json String"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "usersalt",
+            "required": true,
+            "description": "Can be either a single user's salt or can specify a topic to which send the task using the format/topics/<sometopic>"
+          },
+          {
+            "in": "body",
+            "name": "content",
+            "description": "Task object that will be sent to the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Get task",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "taskid",
+            "required": false,
+            "description": "Task id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/task/answer": {
+      "get": {
+        "tags": [
+          "task"
+        ],
+        "summary": "Get answer to the task",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "taskid",
+            "required": true,
+            "description": "Task id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/message": {
+      "post": {
+        "tags": [
+          "message"
+        ],
+        "summary": "Send a messages to user(s)",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "sendMessage",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "usersalt",
+            "required": true,
+            "description": "Can be either a single user's salt or can specify a topic to which send the message using the format/topics/<sometopic>"
+          },
+          {
+            "in": "body",
+            "name": "content",
+            "description": "Message that will be sent to the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Successfull operation"
+          }
+        }
+      }
+    },
+    "/question": {
+      "post": {
+        "tags": [
+          "question"
+        ],
+        "summary": "Send a question to user(s)",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "senddQuestion",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "usersalt",
+            "required": true,
+            "description": "Can be either a single user's salt or can specify a topic to which send the question using the format/topics/<sometopic>"
+          },
+          {
+            "in": "body",
+            "name": "content",
+            "description": "Question object that will be sent to the user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "question"
+        ],
+        "summary": "Get question",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Super user's login email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "Super user's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "question",
+            "required": false,
+            "description": "Question id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/question/answer": {
+      "get": {
+        "tags": [
+          "question"
+        ],
+        "summary": "Get answer to the question",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "Super user's login email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "Super user's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "instanceid",
+            "required": true,
+            "description": "Query id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge": {
+      "post": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Create a new challenge defintion",
+        "description": "Method used to insert challenges definitions in the database. It can handle the following errors:      wrong generation of the definitionid, wrong format of the input json and general connection error with the database",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Login user's email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "challenge object in string format",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "format": "json string",
+              "properties": {
+                "instructions": {
+                  "type": "string"
+                },
+                "pointsawarded": {
+                  "type": "string"
+                },
+                "pointpercontribution": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "constraints": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/instance": {
+      "post": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Create a new challenge instance",
+        "description": "Method used to insert challenges instances in the database. It can handle the following errors: wrong generation of the instanceid, wrong format of the input json and general connection error with the database",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Login user's email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "body",
+            "name": "object",
+            "required": true,
+            "description": "The json string of the challenges definition with all the keys except the instanceid that is randomly generated before the insertion.              It needs to contain the following fields: instanceid:String (empty), definitionid:String, startdate:String, enddate:String, location:String containing a GEOJson of type Polygon",
+            "schema": {
+              "type": "string",
+              "format": "json"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/instance/findAll": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Get all challenges instances",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "required": true,
+            "description": "User's google token"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/result/findAll": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Get challenge result",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "token",
+            "type": "string",
+            "required": true,
+            "description": "User's google token"
+          },
+          {
+            "in": "query",
+            "name": "instanceid",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/answer": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Get answer to the task",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Super user's login email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "Super user's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "instanceid",
+            "required": true,
+            "description": "Instance id"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "pilot",
+            "required": true,
+            "description": "Pilot"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "payload",
+            "required": false,
+            "description": "Payload"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/result/publish": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Get challenge result",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Login user's email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "usersalt",
+            "required": true,
+            "description": "User's salt"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "instanceid",
+            "required": true,
+            "description": "Challenge instance's id"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "status",
+            "required": false,
+            "description": "Challenge's status"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "pointsawarded",
+            "required": false
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/challenge/synchronization": {
+      "post": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Synchronize challenges",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "token",
+            "required": true,
+            "description": "User's google token"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "challenge",
+            "required": true,
+            "description": "Challenge"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/map": {
+      "get": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Download map",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "challengeid",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "challenge"
+        ],
+        "summary": "Update map",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "challengeid",
+            "required": true
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "map",
+            "required": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/receptionconfirmation": {
+      "post": {
+        "tags": [
+          "contributions"
+        ],
+        "summary": "Reception confirmation",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "token",
+            "required": true,
+            "description": "User's google token"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "question",
+            "required": false,
+            "description": "Question"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "task",
+            "required": false,
+            "description": "Task"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "message",
+            "required": false,
+            "description": "Message"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/contribution/answer": {
+      "post": {
+        "tags": [
+          "contributions"
+        ],
+        "summary": "Contribution answer",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "token",
+            "required": true,
+            "description": "User's google token"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "format": "json",
+            "name": "answer",
+            "required": true,
+            "description": "Answer"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/report": {
+      "post": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Create a new report",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Super user's login email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "Super user's password"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "days": {
+                  "type": "string",
+                  "description": "Days on which to send the report"
+                },
+                "tables": {
+                  "type": "string",
+                  "description": "Tables of data to include in the report"
+                },
+                "projectid": {
+                  "type": "string",
+                  "description": "Experiment on which to generate the report"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Email message"
+                },
+                "anonyomous": {
+                  "type": "string",
+                  "format": "boolean",
+                  "description": "Wether the report must be anonymous or not"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
           }
         }
       }
@@ -610,6 +1489,149 @@
           }
         }
       }
+    },
+    "/subscriptions": {
+      "post": {
+        "tags": [
+          "subscription"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "header",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription accepted"
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}": {
+      "get": {
+        "tags": [
+          "subscription"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      }
+    },
+    "/data": {
+      "get": {
+        "tags": [
+          "Stream"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Update entity's data",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "System User",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "System User's password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
@@ -694,6 +1716,543 @@
         "name": "Tag"
       }
     },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "t_tile": {
+          "type": "string",
+          "description": "Task title"
+        },
+        "t_until": {
+          "type": "string",
+          "format": "integer",
+          "description": "Time to Live"
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "$ref": "#/definitions/QuestionAnswerTypeText"
+              },
+              "a": {
+                "$ref": "#/definitions/QuestionAnswerTypeText"
+              }
+            }
+          }
+        }
+      }
+    },
+    "DataRequest": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "object",
+          "properties": {
+            "experimentId": {
+              "type": "string",
+              "description": "If specified returns info about every user partecipating in the experiment"
+            },
+            "userId": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "userIds you want to track"
+              }
+            }
+          }
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "yyyymmdd"
+          }
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "json string",
+            "description": "list of properties to include in the data report"
+          }
+        }
+      }
+    },
+    "Subscription": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "description of the notification"
+        },
+        "entities": {
+          "type": "object",
+          "properties": {
+            "experimentId": {
+              "type": "string",
+              "description": "If specified returns info about every user partecipating in the experiment"
+            },
+            "userId": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "userIds you want to track"
+              }
+            }
+          }
+        },
+        "condition": {
+          "type": "object",
+          "properties": {
+            "properties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "list of properties that will trigger the notification"
+              }
+            }
+          }
+        },
+        "notification": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "address where data will be sent"
+            }
+          }
+        }
+      }
+    },
+    "ExperimentTitle": {
+      "type": "object",
+      "properties": {
+        "it_IT": {
+          "type": "string",
+          "format": "string",
+          "example": "Benvenuto in NEWEXPERIMENT"
+        },
+        "en_US": {
+          "type": "string",
+          "format": "string",
+          "example": "Welcome to NEWEXPERIMENT"
+        }
+      }
+    },
+    "ExperimentConfiguration": {
+      "type": "object",
+      "properties": {
+        "snooxenotification": {
+          "type": "boolean",
+          "format": "string",
+          "description": "If set to true, the application enables the functionality according to which the user can snooze questions for X hours from the Settings menu",
+          "example": "true"
+        },
+        "serverbaseurl": {
+          "type": "string",
+          "format": "string",
+          "description": "Url of the server in the form http://address",
+          "example": "http://streambase1.disi.unitn.it"
+        },
+        "loggingrestartinterval": {
+          "type": "integer",
+          "format": "integer",
+          "description": "How frequently to check and restart the logging process",
+          "example": 1000
+        },
+        "sensorcollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect sensor data, in microseconds between intervals",
+          "example": 70000
+        },
+        "updatenotificationid": {
+          "type": "integer",
+          "format": "integer",
+          "example": 606
+        },
+        "questionnairenotificationinterval": {
+          "type": "integer",
+          "format": "integer",
+          "example": 1800000
+        },
+        "minimumbatterylevel": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Battery treshold for i-Log to keep working",
+          "example": 5
+        },
+        "endpointupload": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to upload the generated logs",
+          "example": "upload"
+        },
+        "endpointgetavailablechallenges": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to get the list of available challenges",
+          "example": "getchallengeinstances"
+        },
+        "endpointuploadreceptionconfirmation": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to upload the confirmations of a received contribution",
+          "example": "receptionconfirmation"
+        },
+        "endpointuploadchallengessynchronizationinfo": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to upload the challenge’s synchronization info",
+          "example": "challengessynchronization"
+        },
+        "endpointsignup": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to signup",
+          "example": "signup"
+        },
+        "endpointuploadprofile": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to upload the user’s profile",
+          "example": "uploadprofile"
+        },
+        "endpointresultchallenges": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to get the results of the challenges",
+          "example": "getchallengeresult"
+        },
+        "compressedlogextension": {
+          "type": "string",
+          "format": "string",
+          "description": "Extension of the log file to be generated, usually bz2",
+          "example": "bz2"
+        },
+        "bluetoothcollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect bluetooth data, in milliseconds between intervals",
+          "example": 60000
+        },
+        "questionnairenotificationid": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Id of the question’s notification",
+          "example": 404
+        },
+        "witmeedatapath": {
+          "type": "string",
+          "format": "string",
+          "description": "Path of the main directory where to store data about the application",
+          "example": "/witmee/data"
+        },
+        "wificollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect wifi data, in milliseconds between intervals",
+          "example": 60000
+        },
+        "endpointprojects": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to get the experiment info. This endpoint points always to the default, hardcoded url of the server that contains all the experiments",
+          "example": "projects"
+        },
+        "endpointlogin": {
+          "type": "string",
+          "format": "string",
+          "description": "Endpoint where to login"
+        },
+        "portgetavailablechallenges": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Port of the application (container) on the server that deals with challenges",
+          "example": 8095
+        },
+        "separator": {
+          "type": "string",
+          "format": "string",
+          "description": "Separator to be put in urls",
+          "example": "/"
+        },
+        "mainnotificationid": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Id of the main notification",
+          "example": 505
+        },
+        "cellinfofrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect cellular info data, in milliseconds between intervals",
+          "example": 60000
+        },
+        "serverport": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Port of the application on the server",
+          "example": 8090
+        },
+        "logdir": {
+          "type": "string",
+          "format": "string",
+          "description": "Path of the directory where to store the logs",
+          "example": "/logs"
+        },
+        "logfilesizelimitsize": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Limit in bytes of the generated logs",
+          "example": 10000000
+        },
+        "applicationcollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect application info, in milliseconds between intervals",
+          "example": 5000
+        },
+        "bluetoothlecollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect bluetooth le data, in milliseconds between intervals",
+          "example": 60000
+        },
+        "bluetoothlescanduration": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Duration of the interval in ms at which to listen for bluetooth le devices (once started, the scan of btle devices never stops unless manually stopped)",
+          "example": 1000
+        },
+        "questionnairenumberofquestions": {
+          "type": "integer",
+          "format": "integer",
+          "example": 5
+        },
+        "locationcollectionfrequency": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Frequency at which to collect location data, in milliseconds between intervals",
+          "example": 60000
+        },
+        "startdate": {
+          "type": "string",
+          "format": "string",
+          "description": "String representing the starting date of the selected experiment in the format YYYYMMDDHHMMSSsss",
+          "example": "20190315000000000"
+        },
+        "enddate": {
+          "type": "string",
+          "format": "string",
+          "description": "String representing the ending date of the selected experiment in the format YYYYMMDDHHMMSSsss",
+          "example": "20190316235959000"
+        }
+      }
+    },
+    "ExperimentDescription": {
+      "type": "object",
+      "properties": {
+        "it_IT": {
+          "type": "string",
+          "format": "string",
+          "example": "Descrizione dell'esperimento"
+        },
+        "en_US": {
+          "type": "string",
+          "format": "string",
+          "example": "Experiment description"
+        }
+      }
+    },
+    "ExperimentInformedConsent": {
+      "type": "object",
+      "properties": {
+        "it_IT": {
+          "type": "string",
+          "format": "string",
+          "example": "Testo dell'informativa"
+        },
+        "en_US": {
+          "type": "string",
+          "format": "string",
+          "example": "Informed consent"
+        }
+      }
+    },
+    "ExperimentSinglePermission": {
+      "type": "object",
+      "properties": {
+        "singlesensor": {
+          "type": "string",
+          "format": "boolean",
+          "example": "true"
+        },
+        "background": {
+          "type": "string",
+          "format": "string",
+          "example": "ic_location"
+        },
+        "permission": {
+          "type": "string",
+          "format": "string",
+          "example": "android.permission.ACCESS_FINE_LOCATION"
+        },
+        "skip": {
+          "type": "string",
+          "format": "boolean",
+          "example": "false"
+        },
+        "confirmation": {
+          "type": "object",
+          "properties": {
+            "it_IT": {
+              "type": "string",
+              "format": "string",
+              "example": "Continua"
+            },
+            "en_US": {
+              "type": "string",
+              "format": "string",
+              "example": "Continue"
+            }
+          }
+        },
+        "title": {
+          "type": "object",
+          "properties": {
+            "it_IT": {
+              "type": "string",
+              "format": "string",
+              "example": "Posizione"
+            },
+            "en_US": {
+              "type": "string",
+              "format": "string",
+              "example": "Position"
+            }
+          }
+        },
+        "message": {
+          "type": "object",
+          "properties": {
+            "it_IT": {
+              "type": "string",
+              "format": "string",
+              "example": "La posizione è molto importante per il contesto in questo esperimento. Ci aiuta a capire meglio le abitudini di spostamento delle persone"
+            },
+            "en_US": {
+              "type": "string",
+              "format": "string",
+              "example": "Localization is very important this experiment. It helps us to better understand your habits concerning how you move around the city"
+            }
+          }
+        },
+        "order": {
+          "type": "integer",
+          "format": "integer",
+          "example": 1
+        }
+      }
+    },
+    "ExperimentPermissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ExperimentSinglePermission"
+      }
+    },
+    "ExperimentConditionObject": {
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "integer",
+          "format": "integer",
+          "description": "condition answer id"
+        },
+        "q": {
+          "type": "integer",
+          "format": "integer",
+          "description": "condition question id"
+        }
+      }
+    },
+    "ExperimentLanguagePointObject": {
+      "type": "object",
+      "properties": {
+        "l": {
+          "type": "string",
+          "format": "string",
+          "description": "language",
+          "example": "en_US"
+        },
+        "t": {
+          "type": "string",
+          "format": "string",
+          "description": "text",
+          "example": "What are you doing?"
+        }
+      },
+      "example": {
+        "l": "en_US",
+        "t": "What are you doing?"
+      }
+    },
+    "QuestionAnswerTypeText": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "c": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExperimentConditionObject"
+          }
+        },
+        "c_id": {
+          "type": "integer",
+          "format": "integer",
+          "description": "concept id",
+          "example": -1
+        },
+        "t": {
+          "type": "string",
+          "format": "string",
+          "description": "type"
+        },
+        "at": {
+          "type": "string",
+          "format": "string",
+          "description": "Answer type",
+          "example": "s"
+        },
+        "p": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExperimentLanguagePointObject"
+          }
+        }
+      },
+      "example": {
+        "id": 1,
+        "c": [],
+        "at": "s",
+        "t": "t",
+        "p": [
+          {
+            "l": "en-US",
+            "t": "What are you doing?"
+          },
+          {
+            "l": "it-IT",
+            "t": "Cosa stai facendo?"
+          }
+        ]
+      }
+    },
     "Experiment": {
       "type": "object",
       "required": [
@@ -701,8 +2260,8 @@
       ],
       "properties": {
         "code": {
-          "type": "integer",
-          "format": "string",
+          "type": "string",
+          "format": "integer",
           "example": "0001"
         },
         "id": {
@@ -710,31 +2269,57 @@
           "format": "string",
           "example": "wenetPrj1"
         },
-        "category": {
-          "$ref": "#/definitions/Category"
+        "title": {
+          "$ref": "#/definitions/ExperimentTitle"
         },
-        "tags": {
+        "configuration": {
+          "$ref": "#/definitions/ExperimentConfiguration"
+        },
+        "description": {
+          "$ref": "#/definitions/ExperimentDescription"
+        },
+        "logo": {
+          "type": "string",
+          "format": "string",
+          "description": "url of the logo to use for the project",
+          "example": "http://example.com/logo.png"
+        },
+        "informedconsent": {
+          "$ref": "#/definitions/ExperimentInformedConsent"
+        },
+        "permissions": {
+          "$ref": "#/definitions/ExperimentPermissions"
+        },
+        "profile": {
           "type": "array",
-          "xml": {
-            "name": "tag",
-            "wrapped": true
-          },
           "items": {
-            "$ref": "#/definitions/Tag"
+            "$ref": "#/definitions/QuestionAnswerTypeText"
           }
         },
-        "status": {
-          "type": "string",
-          "description": "pet status in the store",
-          "enum": [
-            "available",
-            "pending",
-            "sold"
+        "sensors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "integer"
+              }
+            }
+          },
+          "description": "List of sensors to enable",
+          "example": [
+            {
+              "id": 1
+            },
+            {
+              "id": 1000
+            },
+            {
+              "id": 1001
+            }
           ]
         }
-      },
-      "xml": {
-        "name": "Pet"
       }
     },
     "ApiResponse": {
