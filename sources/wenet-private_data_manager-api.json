@@ -17,44 +17,16 @@
   "basePath": "/pdm/api/v2",
   "tags": [
     {
-      "name": "experiment",
-      "description": "Manage your experiments",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "http://private_data_manager.disi.unitn.it"
-      }
+      "name": "direct message management",
+      "description": "Manage direct messages to the users"
     },
     {
-      "name": "task",
-      "description": "Manage experiment's tasks"
+      "name": "data",
+      "description": "Request or send batch data"
     },
     {
-      "name": "question",
-      "description": "Manage experiment's questions"
-    },
-    {
-      "name": "message",
-      "description": "Manage experiment's message"
-    },
-    {
-      "name": "challenge",
-      "description": "Manage experiment's challenge"
-    },
-    {
-      "name": "report",
-      "description": "Manage data reports"
-    },
-    {
-      "name": "contributions",
-      "description": "Manage user contributions"
-    },
-    {
-      "name": "user",
-      "description": "Operations about the user"
-    },
-    {
-      "name": "subscription",
-      "description": "Subscribe to data"
+      "name": "stream",
+      "description": "send stream data"
     }
   ],
   "schemes": [
@@ -62,384 +34,14 @@
     "http"
   ],
   "paths": {
-    "/experiment": {
+    "/dm": {
       "post": {
         "tags": [
-          "experiment"
+          "direct message management"
         ],
-        "summary": "Create a new Experiment",
-        "description": "",
-        "operationId": "addExperiment",
-        "consumes": [
-          "application/json",
-          "application/xml"
-        ],
-        "produces": [
-          "int"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "user",
-            "type": "string",
-            "description": "System user"
-          },
-          {
-            "in": "header",
-            "name": "password",
-            "description": "System user's password",
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Body of the experiment that needs to be created",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Update an existing experiment",
-        "description": "",
-        "operationId": "updateExperiment",
-        "consumes": [
-          "application/json",
-          "application/xml"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Experiment object that needs to be added",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid Code supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      }
-    },
-    "/experiment/findByCode": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Finds Experiment by code",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "findExperimentsByCode",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Status values that need to be considered for filter",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "available",
-                "pending",
-                "sold"
-              ],
-              "default": "available"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Experiment"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
-      }
-    },
-    "/experiment/findById": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Finds Experiments by Id",
-        "description": "Multiple ids can be provided with comma separated strings. Use id1, id2, id3 for testing.",
-        "operationId": "findPetsByIds",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "Id to filter by",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Experiment"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid tag value"
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ],
-        "deprecated": true
-      }
-    },
-    "/experiment/{experimentId}": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Find experiment by ID",
-        "description": "Returns a single experiment",
-        "operationId": "getExperimentById",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment to return",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Updates an experiment with form data",
-        "description": "",
-        "operationId": "updateExperimentWithForm",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment that needs to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "formData",
-            "description": "Updated name of the experiment",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "formData",
-            "description": "Updated status of the experiment",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Deletes an experiment",
-        "description": "",
-        "operationId": "deleteExperiment",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment to delete",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          }
-        }
-      }
-    },
-    "/experiment/{experimentId}/{userId}": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Find experiment by ID",
-        "description": "Returns a single experiment",
-        "operationId": "getUserInfo",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System User"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment to return",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "description": "ID of experiment to return",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
-      }
-    },
-    "/task": {
-      "post": {
-        "tags": [
-          "task"
-        ],
-        "summary": "Send a task to user(s)",
+        "summary": "Send a Direct Message (DM) to user(s)",
         "description": "This can only be done by the logged in user.",
-        "operationId": "createTask",
+        "operationId": "create a Direct Message object",
         "consumes": [
           "json String"
         ],
@@ -471,7 +73,7 @@
           {
             "in": "body",
             "name": "content",
-            "description": "Task object that will be sent to the user",
+            "description": "DM object that will be sent to the user",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Task"
@@ -486,9 +88,52 @@
       },
       "get": {
         "tags": [
-          "task"
+          "direct message management"
         ],
-        "summary": "Get task",
+        "summary": "Get Direct Message sent to the users",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "dmid",
+            "required": false,
+            "description": "Direct Message id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/dm/answer": {
+      "get": {
+        "tags": [
+          "direct message management"
+        ],
+        "summary": "Get answer to the Direct Message",
         "parameters": [
           {
             "in": "header",
@@ -515,49 +160,6 @@
             "in": "query",
             "type": "string",
             "name": "taskid",
-            "required": false,
-            "description": "Task id"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/task/answer": {
-      "get": {
-        "tags": [
-          "task"
-        ],
-        "summary": "Get answer to the task",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System User"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "userid",
-            "required": true,
-            "description": "User id"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "taskid",
             "required": true,
             "description": "Task id"
           }
@@ -569,525 +171,10 @@
         }
       }
     },
-    "/message": {
+    "/dm/receptionconfirmation": {
       "post": {
         "tags": [
-          "message"
-        ],
-        "summary": "Send a messages to user(s)",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "sendMessage",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System User"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "usersalt",
-            "required": true,
-            "description": "Can be either a single user's salt or can specify a topic to which send the message using the format/topics/<sometopic>"
-          },
-          {
-            "in": "body",
-            "name": "content",
-            "description": "Message that will be sent to the user",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "Successfull operation"
-          }
-        }
-      }
-    },
-    "/question": {
-      "post": {
-        "tags": [
-          "question"
-        ],
-        "summary": "Send a question to user(s)",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "senddQuestion",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System User"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "usersalt",
-            "required": true,
-            "description": "Can be either a single user's salt or can specify a topic to which send the question using the format/topics/<sometopic>"
-          },
-          {
-            "in": "body",
-            "name": "content",
-            "description": "Question object that will be sent to the user",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "question"
-        ],
-        "summary": "Get question",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Super user's login email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "Super user's password"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "userid",
-            "required": true,
-            "description": "User id"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "question",
-            "required": false,
-            "description": "Question id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/question/answer": {
-      "get": {
-        "tags": [
-          "question"
-        ],
-        "summary": "Get answer to the question",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "Super user's login email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "Super user's password"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "userid",
-            "required": true,
-            "description": "User id"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "instanceid",
-            "required": true,
-            "description": "Query id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge": {
-      "post": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Create a new challenge defintion",
-        "description": "Method used to insert challenges definitions in the database. It can handle the following errors:      wrong generation of the definitionid, wrong format of the input json and general connection error with the database",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Login user's email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "challenge object in string format",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "format": "json string",
-              "properties": {
-                "instructions": {
-                  "type": "string"
-                },
-                "pointsawarded": {
-                  "type": "string"
-                },
-                "pointpercontribution": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "constraints": {
-                  "type": "string"
-                },
-                "content": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/instance": {
-      "post": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Create a new challenge instance",
-        "description": "Method used to insert challenges instances in the database. It can handle the following errors: wrong generation of the instanceid, wrong format of the input json and general connection error with the database",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Login user's email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "body",
-            "name": "object",
-            "required": true,
-            "description": "The json string of the challenges definition with all the keys except the instanceid that is randomly generated before the insertion.              It needs to contain the following fields: instanceid:String (empty), definitionid:String, startdate:String, enddate:String, location:String containing a GEOJson of type Polygon",
-            "schema": {
-              "type": "string",
-              "format": "json"
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/instance/findAll": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Get all challenges instances",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "required": true,
-            "description": "User's google token"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/result/findAll": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Get challenge result",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "token",
-            "type": "string",
-            "required": true,
-            "description": "User's google token"
-          },
-          {
-            "in": "query",
-            "name": "instanceid",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/answer": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Get answer to the task",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Super user's login email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "Super user's password"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "instanceid",
-            "required": true,
-            "description": "Instance id"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "pilot",
-            "required": true,
-            "description": "Pilot"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "payload",
-            "required": false,
-            "description": "Payload"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/result/publish": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Get challenge result",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Login user's email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "usersalt",
-            "required": true,
-            "description": "User's salt"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "instanceid",
-            "required": true,
-            "description": "Challenge instance's id"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "status",
-            "required": false,
-            "description": "Challenge's status"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "pointsawarded",
-            "required": false
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/challenge/synchronization": {
-      "post": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Synchronize challenges",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "token",
-            "required": true,
-            "description": "User's google token"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "challenge",
-            "required": true,
-            "description": "Challenge"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/map": {
-      "get": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Download map",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "challengeid",
-            "required": true
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "challenge"
-        ],
-        "summary": "Update map",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "challengeid",
-            "required": true
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "map",
-            "required": true
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/receptionconfirmation": {
-      "post": {
-        "tags": [
-          "contributions"
+          "direct message management"
         ],
         "summary": "Reception confirmation",
         "parameters": [
@@ -1101,53 +188,9 @@
           {
             "in": "query",
             "type": "string",
-            "name": "question",
+            "name": "dm",
             "required": false,
-            "description": "Question"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "task",
-            "required": false,
-            "description": "Task"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "message",
-            "required": false,
-            "description": "Message"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/contribution/answer": {
-      "post": {
-        "tags": [
-          "contributions"
-        ],
-        "summary": "Contribution answer",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "token",
-            "required": true,
-            "description": "User's google token"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "format": "json",
-            "name": "answer",
-            "required": true,
-            "description": "Answer"
+            "description": "direct message id"
           }
         ],
         "responses": {
@@ -1217,113 +260,49 @@
         }
       }
     },
-    "/user": {
+    "/stream/upload": {
       "post": {
         "tags": [
-          "user"
+          "stream"
         ],
-        "summary": "Create user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
+        "summary": "Initialize the stream to upload data",
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "Created user object",
+            "name": "username",
+            "in": "header",
+            "description": "The user name for login",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/DataRequest"
             }
           }
         ],
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "200": {
+            "description": "Subscription accepted"
+          },
+          "400": {
+            "description": "Error"
           }
         }
       }
     },
-    "/user/createWithArray": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "",
-        "operationId": "createUsersWithArrayInput",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "List of user object",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithList": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "",
-        "operationId": "createUsersWithListInput",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "List of user object",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/login": {
+    "/stream/upload{uploadId}": {
       "get": {
         "tags": [
-          "user"
-        ],
-        "summary": "Logs user into the system",
-        "description": "",
-        "operationId": "loginUser",
-        "produces": [
-          "application/xml",
-          "application/json"
+          "stream"
         ],
         "parameters": [
           {
@@ -1339,162 +318,47 @@
             "description": "The password for login in clear text",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "uploadId",
+            "in": "path",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "string"
-            },
-            "headers": {
-              "X-Rate-Limit": {
-                "type": "integer",
-                "format": "int32",
-                "description": "calls per hour allowed by the user"
-              },
-              "X-Expires-After": {
-                "type": "string",
-                "format": "date-time",
-                "description": "date in UTC when token expires"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid username/password supplied"
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "description": "",
-        "operationId": "logoutUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/{username}": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Get user by user name",
-        "description": "",
-        "operationId": "getUserByName",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing. ",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "name that need to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
+            "description": "Successfull"
           }
         }
       },
       "delete": {
         "tags": [
-          "user"
+          "stream"
         ],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
+        "summary": "Delete subscription",
+        "description": "Stop receiving notification",
         "parameters": [
           {
-            "name": "username",
+            "name": "uploadId",
             "in": "path",
-            "description": "The name that needs to be deleted",
-            "required": true,
-            "type": "string"
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
-    "/subscriptions": {
+    "/stream/read": {
       "post": {
         "tags": [
-          "subscription"
+          "stream"
         ],
+        "summary": "Create a new reading request",
         "parameters": [
           {
             "name": "username",
@@ -1528,10 +392,10 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}": {
+    "/stream/read/{readId}": {
       "get": {
         "tags": [
-          "subscription"
+          "stream"
         ],
         "parameters": [
           {
@@ -1549,7 +413,7 @@
             "type": "string"
           },
           {
-            "name": "subscriptionId",
+            "name": "readId",
             "in": "path",
             "type": "string",
             "required": true
@@ -1560,18 +424,39 @@
             "description": "Successfull"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Delete subscription",
+        "description": "Stop receiving notification",
+        "parameters": [
+          {
+            "name": "readId",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
-    "/data": {
-      "get": {
+    "/data/upload": {
+      "post": {
         "tags": [
-          "Stream"
+          "data"
         ],
+        "summary": "Upload a new entity's data",
         "parameters": [
           {
             "name": "username",
             "in": "query",
-            "description": "The user name for login",
+            "description": "Username login",
             "required": true,
             "type": "string"
           },
@@ -1599,7 +484,7 @@
       },
       "patch": {
         "tags": [
-          "Stream"
+          "data"
         ],
         "summary": "Update entity's data",
         "parameters": [
@@ -1614,6 +499,43 @@
             "name": "password",
             "in": "query",
             "description": "System User's password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      }
+    },
+    "/data": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Send an object specifying the data you want to receive",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
             "required": true,
             "type": "string"
           },
@@ -1651,71 +573,6 @@
     }
   },
   "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "username": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "userStatus": {
-          "type": "integer",
-          "format": "int32",
-          "description": "User Status"
-        }
-      },
-      "xml": {
-        "name": "User"
-      }
-    },
-    "Category": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Category"
-      }
-    },
-    "Tag": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Tag"
-      }
-    },
     "Task": {
       "type": "object",
       "properties": {
@@ -1744,6 +601,96 @@
         }
       }
     },
+    "ConditionObject": {
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "integer",
+          "format": "integer",
+          "description": "condition answer id"
+        },
+        "q": {
+          "type": "integer",
+          "format": "integer",
+          "description": "condition question id"
+        }
+      }
+    },
+    "LanguagePointObject": {
+      "type": "object",
+      "properties": {
+        "l": {
+          "type": "string",
+          "format": "string",
+          "description": "language",
+          "example": "en_US"
+        },
+        "t": {
+          "type": "string",
+          "format": "string",
+          "description": "text",
+          "example": "What are you doing?"
+        }
+      },
+      "example": {
+        "l": "en_US",
+        "t": "What are you doing?"
+      }
+    },
+    "QuestionAnswerTypeText": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "c": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionObject"
+          }
+        },
+        "c_id": {
+          "type": "integer",
+          "format": "integer",
+          "description": "concept id",
+          "example": -1
+        },
+        "t": {
+          "type": "string",
+          "format": "string",
+          "description": "type"
+        },
+        "at": {
+          "type": "string",
+          "format": "string",
+          "description": "Answer type",
+          "example": "s"
+        },
+        "p": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LanguagePointObject"
+          }
+        }
+      },
+      "example": {
+        "id": 1,
+        "c": [],
+        "at": "s",
+        "t": "t",
+        "p": [
+          {
+            "l": "en-US",
+            "t": "What are you doing?"
+          },
+          {
+            "l": "it-IT",
+            "t": "Cosa stai facendo?"
+          }
+        ]
+      }
+    },
     "DataRequest": {
       "type": "object",
       "properties": {
@@ -1758,7 +705,7 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "description": "userIds you want to track"
+                "description": "list of user ids"
               }
             }
           }
@@ -1775,7 +722,7 @@
           "items": {
             "type": "string",
             "format": "json string",
-            "description": "list of properties to include in the data report"
+            "description": "list of properties"
           }
         }
       }
@@ -1819,506 +766,9 @@
           "type": "object",
           "properties": {
             "url": {
-              "type": "string",
-              "description": "address where data will be sent"
+              "type": "string"
             }
           }
-        }
-      }
-    },
-    "ExperimentTitle": {
-      "type": "object",
-      "properties": {
-        "it_IT": {
-          "type": "string",
-          "format": "string",
-          "example": "Benvenuto in NEWEXPERIMENT"
-        },
-        "en_US": {
-          "type": "string",
-          "format": "string",
-          "example": "Welcome to NEWEXPERIMENT"
-        }
-      }
-    },
-    "ExperimentConfiguration": {
-      "type": "object",
-      "properties": {
-        "snooxenotification": {
-          "type": "boolean",
-          "format": "string",
-          "description": "If set to true, the application enables the functionality according to which the user can snooze questions for X hours from the Settings menu",
-          "example": "true"
-        },
-        "serverbaseurl": {
-          "type": "string",
-          "format": "string",
-          "description": "Url of the server in the form http://address",
-          "example": "http://streambase1.disi.unitn.it"
-        },
-        "loggingrestartinterval": {
-          "type": "integer",
-          "format": "integer",
-          "description": "How frequently to check and restart the logging process",
-          "example": 1000
-        },
-        "sensorcollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect sensor data, in microseconds between intervals",
-          "example": 70000
-        },
-        "updatenotificationid": {
-          "type": "integer",
-          "format": "integer",
-          "example": 606
-        },
-        "questionnairenotificationinterval": {
-          "type": "integer",
-          "format": "integer",
-          "example": 1800000
-        },
-        "minimumbatterylevel": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Battery treshold for i-Log to keep working",
-          "example": 5
-        },
-        "endpointupload": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to upload the generated logs",
-          "example": "upload"
-        },
-        "endpointgetavailablechallenges": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to get the list of available challenges",
-          "example": "getchallengeinstances"
-        },
-        "endpointuploadreceptionconfirmation": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to upload the confirmations of a received contribution",
-          "example": "receptionconfirmation"
-        },
-        "endpointuploadchallengessynchronizationinfo": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to upload the challenge’s synchronization info",
-          "example": "challengessynchronization"
-        },
-        "endpointsignup": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to signup",
-          "example": "signup"
-        },
-        "endpointuploadprofile": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to upload the user’s profile",
-          "example": "uploadprofile"
-        },
-        "endpointresultchallenges": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to get the results of the challenges",
-          "example": "getchallengeresult"
-        },
-        "compressedlogextension": {
-          "type": "string",
-          "format": "string",
-          "description": "Extension of the log file to be generated, usually bz2",
-          "example": "bz2"
-        },
-        "bluetoothcollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect bluetooth data, in milliseconds between intervals",
-          "example": 60000
-        },
-        "questionnairenotificationid": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Id of the question’s notification",
-          "example": 404
-        },
-        "witmeedatapath": {
-          "type": "string",
-          "format": "string",
-          "description": "Path of the main directory where to store data about the application",
-          "example": "/witmee/data"
-        },
-        "wificollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect wifi data, in milliseconds between intervals",
-          "example": 60000
-        },
-        "endpointprojects": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to get the experiment info. This endpoint points always to the default, hardcoded url of the server that contains all the experiments",
-          "example": "projects"
-        },
-        "endpointlogin": {
-          "type": "string",
-          "format": "string",
-          "description": "Endpoint where to login"
-        },
-        "portgetavailablechallenges": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Port of the application (container) on the server that deals with challenges",
-          "example": 8095
-        },
-        "separator": {
-          "type": "string",
-          "format": "string",
-          "description": "Separator to be put in urls",
-          "example": "/"
-        },
-        "mainnotificationid": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Id of the main notification",
-          "example": 505
-        },
-        "cellinfofrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect cellular info data, in milliseconds between intervals",
-          "example": 60000
-        },
-        "serverport": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Port of the application on the server",
-          "example": 8090
-        },
-        "logdir": {
-          "type": "string",
-          "format": "string",
-          "description": "Path of the directory where to store the logs",
-          "example": "/logs"
-        },
-        "logfilesizelimitsize": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Limit in bytes of the generated logs",
-          "example": 10000000
-        },
-        "applicationcollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect application info, in milliseconds between intervals",
-          "example": 5000
-        },
-        "bluetoothlecollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect bluetooth le data, in milliseconds between intervals",
-          "example": 60000
-        },
-        "bluetoothlescanduration": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Duration of the interval in ms at which to listen for bluetooth le devices (once started, the scan of btle devices never stops unless manually stopped)",
-          "example": 1000
-        },
-        "questionnairenumberofquestions": {
-          "type": "integer",
-          "format": "integer",
-          "example": 5
-        },
-        "locationcollectionfrequency": {
-          "type": "integer",
-          "format": "integer",
-          "description": "Frequency at which to collect location data, in milliseconds between intervals",
-          "example": 60000
-        },
-        "startdate": {
-          "type": "string",
-          "format": "string",
-          "description": "String representing the starting date of the selected experiment in the format YYYYMMDDHHMMSSsss",
-          "example": "20190315000000000"
-        },
-        "enddate": {
-          "type": "string",
-          "format": "string",
-          "description": "String representing the ending date of the selected experiment in the format YYYYMMDDHHMMSSsss",
-          "example": "20190316235959000"
-        }
-      }
-    },
-    "ExperimentDescription": {
-      "type": "object",
-      "properties": {
-        "it_IT": {
-          "type": "string",
-          "format": "string",
-          "example": "Descrizione dell'esperimento"
-        },
-        "en_US": {
-          "type": "string",
-          "format": "string",
-          "example": "Experiment description"
-        }
-      }
-    },
-    "ExperimentInformedConsent": {
-      "type": "object",
-      "properties": {
-        "it_IT": {
-          "type": "string",
-          "format": "string",
-          "example": "Testo dell'informativa"
-        },
-        "en_US": {
-          "type": "string",
-          "format": "string",
-          "example": "Informed consent"
-        }
-      }
-    },
-    "ExperimentSinglePermission": {
-      "type": "object",
-      "properties": {
-        "singlesensor": {
-          "type": "string",
-          "format": "boolean",
-          "example": "true"
-        },
-        "background": {
-          "type": "string",
-          "format": "string",
-          "example": "ic_location"
-        },
-        "permission": {
-          "type": "string",
-          "format": "string",
-          "example": "android.permission.ACCESS_FINE_LOCATION"
-        },
-        "skip": {
-          "type": "string",
-          "format": "boolean",
-          "example": "false"
-        },
-        "confirmation": {
-          "type": "object",
-          "properties": {
-            "it_IT": {
-              "type": "string",
-              "format": "string",
-              "example": "Continua"
-            },
-            "en_US": {
-              "type": "string",
-              "format": "string",
-              "example": "Continue"
-            }
-          }
-        },
-        "title": {
-          "type": "object",
-          "properties": {
-            "it_IT": {
-              "type": "string",
-              "format": "string",
-              "example": "Posizione"
-            },
-            "en_US": {
-              "type": "string",
-              "format": "string",
-              "example": "Position"
-            }
-          }
-        },
-        "message": {
-          "type": "object",
-          "properties": {
-            "it_IT": {
-              "type": "string",
-              "format": "string",
-              "example": "La posizione è molto importante per il contesto in questo esperimento. Ci aiuta a capire meglio le abitudini di spostamento delle persone"
-            },
-            "en_US": {
-              "type": "string",
-              "format": "string",
-              "example": "Localization is very important this experiment. It helps us to better understand your habits concerning how you move around the city"
-            }
-          }
-        },
-        "order": {
-          "type": "integer",
-          "format": "integer",
-          "example": 1
-        }
-      }
-    },
-    "ExperimentPermissions": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/ExperimentSinglePermission"
-      }
-    },
-    "ExperimentConditionObject": {
-      "type": "object",
-      "properties": {
-        "a": {
-          "type": "integer",
-          "format": "integer",
-          "description": "condition answer id"
-        },
-        "q": {
-          "type": "integer",
-          "format": "integer",
-          "description": "condition question id"
-        }
-      }
-    },
-    "ExperimentLanguagePointObject": {
-      "type": "object",
-      "properties": {
-        "l": {
-          "type": "string",
-          "format": "string",
-          "description": "language",
-          "example": "en_US"
-        },
-        "t": {
-          "type": "string",
-          "format": "string",
-          "description": "text",
-          "example": "What are you doing?"
-        }
-      },
-      "example": {
-        "l": "en_US",
-        "t": "What are you doing?"
-      }
-    },
-    "QuestionAnswerTypeText": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "integer"
-        },
-        "c": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ExperimentConditionObject"
-          }
-        },
-        "c_id": {
-          "type": "integer",
-          "format": "integer",
-          "description": "concept id",
-          "example": -1
-        },
-        "t": {
-          "type": "string",
-          "format": "string",
-          "description": "type"
-        },
-        "at": {
-          "type": "string",
-          "format": "string",
-          "description": "Answer type",
-          "example": "s"
-        },
-        "p": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ExperimentLanguagePointObject"
-          }
-        }
-      },
-      "example": {
-        "id": 1,
-        "c": [],
-        "at": "s",
-        "t": "t",
-        "p": [
-          {
-            "l": "en-US",
-            "t": "What are you doing?"
-          },
-          {
-            "l": "it-IT",
-            "t": "Cosa stai facendo?"
-          }
-        ]
-      }
-    },
-    "Experiment": {
-      "type": "object",
-      "required": [
-        "code"
-      ],
-      "properties": {
-        "code": {
-          "type": "string",
-          "format": "integer",
-          "example": "0001"
-        },
-        "id": {
-          "type": "string",
-          "format": "string",
-          "example": "wenetPrj1"
-        },
-        "title": {
-          "$ref": "#/definitions/ExperimentTitle"
-        },
-        "configuration": {
-          "$ref": "#/definitions/ExperimentConfiguration"
-        },
-        "description": {
-          "$ref": "#/definitions/ExperimentDescription"
-        },
-        "logo": {
-          "type": "string",
-          "format": "string",
-          "description": "url of the logo to use for the project",
-          "example": "http://example.com/logo.png"
-        },
-        "informedconsent": {
-          "$ref": "#/definitions/ExperimentInformedConsent"
-        },
-        "permissions": {
-          "$ref": "#/definitions/ExperimentPermissions"
-        },
-        "profile": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/QuestionAnswerTypeText"
-          }
-        },
-        "sensors": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer",
-                "format": "integer"
-              }
-            }
-          },
-          "description": "List of sensors to enable",
-          "example": [
-            {
-              "id": 1
-            },
-            {
-              "id": 1000
-            },
-            {
-              "id": 1001
-            }
-          ]
         }
       }
     },
