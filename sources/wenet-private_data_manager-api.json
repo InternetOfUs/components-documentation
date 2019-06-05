@@ -4,7 +4,7 @@
     "description": "This is a simple description of the Private Data Manager APIs",
     "version": "1.0.0",
     "title": "Private Data Manager",
-    "termsOfService": "http://unitn_something/terms/",
+    "termsOfService": "http://unitn/terms/",
     "contact": {
       "email": "s.decristofaro@unitn.it"
     },
@@ -14,27 +14,19 @@
     }
   },
   "host": "streambase.disi.unitn.it",
-  "basePath": "/pvm/api/v2",
+  "basePath": "/pdm/api/v2",
   "tags": [
     {
-      "name": "experiment",
-      "description": "Manage your experiments",
-      "externalDocs": {
-        "description": "Find out more",
-        "url": "http://private_data_manager.disi.unitn.it"
-      }
+      "name": "direct message management",
+      "description": "Manage direct messages to the users"
     },
     {
-      "name": "report",
-      "description": "Manage data reports"
+      "name": "data",
+      "description": "Request or send batch data"
     },
     {
-      "name": "user",
-      "description": "Operations about the user",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://private_data_manager.disi.unitn.it"
-      }
+      "name": "stream",
+      "description": "send stream data"
     }
   ],
   "schemes": [
@@ -42,409 +34,275 @@
     "http"
   ],
   "paths": {
-    "/experiment": {
+    "/dm": {
       "post": {
         "tags": [
-          "experiment"
+          "direct message management"
         ],
-        "summary": "Create a new Experiment",
-        "description": "",
-        "operationId": "addExperiment",
-        "consumes": [
-          "application/json",
-          "application/xml"
-        ],
-        "produces": [
-          "int"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Body of the experiment that needs to be created",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Update an existing experiment",
-        "description": "",
-        "operationId": "updateExperiment",
-        "consumes": [
-          "application/json",
-          "application/xml"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Experiment object that needs to be added",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid Code supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      }
-    },
-    "/experiment/findByCode": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Finds Experiment by code",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "findExperimentsByCode",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Status values that need to be considered for filter",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "available",
-                "pending",
-                "sold"
-              ],
-              "default": "available"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Experiment"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
-      }
-    },
-    "/experiment/findById": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Finds Experiments by Id",
-        "description": "Multiple ids can be provided with comma separated strings. Use id1, id2, id3 for testing.",
-        "operationId": "findPetsByIds",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "description": "Id to filter by",
-            "required": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Experiment"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid tag value"
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ],
-        "deprecated": true
-      }
-    },
-    "/experiment/{experimentId}": {
-      "get": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Find experiment by ID",
-        "description": "Returns a single experiment",
-        "operationId": "getExperimentById",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment to return",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Experiment"
-            }
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Experiment not found"
-          }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
-      },
-      "post": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Updates an experiment with form data",
-        "description": "",
-        "operationId": "updateExperimentWithForm",
-        "consumes": [
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment that needs to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "formData",
-            "description": "Updated name of the experiment",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "status",
-            "in": "formData",
-            "description": "Updated status of the experiment",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "405": {
-            "description": "Invalid input"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "experiment"
-        ],
-        "summary": "Deletes an experiment",
-        "description": "",
-        "operationId": "deleteExperiment",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "experimentId",
-            "in": "path",
-            "description": "ID of experiment to delete",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "api_key",
-            "in": "header",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Pet not found"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create user",
+        "summary": "Send a Direct Message (DM) to user(s)",
         "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
+        "operationId": "create a Direct Message object",
+        "consumes": [
+          "json String"
+        ],
         "produces": [
-          "application/xml",
           "application/json"
         ],
         "parameters": [
           {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "usersalt",
+            "required": true,
+            "description": "Can be either a single user's salt or can specify a topic to which send the task using the format/topics/<sometopic>"
+          },
+          {
             "in": "body",
-            "name": "body",
-            "description": "Created user object",
+            "name": "content",
+            "description": "DM object that will be sent to the user",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Task"
             }
           }
         ],
         "responses": {
           "default": {
-            "description": "successful operation"
+            "description": "Successful operation"
           }
         }
-      }
-    },
-    "/user/createWithArray": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "",
-        "operationId": "createUsersWithArrayInput",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "List of user object",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithList": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "",
-        "operationId": "createUsersWithListInput",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "List of user object",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/login": {
+      },
       "get": {
         "tags": [
-          "user"
+          "direct message management"
         ],
-        "summary": "Logs user into the system",
-        "description": "",
-        "operationId": "loginUser",
-        "produces": [
-          "application/xml",
-          "application/json"
+        "summary": "Get Direct Message sent to the users",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "dmid",
+            "required": false,
+            "description": "Direct Message id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/dm/answer": {
+      "get": {
+        "tags": [
+          "direct message management"
+        ],
+        "summary": "Get answer to the Direct Message",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "username",
+            "required": true,
+            "description": "System User"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "User's password"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "userid",
+            "required": true,
+            "description": "User id"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "taskid",
+            "required": true,
+            "description": "Task id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/dm/receptionconfirmation": {
+      "post": {
+        "tags": [
+          "direct message management"
+        ],
+        "summary": "Reception confirmation",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "token",
+            "required": true,
+            "description": "User's google token"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "dm",
+            "required": false,
+            "description": "direct message id"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/report": {
+      "post": {
+        "tags": [
+          "report"
+        ],
+        "summary": "Create a new report",
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "email",
+            "required": true,
+            "description": "Super user's login email"
+          },
+          {
+            "in": "header",
+            "type": "string",
+            "name": "password",
+            "required": true,
+            "description": "Super user's password"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "days": {
+                  "type": "string",
+                  "description": "Days on which to send the report"
+                },
+                "tables": {
+                  "type": "string",
+                  "description": "Tables of data to include in the report"
+                },
+                "projectid": {
+                  "type": "string",
+                  "description": "Experiment on which to generate the report"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Email message"
+                },
+                "anonyomous": {
+                  "type": "string",
+                  "format": "boolean",
+                  "description": "Wether the report must be anonymous or not"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/stream/upload": {
+      "post": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Initialize the stream to upload data",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "header",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription accepted"
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/stream/upload{uploadId}": {
+      "get": {
+        "tags": [
+          "stream"
         ],
         "parameters": [
           {
@@ -460,153 +318,239 @@
             "description": "The password for login in clear text",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "uploadId",
+            "in": "path",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "string"
-            },
-            "headers": {
-              "X-Rate-Limit": {
-                "type": "integer",
-                "format": "int32",
-                "description": "calls per hour allowed by the user"
-              },
-              "X-Expires-After": {
-                "type": "string",
-                "format": "date-time",
-                "description": "date in UTC when token expires"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid username/password supplied"
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "description": "",
-        "operationId": "logoutUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/{username}": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Get user by user name",
-        "description": "",
-        "operationId": "getUserByName",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing. ",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "name that need to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
+            "description": "Successfull"
           }
         }
       },
       "delete": {
         "tags": [
-          "user"
+          "stream"
         ],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/xml",
-          "application/json"
+        "summary": "Delete subscription",
+        "description": "Stop receiving notification",
+        "parameters": [
+          {
+            "name": "uploadId",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/stream/read": {
+      "post": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Create a new reading request",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "header",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Subscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscription accepted"
+          },
+          "400": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/stream/read/{readId}": {
+      "get": {
+        "tags": [
+          "stream"
         ],
         "parameters": [
           {
             "name": "username",
-            "in": "path",
-            "description": "The name that needs to be deleted",
+            "in": "query",
+            "description": "The user name for login",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "readId",
+            "in": "path",
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid username supplied"
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Delete subscription",
+        "description": "Stop receiving notification",
+        "parameters": [
+          {
+            "name": "readId",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/data/upload": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Upload a new entity's data",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username login",
+            "required": true,
+            "type": "string"
           },
-          "404": {
-            "description": "User not found"
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Update entity's data",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "System User",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "System User's password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
+          }
+        }
+      }
+    },
+    "/data": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Send an object specifying the data you want to receive",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Username login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/DataRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull"
           }
         }
       }
@@ -629,112 +573,203 @@
     }
   },
   "definitions": {
-    "User": {
+    "Task": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
+        "t_tile": {
+          "type": "string",
+          "description": "Task title"
         },
-        "username": {
-          "type": "string"
+        "t_until": {
+          "type": "string",
+          "format": "integer",
+          "description": "Time to Live"
         },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "userStatus": {
-          "type": "integer",
-          "format": "int32",
-          "description": "User Status"
+        "content": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "$ref": "#/definitions/QuestionAnswerTypeText"
+              },
+              "a": {
+                "$ref": "#/definitions/QuestionAnswerTypeText"
+              }
+            }
+          }
         }
-      },
-      "xml": {
-        "name": "User"
       }
     },
-    "Category": {
+    "ConditionObject": {
       "type": "object",
       "properties": {
-        "id": {
+        "a": {
           "type": "integer",
-          "format": "int64"
+          "format": "integer",
+          "description": "condition answer id"
         },
-        "name": {
-          "type": "string"
+        "q": {
+          "type": "integer",
+          "format": "integer",
+          "description": "condition question id"
         }
-      },
-      "xml": {
-        "name": "Category"
       }
     },
-    "Tag": {
+    "LanguagePointObject": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Tag"
-      }
-    },
-    "Experiment": {
-      "type": "object",
-      "required": [
-        "code"
-      ],
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "string",
-          "example": "0001"
-        },
-        "id": {
+        "l": {
           "type": "string",
           "format": "string",
-          "example": "wenetPrj1"
+          "description": "language",
+          "example": "en_US"
         },
-        "category": {
-          "$ref": "#/definitions/Category"
+        "t": {
+          "type": "string",
+          "format": "string",
+          "description": "text",
+          "example": "What are you doing?"
+        }
+      },
+      "example": {
+        "l": "en_US",
+        "t": "What are you doing?"
+      }
+    },
+    "QuestionAnswerTypeText": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "integer"
         },
-        "tags": {
+        "c": {
           "type": "array",
-          "xml": {
-            "name": "tag",
-            "wrapped": true
-          },
           "items": {
-            "$ref": "#/definitions/Tag"
+            "$ref": "#/definitions/ConditionObject"
           }
         },
-        "status": {
+        "c_id": {
+          "type": "integer",
+          "format": "integer",
+          "description": "concept id",
+          "example": -1
+        },
+        "t": {
           "type": "string",
-          "description": "pet status in the store",
-          "enum": [
-            "available",
-            "pending",
-            "sold"
-          ]
+          "format": "string",
+          "description": "type"
+        },
+        "at": {
+          "type": "string",
+          "format": "string",
+          "description": "Answer type",
+          "example": "s"
+        },
+        "p": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LanguagePointObject"
+          }
         }
       },
-      "xml": {
-        "name": "Pet"
+      "example": {
+        "id": 1,
+        "c": [],
+        "at": "s",
+        "t": "t",
+        "p": [
+          {
+            "l": "en-US",
+            "t": "What are you doing?"
+          },
+          {
+            "l": "it-IT",
+            "t": "Cosa stai facendo?"
+          }
+        ]
+      }
+    },
+    "DataRequest": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "object",
+          "properties": {
+            "experimentId": {
+              "type": "string",
+              "description": "If specified returns info about every user partecipating in the experiment"
+            },
+            "userId": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "list of user ids"
+              }
+            }
+          }
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "yyyymmdd"
+          }
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "json string",
+            "description": "list of properties"
+          }
+        }
+      }
+    },
+    "Subscription": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "description of the notification"
+        },
+        "entities": {
+          "type": "object",
+          "properties": {
+            "experimentId": {
+              "type": "string",
+              "description": "If specified returns info about every user partecipating in the experiment"
+            },
+            "userId": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "userIds you want to track"
+              }
+            }
+          }
+        },
+        "condition": {
+          "type": "object",
+          "properties": {
+            "properties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "list of properties that will trigger the notification"
+              }
+            }
+          }
+        },
+        "notification": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "ApiResponse": {
