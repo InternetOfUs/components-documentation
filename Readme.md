@@ -11,6 +11,8 @@ Here's some _quick links_ for accessing the documentation currently available:
 * [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
 * [Social Learning APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-learning-api.json)
 
+Also, you can jump start directly from this [Swagger starting point](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/start.yaml).
+
 *Note*: please, keep the above links updated with the reference to the latest stable version of each documentation file.
 
 ## How to
