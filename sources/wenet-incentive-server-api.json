@@ -2,10 +2,6 @@
   "openapi": "3.0.0",
   "servers": [
     {
-      "description": "SwaggerHub API Auto Mocking",
-      "url": "https://virtserver.swaggerhub.com/jonathan_cohen/test2/1.0.0"
-    },
-    {
       "description": "Incentive Server",
       "url": "http://lassi.ise.bgu.ac.il/"
     }
@@ -178,7 +174,7 @@
           {
             "in": "query",
             "name": "reason",
-            "description": "the user reason for disable the interventions server",
+            "description": "The user's reason for disabling the interventions server",
             "required": true,
             "schema": {
               "type": "string"
@@ -212,7 +208,7 @@
           {
             "in": "query",
             "name": "reason",
-            "description": "the user reason for disable the interventions server",
+            "description": "The user's reason for enabling the interventions server",
             "required": true,
             "schema": {
               "type": "string"
