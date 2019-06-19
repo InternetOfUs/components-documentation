@@ -17,16 +17,20 @@
   "basePath": "/pdm/api/v2",
   "tags": [
     {
-      "name": "direct message management",
-      "description": "Manage direct messages to the users"
+      "name": "direct messages",
+      "description": "Manage messages from server to the users"
     },
     {
-      "name": "data",
+      "name": "batch data",
       "description": "Request or send batch data"
     },
     {
-      "name": "stream",
-      "description": "send stream data"
+      "name": "stream data",
+      "description": "Send stream data"
+    },
+    {
+      "name": "reports",
+      "description": "Quick report generation"
     }
   ],
   "schemes": [
@@ -37,10 +41,10 @@
     "/dm": {
       "post": {
         "tags": [
-          "direct message management"
+          "direct messages"
         ],
         "summary": "Send a Direct Message (DM) to user(s)",
-        "description": "This can only be done by the logged in user.",
+        "description": "Send messages/questions/tasks/challenges from the server to the user’s phone. This can only be done by logged system administration users.",
         "operationId": "create a Direct Message object",
         "consumes": [
           "json String"
@@ -54,7 +58,7 @@
             "type": "string",
             "name": "username",
             "required": true,
-            "description": "System User"
+            "description": "System administration user with permission to send Direct Messages"
           },
           {
             "in": "header",
@@ -68,12 +72,12 @@
             "type": "string",
             "name": "usersalt",
             "required": true,
-            "description": "Can be either a single user's salt or can specify a topic to which send the task using the format/topics/<sometopic>"
+            "description": "Target user or users that will receive the message. Can be either a single user's salt or a topic (so it will be sent to all users subscribed to that topic) using the format/topics/<sometopic>"
           },
           {
             "in": "body",
             "name": "content",
-            "description": "DM object that will be sent to the user",
+            "description": "Message to be sent to the user. Four types of messages are defined. Simple messages (do not expect responses), questions (managed as a tree-like multiple choices trees), tasks and challenges (expect direct action from the user and are more customizable).",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Task"
@@ -88,16 +92,17 @@
       },
       "get": {
         "tags": [
-          "direct message management"
+          "direct messages"
         ],
-        "summary": "Get Direct Message sent to the users",
+        "summary": "Get a Direct Message already sent to the users",
+        "description": "Read the content of a previously sent Direct Message. This can only be done by logged system administration users.",
         "parameters": [
           {
             "in": "header",
             "type": "string",
             "name": "username",
             "required": true,
-            "description": "System User"
+            "description": "System administration user with permission to read Direct Messages"
           },
           {
             "in": "header",
@@ -131,16 +136,17 @@
     "/dm/answer": {
       "get": {
         "tags": [
-          "direct message management"
+          "direct messages"
         ],
-        "summary": "Get answer to the Direct Message",
+        "summary": "Get an answer to a sent Direct Message",
+        "description": "Read the answer sent by the user (if available) to a previously sent Direct Message. This can only be done by logged system administration users.",
         "parameters": [
           {
             "in": "header",
             "type": "string",
             "name": "username",
             "required": true,
-            "description": "System User"
+            "description": "System administration user with permission to read answers to Direct Messages"
           },
           {
             "in": "header",
@@ -174,9 +180,10 @@
     "/dm/receptionconfirmation": {
       "post": {
         "tags": [
-          "direct message management"
+          "direct messages"
         ],
-        "summary": "Reception confirmation",
+        "summary": "Direct Message reception confirmation",
+        "description": "Receive the confirmation on whether a sent Direct Message was received by the user.",
         "parameters": [
           {
             "in": "header",
@@ -203,7 +210,7 @@
     "/report": {
       "post": {
         "tags": [
-          "report"
+          "reports"
         ],
         "summary": "Create a new report",
         "parameters": [
@@ -263,7 +270,7 @@
     "/stream/upload": {
       "post": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "summary": "Initialize the stream to upload data",
         "parameters": [
@@ -302,7 +309,7 @@
     "/stream/upload{uploadId}": {
       "get": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "parameters": [
           {
@@ -334,7 +341,7 @@
       },
       "delete": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "summary": "Delete subscription",
         "description": "Stop receiving notification",
@@ -356,7 +363,7 @@
     "/stream/read": {
       "post": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "summary": "Create a new reading request",
         "parameters": [
@@ -395,7 +402,7 @@
     "/stream/read/{readId}": {
       "get": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "parameters": [
           {
@@ -427,7 +434,7 @@
       },
       "delete": {
         "tags": [
-          "stream"
+          "stream data"
         ],
         "summary": "Delete subscription",
         "description": "Stop receiving notification",
@@ -449,7 +456,7 @@
     "/data/upload": {
       "post": {
         "tags": [
-          "data"
+          "batch data"
         ],
         "summary": "Upload a new entity's data",
         "parameters": [
@@ -484,7 +491,7 @@
       },
       "patch": {
         "tags": [
-          "data"
+          "batch data"
         ],
         "summary": "Update entity's data",
         "parameters": [
@@ -521,7 +528,7 @@
     "/data": {
       "post": {
         "tags": [
-          "data"
+          "batch data"
         ],
         "summary": "Send an object specifying the data you want to receive",
         "parameters": [
