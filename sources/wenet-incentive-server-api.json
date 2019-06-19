@@ -1,273 +1,323 @@
 {
-	"openapi": "3.0.0",
-	"servers": [
-		{
-			"description": "SwaggerHub API Auto Mocking",
-			"url": "https://virtserver.swaggerhub.com/jonathan_cohen/test2/1.0.0"
-		},
-		{
-			"description": "Incentive Server",
-			"url": "http://lassi.ise.bgu.ac.il/"
-		}
-	],
-	"info": {
-		"description": "Incentive Server APIs",
-		"version": "1.0.0",
-		"title": "Incentive Server APIs",
-		"contact": {
-			"name": "Jonathan Cohen",
-			"email": "yonayonatan@gmail.com"
-		}
-	},
-	"tags": [
-		{
-			"name": "classification_update",
-			"description": "update a classification"
-		},
-		{
-			"name": "queries",
-			"description": "get information regardind incentives"
-		},
-		{
-			"name": "operations",
-			"description": "make online changes"
-		}
-	],
-	"paths": {
-		"/new_classification": {
-			"post": {
-				"tags": [
-					"classification_update"
-				],
-				"summary": "adds a classification event",
-				"operationId": "classification_update",
-				"description": "adds a classification event",
-				"responses": {
-					"200": {
-						"description": "classifiaction saved"
-					},
-					"400": {
-						"description": "classification object invalid"
-					}
-				},
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/classification"
-							}
-						}
-					},
-					"description": "classifiaction event to add"
-				}
-			}
-		},
-		"/group_incentive": {
-			"get": {
-				"tags": [
-					"queries"
-				],
-				"summary": "searches for all incentive infos of a group of users",
-				"operationId": "group_incentive",
-				"description": "searches for a group of users of a specific application and returns incentive information of the users.\n",
-				"parameters": [
-					{
-						"in": "query",
-						"name": "gruop_id",
-						"description": "the group id to search",
-						"required": true,
-						"schema": {
-							"type": "integer"
-						}
-					},
-					{
-						"in": "query",
-						"name": "app_id",
-						"description": "the app that the user pagination",
-						"required": true,
-						"schema": {
-							"type": "integer"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "successful search",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/incentive_info"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "bad app_id parameter"
-					}
-				}
-			}
-		},
-		"/user_incentive": {
-			"get": {
-				"tags": [
-					"queries"
-				],
-				"summary": "searches for user incentive info",
-				"operationId": "user_incentive",
-				"description": "searches for a user of a specific application and returns incentive information of that user.\n",
-				"parameters": [
-					{
-						"in": "query",
-						"name": "user_id",
-						"description": "the user id to search",
-						"required": true,
-						"schema": {
-							"type": "integer"
-						}
-					},
-					{
-						"in": "query",
-						"name": "app_id",
-						"description": "the app that the user pagination",
-						"required": true,
-						"schema": {
-							"type": "integer"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "successful search",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/incentive_info"
-									}
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "bad app_id parameter"
-					}
-				}
-			}
-		},
-		"/disable_interventions": {
-			"get": {
-				"tags": [
-					"operations"
-				],
-				"summary": "disable the interventions server",
-				"operationId": "disable_interventions",
-				"description": "disable the interventions server\n",
-				"responses": {
-					"200": {
-						"description": "successfuly disabled",
-						"content": {
-							"text/plain": {
-								"schema": {
-									"type": "string",
-									"example": "ok"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/enable_interventions": {
-			"get": {
-				"tags": [
-					"operations"
-				],
-				"summary": "enable the interventions server",
-				"operationId": "enable_interventions",
-				"description": "enable the interventions server\n",
-				"responses": {
-					"200": {
-						"description": "successfuly enabled",
-						"content": {
-							"text/plain": {
-								"schema": {
-									"type": "string",
-									"example": "ok"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"schemas": {
-			"classification": {
-				"type": "object",
-				"required": [
-					"project_id",
-					"user_id",
-					"country_name",
-					"city_name",
-					"subject_ids"
-				],
-				"properties": {
-					"project_id": {
-						"type": "integer",
-						"example": 12345
-					},
-					"user_id": {
-						"type": "integer",
-						"example": 12345
-					},
-					"country_name": {
-						"type": "string",
-						"example": "Isreal"
-					},
-					"city_name": {
-						"type": "string",
-						"example": "Tel-Aviv"
-					},
-					"subject_ids": {
-						"type": "array",
-						"items": {
-							"type": "integer"
-						},
-						"example": [
-							203,
-							865
-						]
-					}
-				}
-			},
-			"incentive_info": {
-				"type": "object",
-				"required": [
-					"user_id",
-					"incentive_type",
-					"incentive_quantity"
-				],
-				"properties": {
-					"user_id": {
-						"type": "integer",
-						"example": 12345
-					},
-					"incentive_type": {
-						"type": "integer",
-						"example": 2
-					},
-					"incentive_quantity": {
-						"type": "number",
-						"format": "float",
-						"example": 0.89
-					}
-				}
-			}
-		}
-	}
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Incentive Server",
+      "url": "http://lassi.ise.bgu.ac.il/"
+    }
+  ],
+  "info": {
+    "description": "Incentive Server APIs",
+    "version": "1.0.0",
+    "title": "Incentive Server APIs",
+    "contact": {
+      "name": "Daniel Benzaken",
+      "email": "Benzaked@post.bgu.il"
+    }
+  },
+  "tags": [
+    {
+      "name": "event_update",
+      "description": "update event"
+    },
+    {
+      "name": "queries",
+      "description": "get information regardind incentives"
+    },
+    {
+      "name": "operations",
+      "description": "make online changes"
+    }
+  ],
+  "paths": {
+    "/new_event": {
+      "post": {
+        "tags": [
+          "event_update"
+        ],
+        "summary": "adds an event",
+        "operationId": "event_update",
+        "description": "adds an event",
+        "responses": {
+          "200": {
+            "description": "event saved"
+          },
+          "400": {
+            "description": "event object invalid"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/event"
+              }
+            }
+          },
+          "description": "event to add"
+        }
+      }
+    },
+    "/group_incentive": {
+      "get": {
+        "tags": [
+          "queries"
+        ],
+        "summary": "searches for all incentive infos of a group of users",
+        "operationId": "group_incentive",
+        "description": "searches for a group of users of a specific application and returns incentive information of the users.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "gruop_id",
+            "description": "the group id to search",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "app_id",
+            "description": "the app that the user pagination",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/incentive_info_group"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad app_id parameter"
+          }
+        }
+      }
+    },
+    "/user_incentive": {
+      "get": {
+        "tags": [
+          "queries"
+        ],
+        "summary": "searches for user incentive info",
+        "operationId": "user_incentive",
+        "description": "searches for a user of a specific application and returns incentive information of that user.\n",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user_id",
+            "description": "the user id to search",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "app_id",
+            "description": "the app that the user pagination",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "goup_id",
+            "description": "the group id  which the incentive relates",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/incentive_info_user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad app_id parameter"
+          }
+        }
+      }
+    },
+    "/disable_interventions": {
+      "get": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "disable the interventions server",
+        "operationId": "disable_interventions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "reason",
+            "description": "The user's reason for disabling the interventions server",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "disable the interventions server\n",
+        "responses": {
+          "200": {
+            "description": "successfuly disabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/enable_interventions": {
+      "get": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "enable the interventions server",
+        "operationId": "enable_interventions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "reason",
+            "description": "The user's reason for enabling the interventions server",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "enable the interventions server\n",
+        "responses": {
+          "200": {
+            "description": "successfuly enabled",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "event": {
+        "type": "object",
+        "required": [
+          "project_id",
+          "user_id",
+          "country_name",
+          "city_name",
+          "subject_ids"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "country_name": {
+            "type": "string",
+            "example": "Isreal"
+          },
+          "city_name": {
+            "type": "string",
+            "example": "Tel-Aviv"
+          },
+          "subject_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "example": [
+              203,
+              865
+            ]
+          }
+        }
+      },
+      "incentive_info_user": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "incentive_type",
+          "incentive_quantity"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "incentive_type": {
+            "type": "integer",
+            "example": 2
+          },
+          "incentive_quantity": {
+            "type": "number",
+            "format": "float",
+            "example": 0.89
+          }
+        }
+      },
+      "incentive_info_group": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "incentive_type",
+          "incentive_quantity"
+        ],
+        "properties": {
+          "Group_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "incentive_type": {
+            "type": "integer",
+            "example": 2
+          },
+          "incentive_quantity": {
+            "type": "number",
+            "format": "float",
+            "example": 0.89
+          }
+        }
+      }
+    }
+  }
 }
