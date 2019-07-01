@@ -7,9 +7,3980 @@
       "name" : "UDT-IA, IIIA-CSIC",
       "url" : "http://www.iiia.csic.es/"
     },
-    "version" : "0.1.0"
+    "version" : "0.2.0"
   },
   "paths" : {
+    "/communities" : {
+      "get" : {
+        "summary" : "Return the communities that an used can join",
+        "description" : "Allow to search for communities that an user can join",
+        "operationId" : "getCommunities",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The pattern to match the name of communities to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "description" : "The pattern to match the description of communities to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "keywords",
+          "in" : "query",
+          "description" : "The pattern to match the keywords of communities to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "description" : "The identifier of the user to get the communities",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "The index of the first community to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number maximum of communities to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The communities that match the patterns",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/communities_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/communities_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the communities",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the communities"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the communities"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the communities of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the communities",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_forbidden",
+                      "message" : "You can not get the communities of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the communities",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_forbidden",
+                      "message" : "You can not get the communities of another user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Register a community",
+        "description" : "Add a community to the possible communities that the user can play",
+        "operationId" : "registerCommunity",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/community"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The registered community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to register the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to register a community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to register a community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The community to register is wrong",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad community values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_community",
+                      "message" : "A community needs a name"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad community values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_community",
+                      "message" : "A community needs a name"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communities/{community_id}" : {
+      "get" : {
+        "summary" : "Return a community associated to the identifier",
+        "description" : "Allow to get a community associated to an identifier",
+        "operationId" : "getCommunity",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to get",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The community associated to the identifier",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the community that you do not play",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community information if you are not playing on it"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community information if you are not playing on it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update the values of a community",
+        "description" : "Allow to update a community associated",
+        "operationId" : "updateCommunity",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to update",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/community"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The updated community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to update the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to update the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to update the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to update the community that you do not play",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to update the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not update the community information if you are not playing on it"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to update the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not update the community information if you are not playing on it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The community to register is wrong",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad community values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_community",
+                      "message" : "A community needs a name"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad community values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_community",
+                      "message" : "A community needs a name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a community",
+        "description" : "Allow to delete a community",
+        "operationId" : "deleteCommunity",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The deleted community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to delete the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to delete the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to delete the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to delete the community that you do not are the owner",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to delete the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not delete the community if you are not the owner"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to delete the community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not delete the community if you are not the owner"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communities/{community_id}/norms" : {
+      "get" : {
+        "summary" : "Get some community norms",
+        "description" : "Allow to obtain the norms associated to a community",
+        "operationId" : "getCommunityNorms",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to get the norms",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first community norm to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of community norm  to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The found norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norms_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norms_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to the community norms"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to the community norms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the community norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the community norms if you no play on it",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community norms if you not play on it"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the community norms if you no play on it",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community norms if you not play on it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add a norm into a community",
+        "description" : "Add a norm to be applied in a community",
+        "operationId" : "addCommunityNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to add the norm",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The norm to add",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The added norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to add a norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the community norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a community of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a community of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communities/{community_id}/norms/{norm_id}" : {
+      "delete" : {
+        "summary" : "Remove a community norm",
+        "description" : "Remove a norm from a community",
+        "operationId" : "removeCommunityNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to remove the norm",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "norm_id",
+          "in" : "path",
+          "description" : "The identifier of the norm to remove",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The removed norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to remove a norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the community norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not remove a norm if you are not the manager"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not remove a norm if you are not the manager"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community or norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communities/{community_id}/users" : {
+      "get" : {
+        "summary" : "Get the users in a community",
+        "description" : "Allow to get the users that plays in a community",
+        "operationId" : "getCommunityUsers",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to get the users",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first community user to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of community user to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The community users",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_users_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_users_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the community users",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to get the community users"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to get the community users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the community users if you not play on it",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community  users if you no play on it"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a community",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You can not get the community  users if you no play on it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add an user into a community ",
+        "description" : "Join or add an user into a community.",
+        "operationId" : "addCommunityUser",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to add the user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "User to add into the community",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/community_user"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The added community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the community users",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to add the community users"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to add the community users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You does not have the privileges to add the user in the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to add an user into the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to add an user into the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communities/{community_id}/users/{user_id}" : {
+      "put" : {
+        "summary" : "Modify an user from a community ",
+        "description" : "Modify the attributes of a community user.",
+        "operationId" : "modifyCommunityUser",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to modify the user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "The identifier of the user to modify",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "New values for the community user",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/community_user"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The modified community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the community users",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community users"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You does not have the privileges to modify the user in the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to modify community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to modify an user into the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to modify community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to modify an user into the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Remove an user from a community ",
+        "description" : "You can use this method to leave or remove an user from a community.",
+        "operationId" : "removeCommunityUser",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "community_id",
+          "in" : "path",
+          "description" : "The identifier of the community to remove an user",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "path",
+          "description" : "The identifier of the user to remove",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The modified community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/community_user"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad community user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The community user is bad",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_bad_user",
+                      "message" : "You must to specify the user identifier"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the community users",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community users"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the community users",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "communities_unauthorized",
+                      "message" : "You have to log in to access to modify the community users"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You does not have the privileges to modify the user in the community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to modify community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to modify an user into the community"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to modify community user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_forbidden",
+                      "message" : "You does not have the necessary privilege to modify an user into the community"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found community",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "community_not_found",
+                      "message" : "Not found a community associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages" : {
+      "post" : {
+        "summary" : "Send a message",
+        "description" : "Allow to send a message",
+        "operationId" : "sendMessage",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/message"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The sent message",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/message"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/message"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to send a message",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to send a message"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to send a message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The message to send is wrong",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad message values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_message",
+                      "message" : "A message needs a content"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad message values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_message",
+                      "message" : "A message needs a content"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norms/{norm_id}" : {
+      "delete" : {
+        "summary" : "Delete a published norm",
+        "description" : "Allow to delete a published norm",
+        "operationId" : "deleteNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "norm_id",
+          "in" : "path",
+          "description" : "The identifier of the norm to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The deleted published norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to delete the published norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to delete the norm"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to delete the norm"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to delete the norm that you do not are the owner",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to delete the norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norm_forbidden",
+                      "message" : "You can not delete the norm if you are not the owner"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to delete the norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norm_forbidden",
+                      "message" : "You can not delete the norm if you are not the owner"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norm_not_found",
+                      "message" : "Not found a norm associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norm_not_found",
+                      "message" : "Not found a norm associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norms" : {
+      "get" : {
+        "summary" : "Search for a published norms",
+        "description" : "Get some published norms that satisfy some field attributes",
+        "operationId" : "searchPublishedNorms",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The pattern to match the name of norms to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "description" : "The pattern to match the description of norms to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "keywords",
+          "in" : "query",
+          "description" : "The pattern to match the keywords of norms to return",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "The index of the first norm to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number maximum of norms to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The norms that match the patterns",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norms_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norms_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the norms"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the norms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_forbidden",
+                      "message" : "You can not get the norms of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_forbidden",
+                      "message" : "You can not get the norms of another user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Publish a norm",
+        "description" : "Publish a norm to be accessible by the other users on WeNet",
+        "operationId" : "publishNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "description" : "The norm to publish",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/published_norm"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The published norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The norm to publish is wrong",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad norm values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_norm",
+                      "message" : "A norm needs a name"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad norm values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_norm",
+                      "message" : "A norm needs a name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to publish the norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to publish a norm"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to publish a norm"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}/attributes" : {
+      "get" : {
+        "summary" : "Get some profile attributes ",
+        "description" : "Allow to obtain the profile attribute values in a period of time",
+        "operationId" : "getAttributes",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to get",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "attribute_name",
+          "in" : "query",
+          "description" : "Pattern that has to match the attributes to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "the date inclusive that mark the older limit in witch the attribute has to be active. It is formatter in ISO 8601.",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "to",
+          "in" : "query",
+          "description" : "the date inclusive that mark the newest limit in witch the attribute has to be active. It is formatter in ISO 8601.",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first profile attribute to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of profile attributes to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The found attributes",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_attributes_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_attributes_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the profile attributes",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the profile attributes",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to profile attributes"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the profile attributes",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to profile attributes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile attributes of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile attributes of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile attributes of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile attributes of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile attributes of another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}/norms" : {
+      "get" : {
+        "summary" : "Get some norms",
+        "description" : "Allow to obtain the norms associated to a profile",
+        "operationId" : "getNorms",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to get the norms",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first profile norm to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of profile norms to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The found norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norms_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norms_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile norms"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile norms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile norms of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile norms of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile norms of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile norms of another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add a norm",
+        "description" : "Add a norm to an user profile",
+        "operationId" : "addNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to add the norm",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The norm to add",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The added norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to add a norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}" : {
+      "get" : {
+        "summary" : "Return a profile associated to the identifier",
+        "description" : "Allow to get a profile associated to an identifier",
+        "operationId" : "getProfile",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to get",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The profile associated to the identifier",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You are not authorized to get the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You are not authorized to get the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the profile that you do not play",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the profile",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile information if you are not playing on it"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the profile",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile information if you are not playing on it"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Modify a profile",
+        "description" : "Change the attributes of a profile",
+        "operationId" : "updateProfile",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to update",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The new values for the profile",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/profile"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The profile associated to the identifier",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The profile is not right",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "The phone is not in E.164 format"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "The profile is not right",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "The phone is not in E.164 format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to modify the profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You are not authorized to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You are not authorized to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the profile that you do not play",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to modify the profile",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not modify the profile of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to modify the profile",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not modify the profile of another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}/friends" : {
+      "get" : {
+        "summary" : "Get some friends",
+        "description" : "Allow to obtain the friends associated to a profile",
+        "operationId" : "getFriends",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to get",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "attribute_name",
+          "in" : "query",
+          "description" : "Pattern that has to match the name of the friend to return",
+          "schema" : {
+            "type" : "string",
+            "default" : "*"
+          }
+        }, {
+          "name" : "min_trust",
+          "in" : "query",
+          "description" : "The least trust, inclusive, that friends must have to return",
+          "schema" : {
+            "type" : "string",
+            "default" : "0"
+          }
+        }, {
+          "name" : "max_trust",
+          "in" : "query",
+          "description" : "The maximum trust, inclusive, that must have friends to return",
+          "schema" : {
+            "type" : "string",
+            "default" : "1"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first profile attribute to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of profile attributes to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The found friends",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friends_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friends_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the friends",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the friends",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile friends"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the friends",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile friends"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile friends of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile friends of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile friends of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile friends of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile friends of another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add a friend",
+        "description" : "Add a friend to an user profile",
+        "operationId" : "addFriend",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to add the friend",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The friend to add",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/friend"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The added friend",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friend"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friend"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to add a friend",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a friend",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a friend",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile friends of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a friend into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a friend to another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a friend into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a friend to another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}/friends/{friend_id}" : {
+      "delete" : {
+        "summary" : "Remove a friend",
+        "description" : "Remove a friend from an user profile",
+        "operationId" : "removeFriend",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to remove the friend",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "friend_id",
+          "in" : "path",
+          "description" : "The identifier of the friend to remove",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The removed friend",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friend"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/friend"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to remove a friend",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a friend",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a friend",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile friends of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a friend from a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not remove a friend from another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a friend from a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not remove a friend from another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile or friend",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profiles/{profile_id}/norms/{norm_id}" : {
+      "delete" : {
+        "summary" : "Remove a norm",
+        "description" : "Remove a norm from an user profile",
+        "operationId" : "removeNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to remove the norm",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "norm_id",
+          "in" : "path",
+          "description" : "The identifier of the norm to remove",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The removed norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to remove a norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to remove a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not remove a norm from another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to remove a norm from a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not remove a norm from another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile or norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/status" : {
       "get" : {
         "summary" : "Get the status of the API",
@@ -527,23 +4498,64 @@
   },
   "components" : {
     "schemas" : {
-      "status" : {
+      "communities_page" : {
         "type" : "object",
         "properties" : {
-          "version" : {
-            "type" : "string",
-            "description" : "Contain the version of the API",
-            "example" : "1.0.0"
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first community returned.",
+            "format" : "int32",
+            "example" : 0
           },
-          "vendor" : {
-            "type" : "string",
-            "description" : "Contain information of the organization that has implemented the API",
-            "example" : "UDT-IA, IIIA-CSIC"
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of communities that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "communities" : {
+            "type" : "array",
+            "description" : "The set of communities found",
+            "items" : {
+              "$ref" : "#/components/schemas/community"
+            }
           }
         },
-        "description" : "Provide information about the current status of the API",
+        "description" : "Contains a set of communities found",
         "xml" : {
-          "name" : "status"
+          "name" : "communities_page"
+        }
+      },
+      "community" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the community.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the community.",
+            "example" : "WeNet"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The description of the community.",
+            "example" : "A community of users that provide or require help"
+          },
+          "keywords" : {
+            "type" : "array",
+            "description" : "The keywords of the community",
+            "example" : [ "social interaction", "ethics", "diversity" ],
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "description" : "This component describes a community of users.",
+        "xml" : {
+          "name" : "community"
         }
       },
       "error_message" : {
@@ -563,6 +4575,678 @@
         "description" : "Inform of an error that happens when interacts with the API",
         "xml" : {
           "name" : "error_message"
+        }
+      },
+      "community_norm" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the community norm.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "since_time" : {
+            "type" : "string",
+            "description" : "The time in ISO 8601 format since the norm is applied in the community.",
+            "example" : "2019-06-21T07:32:22Z"
+          },
+          "norm" : {
+            "$ref" : "#/components/schemas/norm"
+          }
+        },
+        "description" : "A norm that is applied in a community",
+        "xml" : {
+          "name" : "community_norm"
+        }
+      },
+      "community_norms_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first community norm returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of community norms that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "norms" : {
+            "type" : "array",
+            "description" : "The set of community norms found",
+            "items" : {
+              "$ref" : "#/components/schemas/community_norm"
+            }
+          }
+        },
+        "description" : "Contains a set of community norms found",
+        "xml" : {
+          "name" : "community_norms_page"
+        }
+      },
+      "norm" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "The code of the norm."
+          }
+        },
+        "description" : "This component describes an acceptable way of behaving by any user.",
+        "xml" : {
+          "name" : "norm"
+        }
+      },
+      "community_user" : {
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "string",
+            "description" : "The identifier of the user.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "join_time" : {
+            "type" : "string",
+            "description" : "The time in ISO 8601 format when the user has joined in the community.",
+            "example" : "2019-06-21T07:32:22Z"
+          },
+          "privileges" : {
+            "type" : "array",
+            "description" : "The privileges of the user on the community",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "MODIFY_NAME", "MODIFY_DESCRIPTION", "MODIFY_KEYWORDS", "ADD_NORM", "REMOVE_NORM", "ADD_USER", "REMOVE_USER" ]
+            }
+          }
+        },
+        "description" : "The information of an user that plays in a community.",
+        "xml" : {
+          "name" : "community_user"
+        }
+      },
+      "community_users_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first community user returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of community users that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "users" : {
+            "type" : "array",
+            "description" : "The set of community users found",
+            "items" : {
+              "$ref" : "#/components/schemas/community_user"
+            }
+          }
+        },
+        "description" : "Contains a set of community users found",
+        "xml" : {
+          "name" : "community_users_page"
+        }
+      },
+      "message" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "description" : "The content of the message.",
+            "items" : {
+              "$ref" : "#/components/schemas/message_attribute"
+            }
+          },
+          "norms" : {
+            "type" : "array",
+            "description" : "The norms associated to the message.",
+            "items" : {
+              "$ref" : "#/components/schemas/norm"
+            }
+          }
+        },
+        "description" : "This component describes an action that an user wants to do.",
+        "xml" : {
+          "name" : "message"
+        }
+      },
+      "message_attribute" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the attribute.",
+            "example" : "community_id"
+          },
+          "value" : {
+            "type" : "object",
+            "description" : "The value of the attribute.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          }
+        },
+        "description" : "This component describes an attribute on the message content.",
+        "xml" : {
+          "name" : "message_attribute"
+        }
+      },
+      "published_norm" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the norm.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the norm.",
+            "example" : "WeNet"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The description of the norm.",
+            "example" : "A norm of users that provide or require help"
+          },
+          "keywords" : {
+            "type" : "array",
+            "description" : "The keywords of the norm",
+            "example" : [ "social interaction", "ethics", "diversity" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "norm" : {
+            "$ref" : "#/components/schemas/norm"
+          }
+        },
+        "description" : "A norm that is published to share with all the WeNet users.",
+        "xml" : {
+          "name" : "published_norm"
+        }
+      },
+      "published_norms_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first published norm returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of published norms that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "norms" : {
+            "type" : "array",
+            "description" : "The set of published norms found",
+            "items" : {
+              "$ref" : "#/components/schemas/published_norm"
+            }
+          }
+        },
+        "description" : "Contains a set of published norms found",
+        "xml" : {
+          "name" : "published_norms_page"
+        }
+      },
+      "profile_attribute" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the attribute",
+            "example" : "name",
+            "enum" : [ "name", "public_name", "email", "phone", "languages", "gender", "geolocation", "personality", "intelligences", "birth_date", "ethnic_group", "addresses", "friends", "norms" ]
+          },
+          "from" : {
+            "type" : "string",
+            "description" : "The time when the variable is set in ISO 8601 format.",
+            "example" : "2018-06-21T07:32:22Z"
+          },
+          "to" : {
+            "type" : "string",
+            "description" : "The time when the variable is modified to a new value in ISO 8601 format.",
+            "example" : "2018-07-21T07:32:22Z"
+          },
+          "value" : {
+            "type" : "object",
+            "description" : "The value of the attribute",
+            "example" : "Dr. John Smith Jr."
+          }
+        },
+        "description" : "Contains the value of a profile attribute.",
+        "xml" : {
+          "name" : "profile_attribute"
+        }
+      },
+      "profile_attributes_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first profile attribute returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of profile attributes that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "attributes" : {
+            "type" : "array",
+            "description" : "The set of profile attributes found",
+            "items" : {
+              "$ref" : "#/components/schemas/profile_attribute"
+            }
+          }
+        },
+        "description" : "Contains a set of profile attributes found",
+        "xml" : {
+          "name" : "profile_attributes_page"
+        }
+      },
+      "profile_norm" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the profile norm.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "since_time" : {
+            "type" : "string",
+            "description" : "The time in ISO 8601 format since the norm is applied in the profile.",
+            "example" : "2019-06-21T07:32:22Z"
+          },
+          "norm" : {
+            "$ref" : "#/components/schemas/norm"
+          }
+        },
+        "description" : "A norm that is applied in a profile",
+        "xml" : {
+          "name" : "profile_norm"
+        }
+      },
+      "profile_norms_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first profile norm returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of profile norms that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "norms" : {
+            "type" : "array",
+            "description" : "The set of profile norms found",
+            "items" : {
+              "$ref" : "#/components/schemas/profile_norm"
+            }
+          }
+        },
+        "description" : "Contains a set of profile norms found",
+        "xml" : {
+          "name" : "profile_norms_page"
+        }
+      },
+      "address" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "The index of the first profile attribute returned.",
+            "example" : "home"
+          },
+          "street" : {
+            "type" : "string",
+            "description" : "The street name.",
+            "example" : "Ueberlandstrasse"
+          },
+          "number" : {
+            "type" : "integer",
+            "description" : "The number on the street",
+            "format" : "int32",
+            "example" : 111
+          },
+          "extra" : {
+            "type" : "string",
+            "description" : "Extra information to define the postal address as house, floor or door",
+            "example" : "2nd Floor"
+          },
+          "city" : {
+            "type" : "string",
+            "description" : "The name of the primary locality of the place.",
+            "example" : "Duebendorf"
+          },
+          "postal_code" : {
+            "type" : "string",
+            "description" : "An alphanumeric string included in a postal address to facilitate mail sorting (a.k.a. post code, postcode, or ZIP code)",
+            "example" : "08080"
+          },
+          "state" : {
+            "type" : "string",
+            "description" : "A division of a country; typically a first-level administrative division of a country and/or a geographical region.",
+            "example" : "Zurich"
+          },
+          "country_code" : {
+            "type" : "string",
+            "description" : "The ISO 3166-1 alpha-3 code of the country",
+            "example" : "CHE"
+          }
+        },
+        "description" : "Contains an address of the user",
+        "xml" : {
+          "name" : "address"
+        }
+      },
+      "geolocation" : {
+        "type" : "object",
+        "description" : "The geographic coordinates of a location.",
+        "xml" : {
+          "name" : "geolocation"
+        }
+      },
+      "intelligences" : {
+        "type" : "object",
+        "properties" : {
+          "verbal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The verbal intelligence",
+            "format" : "double",
+            "example" : 0.1
+          },
+          "logic_mathematics" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The logic-mathematics intelligence",
+            "format" : "double",
+            "example" : 0.2
+          },
+          "visual_spatial" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The visual-spatial intelligence",
+            "format" : "double",
+            "example" : 0.3
+          },
+          "kinestesica_corporal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The kinestesica-corporal intelligence",
+            "format" : "double",
+            "example" : 0.4
+          },
+          "musical_rhythmic" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The musical-rhythmic intelligence",
+            "format" : "double",
+            "example" : 0.5
+          },
+          "intrapersonal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The intrapersonal intelligence",
+            "format" : "double",
+            "example" : 0.6
+          },
+          "interpersonal" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The interpersonal intelligence",
+            "format" : "double",
+            "example" : 0.7
+          },
+          "naturalist_environmental" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The naturalist-environmental intelligence",
+            "format" : "double",
+            "example" : 0.8
+          }
+        },
+        "description" : "Provide information about the intelligences of a person",
+        "xml" : {
+          "name" : "intelligences"
+        }
+      },
+      "language" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "The ISO 639-1 code that identify the language",
+            "example" : "en"
+          },
+          "level" : {
+            "type" : "string",
+            "description" : "The linguistic ability level of the person.",
+            "example" : "B2",
+            "enum" : [ "C2", "C1", "B2", "B1", "A2", "A1", "A0" ]
+          }
+        },
+        "description" : "The language that an user can understand.",
+        "xml" : {
+          "name" : "language"
+        }
+      },
+      "personality" : {
+        "type" : "object",
+        "properties" : {
+          "perception" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The perception grade of a person",
+            "format" : "double",
+            "example" : 0.1
+          },
+          "judgment" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The judgment grade of a person",
+            "format" : "double",
+            "example" : 0.2
+          },
+          "extrovert" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The extrovert grade of a person",
+            "format" : "double",
+            "example" : 0.3
+          },
+          "attitude" : {
+            "maximum" : 1.0,
+            "minimum" : 0.0,
+            "type" : "number",
+            "description" : "The attitude grade of a person",
+            "format" : "double",
+            "example" : 0.4
+          }
+        },
+        "description" : "Provide information about the personality of a person",
+        "xml" : {
+          "name" : "personality"
+        }
+      },
+      "profile" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the profile.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The real name of the user",
+            "example" : "Dr. John Doe Jr."
+          },
+          "public_name" : {
+            "type" : "string",
+            "description" : "The email of the user",
+            "example" : "Jonny D."
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "The email of the user",
+            "example" : "jonnyd@internetofus.eu"
+          },
+          "phone" : {
+            "type" : "string",
+            "description" : "The phone number of the user, on the E.164 format (^\\+?[1-9]\\d{1,14}$)",
+            "example" : "+34987654321"
+          },
+          "languages" : {
+            "type" : "array",
+            "description" : "The languages that the user can understand",
+            "items" : {
+              "$ref" : "#/components/schemas/language"
+            }
+          },
+          "gender" : {
+            "type" : "string",
+            "description" : "The possible gender of a person.",
+            "enum" : [ "FEMALE_CIS", "MALE_CIS", "FEMALE_TRANS", "MALE_TRANS", "NO_BINARY" ]
+          },
+          "geolocation" : {
+            "$ref" : "#/components/schemas/geolocation"
+          },
+          "personality" : {
+            "$ref" : "#/components/schemas/personality"
+          },
+          "intelligences" : {
+            "$ref" : "#/components/schemas/intelligences"
+          },
+          "birth_date" : {
+            "type" : "string",
+            "description" : "The ISO 8601 date of birth of the user",
+            "example" : "2019-06-28"
+          },
+          "ethnic_group" : {
+            "type" : "string",
+            "description" : "The ethnic group of the user in English",
+            "example" : "Eskimo"
+          },
+          "addresses" : {
+            "type" : "array",
+            "description" : "The different address of the user",
+            "items" : {
+              "$ref" : "#/components/schemas/address"
+            }
+          },
+          "total_friends" : {
+            "type" : "integer",
+            "description" : "The number total of friends of the user",
+            "format" : "int32",
+            "example" : 123
+          }
+        },
+        "description" : "This component describes a profile of users.",
+        "xml" : {
+          "name" : "profile"
+        }
+      },
+      "friend" : {
+        "type" : "object",
+        "properties" : {
+          "friend_id" : {
+            "type" : "string",
+            "description" : "The identifier of the friend.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The friend name.",
+            "example" : "Johnydo"
+          },
+          "trust" : {
+            "type" : "number",
+            "description" : "The trust on the friend. A value on the range [0,1].",
+            "format" : "double",
+            "example" : 0.5
+          }
+        },
+        "description" : "The information of a friend.",
+        "xml" : {
+          "name" : "friend"
+        }
+      },
+      "friends_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first friend returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of friends that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "friends" : {
+            "type" : "array",
+            "description" : "The set of friends found",
+            "items" : {
+              "$ref" : "#/components/schemas/friend"
+            }
+          }
+        },
+        "description" : "Contains a set of friends found",
+        "xml" : {
+          "name" : "friends_page"
+        }
+      },
+      "status" : {
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "type" : "string",
+            "description" : "Contain the version of the API",
+            "example" : "1.0.0"
+          },
+          "vendor" : {
+            "type" : "string",
+            "description" : "Contain information of the organization that has implemented the API",
+            "example" : "UDT-IA, IIIA-CSIC"
+          }
+        },
+        "description" : "Provide information about the current status of the API",
+        "xml" : {
+          "name" : "status"
         }
       },
       "composed_teams" : {
@@ -693,79 +5377,6 @@
           "name" : "composite"
         }
       },
-      "intelligences" : {
-        "type" : "object",
-        "properties" : {
-          "verbal" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The verbal intelligence",
-            "format" : "double",
-            "example" : 0.1
-          },
-          "logic_mathematics" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The logic-mathematics intelligence",
-            "format" : "double",
-            "example" : 0.2
-          },
-          "visual_spatial" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The visual-spatial intelligence",
-            "format" : "double",
-            "example" : 0.3
-          },
-          "kinestesica_corporal" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The kinestesica-corporal intelligence",
-            "format" : "double",
-            "example" : 0.4
-          },
-          "musical_rhythmic" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The musical-rhythmic intelligence",
-            "format" : "double",
-            "example" : 0.5
-          },
-          "intrapersonal" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The intrapersonal intelligence",
-            "format" : "double",
-            "example" : 0.6
-          },
-          "interpersonal" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The interpersonal intelligence",
-            "format" : "double",
-            "example" : 0.7
-          },
-          "naturalist_environmental" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The naturalist-environmental intelligence",
-            "format" : "double",
-            "example" : 0.8
-          }
-        },
-        "description" : "Provide information about the intelligences of a person",
-        "xml" : {
-          "name" : "intelligences"
-        }
-      },
       "person" : {
         "type" : "object",
         "properties" : {
@@ -784,47 +5395,6 @@
         "description" : "Provide information about a person",
         "xml" : {
           "name" : "person"
-        }
-      },
-      "personality" : {
-        "type" : "object",
-        "properties" : {
-          "perception" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The perception grade of a person",
-            "format" : "double",
-            "example" : 0.1
-          },
-          "judgment" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The judgment grade of a person",
-            "format" : "double",
-            "example" : 0.2
-          },
-          "extrovert" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The extrovert grade of a person",
-            "format" : "double",
-            "example" : 0.3
-          },
-          "attitude" : {
-            "maximum" : 1.0,
-            "minimum" : 0.0,
-            "type" : "number",
-            "description" : "The attitude grade of a person",
-            "format" : "double",
-            "example" : 0.4
-          }
-        },
-        "description" : "Provide information about the personality of a person",
-        "xml" : {
-          "name" : "personality"
         }
       },
       "requirement" : {
