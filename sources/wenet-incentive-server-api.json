@@ -1,11 +1,5 @@
 {
   "openapi": "3.0.0",
-  "servers": [
-    {
-      "description": "Incentive Server",
-      "url": "http://lassi.ise.bgu.ac.il/"
-    }
-  ],
   "info": {
     "description": "Incentive Server APIs",
     "version": "1.0.0",
@@ -23,6 +17,10 @@
     {
       "name": "queries",
       "description": "get information regardind incentives"
+    },
+    {
+      "name": "norms",
+      "description": "post and get norms."
     },
     {
       "name": "operations",
@@ -58,19 +56,200 @@
         }
       }
     },
-    "/group_incentive": {
+    "/new_community_norm": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a community norm",
+        "operationId": "community_norm_update",
+        "description": "adds a community norm",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "community_id",
+            "description": "The identifier of the community.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "norm saved"
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 12345,
+                      "message": "wrong community id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "norm to add"
+        }
+      }
+    },
+    "/new_general_norm": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a general norm",
+        "operationId": "general_norm_update",
+        "description": "adds an general norm",
+        "responses": {
+          "200": {
+            "description": "norm saved"
+          },
+          "400": {
+            "description": "norm object invalid"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "norm to add"
+        }
+      }
+    },
+    "/new_user_norm": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a user norm",
+        "operationId": "user_norm_update",
+        "description": "adds an user norm",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "description": "The identifier of the user.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "norm saved"
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 1234,
+                      "message": "wrong user id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "event to add"
+        }
+      }
+    },
+    "/get_user_norms": {
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get the user norms",
+        "operationId": "get_user_norms",
+        "description": "get an user norm",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "description": "The identifier of the user.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norms"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 1234,
+                      "message": "wrong user id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/community_incentive": {
       "get": {
         "tags": [
           "queries"
         ],
-        "summary": "searches for all incentive infos of a group of users",
-        "operationId": "group_incentive",
-        "description": "searches for a group of users of a specific application and returns incentive information of the users.\n",
+        "summary": "searches for all incentive infos of a community of users",
+        "operationId": "community_incentive",
+        "description": "searches for a community of users of a specific application and returns incentive information of the users.\n",
         "parameters": [
           {
             "in": "query",
-            "name": "gruop_id",
-            "description": "the group id to search",
+            "name": "community_id",
+            "description": "the community id to search",
             "required": true,
             "schema": {
               "type": "integer"
@@ -94,7 +273,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/incentive_info_group"
+                    "$ref": "#/components/schemas/incentive_info_community"
                   }
                 }
               }
@@ -136,7 +315,7 @@
           {
             "in": "query",
             "name": "goup_id",
-            "description": "the group id  which the incentive relates",
+            "description": "the community id  which the incentive relates",
             "required": false,
             "schema": {
               "type": "integer"
@@ -272,6 +451,54 @@
           }
         }
       },
+      "norm": {
+        "type": "object",
+        "required": [
+          "Location",
+          "Type",
+          "Size",
+          "frequncy",
+          "channel"
+        ],
+        "properties": {
+          "norm_key": {
+            "type": "string",
+            "example": 6687483,
+            "description": "the identifier of the norm"
+          },
+          "Location": {
+            "type": "string",
+            "example": "Europe"
+          },
+          "Type": {
+            "type": "string",
+            "example": "Massege"
+          },
+          "Size": {
+            "type": "integer",
+            "example": 128
+          },
+          "frequncy": {
+            "type": "integer",
+            "example": 500
+          },
+          "channel": {
+            "type": "string",
+            "example": "web"
+          }
+        }
+      },
+      "norms": {
+        "type": "object",
+        "properties": {
+          "norms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/norm"
+            }
+          }
+        }
+      },
       "incentive_info_user": {
         "type": "object",
         "required": [
@@ -295,7 +522,7 @@
           }
         }
       },
-      "incentive_info_group": {
+      "incentive_info_community": {
         "type": "object",
         "required": [
           "user_id",
@@ -303,7 +530,7 @@
           "incentive_quantity"
         ],
         "properties": {
-          "Group_id": {
+          "community_id": {
             "type": "integer",
             "example": 12345
           },
