@@ -20,7 +20,7 @@
     },
     {
       "name": "norms",
-      "description": "post and get norms."
+      "description": "post, update and  get norms."
     },
     {
       "name": "operations",
@@ -28,12 +28,111 @@
     }
   ],
   "paths": {
-    "/new_event": {
+    "/users/{user_id}/intelligences": {
+      "post": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "add or update Intelligences for the user",
+        "operationId": "user_Intelligences",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The identifier of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/intelligences"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "successful operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/personality": {
+      "post": {
+        "tags": [
+          "operations"
+        ],
+        "summary": "adds or update personality for the user",
+        "operationId": "user_personality",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "The identifier of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/personality"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "successful operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 1234,
+                      "message": "wrong user id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/event": {
       "post": {
         "tags": [
           "event_update"
         ],
-        "summary": "adds an event",
+        "summary": "adds a new event",
         "operationId": "event_update",
         "description": "adds an event",
         "responses": {
@@ -56,86 +155,7 @@
         }
       }
     },
-    "/new_community_norm": {
-      "post": {
-        "tags": [
-          "norms"
-        ],
-        "summary": "adds a community norm",
-        "operationId": "community_norm_update",
-        "description": "adds a community norm",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "community_id",
-            "description": "The identifier of the community.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "norm saved"
-          },
-          "400": {
-            "description": "wrong user id.",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 12345,
-                      "message": "wrong community id"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/norm"
-              }
-            }
-          },
-          "description": "norm to add"
-        }
-      }
-    },
-    "/new_general_norm": {
-      "post": {
-        "tags": [
-          "norms"
-        ],
-        "summary": "adds a general norm",
-        "operationId": "general_norm_update",
-        "description": "adds an general norm",
-        "responses": {
-          "200": {
-            "description": "norm saved"
-          },
-          "400": {
-            "description": "norm object invalid"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/norm"
-              }
-            }
-          },
-          "description": "norm to add"
-        }
-      }
-    },
-    "/new_user_norm": {
+    "/users/{user_id}/norm": {
       "post": {
         "tags": [
           "norms"
@@ -145,7 +165,7 @@
         "description": "adds an user norm",
         "parameters": [
           {
-            "in": "header",
+            "in": "path",
             "name": "user_id",
             "description": "The identifier of the user.",
             "required": true,
@@ -184,19 +204,17 @@
           },
           "description": "event to add"
         }
-      }
-    },
-    "/get_user_norms": {
+      },
       "get": {
         "tags": [
           "norms"
         ],
         "summary": "get the user norms",
         "operationId": "get_user_norms",
-        "description": "get an user norm",
+        "description": "get the user norms",
         "parameters": [
           {
-            "in": "header",
+            "in": "path",
             "name": "user_id",
             "description": "The identifier of the user.",
             "required": true,
@@ -237,7 +255,246 @@
         }
       }
     },
-    "/community_incentive": {
+    "/community/{community_id}/norm": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a community norm",
+        "operationId": "community_norm_update",
+        "description": "adds a community norm",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "community_id",
+            "description": "The identifier of the community.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "norm saved"
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 12345,
+                      "message": "wrong community id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "norm to add"
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get the community norms",
+        "operationId": "get_community_norms",
+        "description": "get the community norms",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "community_id",
+            "description": "The identifier of the community.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norms"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 12345,
+                      "message": "wrong community id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norm": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "Adds a general norm",
+        "operationId": "general_norm_update",
+        "description": "adds an general norm",
+        "responses": {
+          "200": {
+            "description": "norm saved"
+          },
+          "400": {
+            "description": "norm object invalid"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "norm to add"
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get a general norm",
+        "operationId": "get_general_norm",
+        "description": "get a general norm",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "norm_id",
+            "description": "The identifier of the norm.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norms/{norm_id}": {
+      "put": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "Update the values by norm ID",
+        "description": "Update a norm by id.",
+        "operationId": "update_norm",
+        "parameters": [
+          {
+            "name": "norm_id",
+            "in": "path",
+            "description": "The identifier of the norm",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/u_norm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated community",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/u_norm"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/u_norm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/community{community_id}/apps/{app_id}/incentive": {
       "get": {
         "tags": [
           "queries"
@@ -247,7 +504,7 @@
         "description": "searches for a community of users of a specific application and returns incentive information of the users.\n",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "community_id",
             "description": "the community id to search",
             "required": true,
@@ -256,7 +513,7 @@
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "app_id",
             "description": "the app that the user pagination",
             "required": true,
@@ -285,7 +542,7 @@
         }
       }
     },
-    "/user_incentive": {
+    "/users{user_id}/apps/{app_id}/incentive": {
       "get": {
         "tags": [
           "queries"
@@ -295,7 +552,7 @@
         "description": "searches for a user of a specific application and returns incentive information of that user.\n",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "user_id",
             "description": "the user id to search",
             "required": true,
@@ -304,7 +561,7 @@
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "app_id",
             "description": "the app that the user pagination",
             "required": true,
@@ -314,7 +571,7 @@
           },
           {
             "in": "query",
-            "name": "goup_id",
+            "name": "community_id",
             "description": "the community id  which the incentive relates",
             "required": false,
             "schema": {
@@ -337,7 +594,7 @@
             }
           },
           "400": {
-            "description": "bad app_id parameter"
+            "description": "bad app_id"
           }
         }
       }
@@ -461,7 +718,7 @@
           "channel"
         ],
         "properties": {
-          "norm_key": {
+          "norm_id": {
             "type": "string",
             "example": 6687483,
             "description": "the identifier of the norm"
@@ -496,6 +753,35 @@
             "items": {
               "$ref": "#/components/schemas/norm"
             }
+          }
+        }
+      },
+      "u_norm": {
+        "type": "object",
+        "properties": {
+          "norm_id": {
+            "type": "string",
+            "example": 6687483
+          },
+          "Location": {
+            "type": "string",
+            "example": "Europe"
+          },
+          "Type": {
+            "type": "string",
+            "example": "Massege"
+          },
+          "Size": {
+            "type": "integer",
+            "example": 128
+          },
+          "frequncy": {
+            "type": "integer",
+            "example": 500
+          },
+          "channel": {
+            "type": "string",
+            "example": "web"
           }
         }
       },
@@ -544,6 +830,114 @@
             "example": 0.89
           }
         }
+      },
+      "intelligences": {
+        "type": "object",
+        "properties": {
+          "verbal": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The verbal intelligence",
+            "format": "double",
+            "example": 0.1
+          },
+          "logic_mathematics": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The logic-mathematics intelligence",
+            "format": "double",
+            "example": 0.2
+          },
+          "visual_spatial": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The visual-spatial intelligence",
+            "format": "double",
+            "example": 0.3
+          },
+          "kinestesica_corporal": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The kinestesica-corporal intelligence",
+            "format": "double",
+            "example": 0.4
+          },
+          "musical_rhythmic": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The musical-rhythmic intelligence",
+            "format": "double",
+            "example": 0.5
+          },
+          "intrapersonal": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The intrapersonal intelligence",
+            "format": "double",
+            "example": 0.6
+          },
+          "interpersonal": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The interpersonal intelligence",
+            "format": "double",
+            "example": 0.7
+          },
+          "naturalist_environmental": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The naturalist-environmental intelligence",
+            "format": "double",
+            "example": 0.8
+          }
+        },
+        "description": "Provide information about the intelligences of a person"
+      },
+      "personality": {
+        "type": "object",
+        "properties": {
+          "perception": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The perception grade of a person",
+            "format": "double",
+            "example": 0.1
+          },
+          "judgment": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The judgment grade of a person",
+            "format": "double",
+            "example": 0.2
+          },
+          "extrovert": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The extrovert grade of a person",
+            "format": "double",
+            "example": 0.3
+          },
+          "attitude": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number",
+            "description": "The attitude grade of a person",
+            "format": "double",
+            "example": 0.4
+          }
+        },
+        "description": "Provide information about the personality of a person"
       }
     }
   }
