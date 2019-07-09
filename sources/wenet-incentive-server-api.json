@@ -57,12 +57,21 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "intelligences saved",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "successful operation"
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
                 }
               }
             }
@@ -99,12 +108,11 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "personality saved",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "successful operation"
+                  "$ref": "#/components/schemas/successful_operation"
                 }
               }
             }
@@ -113,13 +121,8 @@
             "description": "wrong user id.",
             "content": {
               "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 1234,
-                      "message": "wrong user id"
-                    }
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
                 }
               }
             }
@@ -137,21 +140,15 @@
         "description": "adds an event",
         "responses": {
           "200": {
-            "description": "event saved"
-          },
-          "400": {
-            "description": "event object invalid"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/event"
+            "description": "event saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/event"
+                }
               }
             }
-          },
-          "description": "event to add"
+          }
         }
       }
     },
@@ -162,7 +159,7 @@
         ],
         "summary": "adds a user norm",
         "operationId": "user_norm_update",
-        "description": "adds an user norm",
+        "description": "adds a user norm.",
         "parameters": [
           {
             "in": "path",
@@ -174,35 +171,37 @@
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "norm saved"
-          },
-          "400": {
-            "description": "wrong user id.",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 1234,
-                      "message": "wrong user id"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "requestBody": {
+          "description": "event to add",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/norm"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "norm saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
           },
-          "description": "event to add"
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          }
         }
       },
       "get": {
@@ -241,13 +240,8 @@
             "description": "wrong user id.",
             "content": {
               "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 1234,
-                      "message": "wrong user id"
-                    }
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
                 }
               }
             }
@@ -276,19 +270,21 @@
         ],
         "responses": {
           "200": {
-            "description": "norm saved"
-          },
-          "400": {
-            "description": "wrong user id.",
+            "description": "norm saved",
             "content": {
               "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 12345,
-                      "message": "wrong community id"
-                    }
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
                 }
               }
             }
@@ -338,16 +334,11 @@
             }
           },
           "400": {
-            "description": "wrong community id.",
+            "description": "wrong community_id parameter",
             "content": {
               "application/json": {
-                "examples": {
-                  "Default Response": {
-                    "value": {
-                      "code": 12345,
-                      "message": "wrong community id"
-                    }
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
                 }
               }
             }
@@ -363,14 +354,6 @@
         "summary": "Adds a general norm",
         "operationId": "general_norm_update",
         "description": "adds an general norm",
-        "responses": {
-          "200": {
-            "description": "norm saved"
-          },
-          "400": {
-            "description": "norm object invalid"
-          }
-        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -378,8 +361,19 @@
                 "$ref": "#/components/schemas/norm"
               }
             }
-          },
-          "description": "norm to add"
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "norm saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          }
         }
       },
       "get": {
@@ -509,7 +503,7 @@
             "description": "the community id to search",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           },
           {
@@ -518,7 +512,7 @@
             "description": "the app that the user pagination",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -537,7 +531,24 @@
             }
           },
           "400": {
-            "description": "bad app_id parameter"
+            "description": "wrong community_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "wrong app_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_app_id"
+                }
+              }
+            }
           }
         }
       }
@@ -557,7 +568,7 @@
             "description": "the user id to search",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           },
           {
@@ -566,7 +577,7 @@
             "description": "the app that the user pagination",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           },
           {
@@ -575,13 +586,13 @@
             "description": "the community id  which the incentive relates",
             "required": false,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful search",
+            "description": "successful search.",
             "content": {
               "application/json": {
                 "schema": {
@@ -594,7 +605,24 @@
             }
           },
           "400": {
-            "description": "bad app_id"
+            "description": "wrong user_id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "wrong app_id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_app_id"
+                }
+              }
+            }
           }
         }
       }
@@ -670,6 +698,58 @@
   },
   "components": {
     "schemas": {
+      "successful_operation": {
+        "type": "object",
+        "properties": {
+          "massege_id": {
+            "type": "integer",
+            "example": 145
+          },
+          "massege": {
+            "type": "string",
+            "example": "successful operation"
+          }
+        }
+      },
+      "wrong_community_id": {
+        "type": "object",
+        "properties": {
+          "massege_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "massege": {
+            "type": "string",
+            "example": "wrong community id"
+          }
+        }
+      },
+      "wrong_user_id": {
+        "type": "object",
+        "properties": {
+          "massege_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "massege": {
+            "type": "string",
+            "example": "wrong user id"
+          }
+        }
+      },
+      "wrong_app_id": {
+        "type": "object",
+        "properties": {
+          "massege_id": {
+            "type": "integer",
+            "example": 125
+          },
+          "massege": {
+            "type": "string",
+            "example": "wrong app id"
+          }
+        }
+      },
       "event": {
         "type": "object",
         "required": [
