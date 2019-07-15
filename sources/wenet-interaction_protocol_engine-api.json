@@ -2,16 +2,36 @@
   "openapi" : "3.0.1",
   "info" : {
     "title" : "wenet-interaction_protocol_engine-api",
-    "description" : "WeNet - Interaction protocol engine APIs",
+    "description" : "WeNet - Interaction protocol engine APIs.",
     "contact" : {
       "name" : "UDT-IA, IIIA-CSIC",
       "url" : "http://www.iiia.csic.es/"
     },
-    "version" : "0.2.0"
+    "version" : "0.3.0"
   },
+  "tags" : [ {
+    "name" : "Communities",
+    "description" : "Search, create and modify a community. Also, allow joining or leave a community."
+  }, {
+    "name" : "Messages",
+    "description" : "Allow interacting with other users following a protocol."
+  }, {
+    "name" : "Norms",
+    "description" : "Allow describing an acceptable way of behaving by any user."
+  }, {
+    "name" : "Profiles",
+    "description" : "Allow managing the user profile. Also, you can access the history of values of any profile attribute.."
+  }, {
+    "name" : "Status",
+    "description" : "Allow knowing the current API version."
+  }, {
+    "name" : "Teams",
+    "description" : "Allow calculating the personality and intelligence of a person. Also, you can form balanced and efficient teams to do a task."
+  } ],
   "paths" : {
     "/communities" : {
       "get" : {
+        "tags" : [ "Communities" ],
         "summary" : "Return the communities that an used can join",
         "description" : "Allow to search for communities that an user can join",
         "operationId" : "getCommunities",
@@ -158,6 +178,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Communities" ],
         "summary" : "Register a community",
         "description" : "Add a community to the possible communities that the user can play",
         "operationId" : "registerCommunity",
@@ -271,6 +292,7 @@
     },
     "/communities/{community_id}" : {
       "get" : {
+        "tags" : [ "Communities" ],
         "summary" : "Return a community associated to the identifier",
         "description" : "Allow to get a community associated to an identifier",
         "operationId" : "getCommunity",
@@ -416,6 +438,7 @@
         }
       },
       "put" : {
+        "tags" : [ "Communities" ],
         "summary" : "Update the values of a community",
         "description" : "Allow to update a community associated",
         "operationId" : "updateCommunity",
@@ -605,6 +628,7 @@
         }
       },
       "delete" : {
+        "tags" : [ "Communities" ],
         "summary" : "Delete a community",
         "description" : "Allow to delete a community",
         "operationId" : "deleteCommunity",
@@ -752,6 +776,7 @@
     },
     "/communities/{community_id}/norms" : {
       "get" : {
+        "tags" : [ "Communities", "Norms" ],
         "summary" : "Get some community norms",
         "description" : "Allow to obtain the norms associated to a community",
         "operationId" : "getCommunityNorms",
@@ -915,6 +940,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Communities", "Norms" ],
         "summary" : "Add a norm into a community",
         "description" : "Add a norm to be applied in a community",
         "operationId" : "addCommunityNorm",
@@ -1072,6 +1098,7 @@
     },
     "/communities/{community_id}/norms/{norm_id}" : {
       "delete" : {
+        "tags" : [ "Communities", "Norms" ],
         "summary" : "Remove a community norm",
         "description" : "Remove a norm from a community",
         "operationId" : "removeCommunityNorm",
@@ -1225,11 +1252,12 @@
         }
       }
     },
-    "/communities/{community_id}/users" : {
+    "/communities/{community_id}/members" : {
       "get" : {
+        "tags" : [ "Communities" ],
         "summary" : "Get the users in a community",
         "description" : "Allow to get the users that plays in a community",
-        "operationId" : "getCommunityUsers",
+        "operationId" : "getCommunityMembers",
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -1272,12 +1300,12 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_users_page"
+                  "$ref" : "#/components/schemas/community_members_page"
                 }
               },
               "application/xml" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_users_page"
+                  "$ref" : "#/components/schemas/community_members_page"
                 }
               }
             }
@@ -1390,9 +1418,10 @@
         }
       },
       "post" : {
+        "tags" : [ "Communities" ],
         "summary" : "Add an user into a community ",
         "description" : "Join or add an user into a community.",
-        "operationId" : "addCommunityUser",
+        "operationId" : "addCommunityMember",
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -1416,7 +1445,7 @@
           "content" : {
             "*/*" : {
               "schema" : {
-                "$ref" : "#/components/schemas/community_user"
+                "$ref" : "#/components/schemas/community_member"
               }
             }
           }
@@ -1427,12 +1456,12 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               },
               "application/xml" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               }
             }
@@ -1580,11 +1609,12 @@
         }
       }
     },
-    "/communities/{community_id}/users/{user_id}" : {
+    "/communities/{community_id}/members/{user_id}" : {
       "put" : {
+        "tags" : [ "Communities" ],
         "summary" : "Modify an user from a community ",
         "description" : "Modify the attributes of a community user.",
-        "operationId" : "modifyCommunityUser",
+        "operationId" : "modifyCommunityMember",
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -1616,7 +1646,7 @@
           "content" : {
             "*/*" : {
               "schema" : {
-                "$ref" : "#/components/schemas/community_user"
+                "$ref" : "#/components/schemas/community_member"
               }
             }
           }
@@ -1627,12 +1657,12 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               },
               "application/xml" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               }
             }
@@ -1780,9 +1810,10 @@
         }
       },
       "delete" : {
+        "tags" : [ "Communities" ],
         "summary" : "Remove an user from a community ",
         "description" : "You can use this method to leave or remove an user from a community.",
-        "operationId" : "removeCommunityUser",
+        "operationId" : "removeCommunityMember",
         "parameters" : [ {
           "name" : "Authorization",
           "in" : "header",
@@ -1815,12 +1846,12 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               },
               "application/xml" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/community_user"
+                  "$ref" : "#/components/schemas/community_member"
                 }
               }
             }
@@ -1970,6 +2001,7 @@
     },
     "/messages" : {
       "post" : {
+        "tags" : [ "Messages" ],
         "summary" : "Send a message",
         "description" : "Allow to send a message",
         "operationId" : "sendMessage",
@@ -2081,8 +2113,267 @@
         }
       }
     },
+    "/norms" : {
+      "get" : {
+        "tags" : [ "Norms" ],
+        "summary" : "Search for a published norms",
+        "description" : "Get some published norms that satisfy some field attributes",
+        "operationId" : "searchPublishedNorms",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The pattern to match the name of norms to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "description" : "The pattern to match the description of norms to return",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "keywords",
+          "in" : "query",
+          "description" : "The pattern to match the keywords of norms to return",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "The index of the first norm to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number maximum of norms to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The norms that match the patterns",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norms_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norms_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the norms"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "interaction_unauthorized",
+                      "message" : "You are not authorized to get the norms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized to get the norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_forbidden",
+                      "message" : "You can not get the norms of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_forbidden",
+                      "message" : "You can not get the norms of another user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Norms" ],
+        "summary" : "Publish a norm",
+        "description" : "Publish a norm to be accessible by the other users on WeNet",
+        "operationId" : "publishNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        } ],
+        "requestBody" : {
+          "description" : "The norm to publish",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/published_norm"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The published norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/published_norm"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "The norm to publish is wrong",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad norm values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_norm",
+                      "message" : "A norm needs a name"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Bad norm values",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "bad_norm",
+                      "message" : "A norm needs a name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to publish the norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to publish a norm"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized Response Example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "norms_unauthorized",
+                      "message" : "You are not authorized to publish a norm"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/norms/{norm_id}" : {
       "delete" : {
+        "tags" : [ "Norms" ],
         "summary" : "Delete a published norm",
         "description" : "Allow to delete a published norm",
         "operationId" : "deleteNorm",
@@ -2228,264 +2519,9 @@
         }
       }
     },
-    "/norms" : {
-      "get" : {
-        "summary" : "Search for a published norms",
-        "description" : "Get some published norms that satisfy some field attributes",
-        "operationId" : "searchPublishedNorms",
-        "parameters" : [ {
-          "name" : "Authorization",
-          "in" : "header",
-          "description" : "Provide the authorization code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "WeNet 89673098lkjbfjihg8103760"
-        }, {
-          "name" : "name",
-          "in" : "query",
-          "description" : "The pattern to match the name of norms to return",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "description",
-          "in" : "query",
-          "description" : "The pattern to match the description of norms to return",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "keywords",
-          "in" : "query",
-          "description" : "The pattern to match the keywords of norms to return",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "offset",
-          "in" : "query",
-          "description" : "The index of the first norm to return",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }, {
-          "name" : "limit",
-          "in" : "query",
-          "description" : "The number maximum of norms to return",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "The norms that match the patterns",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/published_norms_page"
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/published_norms_page"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized to get the norms",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized Response Example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "interaction_unauthorized",
-                      "message" : "You are not authorized to get the norms"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized Response Example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "interaction_unauthorized",
-                      "message" : "You are not authorized to get the norms"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Unauthorized to get the norms of another user",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to get the norms",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "norms_forbidden",
-                      "message" : "You can not get the norms of another user"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to get the norms",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "norms_forbidden",
-                      "message" : "You can not get the norms of another user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "summary" : "Publish a norm",
-        "description" : "Publish a norm to be accessible by the other users on WeNet",
-        "operationId" : "publishNorm",
-        "parameters" : [ {
-          "name" : "Authorization",
-          "in" : "header",
-          "description" : "Provide the authorization code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "WeNet 89673098lkjbfjihg8103760"
-        } ],
-        "requestBody" : {
-          "description" : "The norm to publish",
-          "content" : {
-            "*/*" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/published_norm"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "The published norm",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/published_norm"
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/published_norm"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "The norm to publish is wrong",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Bad norm values",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "bad_norm",
-                      "message" : "A norm needs a name"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Bad norm values",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "bad_norm",
-                      "message" : "A norm needs a name"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized to publish the norm",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized Response Example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "norms_unauthorized",
-                      "message" : "You are not authorized to publish a norm"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized Response Example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "norms_unauthorized",
-                      "message" : "You are not authorized to publish a norm"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/profiles/{profile_id}/attributes" : {
       "get" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Get some profile attributes ",
         "description" : "Allow to obtain the profile attribute values in a period of time",
         "operationId" : "getAttributes",
@@ -2670,328 +2706,9 @@
         }
       }
     },
-    "/profiles/{profile_id}/norms" : {
-      "get" : {
-        "summary" : "Get some norms",
-        "description" : "Allow to obtain the norms associated to a profile",
-        "operationId" : "getNorms",
-        "parameters" : [ {
-          "name" : "Authorization",
-          "in" : "header",
-          "description" : "Provide the authorization code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "WeNet 89673098lkjbfjihg8103760"
-        }, {
-          "name" : "profile_id",
-          "in" : "path",
-          "description" : "The identifier of the profile to get the norms",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "offset",
-          "in" : "query",
-          "description" : "Index of the first profile norm to return",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 0
-          }
-        }, {
-          "name" : "limit",
-          "in" : "query",
-          "description" : "Number maximum of profile norms to return",
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 10
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "The found norms",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/profile_norms_page"
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/profile_norms_page"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized to get the norms",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to get the norms",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profiles_unauthorized",
-                      "message" : "You have to log in to access to the profile norms"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to get the norms",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profiles_unauthorized",
-                      "message" : "You have to log in to access to the profile norms"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "You can not get the profile norms of another user",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Forbidden to get the profile norms of another user",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_forbidden",
-                      "message" : "You can not get the profile norms of another user"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Forbidden to get the profile norms of another user",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_forbidden",
-                      "message" : "You can not get the profile norms of another user"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found profile",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "No found response example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_not_found",
-                      "message" : "Not found a profile associated to the identifier"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "No found response example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_not_found",
-                      "message" : "Not found a profile associated to the identifier"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "summary" : "Add a norm",
-        "description" : "Add a norm to an user profile",
-        "operationId" : "addNorm",
-        "parameters" : [ {
-          "name" : "Authorization",
-          "in" : "header",
-          "description" : "Provide the authorization code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "example" : "WeNet 89673098lkjbfjihg8103760"
-        }, {
-          "name" : "profile_id",
-          "in" : "path",
-          "description" : "The identifier of the profile to add the norm",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "description" : "The norm to add",
-          "content" : {
-            "*/*" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/norm"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "The added norm",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/profile_norm"
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/profile_norm"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized to add a norm",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to add a norm",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profiles_unauthorized",
-                      "message" : "You have to log in to access to modify the profile"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Unauthorized to add a norm",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profiles_unauthorized",
-                      "message" : "You have to log in to access to modify the profile"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "You can not get the profile norms of another user",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Forbidden to add a norm into a profile of another user",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_forbidden",
-                      "message" : "You can not add a norm to another user"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "Forbidden to add a norm into a profile of another user",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_forbidden",
-                      "message" : "You can not add a norm to another user"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found profile",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "No found response example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_not_found",
-                      "message" : "Not found a profile associated to the identifier"
-                    }
-                  }
-                }
-              },
-              "application/xml" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/error_message"
-                },
-                "examples" : {
-                  "Default Response" : {
-                    "summary" : "No found response example",
-                    "description" : "Default Response",
-                    "value" : {
-                      "code" : "profile_not_found",
-                      "message" : "Not found a profile associated to the identifier"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/profiles/{profile_id}" : {
       "get" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Return a profile associated to the identifier",
         "description" : "Allow to get a profile associated to an identifier",
         "operationId" : "getProfile",
@@ -3137,6 +2854,7 @@
         }
       },
       "put" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Modify a profile",
         "description" : "Change the attributes of a profile",
         "operationId" : "updateProfile",
@@ -3329,6 +3047,7 @@
     },
     "/profiles/{profile_id}/friends" : {
       "get" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Get some friends",
         "description" : "Allow to obtain the friends associated to a profile",
         "operationId" : "getFriends",
@@ -3516,6 +3235,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Add a friend",
         "description" : "Add a friend to an user profile",
         "operationId" : "addFriend",
@@ -3673,6 +3393,7 @@
     },
     "/profiles/{profile_id}/friends/{friend_id}" : {
       "delete" : {
+        "tags" : [ "Profiles" ],
         "summary" : "Remove a friend",
         "description" : "Remove a friend from an user profile",
         "operationId" : "removeFriend",
@@ -3826,8 +3547,331 @@
         }
       }
     },
+    "/profiles/{profile_id}/norms" : {
+      "get" : {
+        "tags" : [ "Profiles", "Norms" ],
+        "summary" : "Get some norms",
+        "description" : "Allow to obtain the norms associated to a profile",
+        "operationId" : "getNorms",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to get the norms",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "description" : "Index of the first profile norm to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number maximum of profile norms to return",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The found norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norms_page"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norms_page"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to get the norms",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile norms"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to get the norms",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to the profile norms"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile norms of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile norms of another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to get the profile norms of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not get the profile norms of another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Profiles", "Norms" ],
+        "summary" : "Add a norm",
+        "description" : "Add a norm to an user profile",
+        "operationId" : "addNorm",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Provide the authorization code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "WeNet 89673098lkjbfjihg8103760"
+        }, {
+          "name" : "profile_id",
+          "in" : "path",
+          "description" : "The identifier of the profile to add the norm",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "The norm to add",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The added norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/profile_norm"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized to add a norm",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Unauthorized to add a norm",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profiles_unauthorized",
+                      "message" : "You have to log in to access to modify the profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "You can not get the profile norms of another user",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "Forbidden to add a norm into a profile of another user",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_forbidden",
+                      "message" : "You can not add a norm to another user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found profile",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/error_message"
+                },
+                "examples" : {
+                  "Default Response" : {
+                    "summary" : "No found response example",
+                    "description" : "Default Response",
+                    "value" : {
+                      "code" : "profile_not_found",
+                      "message" : "Not found a profile associated to the identifier"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/profiles/{profile_id}/norms/{norm_id}" : {
       "delete" : {
+        "tags" : [ "Profiles", "Norms" ],
         "summary" : "Remove a norm",
         "description" : "Remove a norm from an user profile",
         "operationId" : "removeNorm",
@@ -3983,6 +4027,7 @@
     },
     "/status" : {
       "get" : {
+        "tags" : [ "Status" ],
         "summary" : "Get the status of the API",
         "description" : "Return the current status information of the API",
         "operationId" : "getStatusReport",
@@ -4007,6 +4052,7 @@
     },
     "/teams/composite" : {
       "get" : {
+        "tags" : [ "Teams" ],
         "summary" : "Calculate the number of teams and each sizer that the composite can create",
         "description" : "Obtain how many teams and their size that will be created",
         "operationId" : "getTeamsDistribution",
@@ -4095,6 +4141,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Teams" ],
         "summary" : "Create teams",
         "description" : "It distributes a group of people in different teams taking into account their personality and intelligences",
         "operationId" : "composite",
@@ -4179,6 +4226,7 @@
     },
     "/teams/intelligences" : {
       "get" : {
+        "tags" : [ "Teams" ],
         "summary" : "Obtain the intelligences test",
         "description" : "Return the questionnaire used to obtain the intelligences of a person",
         "operationId" : "getIntelligencesQuestionnaire",
@@ -4255,6 +4303,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Teams" ],
         "summary" : "Calculate the intelligences of a person",
         "description" : "Evaluate the answers to the intelligences test to obtain the intelligences of the person",
         "operationId" : "calculateIntelligences",
@@ -4338,6 +4387,7 @@
     },
     "/teams/personality" : {
       "get" : {
+        "tags" : [ "Teams" ],
         "summary" : "Obtain the personality test",
         "description" : "Return the questionnaire used to obtain the personality of a person",
         "operationId" : "getPersonalityQuestionnaire",
@@ -4414,6 +4464,7 @@
         }
       },
       "post" : {
+        "tags" : [ "Teams" ],
         "summary" : "Calculate the personality of a person",
         "description" : "Evaluate the answers to the personality test to obtain the personality of the person",
         "operationId" : "calculatePersonality",
@@ -4640,7 +4691,7 @@
           "name" : "norm"
         }
       },
-      "community_user" : {
+      "community_member" : {
         "type" : "object",
         "properties" : {
           "user_id" : {
@@ -4662,37 +4713,37 @@
             }
           }
         },
-        "description" : "The information of an user that plays in a community.",
+        "description" : "The information of an member that plays in a community.",
         "xml" : {
-          "name" : "community_user"
+          "name" : "community_member"
         }
       },
-      "community_users_page" : {
+      "community_members_page" : {
         "type" : "object",
         "properties" : {
           "offset" : {
             "type" : "integer",
-            "description" : "The index of the first community user returned.",
+            "description" : "The index of the first community member returned.",
             "format" : "int32",
             "example" : 0
           },
           "total" : {
             "type" : "integer",
-            "description" : "The number total of community users that satisfies the search.",
+            "description" : "The number total of community members that satisfies the search.",
             "format" : "int64",
             "example" : 100
           },
-          "users" : {
+          "members" : {
             "type" : "array",
-            "description" : "The set of community users found",
+            "description" : "The set of community members found",
             "items" : {
-              "$ref" : "#/components/schemas/community_user"
+              "$ref" : "#/components/schemas/community_member"
             }
           }
         },
-        "description" : "Contains a set of community users found",
+        "description" : "Contains a set of community members found",
         "xml" : {
-          "name" : "community_users_page"
+          "name" : "community_members_page"
         }
       },
       "message" : {
@@ -4856,56 +4907,6 @@
         "description" : "Contains a set of profile attributes found",
         "xml" : {
           "name" : "profile_attributes_page"
-        }
-      },
-      "profile_norm" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "The identifier of the profile norm.",
-            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
-          },
-          "since_time" : {
-            "type" : "string",
-            "description" : "The time in ISO 8601 format since the norm is applied in the profile.",
-            "example" : "2019-06-21T07:32:22Z"
-          },
-          "norm" : {
-            "$ref" : "#/components/schemas/norm"
-          }
-        },
-        "description" : "A norm that is applied in a profile",
-        "xml" : {
-          "name" : "profile_norm"
-        }
-      },
-      "profile_norms_page" : {
-        "type" : "object",
-        "properties" : {
-          "offset" : {
-            "type" : "integer",
-            "description" : "The index of the first profile norm returned.",
-            "format" : "int32",
-            "example" : 0
-          },
-          "total" : {
-            "type" : "integer",
-            "description" : "The number total of profile norms that satisfies the search.",
-            "format" : "int64",
-            "example" : 100
-          },
-          "norms" : {
-            "type" : "array",
-            "description" : "The set of profile norms found",
-            "items" : {
-              "$ref" : "#/components/schemas/profile_norm"
-            }
-          }
-        },
-        "description" : "Contains a set of profile norms found",
-        "xml" : {
-          "name" : "profile_norms_page"
         }
       },
       "address" : {
@@ -5228,6 +5229,56 @@
         "description" : "Contains a set of friends found",
         "xml" : {
           "name" : "friends_page"
+        }
+      },
+      "profile_norm" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The identifier of the profile norm.",
+            "example" : "bf274393-1e7b-4d40-a897-88cb96277edd"
+          },
+          "since_time" : {
+            "type" : "string",
+            "description" : "The time in ISO 8601 format since the norm is applied in the profile.",
+            "example" : "2019-06-21T07:32:22Z"
+          },
+          "norm" : {
+            "$ref" : "#/components/schemas/norm"
+          }
+        },
+        "description" : "A norm that is applied in a profile",
+        "xml" : {
+          "name" : "profile_norm"
+        }
+      },
+      "profile_norms_page" : {
+        "type" : "object",
+        "properties" : {
+          "offset" : {
+            "type" : "integer",
+            "description" : "The index of the first profile norm returned.",
+            "format" : "int32",
+            "example" : 0
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "The number total of profile norms that satisfies the search.",
+            "format" : "int64",
+            "example" : 100
+          },
+          "norms" : {
+            "type" : "array",
+            "description" : "The set of profile norms found",
+            "items" : {
+              "$ref" : "#/components/schemas/profile_norm"
+            }
+          }
+        },
+        "description" : "Contains a set of profile norms found",
+        "xml" : {
+          "name" : "profile_norms_page"
         }
       },
       "status" : {
