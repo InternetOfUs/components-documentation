@@ -38,59 +38,109 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Models"
+                  "$ref": "#/components/schemas/Model"
                 },
-                "examples": {
+                "example": {
                   "SimpleLDA": {
-                    "value": {
-                      "mock_user_1": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_2": [
-                        0,
-                        1,
-                        1,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_3": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        0
-                      ]
-                    }
+                    "mock_user_1": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_2": [
+                      0,
+                      1,
+                      1,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_3": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      0
+                    ]
                   },
                   "SimpleBOW": {
-                    "value": {
-                      "mock_user_1": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_2": [
-                        1,
-                        1,
-                        1,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_3": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        0
-                      ]
-                    }
+                    "mock_user_1": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_2": [
+                      1,
+                      1,
+                      1,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_3": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      0
+                    ]
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/closest/{lat}/{lng}/{N}/": {
+      "get": {
+        "summary": "get closest N users from a given point",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "path",
+            "description": "latitude of the given point",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "path",
+            "description": "longitude of the given point",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          },
+          {
+            "name": "N",
+            "in": "path",
+            "description": "number of closest users to receive",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "closest N users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersDistances"
+                },
+                "example": {
+                  "mock_user_1": 330,
+                  "mock_user_2": 340,
+                  "mock_user_3": 350
                 }
               }
             }
@@ -131,30 +181,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Models"
+                  "$ref": "#/components/schemas/Model"
                 },
-                "examples": {
+                "example": {
                   "SimpleLDA": {
-                    "value": {
-                      "mock_user_1": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ]
-                    }
+                    "mock_user_1": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ]
                   },
                   "SimpleBOW": {
-                    "value": {
-                      "mock_user_1": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ]
-                    }
+                    "mock_user_1": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ]
                   }
                 }
               }
@@ -173,6 +219,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ModelDescriptions"
+                },
+                "example": {
+                  "SimpleLDA": "Simple LDA over all the users, with 15 topics",
+                  "SimpleBOW": "Bag-of-words approach, compute the mean of all days"
                 }
               }
             }
@@ -198,31 +248,25 @@
         "type": "object",
         "description": "model name",
         "additionalProperties": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/UserRoutine"
-          }
-        }
-      },
-      "Models": {
-        "type": "array",
-        "description": "list of model",
-        "items": {
-          "$ref": "#/components/schemas/Model"
-        }
-      },
-      "ModelDescription": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "string",
-          "description": "description of the model"
+          "$ref": "#/components/schemas/UserRoutine"
         }
       },
       "ModelDescriptions": {
-        "description": "list of model description",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ModelDescription"
+        "description": "list of models with their description",
+        "additionalProperties": {
+          "type": "object",
+          "description": "model docstring",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "UsersDistances": {
+        "description": "users with distances",
+        "type": "object",
+        "additionalProperties": {
+          "type": "number",
+          "description": "distances from the given point"
         }
       }
     }
