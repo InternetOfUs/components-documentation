@@ -488,7 +488,7 @@
         }
       }
     },
-    "/community{community_id}/apps/{app_id}/incentive": {
+    "/community/{community_id}/apps/{app_id}/incentive": {
       "get": {
         "tags": [
           "queries"
@@ -553,7 +553,7 @@
         }
       }
     },
-    "/users{user_id}/apps/{app_id}/incentive": {
+    "/users/{user_id}/apps/{app_id}/incentive": {
       "get": {
         "tags": [
           "queries"
