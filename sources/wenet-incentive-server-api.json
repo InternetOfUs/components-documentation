@@ -172,7 +172,7 @@
           }
         ],
         "requestBody": {
-          "description": "event to add",
+          "description": "The added norm.",
           "content": {
             "application/json": {
               "schema": {
@@ -471,7 +471,56 @@
             }
           },
           "400": {
-            "description": "wrong community id.",
+            "description": "wrong norm id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get norm by id.",
+        "operationId": "get_norm",
+        "description": "get norm by id.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "norm_id",
+            "description": "The identifier of the norm.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong norm id.",
             "content": {
               "application/json": {
                 "examples": {
@@ -627,33 +676,32 @@
         }
       }
     },
-    "/disable_interventions": {
+    "/disable_incentive": {
       "get": {
         "tags": [
           "operations"
         ],
-        "summary": "disable the interventions server",
-        "operationId": "disable_interventions",
+        "summary": "disable the incentive  server",
+        "operationId": "disable_incentive",
         "parameters": [
           {
             "in": "query",
             "name": "reason",
-            "description": "The user's reason for disabling the interventions server",
+            "description": "The user's reason for disabling the incentive server",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "description": "disable the interventions server\n",
+        "description": "disable the incentive server\n",
         "responses": {
           "200": {
             "description": "successfuly disabled",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "ok"
+                  "$ref": "#/components/schemas/successful_operation"
                 }
               }
             }
@@ -661,33 +709,32 @@
         }
       }
     },
-    "/enable_interventions": {
+    "/enable_incentive": {
       "get": {
         "tags": [
           "operations"
         ],
-        "summary": "enable the interventions server",
-        "operationId": "enable_interventions",
+        "summary": "enable the incentive server",
+        "operationId": "enable_incentive",
         "parameters": [
           {
             "in": "query",
             "name": "reason",
-            "description": "The user's reason for enabling the interventions server",
+            "description": "The user's reason for enabling the incentive server",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "description": "enable the interventions server\n",
+        "description": "enable the incentive server\n",
         "responses": {
           "200": {
             "description": "successfuly enabled",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "ok"
+                  "$ref": "#/components/schemas/successful_operation"
                 }
               }
             }
@@ -918,7 +965,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The verbal intelligence",
+            "description": "",
             "format": "double",
             "example": 0.1
           },
@@ -926,7 +973,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The logic-mathematics intelligence",
+            "description": "",
             "format": "double",
             "example": 0.2
           },
@@ -934,7 +981,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The visual-spatial intelligence",
+            "description": "",
             "format": "double",
             "example": 0.3
           },
@@ -942,7 +989,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The kinestesica-corporal intelligence",
+            "description": "",
             "format": "double",
             "example": 0.4
           },
@@ -950,23 +997,15 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The musical-rhythmic intelligence",
+            "description": "",
             "format": "double",
             "example": 0.5
-          },
-          "intrapersonal": {
-            "maximum": 1,
-            "minimum": 0,
-            "type": "number",
-            "description": "The intrapersonal intelligence",
-            "format": "double",
-            "example": 0.6
           },
           "interpersonal": {
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The interpersonal intelligence",
+            "description": "",
             "format": "double",
             "example": 0.7
           },
@@ -974,12 +1013,12 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The naturalist-environmental intelligence",
+            "description": "",
             "format": "double",
             "example": 0.8
           }
         },
-        "description": "Provide information about the intelligences of a person"
+        "description": "Provide information about the intelligences of the user."
       },
       "personality": {
         "type": "object",
@@ -988,7 +1027,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The perception grade of a person",
+            "description": "",
             "format": "double",
             "example": 0.1
           },
@@ -996,7 +1035,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The judgment grade of a person",
+            "description": "",
             "format": "double",
             "example": 0.2
           },
@@ -1004,7 +1043,7 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The extrovert grade of a person",
+            "description": "",
             "format": "double",
             "example": 0.3
           },
@@ -1012,12 +1051,12 @@
             "maximum": 1,
             "minimum": 0,
             "type": "number",
-            "description": "The attitude grade of a person",
+            "description": "",
             "format": "double",
             "example": 0.4
           }
         },
-        "description": "Provide information about the personality of a person"
+        "description": "Provide information about the personality of the user"
       }
     }
   }
