@@ -357,9 +357,9 @@
       "type": "object",
       "description": "User Profile Personal Information. What is filled by user.",
       "properties": {
-        "id": {
-          "type": "integer",
-          "description": "User ID"
+        "user_id": {
+          "type": "string",
+          "description": "User ID a unique identifier"
         },
         "age": {
           "type": "integer",
@@ -372,7 +372,7 @@
             "female",
             "other?"
           ],
-          "description": "User Sex (required)."
+          "description": "User Biological Sex (required)."
         },
         "languages": {
           "description": "A list of user known languages (required 1 min).",
@@ -426,8 +426,8 @@
             }
           }
         },
-        "address": {
-          "description": "User different addresses (optional).",
+        "places": {
+          "description": "User different locations (optional).",
           "type": "array",
           "items": {
             "type": "object"
@@ -443,13 +443,20 @@
       "type": "object",
       "description": "User Profile Personal Information. What is filled by user.",
       "properties": {
-        "id": {
-          "type": "integer",
+        "user_id": {
+          "type": "string",
           "description": "User ID"
         },
         "app_usage": {
           "type": "array",
           "description": "Application Usage History",
+          "items": {
+            "type": "object"
+          }
+        },
+        "external_app_usage": {
+          "type": "array",
+          "description": "Other Applications that can be monitored?",
           "items": {
             "type": "object"
           }
@@ -475,26 +482,37 @@
         },
         "other": {
           "type": "object",
-          "description": "Whatever other usefull information we can get?"
+          "description": "Whatever other useful information we can get?"
         }
       }
     },
     "user_friends": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "user_id": {
-            "type": "integer"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "added",
-              "removed",
-              "blocked",
-              "suggested"
-            ]
+      "type": "object",
+      "description": "The list with the user friends",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "friends": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "description": "Current status, open to more suggestions here!",
+                "enum": [
+                  "added",
+                  "removed",
+                  "blocked",
+                  "suggested",
+                  "ignored_suggestion"
+                ]
+              }
+            }
           }
         }
       }
@@ -504,7 +522,7 @@
       "description": "An ordered thread of messages",
       "properties": {
         "thread_id": {
-          "type": "integer",
+          "type": "string",
           "description": "Thread ID"
         },
         "messages": {
@@ -520,17 +538,21 @@
       "type": "object",
       "description": "User messages.",
       "properties": {
-        "id": {
-          "type": "integer",
+        "msg_id": {
+          "type": "string",
           "description": "Message ID"
         },
-        "uid": {
-          "type": "integer",
-          "description": "User ID"
+        "user_id_from": {
+          "type": "string",
+          "description": "User ID of sending user"
+        },
+        "user_id_to": {
+          "type": "string",
+          "description": "User ID of receiving message (this is for private messages and can be null)"
         },
         "thread_id": {
-          "type": "integer",
-          "description": "Message Thread ID"
+          "type": "string",
+          "description": "Message Thread ID (this message is public to all that have access to thread)"
         },
         "msg_type": {
           "type": "integer",
