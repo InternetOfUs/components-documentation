@@ -1,51 +1,6 @@
 {
     "components": {
         "schemas": {
-            "trust": {
-                "xml": {
-                    "name": "trust"
-                },
-                "description": "The information of the trust of an user respect another.",
-                "type": "object",
-                "properties": {
-                    "user_id": {
-                        "description": "The identifier of the user that this is the trust.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "value": {
-                        "description": "The trust over the user. It has to be on the range [0,1].",
-                        "type": "number",
-                        "example": 0.43
-                    }
-                }
-            },
-            "questionnaire": {
-                "xml": {
-                    "name": "questionnaire"
-                },
-                "description": "A questionnaire used to evaluate a person attribute",
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "description": "A name that identifies the questionnaire for a human",
-                        "type": "string",
-                        "example": "Personality test"
-                    },
-                    "questions": {
-                        "description": "The set of questions used to evaluate the person.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/question"
-                        }
-                    },
-                    "description": {
-                        "description": "Explains what attribute of a person it evaluates",
-                        "type": "string",
-                        "example": "With this questionnaire is possible to obtain the personality of a person."
-                    }
-                }
-            },
             "community_task_instances_page": {
                 "xml": {
                     "name": "community_task_instances_page"
@@ -99,6 +54,804 @@
                             "A0"
                         ],
                         "example": "B2"
+                    },
+                    "name": {
+                        "description": "The name of the language",
+                        "type": "string",
+                        "example": "English"
+                    }
+                }
+            },
+            "norm": {
+                "xml": {
+                    "name": "norm"
+                },
+                "description": "This component describes an acceptable way of behaving by any user.",
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "description": "The code of the norm.",
+                        "type": "string"
+                    }
+                }
+            },
+            "message_attribute": {
+                "xml": {
+                    "name": "message_attribute"
+                },
+                "description": "This component describes an attribute on the message content.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of the attribute.",
+                        "type": "string",
+                        "example": "community_id"
+                    },
+                    "value": {
+                        "description": "The value of the attribute.",
+                        "type": "object",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    }
+                }
+            },
+            "community_norms_page": {
+                "xml": {
+                    "name": "community_norms_page"
+                },
+                "description": "Contains a set of community norms found",
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of community norms that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first community norm returned.",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "norms": {
+                        "description": "The set of community norms found",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/community_norm"
+                        }
+                    }
+                }
+            },
+            "composite": {
+                "xml": {
+                    "name": "composite"
+                },
+                "description": "Provide information about how the teams have to be created",
+                "type": "object",
+                "properties": {
+                    "requirements": {
+                        "$ref": "#/components/schemas/requirements"
+                    },
+                    "at_most": {
+                        "description": "If this is 'true' the size of the teams cannot be more than the specified on 'people_per_team'",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "performance": {
+                        "format": "double",
+                        "maximum": 1,
+                        "description": "This value allows defining the balancing of the teams. When it is near 0.5 create similar teams, when it is near to 0 the worst are the leaders and when it is near to 1 the bests are the leaders.",
+                        "type": "number",
+                        "minimum": 0,
+                        "example": 0.5
+                    },
+                    "time": {
+                        "format": "int32",
+                        "description": "The maximum seconds that it has to calculate the best combination. When it is reached return the best team composition that it has found.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 30
+                    },
+                    "people_per_team": {
+                        "format": "int32",
+                        "description": "The size of the teams to create",
+                        "type": "integer",
+                        "minimum": 2,
+                        "example": 2
+                    },
+                    "people": {
+                        "minItems": 4,
+                        "description": "Contain the people that have to be distributed on different teams",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/person"
+                        }
+                    }
+                }
+            },
+            "community_task_instance": {
+                "xml": {
+                    "name": "community_task_instance"
+                },
+                "description": "This component describes a community task instance.",
+                "type": "object",
+                "properties": {
+                    "deadline_date": {
+                        "description": "The ISO 8601 date on which the task is expected to be completed",
+                        "type": "string",
+                        "example": "2019-08-28"
+                    },
+                    "goal": {
+                        "$ref": "#/components/schemas/goal"
+                    },
+                    "finished_date": {
+                        "description": "The ISO 8601 date when the task has concluded.If it is not set the task is active.",
+                        "type": "string",
+                        "example": "2019-09-01"
+                    },
+                    "id": {
+                        "description": "The identifier of the task instance.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "state": {
+                        "description": "The attributes that define the state of the task instance.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/task_attribute"
+                        }
+                    },
+                    "team": {
+                        "description": "The identifiers of the community members that has to team up to do the task",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "550e8400-e29b-41d4-a716-446655440000",
+                            "1db14dd1-ed9a-463d-a518-54c7c38dcec9"
+                        ]
+                    },
+                    "updated_date": {
+                        "description": "The ISO 8601 date when the task has been updated",
+                        "type": "string",
+                        "example": "2019-08-28"
+                    },
+                    "task_type": {
+                        "$ref": "#/components/schemas/community_task_type"
+                    },
+                    "start_date": {
+                        "description": "The ISO 8601 date when the task has started",
+                        "type": "string",
+                        "example": "2019-06-28"
+                    }
+                }
+            },
+            "friend": {
+                "xml": {
+                    "name": "friend"
+                },
+                "description": "The information of a friend.",
+                "type": "object",
+                "properties": {
+                    "friend_id": {
+                        "description": "The identifier of the friend.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "name": {
+                        "description": "The friend name.",
+                        "type": "string",
+                        "example": "Johnydo"
+                    },
+                    "status": {
+                        "description": "The friend status.",
+                        "type": "string",
+                        "enum": [
+                            "added",
+                            "removed",
+                            "blocked",
+                            "suggested",
+                            "ignored_suggestion"
+                        ],
+                        "example": "added"
+                    }
+                }
+            },
+            "competences_page": {
+                "xml": {
+                    "name": "competences_page"
+                },
+                "description": "Contains a set of competences found",
+                "type": "object",
+                "properties": {
+                    "competences": {
+                        "description": "The set of competences found",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/competence"
+                        }
+                    },
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of competences that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first competence returned.",
+                        "type": "integer",
+                        "example": 0
+                    }
+                }
+            },
+            "composed_teams": {
+                "xml": {
+                    "name": "composed_teams"
+                },
+                "description": "The information of the composed teams",
+                "type": "object",
+                "properties": {
+                    "optimal": {
+                        "description": "If this is 'true' the created teams are the best possible",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "teams": {
+                        "description": "The teams that have been created",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/team"
+                        }
+                    }
+                }
+            },
+            "profile_attributes_page": {
+                "xml": {
+                    "name": "profile_attributes_page"
+                },
+                "description": "Contains a set of profile attributes found",
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of profile attributes that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first profile attribute returned.",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "attributes": {
+                        "description": "The set of profile attributes found",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/profile_attribute"
+                        }
+                    }
+                }
+            },
+            "error_message": {
+                "xml": {
+                    "name": "error_message"
+                },
+                "description": "Inform of an error that happens when interacts with the API",
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "description": "Contain code that identifies the error",
+                        "type": "string",
+                        "example": "error_code"
+                    },
+                    "message": {
+                        "description": "Contain a brief description of the error to be read by a human",
+                        "type": "string",
+                        "example": "Error readable by a human"
+                    }
+                }
+            },
+            "goal": {
+                "xml": {
+                    "name": "goal"
+                },
+                "description": "This component describes an objective to achieve in a task.",
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "description": "The code of the goal.",
+                        "type": "string"
+                    }
+                }
+            },
+            "profile": {
+                "xml": {
+                    "name": "profile"
+                },
+                "description": "This component describes a profile of users.",
+                "type": "object",
+                "properties": {
+                    "addresses": {
+                        "description": "The different address of the user",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/address"
+                        }
+                    },
+                    "occupation": {
+                        "description": "The main occupation of the user in English",
+                        "type": "string",
+                        "example": "Nurse"
+                    },
+                    "languages": {
+                        "description": "The languages that the user can understand",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/language"
+                        }
+                    },
+                    "gender": {
+                        "description": "The possible gender of a person.",
+                        "type": "string",
+                        "enum": [
+                            "FEMALE_CIS",
+                            "MALE_CIS",
+                            "FEMALE_TRANS",
+                            "MALE_TRANS",
+                            "NO_BINARY"
+                        ]
+                    },
+                    "birth_date": {
+                        "description": "The ISO 8601 date of birth of the user",
+                        "type": "string",
+                        "example": "2019-06-28"
+                    },
+                    "avatar": {
+                        "description": "The URL to an image that represents the avatar of the user.",
+                        "type": "string",
+                        "example": "https://internetofus.eu/wp-content/uploads/sites/38/2019/02/WeNet_logo.png"
+                    },
+                    "intelligences": {
+                        "$ref": "#/components/schemas/intelligences"
+                    },
+                    "locale": {
+                        "description": "The locale of the user.",
+                        "type": "string",
+                        "example": "it_IT"
+                    },
+                    "update_date": {
+                        "description": "The ISO 8601 date of the last time this profile has changed.",
+                        "type": "string",
+                        "example": "2019-08-08"
+                    },
+                    "since_date": {
+                        "description": "The ISO 8601 date since the user is part of WeNet",
+                        "type": "string",
+                        "example": "2019-01-28"
+                    },
+                    "personality": {
+                        "$ref": "#/components/schemas/personality"
+                    },
+                    "nationality": {
+                        "description": "The nationality of the user in English",
+                        "type": "string",
+                        "example": "Italian"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/name"
+                    },
+                    "ethnic_group": {
+                        "description": "The ethnic group of the user in English",
+                        "type": "string",
+                        "example": "Eskimo"
+                    },
+                    "id": {
+                        "description": "The identifier of the profile.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "public_name": {
+                        "description": "The name that it wants to be identified by other users on WeNet",
+                        "type": "string",
+                        "example": "Jonny D."
+                    },
+                    "email": {
+                        "description": "The email of the user",
+                        "type": "string",
+                        "example": "jonnyd@internetofus.eu"
+                    },
+                    "geolocation": {
+                        "$ref": "#/components/schemas/geolocation"
+                    }
+                }
+            },
+            "community": {
+                "xml": {
+                    "name": "community"
+                },
+                "description": "This component describes a community of users.",
+                "type": "object",
+                "properties": {
+                    "keywords": {
+                        "description": "The keywords of the community",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "social interaction",
+                            "ethics",
+                            "diversity"
+                        ]
+                    },
+                    "since_time": {
+                        "description": "The time in ISO 8601 format since the community is active.",
+                        "type": "string",
+                        "example": "2019-06-21T07:32:22Z"
+                    },
+                    "name": {
+                        "description": "The name of the community.",
+                        "type": "string",
+                        "example": "WeNet"
+                    },
+                    "description": {
+                        "description": "The description of the community.",
+                        "type": "string",
+                        "example": "A community of users that provide or require help"
+                    },
+                    "id": {
+                        "description": "The identifier of the community.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "avatar": {
+                        "description": "The URL to an image that represents the avatar of the community.",
+                        "type": "string",
+                        "example": "https://internetofus.eu/wp-content/uploads/sites/38/2019/02/WeNet_logo.png"
+                    }
+                }
+            },
+            "community_members_page": {
+                "xml": {
+                    "name": "community_members_page"
+                },
+                "description": "Contains a set of community members found",
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of community members that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first community member returned.",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "members": {
+                        "description": "The set of community members found",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/community_member"
+                        }
+                    }
+                }
+            },
+            "teams_distribution": {
+                "xml": {
+                    "name": "teams_distribution"
+                },
+                "description": "Describe how a set of people will be distributed on a set of teams",
+                "type": "object",
+                "required": [
+                    "number_of_people",
+                    "people_per_team"
+                ],
+                "properties": {
+                    "number_of_people": {
+                        "format": "int32",
+                        "description": "The number of people that have distributed on the teams",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "atMost": {
+                        "maxItems": 2,
+                        "xml": {
+                            "name": "at_most"
+                        },
+                        "description": "Contain the distribution of the people on teams when the size is a maximum",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/team_distribution"
+                        }
+                    },
+                    "people_per_team": {
+                        "format": "int32",
+                        "description": "The expected number of people on each team",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "basic": {
+                        "maxItems": 2,
+                        "description": "Contain the distribution of the people on teams when the size is a minimum",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/team_distribution"
+                        }
+                    }
+                }
+            },
+            "person": {
+                "xml": {
+                    "name": "person"
+                },
+                "description": "Provide information about a person",
+                "type": "object",
+                "properties": {
+                    "personality": {
+                        "$ref": "#/components/schemas/personality"
+                    },
+                    "id": {
+                        "description": "Contain the identifier of the person",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "intelligences": {
+                        "$ref": "#/components/schemas/intelligences"
+                    }
+                }
+            },
+            "name": {
+                "xml": {
+                    "name": "name"
+                },
+                "description": "The information of the user name.",
+                "type": "object",
+                "properties": {
+                    "middle": {
+                        "description": "The portion of a personal name that is written between the person's first name (given) and their last names (surname).",
+                        "type": "string",
+                        "example": "Fitzgerald"
+                    },
+                    "last": {
+                        "description": "The last name (surname or family name) is the portion (in some cultures) of a personal name that indicates a person's family (or tribe or community, depending on the culture).",
+                        "type": "string",
+                        "example": "Smith"
+                    },
+                    "prefix": {
+                        "description": "The prefix of the name such as Mr., Mrs., Ms., Miss, or Dr.",
+                        "type": "string",
+                        "example": "Dr."
+                    },
+                    "suffix": {
+                        "description": "The suffix of the name such as Jr., Sr., I, II, III, IV, V, MD, DDS, PhD or DVM.",
+                        "type": "string",
+                        "example": "Jr."
+                    },
+                    "first": {
+                        "description": "The first name (also known as a given name, forename or Christian name) is a part of a person's personal name.",
+                        "type": "string",
+                        "example": "Abbey"
+                    }
+                },
+                "example": "Dr. John Doe Jr."
+            },
+            "published_task_types_page": {
+                "xml": {
+                    "name": "published_task_types_page"
+                },
+                "description": "Contains a set of published task types found",
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of published task types that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first published task type returned.",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "taskTypes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/published_task_type"
+                        }
+                    }
+                }
+            },
+            "published_task_type": {
+                "xml": {
+                    "name": "published_task_type"
+                },
+                "description": "A task type that is published to share with all the WeNet users.",
+                "type": "object",
+                "properties": {
+                    "publisher_id": {
+                        "description": "The identifier of the user that has published the task type.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "taskType": {
+                        "$ref": "#/components/schemas/task_type"
+                    },
+                    "keywords": {
+                        "description": "The keywords that describe the published task type.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "social interaction",
+                            "ethics",
+                            "diversity"
+                        ]
+                    },
+                    "id": {
+                        "description": "The identifier of the published task type.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "publish_date": {
+                        "description": "The ISO 8601 date when the task type was published",
+                        "type": "string",
+                        "example": "2019-06-28"
+                    }
+                }
+            },
+            "communities_page": {
+                "xml": {
+                    "name": "communities_page"
+                },
+                "description": "Contains a set of communities found",
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "format": "int64",
+                        "description": "The number total of communities that satisfies the search.",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "offset": {
+                        "format": "int32",
+                        "description": "The index of the first community returned.",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "communities": {
+                        "description": "The set of communities found",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/community"
+                        }
+                    }
+                }
+            },
+            "profile_attribute": {
+                "xml": {
+                    "name": "profile_attribute"
+                },
+                "description": "Contains the value of a profile attribute.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of the attribute",
+                        "type": "string",
+                        "enum": [
+                            "name",
+                            "public_name",
+                            "email",
+                            "avatar",
+                            "phone_number",
+                            "languages",
+                            "gender",
+                            "geolocation",
+                            "personality",
+                            "intelligences",
+                            "birth_date",
+                            "ethnic_group",
+                            "addresses",
+                            "friends",
+                            "norms",
+                            "communities",
+                            "tasks",
+                            "trust",
+                            "occupation",
+                            "nationality",
+                            "locale",
+                            "competences"
+                        ],
+                        "example": "name"
+                    },
+                    "from": {
+                        "description": "The time when the variable is set in ISO 8601 format.",
+                        "type": "string",
+                        "example": "2018-06-21T07:32:22Z"
+                    },
+                    "to": {
+                        "description": "The time when the variable is modified to a new value in ISO 8601 format.",
+                        "type": "string",
+                        "example": "2018-07-21T07:32:22Z"
+                    },
+                    "value": {
+                        "description": "The value of the attribute",
+                        "type": "object",
+                        "example": "Dr. John Smith Jr."
+                    }
+                }
+            },
+            "status": {
+                "xml": {
+                    "name": "status"
+                },
+                "description": "Provide information about the current status of the API",
+                "type": "object",
+                "properties": {
+                    "vendor": {
+                        "description": "Contain information of the organization that has implemented the API",
+                        "type": "string",
+                        "example": "UDT-IA, IIIA-CSIC"
+                    },
+                    "version": {
+                        "description": "Contain the version of the API",
+                        "type": "string",
+                        "example": "1.0.0"
+                    }
+                }
+            },
+            "trust": {
+                "xml": {
+                    "name": "trust"
+                },
+                "description": "The information of the trust of an user respect another.",
+                "type": "object",
+                "properties": {
+                    "user_id": {
+                        "description": "The identifier of the user that this is the trust.",
+                        "type": "string",
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    "value": {
+                        "description": "The trust over the user. It has to be on the range [0,1].",
+                        "type": "number",
+                        "example": 0.43
+                    }
+                }
+            },
+            "questionnaire": {
+                "xml": {
+                    "name": "questionnaire"
+                },
+                "description": "A questionnaire used to evaluate a person attribute",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "A name that identifies the questionnaire for a human",
+                        "type": "string",
+                        "example": "Personality test"
+                    },
+                    "questions": {
+                        "description": "The set of questions used to evaluate the person.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/question"
+                        }
+                    },
+                    "description": {
+                        "description": "Explains what attribute of a person it evaluates",
+                        "type": "string",
+                        "example": "With this questionnaire is possible to obtain the personality of a person."
                     }
                 }
             },
@@ -192,63 +945,29 @@
                     }
                 }
             },
-            "norm": {
+            "competence": {
                 "xml": {
-                    "name": "norm"
+                    "name": "competence"
                 },
-                "description": "This component describes an acceptable way of behaving by any user.",
+                "description": "A competence that an user can do.",
                 "type": "object",
                 "properties": {
-                    "code": {
-                        "description": "The code of the norm.",
-                        "type": "string"
-                    }
-                }
-            },
-            "message_attribute": {
-                "xml": {
-                    "name": "message_attribute"
-                },
-                "description": "This component describes an attribute on the message content.",
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "description": "The name of the attribute.",
+                    "level": {
+                        "description": "The ability level of the person in the competence.",
                         "type": "string",
-                        "example": "community_id"
+                        "enum": [
+                            "Novice",
+                            "Experienced_beginner",
+                            "Practitioner",
+                            "Knowledgeable_practitioner",
+                            "Expert"
+                        ],
+                        "example": "Expert"
                     },
-                    "value": {
-                        "description": "The value of the attribute.",
-                        "type": "object",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    }
-                }
-            },
-            "community_norms_page": {
-                "xml": {
-                    "name": "community_norms_page"
-                },
-                "description": "Contains a set of community norms found",
-                "type": "object",
-                "properties": {
-                    "total": {
-                        "format": "int64",
-                        "description": "The number total of community norms that satisfies the search.",
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "offset": {
-                        "format": "int32",
-                        "description": "The index of the first community norm returned.",
-                        "type": "integer",
-                        "example": 0
-                    },
-                    "norms": {
-                        "description": "The set of community norms found",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/community_norm"
-                        }
+                    "name": {
+                        "description": "The name of the competence",
+                        "type": "string",
+                        "example": "cooking"
                     }
                 }
             },
@@ -293,53 +1012,6 @@
                     }
                 }
             },
-            "composite": {
-                "xml": {
-                    "name": "composite"
-                },
-                "description": "Provide information about how the teams have to be created",
-                "type": "object",
-                "properties": {
-                    "requirements": {
-                        "$ref": "#/components/schemas/requirements"
-                    },
-                    "at_most": {
-                        "description": "If this is 'true' the size of the teams cannot be more than the specified on 'people_per_team'",
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "performance": {
-                        "format": "double",
-                        "maximum": 1,
-                        "description": "This value allows defining the balancing of the teams. When it is near 0.5 create similar teams, when it is near to 0 the worst are the leaders and when it is near to 1 the bests are the leaders.",
-                        "type": "number",
-                        "minimum": 0,
-                        "example": 0.5
-                    },
-                    "time": {
-                        "format": "int32",
-                        "description": "The maximum seconds that it has to calculate the best combination. When it is reached return the best team composition that it has found.",
-                        "type": "integer",
-                        "minimum": 0,
-                        "example": 30
-                    },
-                    "people_per_team": {
-                        "format": "int32",
-                        "description": "The size of the teams to create",
-                        "type": "integer",
-                        "minimum": 2,
-                        "example": 2
-                    },
-                    "people": {
-                        "minItems": 4,
-                        "description": "Contain the people that have to be distributed on different teams",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/person"
-                        }
-                    }
-                }
-            },
             "community_task_type": {
                 "xml": {
                     "name": "community_task_type"
@@ -359,74 +1031,6 @@
                     },
                     "task_type": {
                         "$ref": "#/components/schemas/task_type"
-                    }
-                }
-            },
-            "community_task_instance": {
-                "xml": {
-                    "name": "community_task_instance"
-                },
-                "description": "This component describes a community task instance.",
-                "type": "object",
-                "properties": {
-                    "goal": {
-                        "$ref": "#/components/schemas/goal"
-                    },
-                    "id": {
-                        "description": "The identifier of the task instance.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "state": {
-                        "description": "The attributes that define the state of the task instance.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/task_attribute"
-                        }
-                    },
-                    "team": {
-                        "description": "The identifiers of the community members that has to team up to do the task",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "example": [
-                            "550e8400-e29b-41d4-a716-446655440000",
-                            "1db14dd1-ed9a-463d-a518-54c7c38dcec9"
-                        ]
-                    },
-                    "task_type": {
-                        "$ref": "#/components/schemas/community_task_type"
-                    }
-                }
-            },
-            "friend": {
-                "xml": {
-                    "name": "friend"
-                },
-                "description": "The information of a friend.",
-                "type": "object",
-                "properties": {
-                    "friend_id": {
-                        "description": "The identifier of the friend.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "name": {
-                        "description": "The friend name.",
-                        "type": "string",
-                        "example": "Johnydo"
-                    },
-                    "status": {
-                        "description": "The friend status.",
-                        "type": "string",
-                        "enum": [
-                            "added",
-                            "removed",
-                            "blocked",
-                            "suggested"
-                        ],
-                        "example": "added"
                     }
                 }
             },
@@ -450,55 +1054,6 @@
                         "type": "integer",
                         "minimum": 0,
                         "example": 2
-                    }
-                }
-            },
-            "composed_teams": {
-                "xml": {
-                    "name": "composed_teams"
-                },
-                "description": "The information of the composed teams",
-                "type": "object",
-                "properties": {
-                    "optimal": {
-                        "description": "If this is 'true' the created teams are the best possible",
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "teams": {
-                        "description": "The teams that have been created",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/team"
-                        }
-                    }
-                }
-            },
-            "profile_attributes_page": {
-                "xml": {
-                    "name": "profile_attributes_page"
-                },
-                "description": "Contains a set of profile attributes found",
-                "type": "object",
-                "properties": {
-                    "total": {
-                        "format": "int64",
-                        "description": "The number total of profile attributes that satisfies the search.",
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "offset": {
-                        "format": "int32",
-                        "description": "The index of the first profile attribute returned.",
-                        "type": "integer",
-                        "example": 0
-                    },
-                    "attributes": {
-                        "description": "The set of profile attributes found",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/profile_attribute"
-                        }
                     }
                 }
             },
@@ -527,25 +1082,6 @@
                         "items": {
                             "$ref": "#/components/schemas/published_norm"
                         }
-                    }
-                }
-            },
-            "error_message": {
-                "xml": {
-                    "name": "error_message"
-                },
-                "description": "Inform of an error that happens when interacts with the API",
-                "type": "object",
-                "properties": {
-                    "code": {
-                        "description": "Contain code that identifies the error",
-                        "type": "string",
-                        "example": "error_code"
-                    },
-                    "message": {
-                        "description": "Contain a brief description of the error to be read by a human",
-                        "type": "string",
-                        "example": "Error readable by a human"
                     }
                 }
             },
@@ -660,19 +1196,6 @@
                     }
                 }
             },
-            "goal": {
-                "xml": {
-                    "name": "goal"
-                },
-                "description": "This component describes an objective to achieve in a task.",
-                "type": "object",
-                "properties": {
-                    "code": {
-                        "description": "The code of the goal.",
-                        "type": "string"
-                    }
-                }
-            },
             "address": {
                 "xml": {
                     "name": "address"
@@ -746,89 +1269,6 @@
                         "description": "The text of the question",
                         "type": "string",
                         "example": "The judges must be"
-                    }
-                }
-            },
-            "profile": {
-                "xml": {
-                    "name": "profile"
-                },
-                "description": "This component describes a profile of users.",
-                "type": "object",
-                "properties": {
-                    "addresses": {
-                        "description": "The different address of the user",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/address"
-                        }
-                    },
-                    "languages": {
-                        "description": "The languages that the user can understand",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/language"
-                        }
-                    },
-                    "gender": {
-                        "description": "The possible gender of a person.",
-                        "type": "string",
-                        "enum": [
-                            "FEMALE_CIS",
-                            "MALE_CIS",
-                            "FEMALE_TRANS",
-                            "MALE_TRANS",
-                            "NO_BINARY"
-                        ]
-                    },
-                    "birth_date": {
-                        "description": "The ISO 8601 date of birth of the user",
-                        "type": "string",
-                        "example": "2019-06-28"
-                    },
-                    "avatar": {
-                        "description": "The URL to an image that represents the avatar of the user.",
-                        "type": "string",
-                        "example": "https://internetofus.eu/wp-content/uploads/sites/38/2019/02/WeNet_logo.png"
-                    },
-                    "intelligences": {
-                        "$ref": "#/components/schemas/intelligences"
-                    },
-                    "personality": {
-                        "$ref": "#/components/schemas/personality"
-                    },
-                    "phone": {
-                        "description": "The phone number of the user, on the E.164 format (^\\+?[1-9]\\d{1,14}$)",
-                        "type": "string",
-                        "example": "+34987654321"
-                    },
-                    "name": {
-                        "description": "The real name of the user",
-                        "type": "string",
-                        "example": "Dr. John Doe Jr."
-                    },
-                    "ethnic_group": {
-                        "description": "The ethnic group of the user in English",
-                        "type": "string",
-                        "example": "Eskimo"
-                    },
-                    "id": {
-                        "description": "The identifier of the profile.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "public_name": {
-                        "description": "The name that it wants to be identified by other users on WeNet",
-                        "type": "string",
-                        "example": "Jonny D."
-                    },
-                    "email": {
-                        "description": "The email of the user",
-                        "type": "string",
-                        "example": "jonnyd@internetofus.eu"
-                    },
-                    "geolocation": {
-                        "$ref": "#/components/schemas/geolocation"
                     }
                 }
             },
@@ -1020,52 +1460,6 @@
                     }
                 }
             },
-            "community": {
-                "xml": {
-                    "name": "community"
-                },
-                "description": "This component describes a community of users.",
-                "type": "object",
-                "properties": {
-                    "keywords": {
-                        "description": "The keywords of the community",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "example": [
-                            "social interaction",
-                            "ethics",
-                            "diversity"
-                        ]
-                    },
-                    "since_time": {
-                        "description": "The time in ISO 8601 format since the community is active.",
-                        "type": "string",
-                        "example": "2019-06-21T07:32:22Z"
-                    },
-                    "name": {
-                        "description": "The name of the community.",
-                        "type": "string",
-                        "example": "WeNet"
-                    },
-                    "description": {
-                        "description": "The description of the community.",
-                        "type": "string",
-                        "example": "A community of users that provide or require help"
-                    },
-                    "id": {
-                        "description": "The identifier of the community.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "avatar": {
-                        "description": "The URL to an image that represents the avatar of the community.",
-                        "type": "string",
-                        "example": "https://internetofus.eu/wp-content/uploads/sites/38/2019/02/WeNet_logo.png"
-                    }
-                }
-            },
             "message": {
                 "xml": {
                     "name": "message"
@@ -1089,30 +1483,30 @@
                     }
                 }
             },
-            "community_members_page": {
+            "trusts_page": {
                 "xml": {
-                    "name": "community_members_page"
+                    "name": "trusts_page"
                 },
-                "description": "Contains a set of community members found",
+                "description": "Contains a set of trusts found",
                 "type": "object",
                 "properties": {
                     "total": {
                         "format": "int64",
-                        "description": "The number total of community members that satisfies the search.",
+                        "description": "The number total of trusts that satisfies the search.",
                         "type": "integer",
                         "example": 100
                     },
                     "offset": {
                         "format": "int32",
-                        "description": "The index of the first community member returned.",
+                        "description": "The index of the first trust returned.",
                         "type": "integer",
                         "example": 0
                     },
-                    "members": {
-                        "description": "The set of community members found",
+                    "trusts": {
+                        "description": "The set of trusts found",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/community_member"
+                            "$ref": "#/components/schemas/trust"
                         }
                     }
                 }
@@ -1133,50 +1527,6 @@
                         "description": "The value of the attribute.",
                         "type": "object",
                         "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    }
-                }
-            },
-            "teams_distribution": {
-                "xml": {
-                    "name": "teams_distribution"
-                },
-                "description": "Describe how a set of people will be distributed on a set of teams",
-                "type": "object",
-                "required": [
-                    "number_of_people",
-                    "people_per_team"
-                ],
-                "properties": {
-                    "number_of_people": {
-                        "format": "int32",
-                        "description": "The number of people that have distributed on the teams",
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "atMost": {
-                        "maxItems": 2,
-                        "xml": {
-                            "name": "at_most"
-                        },
-                        "description": "Contain the distribution of the people on teams when the size is a maximum",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/team_distribution"
-                        }
-                    },
-                    "people_per_team": {
-                        "format": "int32",
-                        "description": "The expected number of people on each team",
-                        "type": "integer",
-                        "example": 2
-                    },
-                    "basic": {
-                        "maxItems": 2,
-                        "description": "Contain the distribution of the people on teams when the size is a minimum",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/team_distribution"
-                        }
                     }
                 }
             },
@@ -1222,92 +1572,6 @@
                     }
                 }
             },
-            "person": {
-                "xml": {
-                    "name": "person"
-                },
-                "description": "Provide information about a person",
-                "type": "object",
-                "properties": {
-                    "personality": {
-                        "$ref": "#/components/schemas/personality"
-                    },
-                    "id": {
-                        "description": "Contain the identifier of the person",
-                        "type": "string",
-                        "example": "550e8400-e29b-41d4-a716-446655440000"
-                    },
-                    "intelligences": {
-                        "$ref": "#/components/schemas/intelligences"
-                    }
-                }
-            },
-            "published_task_types_page": {
-                "xml": {
-                    "name": "published_task_types_page"
-                },
-                "description": "Contains a set of published task types found",
-                "type": "object",
-                "properties": {
-                    "total": {
-                        "format": "int64",
-                        "description": "The number total of published task types that satisfies the search.",
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "offset": {
-                        "format": "int32",
-                        "description": "The index of the first published task type returned.",
-                        "type": "integer",
-                        "example": 0
-                    },
-                    "taskTypes": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/published_task_type"
-                        }
-                    }
-                }
-            },
-            "published_task_type": {
-                "xml": {
-                    "name": "published_task_type"
-                },
-                "description": "A task type that is published to share with all the WeNet users.",
-                "type": "object",
-                "properties": {
-                    "publisher_id": {
-                        "description": "The identifier of the user that has published the task type.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "taskType": {
-                        "$ref": "#/components/schemas/task_type"
-                    },
-                    "keywords": {
-                        "description": "The keywords that describe the published task type.",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "example": [
-                            "social interaction",
-                            "ethics",
-                            "diversity"
-                        ]
-                    },
-                    "id": {
-                        "description": "The identifier of the published task type.",
-                        "type": "string",
-                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
-                    },
-                    "publish_date": {
-                        "description": "The ISO 8601 date when the task type was published",
-                        "type": "string",
-                        "example": "2019-06-28"
-                    }
-                }
-            },
             "task_type": {
                 "xml": {
                     "name": "task_type"
@@ -1317,6 +1581,11 @@
                 "properties": {
                     "goal": {
                         "$ref": "#/components/schemas/goal"
+                    },
+                    "audio_description": {
+                        "description": "The URL to an audio file that describe the task type.",
+                        "type": "string",
+                        "example": "https://internetofus.eu/wp-content/uploads/task_12345.mp3"
                     },
                     "norms": {
                         "description": "The norms that has to satisfy the users to do the task.",
@@ -1373,83 +1642,6 @@
                     }
                 }
             },
-            "communities_page": {
-                "xml": {
-                    "name": "communities_page"
-                },
-                "description": "Contains a set of communities found",
-                "type": "object",
-                "properties": {
-                    "total": {
-                        "format": "int64",
-                        "description": "The number total of communities that satisfies the search.",
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "offset": {
-                        "format": "int32",
-                        "description": "The index of the first community returned.",
-                        "type": "integer",
-                        "example": 0
-                    },
-                    "communities": {
-                        "description": "The set of communities found",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/community"
-                        }
-                    }
-                }
-            },
-            "profile_attribute": {
-                "xml": {
-                    "name": "profile_attribute"
-                },
-                "description": "Contains the value of a profile attribute.",
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "description": "The name of the attribute",
-                        "type": "string",
-                        "enum": [
-                            "name",
-                            "public_name",
-                            "email",
-                            "avatar",
-                            "phone",
-                            "languages",
-                            "gender",
-                            "geolocation",
-                            "personality",
-                            "intelligences",
-                            "birth_date",
-                            "ethnic_group",
-                            "addresses",
-                            "friends",
-                            "norms",
-                            "communities",
-                            "tasks",
-                            "trust"
-                        ],
-                        "example": "name"
-                    },
-                    "from": {
-                        "description": "The time when the variable is set in ISO 8601 format.",
-                        "type": "string",
-                        "example": "2018-06-21T07:32:22Z"
-                    },
-                    "to": {
-                        "description": "The time when the variable is modified to a new value in ISO 8601 format.",
-                        "type": "string",
-                        "example": "2018-07-21T07:32:22Z"
-                    },
-                    "value": {
-                        "description": "The value of the attribute",
-                        "type": "object",
-                        "example": "Dr. John Smith Jr."
-                    }
-                }
-            },
             "geolocation": {
                 "xml": {
                     "name": "geolocation"
@@ -1462,29 +1654,20 @@
                         "type": "number",
                         "example": 42.4371685
                     },
+                    "label": {
+                        "description": "The description of the location.",
+                        "type": "string",
+                        "example": "Home"
+                    },
+                    "poi": {
+                        "description": "The identifier that uniquely identifies the location.",
+                        "type": "string",
+                        "example": "EisxMyBNYXJrZXQgU3RyZWV0LCBXaWxtaW5ndG9uLCBOQyAyODQwMSwgVVNB"
+                    },
                     "longitude": {
                         "description": "The longitude coordinate of the location.",
                         "type": "number",
                         "example": 1.9331308
-                    }
-                }
-            },
-            "status": {
-                "xml": {
-                    "name": "status"
-                },
-                "description": "Provide information about the current status of the API",
-                "type": "object",
-                "properties": {
-                    "vendor": {
-                        "description": "Contain information of the organization that has implemented the API",
-                        "type": "string",
-                        "example": "UDT-IA, IIIA-CSIC"
-                    },
-                    "version": {
-                        "description": "Contain the version of the API",
-                        "type": "string",
-                        "example": "1.0.0"
                     }
                 }
             }
@@ -2831,8 +3014,8 @@
         },
         "/profiles/{profile_id}/communities/{community_id}/trust/{user_id}": {
             "get": {
-                "summary": "Get the trust over another user in a community",
-                "description": "Get the trust of the profile user respect another in a community",
+                "summary": "Get the users in a community that have a trust in an specific range",
+                "description": "Allow to obtain the users witch trust in a community are in a specific range",
                 "operationId": "getUserTrustInCommunity_1",
                 "responses": {
                     "200": {
@@ -3373,6 +3556,7 @@
                     }
                 ],
                 "tags": [
+                    "Friends",
                     "Profiles"
                 ]
             },
@@ -3533,21 +3717,12 @@
                     },
                     {
                         "schema": {
-                            "default": "0",
+                            "default": "*",
                             "type": "string"
                         },
                         "in": "query",
-                        "name": "min_trust",
-                        "description": "The least trust, inclusive, that friends must have to return"
-                    },
-                    {
-                        "schema": {
-                            "default": "1",
-                            "type": "string"
-                        },
-                        "in": "query",
-                        "name": "max_trust",
-                        "description": "The maximum trust, inclusive, that must have friends to return"
+                        "name": "status",
+                        "description": "\"Pattern that has to match the status of the friend to return"
                     },
                     {
                         "schema": {
@@ -3571,6 +3746,7 @@
                     }
                 ],
                 "tags": [
+                    "Friends",
                     "Profiles"
                 ]
             }
@@ -4856,203 +5032,6 @@
                 ]
             }
         },
-        "/profiles/{profile_id}/attributes": {
-            "get": {
-                "summary": "Get some profile attributes ",
-                "description": "Allow to obtain the profile attribute values in a period of time",
-                "operationId": "getAttributes_1",
-                "responses": {
-                    "200": {
-                        "description": "The found attributes",
-                        "content": {
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/profile_attributes_page"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/profile_attributes_page"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized to get the profile attributes",
-                        "content": {
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "Unauthorized to get the profile attributes",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profiles_unauthorized",
-                                            "message": "You have to log in to access to profile attributes"
-                                        }
-                                    }
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "Unauthorized to get the profile attributes",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profiles_unauthorized",
-                                            "message": "You have to log in to access to profile attributes"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "You can not get the profile attributes of another user",
-                        "content": {
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "Forbidden to get the profile attributes of another user",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profile_forbidden",
-                                            "message": "You can not get the profile attributes of another user"
-                                        }
-                                    }
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "Forbidden to get the profile attributes of another user",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profile_forbidden",
-                                            "message": "You can not get the profile attributes of another user"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found profile",
-                        "content": {
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "No found response example",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profile_not_found",
-                                            "message": "Not found a profile associated to the identifier"
-                                        }
-                                    }
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error_message"
-                                },
-                                "examples": {
-                                    "Default Response": {
-                                        "summary": "No found response example",
-                                        "description": "Default Response",
-                                        "value": {
-                                            "code": "profile_not_found",
-                                            "message": "Not found a profile associated to the identifier"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "header",
-                        "name": "Authorization",
-                        "description": "Provide the authorization code",
-                        "required": true,
-                        "example": "WeNet 89673098lkjbfjihg8103760"
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "path",
-                        "name": "profile_id",
-                        "description": "The identifier of the profile to get",
-                        "required": true
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "query",
-                        "name": "attribute_name",
-                        "description": "Pattern that has to match the attributes to return"
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "query",
-                        "name": "from",
-                        "description": "the date inclusive that mark the older limit in witch the attribute has to be active. It is formatter in ISO 8601."
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "query",
-                        "name": "to",
-                        "description": "the date inclusive that mark the newest limit in witch the attribute has to be active. It is formatter in ISO 8601."
-                    },
-                    {
-                        "schema": {
-                            "default": 0,
-                            "format": "int32",
-                            "type": "integer"
-                        },
-                        "in": "query",
-                        "name": "offset",
-                        "description": "Index of the first profile attribute to return"
-                    },
-                    {
-                        "schema": {
-                            "default": 10,
-                            "format": "int32",
-                            "type": "integer"
-                        },
-                        "in": "query",
-                        "name": "limit",
-                        "description": "Number maximum of profile attributes to return"
-                    }
-                ],
-                "tags": [
-                    "Profiles"
-                ]
-            }
-        },
         "/teams/composite": {
             "post": {
                 "summary": "Create teams",
@@ -5237,6 +5216,212 @@
                 ]
             }
         },
+        "/profiles/{profile_id}/historic": {
+            "get": {
+                "summary": "Get some profile attributes ",
+                "description": "Allow to obtain the profile attribute values in a period of time",
+                "operationId": "getAttributes_1",
+                "responses": {
+                    "200": {
+                        "description": "The found attributes",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/profile_attributes_page"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/profile_attributes_page"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to get the profile attributes",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile attributes",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to profile attributes"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile attributes",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to profile attributes"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile attributes of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile attributes of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile attributes of another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile attributes of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile attributes of another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to get",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "attribute_name",
+                        "description": "Pattern that has to match the attributes to return"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "from",
+                        "description": "The date inclusive that mark the older limit in witch the attribute has to be active. It is formatter in ISO 8601."
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "to",
+                        "description": "The date inclusive that mark the newest limit in witch the attribute has to be active. It is formatter in ISO 8601."
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "order",
+                        "description": "The order in witch has to return the attributes"
+                    },
+                    {
+                        "schema": {
+                            "default": 0,
+                            "format": "int32",
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Index of the first profile attribute to return"
+                    },
+                    {
+                        "schema": {
+                            "default": 10,
+                            "format": "int32",
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Number maximum of profile attributes to return"
+                    }
+                ],
+                "tags": [
+                    "Historic",
+                    "Profiles"
+                ]
+            }
+        },
         "/profiles/{profile_id}/trust": {
             "post": {
                 "summary": "Set the trust over another user",
@@ -5394,6 +5579,225 @@
                         "description": "The identifier of the profile to set the user trust",
                         "required": true,
                         "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    }
+                ],
+                "tags": [
+                    "Trust",
+                    "Profiles"
+                ]
+            },
+            "get": {
+                "summary": "Get the users that have a trust in an specific range",
+                "description": "Allow to obtain the users witch trust are in a specific range",
+                "operationId": "getUsersWithTrust_1",
+                "responses": {
+                    "200": {
+                        "description": "The trust of the user that are in the range",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad search parameters",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to get the user trust",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to get the user trusts",
+                        "required": true,
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "min_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "max_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "default": "DESC",
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "order",
+                        "description": "The order in witch has to return the users",
+                        "required": true,
+                        "example": "ASC"
                     }
                 ],
                 "tags": [
@@ -5560,6 +5964,7 @@
                     }
                 ],
                 "tags": [
+                    "Friends",
                     "Profiles"
                 ]
             },
@@ -5730,6 +6135,7 @@
                     }
                 ],
                 "tags": [
+                    "Friends",
                     "Profiles"
                 ]
             }
@@ -6416,6 +6822,235 @@
                     "Trust",
                     "Profiles"
                 ]
+            },
+            "get": {
+                "summary": "Get the users in a community that has a trust in an specific range",
+                "description": "Allow to obtain the users witch trust in a community that are in a specific range",
+                "operationId": "getUsersWithTrustInCommunity_1",
+                "responses": {
+                    "200": {
+                        "description": "The trust of the user that are in the range",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad search parameters",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to get the user trust",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to get the user trusts",
+                        "required": true,
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "community_id",
+                        "description": "The identifier of the community to get the user trusts",
+                        "required": true,
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "min_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "max_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "default": "DESC",
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "order",
+                        "description": "The order in witch has to return the users",
+                        "required": true,
+                        "example": "ASC"
+                    }
+                ],
+                "tags": [
+                    "Trust",
+                    "Profiles"
+                ]
             }
         },
         "/tasks/types/published": {
@@ -6987,6 +7622,340 @@
                 "tags": [
                     "Communities",
                     "Tasks"
+                ]
+            }
+        },
+        "/profiles/{profile_id}/competences/{competence_name}": {
+            "delete": {
+                "summary": "Remove a competence",
+                "description": "Remove a competence from an user profile",
+                "operationId": "removeCompetence_1",
+                "responses": {
+                    "200": {
+                        "description": "The removed competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to remove a competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to remove a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to remove a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile competences of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to remove a competence from a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not remove a competence from another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to remove a competence from a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not remove a competence from another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile or competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to remove the competence",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "competence_name",
+                        "description": "The name of the competence to remove",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Competences",
+                    "Profiles"
+                ]
+            },
+            "put": {
+                "summary": "Update a competence",
+                "requestBody": {
+                    "description": "The new values for the competence",
+                    "content": {
+                        "*/*": {
+                            "schema": {
+                                "$ref": "#/components/schemas/competence"
+                            }
+                        }
+                    }
+                },
+                "description": "Update a competence from an user profile",
+                "operationId": "updateCompetence_1",
+                "responses": {
+                    "200": {
+                        "description": "The updated competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to update a competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to update a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to update a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile competences of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to update a competence from a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not update a competence from another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to update a competence from a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not update a competence from another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile or competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to update the competence",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "competence_name",
+                        "description": "The name of the competence to update",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Competences",
+                    "Profiles"
                 ]
             }
         },
@@ -8567,6 +9536,643 @@
                     "Trust",
                     "Profiles"
                 ]
+            },
+            "get": {
+                "summary": "Get the users in a community that have a trust to fulfil a task in an specific range",
+                "description": "Allow to obtain the users witch trust to fulfil a task in a community are in a specific range",
+                "operationId": "getUsersWithTrustInCommunityToDoTask_1",
+                "responses": {
+                    "200": {
+                        "description": "The trust of the user that are in the range",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/trusts_page"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad search parameters",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unexpected search parameter value",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The minimum trust has to be on the range [0,1]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to get the user trust",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the profile",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile of another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to get the trust",
+                        "required": true,
+                        "example": "bf274393-1e7b-4d40-a897-88cb96277edd"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "community_id",
+                        "description": "The identifier of the community to get the user trust",
+                        "required": true,
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "task_type_id",
+                        "description": "The identifier of the type of task that the user will do",
+                        "required": true,
+                        "example": "a56f686a-6f00-45c9-ad4f-dabd8cb13bfe"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "min_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "max_trust",
+                        "description": "The minimum inclusive trust of the users to return",
+                        "required": true,
+                        "example": "123e4567-e89b-12d3-a456-426655440000"
+                    },
+                    {
+                        "schema": {
+                            "default": "DESC",
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "order",
+                        "description": "The order in witch has to return the users",
+                        "required": true,
+                        "example": "ASC"
+                    }
+                ],
+                "tags": [
+                    "Trust",
+                    "Profiles"
+                ]
+            }
+        },
+        "/profiles/{profile_id}/competences": {
+            "post": {
+                "summary": "Add a competence",
+                "requestBody": {
+                    "description": "The competence to add",
+                    "content": {
+                        "*/*": {
+                            "schema": {
+                                "$ref": "#/components/schemas/competence"
+                            }
+                        }
+                    }
+                },
+                "description": "Add a competence to an user profile",
+                "operationId": "addCompetence_1",
+                "responses": {
+                    "200": {
+                        "description": "The added competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competence"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "A competence field is not valid",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The competence need a name"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "A competence field is not valid",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "The competence need a name"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to add a competence",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to add a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to add a competence",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to modify the profile"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile competences of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to add a competence into a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not add a competence to another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to add a competence into a profile of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not add a competence to another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to add the competence",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Competences",
+                    "Profiles"
+                ]
+            },
+            "get": {
+                "summary": "Get some competences",
+                "description": "Allow to obtain the competences associated to a profile",
+                "operationId": "getCompetences_1",
+                "responses": {
+                    "200": {
+                        "description": "The found competences",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competences_page"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/competences_page"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized to get the competences",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the competences",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile competences"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Unauthorized to get the competences",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profiles_unauthorized",
+                                            "message": "You have to log in to access to the profile competences"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You can not get the profile competences of another user",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile competences of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile competences of another user"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "Forbidden to get the profile competences of another user",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_forbidden",
+                                            "message": "You can not get the profile competences of another user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found profile",
+                        "content": {
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_message"
+                                },
+                                "examples": {
+                                    "Default Response": {
+                                        "summary": "No found response example",
+                                        "description": "Default Response",
+                                        "value": {
+                                            "code": "profile_not_found",
+                                            "message": "Not found a profile associated to the identifier"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Provide the authorization code",
+                        "required": true,
+                        "example": "WeNet 89673098lkjbfjihg8103760"
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "name": "profile_id",
+                        "description": "The identifier of the profile to get",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "default": "*",
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "attribute_name",
+                        "description": "Pattern that has to match the name of the competence to return"
+                    },
+                    {
+                        "schema": {
+                            "default": "*",
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "level",
+                        "description": "Pattern that has to match the level of the competence to return"
+                    },
+                    {
+                        "schema": {
+                            "default": "level DESC",
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "name": "order",
+                        "description": "The order in witch the competences has to be returned"
+                    },
+                    {
+                        "schema": {
+                            "default": 0,
+                            "format": "int32",
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "offset",
+                        "description": "Index of the first profile attribute to return"
+                    },
+                    {
+                        "schema": {
+                            "default": 10,
+                            "format": "int32",
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Number maximum of profile attributes to return"
+                    }
+                ],
+                "tags": [
+                    "Competences",
+                    "Profiles"
+                ]
             }
         },
         "/status": {
@@ -9922,9 +11528,9 @@
             "name": "UDT-IA, IIIA-CSIC",
             "url": "http://www.iiia.csic.es/"
         },
-        "description": "This API will be used to storing and maintaining the user profile, the task description,\nand the community description, along with their associated norms, to realize the user\ninteractions between them sending messages guaranteeing that they follow the norms,\nand to form teams to realize a task.\n\nThe functionality of the API is organized around the following concepts:\n\n * **Community**: is a group of users with a common goal.\n * **Message**: is the atomic communication between users.\n * **Norm**: is a rule that restricts or prescribes the behaviour of users.\n * **Profile**: is a fixed set of user attributes.\n * **Task**: is an individual goal to be achieved by a team.\n * **Team**: is a group of individuals set to fulfil a task.\n * **Trust**: is the confidence that another user achieve a task.\n\n\n## Community\n\nThe functionality provided allows to managing members, norms and task types associated with a community.\n\nAt the moment does not exist any restriction to create communities.\nEvery member of a community has the right to access to:\n\n * The name, description and avatar of the community.\n * The task types that can be done in the community.\n * The norm of the community.\n * The list of members of the community.\n * The list of task instances that it is involved.\n\nFor the rest of the actions it needs to have the privilege to perform the action. This privileges can be:\n\n * **MODIFY_NAME**: a user with this privilege can modify the name of the community.\n * **MODIFY_DESCRIPTION**: a user with this privilege can modify the description of the community.\n * **MODIFY_KEYWORDS**: a user with this privilege can modify the keywords of the community.\n * **MODIFY_AVATAR**: a user with this privilege can modify the avatar image of the community.\n * **ADD_NORM**: a user with this privilege can add a new norm into the community.\n * **REMOVE_NORM**: a user with this privilege can remove a norm form the community.\n * **ADD_MEMBER**: a user with this privilege can add a new user into the community.\n * **REMOVE_MEMBER**: a user with this privilege can remove a user from the community.\n * **MODIFY_MEMBER_PRIVILEGES**: a user with this privilege can modify the privileges of a community member.\n * **VIEW_MEMBER_PRIVILEGES**: a user with this privilege can view the privileges of a community member.\n * **ADD_TASK_TYPE**: a user with this privilege can add a new type of task that can be done in the community.\n * **REMOVE_TASK_TYPE**: a user with this privilege can remove a type of task that can be done in the community.\n * **ADD_TASK_INSTANCE**: a user with this privilege can start a new task to do in a community.\n\n\nOn the other hand, to join into a community you have to do the same action to add a member,\nand to leave a community the same action as remove a member.\n\n\n## Message\n\nThe functionality provided allows for sending messages.\n\nWhen a user sends a message through the API, the message is sent to the norm interpreter of the user.\nThis interpreter needs to first verify that the message does not violate any of the norms,\nthis includes the community norms, the task norms, the sender\u2019s individual norms, as well as the context-dependent\nnorms that are attached to this message. If the message violates any of those norms,\nan error message is sent back to the user. However, if the message obeys the norms, then the norm interpreter needs\nto decide what to do next, usually translated into sending messages to other peers. This decision follows from\nthe community, individual and context-dependent norms, and takes the user\u2019s profile (both public and private)\ninto account as needed. If the message is sent to the interpreter of another user. As in the previous case,\nthe norm interpreter of this new user needs to first verify that the message does not violate any of the community norms.\nThis re-checking upon receipt ensures that the sender\u2019s norm engine has not been manipulated to cheat.\nIf the message violates any of the community norms, then it may either be discarded, or if the community norms\nrequire sanctioning, then the appropriate sanctions should be executed. However, if the action obeys the community norms,\nthen the norm interpreter needs to decide what to do next, which is usually translated into sending messages\nto other peers and/or sending messages to its user. This decision takes into consideration the community norms,\nthe context-dependent norms that are attached to the message, the individual private norms of the human whose interpreter\nhas received this message, as well as their local profile (both private and public). This ensures that the interpreter\nabides with it is human\u2019s private norms without leaking any of their private norms and profile.\n\n\n## Norm\n\nThe functionality provided allows to publish norms, and manage the user and community norms.\n\nThere are norms on the individual (user level), the task level, and the community level.\nAn individual\u2019s norm might be \u201CSuppress incoming messages at night\u201D (and this will\nbe applied for the user who sets this norm only). A task norm might be \u201CDon\u2019t ask my ex\u201D\n(so that would be applied for a specific task only). A community norm might be\n\u201CIf you don\u2019t volunteer, you cannot ask for help\u201D and it would be enforced on everyone.\nGiven the above, this means that norms will be attached to users, tasks and communities.\n\n\n## Profile\n\nThe functionality provided allows accessing current and previous values of user attributes.\nIt also allows you to modify the current values.\n\nA profile is a set of attributes, and their current values represent the state of the user.\nThese attributes can be:\n\n * **name**: the name of the user.\n * **public_name**: the name that it wants to be identified by other users on WeNet. If it is not specified is used the name.\n * **email**: the email of the user.\n * **avatar**: the URL to an image that can be used as an avatar of the user.\n * **phone**: the phone number of the user, on the E.164 format (^\\+?[1-9]\\d{1,14}$).\n * **languages**: this is a set of languages that the user can understand.\n * **gender**: the gender of the user.\n * **geolocation**: the geographic coordinates where the user is.\n * **personality**: the personality of the user.\n * **intelligences**: the intelligences of the user.\n * **birth_date**: the ISO 8601 date of birth of the user.\n * **ethnic_group**: the ethnic group of the user in English.\n * **addresses**: a set of different address of the user.\n * **friends**: the list of friends of the user.\n * **norms**: describe the user's individual norms.\n * **communities**: provide the list of communities that the user participate.\n * **tasks**: provide the different states of the user\u2019s participation in different task teams.\n * **trust**: this attribute is used to known the trust respect others.\n\n\n### Language\n\nThe languages that a user can understand are defined by the **ISO 639-1** code of the language and\nthe linguistic ability level of the person. This level can be:\n\n * **A0**: Beginner/False beginner. The person only knows a few words of the language, if that.\n * **A1**: Elementary. The person can ask a few basic questions and ideas, but with a lot of mistakes.\n * **A2**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.\n           It stills to make a lot of big mistakes.\n * **B1**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.\n           It stills to make a lot of big mistakes.\n * **B2**: Intermediate. Now the person can converse in many situations, with less serious errors.\n * **C1**: Upper-intermediate. The person is comfortable in most situations, still some good mistakes.\n * **C2**: Proficient. The person is fluent, pretty much mother tongue. Extremely comfortable, it has complete control over the language.\n\n\n### Gender\n\nThe gender of a user can be:\n\n * **FEMALE_CIS**: A woman whose gender identity matches the sex that they were assigned at birth.\n * **MALE_CIS**: A man whose gender identity matches the sex that they were assigned at birth.\n * **FEMALE_TRANS**: A woman who is not identified with the gender that was assigned to him at birth and therefore lives in another gender identity.\n * **MALE_TRANS**: A man who is not identified with the gender that was assigned to him at birth and therefore lives in another gender identity.\n * **NO_BINARY**: A person who is not identified with either single binary genre established in a unique way.\n\n\n### Friends\n\nA user has a relationship with another if it is a friend. At the moment the possible status\nof this relationship can be **added** (when the other user is an active friend), **removed**\n(when the other user was a friend), **blocked** (when the other user cannot be a friend) or\n**suggested** (when the other user maybe a friend).\n\n\n### Trust\n\nThe trust over another user is dynamically and will be updated every time they collaborate\nto achieve a task. Also, you can get or set the trust on another user, on a member of\na community, or on a member of a community to fulfil a task type.\n\n\n## Task\n\nThe functionality provided allows to publish task types, create and manage task instances.\n\nThere are two concepts associated with the notion of a task: type and instance.\nA task type describes a generic goal and the norms that will regulate the interactions\nof the members of any team set to achieve any instance of the task's generic goal.\nAn instance of a task type has a specific goal, a team organized around that goal, and\npossibly a set of specific norms that extend the task type's generic norms.\n\n\n## Team\n\nThe functionality provided allows to automatically form teams that have diversity in gender,\npersonality and intelligence.\nAlso, we provide the functions to evaluate the personality and intelligences of users and\nthe result can be kept of the profile attributes.\n",
+        "description": "This API will be used to storing and maintaining the user profile, the task description,\nand the community description, along with their associated norms, to realize the user\ninteractions between them sending messages guaranteeing that they follow the norms,\nand to form teams to realize a task.\n\nThe functionality of the API is organized around the following concepts:\n\n * **Community**: is a group of users with a common goal.\n * **Message**: is the atomic communication between users.\n * **Norm**: is a rule that restricts or prescribes the behaviour of users.\n * **Profile**: is a fixed set of user attributes.\n * **Task**: is an individual goal to be achieved by a team.\n * **Team**: is a group of individuals set to fulfil a task.\n * **Trust**: is the confidence that another user achieve a task.\n\n\n## Community\n\nThe functionality provided allows to managing members, norms and task types associated with a community.\n\nAt the moment does not exist any restriction to create communities.\nEvery member of a community has the right to access to:\n\n * The name, description and avatar of the community.\n * The task types that can be done in the community.\n * The norm of the community.\n * The list of members of the community.\n * The list of task instances that it is involved.\n\nFor the rest of the actions it needs to have the privilege to perform the action. This privileges can be:\n\n * **MODIFY_NAME**: a user with this privilege can modify the name of the community.\n * **MODIFY_DESCRIPTION**: a user with this privilege can modify the description of the community.\n * **MODIFY_KEYWORDS**: a user with this privilege can modify the keywords of the community.\n * **MODIFY_AVATAR**: a user with this privilege can modify the avatar image of the community.\n * **ADD_NORM**: a user with this privilege can add a new norm into the community.\n * **REMOVE_NORM**: a user with this privilege can remove a norm form the community.\n * **ADD_MEMBER**: a user with this privilege can add a new user into the community.\n * **REMOVE_MEMBER**: a user with this privilege can remove a user from the community.\n * **MODIFY_MEMBER_PRIVILEGES**: a user with this privilege can modify the privileges of a community member.\n * **VIEW_MEMBER_PRIVILEGES**: a user with this privilege can view the privileges of a community member.\n * **ADD_TASK_TYPE**: a user with this privilege can add a new type of task that can be done in the community.\n * **REMOVE_TASK_TYPE**: a user with this privilege can remove a type of task that can be done in the community.\n * **ADD_TASK_INSTANCE**: a user with this privilege can start a new task to do in a community.\n\n\nOn the other hand, to join into a community you have to do the same action to add a member,\nand to leave a community the same action as remove a member.\n\n\n## Message\n\nThe functionality provided allows for sending messages.\n\nWhen a user sends a message through the API, the message is sent to the norm interpreter of the user.\nThis interpreter needs to first verify that the message does not violate any of the norms,\nthis includes the community norms, the task norms, the sender\u2019s individual norms, as well as the context-dependent\nnorms that are attached to this message. If the message violates any of those norms,\nan error message is sent back to the user. However, if the message obeys the norms, then the norm interpreter needs\nto decide what to do next, usually translated into sending messages to other peers. This decision follows from\nthe community, individual and context-dependent norms, and takes the user\u2019s profile (both public and private)\ninto account as needed. If the message is sent to the interpreter of another user. As in the previous case,\nthe norm interpreter of this new user needs to first verify that the message does not violate any of the community norms.\nThis re-checking upon receipt ensures that the sender\u2019s norm engine has not been manipulated to cheat.\nIf the message violates any of the community norms, then it may either be discarded, or if the community norms\nrequire sanctioning, then the appropriate sanctions should be executed. However, if the action obeys the community norms,\nthen the norm interpreter needs to decide what to do next, which is usually translated into sending messages\nto other peers and/or sending messages to its user. This decision takes into consideration the community norms,\nthe context-dependent norms that are attached to the message, the individual private norms of the human whose interpreter\nhas received this message, as well as their local profile (both private and public). This ensures that the interpreter\nabides with it is human\u2019s private norms without leaking any of their private norms and profile.\n\n\n## Norm\n\nThe functionality provided allows to publish norms, and manage the user and community norms.\n\nThere are norms on the individual (user level), the task level, and the community level.\nAn individual\u2019s norm might be \u201CSuppress incoming messages at night\u201D (and this will\nbe applied for the user who sets this norm only). A task norm might be \u201CDon\u2019t ask my ex\u201D\n(so that would be applied for a specific task only). A community norm might be\n\u201CIf you don\u2019t volunteer, you cannot ask for help\u201D and it would be enforced on everyone.\nGiven the above, this means that norms will be attached to users, tasks and communities.\n\n\n## Profile\n\nThe functionality provided allows accessing current and previous values of user attributes.\nIt also allows you to modify the current values.\n\nA profile is a set of attributes, and their current values represent the state of the user.\nThese attributes can be:\n\n * **name**: the name of the user.\n * **public_name**: the name that it wants to be identified by other users on WeNet. If it is not specified is used the name.\n * **email**: the email of the user.\n * **avatar**: the URL to an image that can be used as an avatar of the user.\n * **phone_number**: the phone number of the user, on the E.164 format (^\\+?[1-9]\\d{1,14}$).\n * **languages**: this is a set of languages that the user can understand.\n * **gender**: the gender of the user.\n * **geolocation**: the geographic coordinates where the user is.\n * **personality**: the personality of the user.\n * **intelligences**: the intelligences of the user.\n * **birth_date**: the ISO 8601 date of birth of the user.\n * **ethnic_group**: the ethnic group of the user in English.\n * **addresses**: a set of different address of the user.\n * **nationality**: the nationality of the user.\n * **occupation**: the main occupation of the user.\n * **locale**: the locale of the user.\n * **friends**: the list of friends of the user.\n * **norms**: describe the user's individual norms.\n * **communities**: provide the list of communities that the user participate.\n * **tasks**: provide the different states of the user\u2019s participation in different task teams.\n * **trust**: this attribute is used to known the trust respect others.\n * **competences**: the list of the competences of the user.\n\n\n### Language\n\nThe languages that a user can understand are defined by the **ISO 639-1** code of the language and\nthe linguistic ability level of the person. This level can be:\n\n * **A0**: Beginner/False beginner. The person only knows a few words of the language, if that.\n * **A1**: Elementary. The person can ask a few basic questions and ideas, but with a lot of mistakes.\n * **A2**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.\n           It stills to make a lot of big mistakes.\n * **B1**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.\n           It stills to make a lot of big mistakes.\n * **B2**: Intermediate. Now the person can converse in many situations, with less serious errors.\n * **C1**: Upper-intermediate. The person is comfortable in most situations, still some good mistakes.\n * **C2**: Proficient. The person is fluent, pretty much mother tongue. Extremely comfortable, it has complete control over the language.\n\n\n### Gender\n\nThe gender of a user can be:\n\n * **FEMALE_CIS**: A woman whose gender identity matches the sex that they were assigned at birth.\n * **MALE_CIS**: A man whose gender identity matches the sex that they were assigned at birth.\n * **FEMALE_TRANS**: A woman who is not identified with the gender that was assigned to him at birth and therefore lives in another gender identity.\n * **MALE_TRANS**: A man who is not identified with the gender that was assigned to him at birth and therefore lives in another gender identity.\n * **NO_BINARY**: A person who is not identified with either single binary genre established in a unique way.\n\n\n### Friends\n\nA user has a relationship with another if it is a friend. At the moment the possible status\nof this relationship can be:\n\n * **added**: when the other user is an active friend\n * **removed**: when the other user was a friend\n * **blocked**: when the other user cannot be a friend\n * **suggested**: when the other user maybe a friend\n * **ignored_suggestion**: when the other user is proposed to be blocked\n\n\n### Trust\n\nThe trust over another user is dynamically and will be updated every time they collaborate\nto achieve a task. Also, you can get or set the trust on another user, on a member of\na community, or on a member of a community to fulfil a task type.\n\n\n### Competences\n\nA competence is described with a **name** and a **level**. This last one can be:\n\n * **Novice**: Rule-based behaviour, strongly limited and inflexible.\n * **Experienced_beginner**: Incorporates aspects of the situation.\n * **Practitioner**: Acting consciously from long-term goals and plans.\n * **Knowledgeable_practitioner**: Sees the situation as a whole and acts from personal conviction.\n * **Expert**: Has an intuitive understanding of the situation and zooms in on the central aspects.\n\n\n## Task\n\nThe functionality provided allows to publish task types, create and manage task instances.\n\nThere are two concepts associated with the notion of a task: type and instance.\nA task type describes a generic goal and the norms that will regulate the interactions\nof the members of any team set to achieve any instance of the task's generic goal.\nAn instance of a task type has a specific goal, a team organized around that goal, and\npossibly a set of specific norms that extend the task type's generic norms.\n\n\n## Team\n\nThe functionality provided allows to automatically form teams that have diversity in gender,\npersonality and intelligence.\nAlso, we provide the functions to evaluate the personality and intelligences of users and\nthe result can be kept of the profile attributes.\n",
         "title": "WeNet - Interaction protocol engine APIs",
-        "version": "0.4.0"
+        "version": "0.5.0"
     },
     "tags": [
         {
@@ -9940,8 +11546,20 @@
             "description": "The functionality provided allows to publish norms, and manage the user and community norms."
         },
         {
+            "name": "Historic",
+            "description": "The functionality provided allows to access to the values of the models in a previous dates."
+        },
+        {
+            "name": "Friends",
+            "description": "The functionality provided allows to manage the friends of the user."
+        },
+        {
             "name": "Trust",
             "description": "The functionality provided allows to manage the trust of an user respect others."
+        },
+        {
+            "name": "Competences",
+            "description": "The functionality provided allows to manage the competences of the user."
         },
         {
             "name": "Profiles",
