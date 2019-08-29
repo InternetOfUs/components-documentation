@@ -357,13 +357,26 @@
       "type": "object",
       "description": "User Profile Personal Information. What is filled by user.",
       "properties": {
-        "user_id": {
+        "id": {
           "type": "string",
+          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
           "description": "User ID a unique identifier"
         },
-        "age": {
-          "type": "integer",
-          "description": "User Age (required)."
+        "birth_date": {
+          "type": "string",
+          "format": "yyyy-mm-dd",
+          "example": "1981-02-01",
+          "description": "User Birth Date following ISO 8601 (required)."
+        },
+        "nationality": {
+          "type": "string",
+          "example": "Italian",
+          "description": "The nationality of the user (could be multiple?)"
+        },
+        "ethnic_group": {
+          "type": "string",
+          "example": "Roma",
+          "description": "The ethnic group of the user (could be multiple?)"
         },
         "sex": {
           "type": "integer",
@@ -372,31 +385,30 @@
             "female",
             "other?"
           ],
-          "description": "User Biological Sex (required)."
+          "description": "User Biological Sex (required) --TBD--."
         },
         "languages": {
           "description": "A list of user known languages (required 1 min).",
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Language Name."
-              },
-              "iso_code": {
-                "type": "string",
-                "description": "Langugage ISO code."
-              },
-              "level": {
-                "type": "integer",
-                "description": "User Proficiency of Language."
-              }
-            }
+            "$ref": "#/definitions/language"
           }
         },
+        "competences": {
+          "description": "A list with user competences and skill level (optional).",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/competence"
+          }
+        },
+        "intelligences": {
+          "$ref": "#/definitions/intelligences"
+        },
+        "perconality": {
+          "$ref": "#/definitions/personality"
+        },
         "occupation": {
-          "description": "Users main occupation (optional).",
+          "description": "Users main occupation (optional) --TBD--.",
           "type": "object",
           "properties": {
             "title": {
@@ -405,32 +417,15 @@
             },
             "program": {
               "type": "object",
-              "description": "University related program."
+              "description": "University related program --TBD--."
             }
           }
         },
-        "competences": {
-          "description": "A list with user competences and skill level (optional).",
+        "locations": {
+          "description": "User different locations (optional) --TBD--.",
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Competence name. Example: cooking, driving etc."
-              },
-              "level": {
-                "type": "integer",
-                "description": "User level."
-              }
-            }
-          }
-        },
-        "places": {
-          "description": "User different locations (optional).",
-          "type": "array",
-          "items": {
-            "type": "object"
+            "$ref": "#/definitions/location"
           }
         },
         "other": {
@@ -565,6 +560,196 @@
         "other": {
           "type": "object",
           "description": "Other Message information"
+        }
+      }
+    },
+    "language": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "English",
+          "description": "Language Name."
+        },
+        "code": {
+          "type": "string",
+          "example": "en",
+          "description": "Langugage ISO 639-1 code."
+        },
+        "level": {
+          "type": "string",
+          "example": "B2",
+          "description": "User Proficiency of Language."
+        }
+      }
+    },
+    "intelligences": {
+      "type": "object",
+      "description": "Provide information about the intelligences of a person",
+      "properties": {
+        "visual_spatial": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.3,
+          "description": "The visual-spatial intelligence"
+        },
+        "logic_mathematics": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.2,
+          "description": "The logic-mathematics intelligence"
+        },
+        "musical_rhythmic": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.5,
+          "description": "The musical-rhythmic intelligence"
+        },
+        "verbal": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.1,
+          "description": "The verbal intelligence"
+        },
+        "kinestesica_corporal": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.4,
+          "description": "The kinestesica-corporal intelligence"
+        },
+        "interpersonal": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.7,
+          "description": "The interpersonal intelligence"
+        },
+        "naturalist_environmental": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.8,
+          "description": "The naturalist-environmental intelligence"
+        },
+        "intrapersonal": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.6,
+          "description": "The intrapersonal intelligence"
+        }
+      }
+    },
+    "personality": {
+      "type": "object",
+      "description": "Provide information about the personality of a person",
+      "properties": {
+        "judgment": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.2,
+          "description": "The judgment grade of a person"
+        },
+        "extrovert": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.3,
+          "description": "The extrovert grade of a person"
+        },
+        "perception": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.1,
+          "description": "The perception grade of a person"
+        },
+        "attitude": {
+          "type": "number",
+          "format": "double",
+          "maximum": 1,
+          "minimum": 0,
+          "example": 0.4,
+          "description": "The attitude grade of a person"
+        }
+      }
+    },
+    "competence": {
+      "description": "A competence that an user can do.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "cooking",
+          "description": "The name of the competence"
+        },
+        "level": {
+          "type": "string",
+          "example": "Expert",
+          "description": "The ability level of the person in the competence.",
+          "enum": [
+            "Beginner",
+            "Apprentice",
+            "Intermediate",
+            "Advanced",
+            "Expert"
+          ]
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "description": "A user location",
+      "properties": {
+        "label": {
+          "type": "string",
+          "example": "Home",
+          "description": "The description of the location."
+        },
+        "geolocation": {
+          "$ref": "#/definitions/geolocation"
+        },
+        "address": {
+          "type": "object",
+          "description": "Physical Address --TBD--"
+        }
+      }
+    },
+    "geolocation": {
+      "description": "The geographic coordinates of a location.",
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "example": 42.4371685,
+          "description": "The latitude coordinate of the location. (Google format?)"
+        },
+        "longitude": {
+          "type": "number",
+          "example": 1.9331308,
+          "description": "The longitude coordinate of the location. (Google format?)"
+        },
+        "poi": {
+          "type": "string",
+          "example": "EisxMyBNYXJrZXQgU3RyZWV0LCBXaWxtaW5ndG9uLCBOQyAyODQwMSwgVVNB",
+          "description": "The identifier that uniquely identifies the location."
         }
       }
     }
