@@ -7,17 +7,30 @@
     }
   ],
   "info": {
-    "description": "Component that handle the personal context of the users",
-    "version": "0.0.1b",
+    "description": "Component that handle the personal context of the users <br /> <img src=\"https://drive.google.com/uc?id=1oL92bUTr5oLwOs84oo9ycCJWcI4ARaXl\" /> <br /> <img src=\"https://drive.google.com/uc?id=1iF39kFa5ZcYKadCzynHvRkt6ftj59aHc\" /> <br />Routines are an embedded representation of the user habits.",
+    "version": "0.0.5",
     "title": "WeNet - personal_context_builder",
     "contact": {
       "email": "william.droz@idiap.ch"
     }
   },
+  "tags": [
+    {
+      "name": "User's routines",
+      "description": "Everything about the routines of the users"
+    },
+    {
+      "name": "Real-time operations",
+      "description": "all requests that handle real-time informations"
+    }
+  ],
   "paths": {
     "/routines/": {
       "get": {
         "summary": "get the list all routines for all users with all models",
+        "tags": [
+          "User's routines"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -38,59 +51,112 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Models"
+                  "$ref": "#/components/schemas/Model"
                 },
-                "examples": {
+                "example": {
                   "SimpleLDA": {
-                    "value": {
-                      "mock_user_1": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_2": [
-                        0,
-                        1,
-                        1,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_3": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        0
-                      ]
-                    }
+                    "mock_user_1": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_2": [
+                      0,
+                      1,
+                      1,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_3": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      0
+                    ]
                   },
                   "SimpleBOW": {
-                    "value": {
-                      "mock_user_1": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_2": [
-                        1,
-                        1,
-                        1,
-                        0.5,
-                        1
-                      ],
-                      "mock_user_3": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        0
-                      ]
-                    }
+                    "mock_user_1": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_2": [
+                      1,
+                      1,
+                      1,
+                      0.5,
+                      1
+                    ],
+                    "mock_user_3": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      0
+                    ]
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/closest/{lat}/{lng}/{N}/": {
+      "get": {
+        "summary": "get closest N users from a given point",
+        "tags": [
+          "Real-time operations"
+        ],
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "path",
+            "description": "latitude of the given point",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "path",
+            "description": "longitude of the given point",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          },
+          {
+            "name": "N",
+            "in": "path",
+            "description": "number of closest users to receive",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "closest N users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersDistances"
+                },
+                "example": {
+                  "mock_user_1": 330,
+                  "mock_user_2": 340,
+                  "mock_user_3": 350
                 }
               }
             }
@@ -101,6 +167,9 @@
     "/routines/{user_id}/": {
       "get": {
         "summary": "get specific user routine",
+        "tags": [
+          "User's routines"
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -131,30 +200,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Models"
+                  "$ref": "#/components/schemas/Model"
                 },
-                "examples": {
+                "example": {
                   "SimpleLDA": {
-                    "value": {
-                      "mock_user_1": [
-                        0,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ]
-                    }
+                    "mock_user_1": [
+                      0,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ]
                   },
                   "SimpleBOW": {
-                    "value": {
-                      "mock_user_1": [
-                        1,
-                        1,
-                        0,
-                        0.5,
-                        1
-                      ]
-                    }
+                    "mock_user_1": [
+                      1,
+                      1,
+                      0,
+                      0.5,
+                      1
+                    ]
                   }
                 }
               }
@@ -166,6 +231,9 @@
     "/models/": {
       "get": {
         "summary": "get the list of all available models",
+        "tags": [
+          "User's routines"
+        ],
         "responses": {
           "200": {
             "description": "available models",
@@ -173,6 +241,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ModelDescriptions"
+                },
+                "example": {
+                  "SimpleLDA": "Simple LDA over all the users, with 15 topics",
+                  "SimpleBOW": "Bag-of-words approach, compute the mean of all days"
                 }
               }
             }
@@ -185,7 +257,7 @@
     "schemas": {
       "UserRoutine": {
         "type": "object",
-        "description": "user_id",
+        "description": "Routines of the users, keys are user_ids and values are vectors that represent the routines",
         "additionalProperties": {
           "type": "array",
           "description": "vector that represent user routine",
@@ -196,33 +268,24 @@
       },
       "Model": {
         "type": "object",
-        "description": "model name",
+        "description": "There are several models (ML) that are used to modelize the routine of the users. Each model (key) are linked to the dict (users->vectors)",
         "additionalProperties": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/UserRoutine"
-          }
-        }
-      },
-      "Models": {
-        "type": "array",
-        "description": "list of model",
-        "items": {
-          "$ref": "#/components/schemas/Model"
-        }
-      },
-      "ModelDescription": {
-        "type": "object",
-        "additionalProperties": {
-          "type": "string",
-          "description": "description of the model"
+          "$ref": "#/components/schemas/UserRoutine"
         }
       },
       "ModelDescriptions": {
-        "description": "list of model description",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ModelDescription"
+        "description": "all models with their description. Descriptions are extracted from docstring for the models.",
+        "additionalProperties": {
+          "type": "string",
+          "description": "model docstring"
+        }
+      },
+      "UsersDistances": {
+        "description": "users with distances from the point given by the caller",
+        "type": "object",
+        "additionalProperties": {
+          "type": "number",
+          "description": "distances from the given point"
         }
       }
     }
