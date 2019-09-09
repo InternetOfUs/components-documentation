@@ -338,12 +338,19 @@
               "type": "string"
             },
             "required": true,
-            "description": "locationeventpertime, "
+            "description": "locationeventpertime"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfull"
+            "description": "data correctly retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataRequest"
+                }
+              }
+            }
           }
         }
       }
@@ -597,60 +604,125 @@
               20190826
             ]
           },
+          "notification": {
+            "description": "an URL where to receive POST requests",
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://www.myservice.com/receivePOSTrequest"
+              }
+            }
+          },
           "properties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "format": "json string",
-              "description": "list of properties",
-              "enum": [
-                "locationeventpertime",
-                "accelerometerevent",
-                "gyroscopeevent",
-                "tasksanswers",
-                "tasksquestions",
-                "screenevent"
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "locationeventpertime": {
+                      "$ref": "#/components/schemas/LocationObject"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "accelerometerevent": {
+                      "$ref": "#/components/schemas/AccelerometerEventObject"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "accelerometerevent": {
+                      "$ref": "#/components/schemas/GyroscopeEventObject"
+                    }
+                  }
+                }
               ]
             }
           }
         }
       },
-      "DataSendRequest": {
+      "AccelerometerEventObject": {
         "type": "object",
         "properties": {
-          "entities": {
+          "day": {
+            "type": "string",
+            "example": 20190825
+          },
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "x": {
+            "type": "string",
+            "example": 2.37
+          },
+          "y": {
+            "type": "string",
+            "example": 8.36
+          },
+          "z": {
+            "type": "string",
+            "example": 4.68
+          }
+        }
+      },
+      "GyroscopeEventObject": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string",
+            "example": 20190825
+          },
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "x": {
+            "type": "string",
+            "example": 2.37
+          },
+          "y": {
+            "type": "string",
+            "example": 8.36
+          },
+          "z": {
+            "type": "string",
+            "example": 4.68
+          }
+        }
+      },
+      "LocationObject": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "string",
+            "example": 20190825
+          },
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "point": {
             "type": "object",
             "properties": {
-              "experimentId": {
+              "latitude": {
                 "type": "string",
-                "example": "Wenet01"
+                "example": 22.1492
+              },
+              "longitude": {
+                "type": "string",
+                "example": -101.03609
+              },
+              "altitude": {
+                "type": "string",
+                "example": 1845.29208
               }
-            }
-          },
-          "dates": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "yyyymmdd"
-            },
-            "example": [
-              20190825,
-              20190826
-            ]
-          },
-          "properties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "description": "list of properties with data",
-              "enum": [
-                "locationeventpertime",
-                "accelerometerevent",
-                "gyroscopeevent",
-                "tasksanswers",
-                "tasksquestions",
-                "screenevent"
-              ]
             }
           }
         }
@@ -696,26 +768,13 @@
               }
             }
           },
-          "notification": {
-            "description": "an URL enabled to receive POST request",
-            "type": "object",
-            "properties": {
-              "url": {
-                "type": "string",
-                "example": "https://www.myservice.com/receivePOSTrequest"
-              }
-            }
-          },
           "properties": {
             "description": "the parameters in this section specify the content of the notification.",
             "type": "array",
             "items": {
-              "type": "string",
+              "type": "object",
               "description": "list of properties"
-            },
-            "example": [
-              "locationeventpertime"
-            ]
+            }
           },
           "minimumNotificationRate": {
             "description": "set the minimum interval between a notification and the following in seconds",
