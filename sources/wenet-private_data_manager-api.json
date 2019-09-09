@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.1",
   "info": {
     "description": "This is a simple description of the Private Data Manager APIs",
     "version": "1.0.0",
@@ -13,329 +13,171 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "streambase.disi.unitn.it",
-  "basePath": "/pdm/api/v2",
-  "tags": [
+  "servers": [
     {
-      "name": "direct messages",
-      "description": "Manage messages from server to the users"
-    },
-    {
-      "name": "batch data",
-      "description": "Request or send batch data"
-    },
-    {
-      "name": "stream data",
-      "description": "Send stream data"
-    },
-    {
-      "name": "reports",
-      "description": "Quick report generation"
+      "url": "/"
     }
   ],
-  "schemes": [
-    "https",
-    "http"
-  ],
   "paths": {
-    "/dm": {
+    "/userContributions/{recipients}": {
       "post": {
+        "summary": "Send a user contribution type object to user(s)",
         "tags": [
-          "direct messages"
+          "user contributions"
         ],
-        "summary": "Send a Direct Message (DM) to user(s)",
-        "description": "Send messages/questions/tasks/challenges from the server to the user’s phone. This can only be done by logged system administration users.",
-        "operationId": "create a Direct Message object",
-        "consumes": [
-          "json String"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "description": "Send questions to the user’s phone.",
         "parameters": [
           {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System administration user with permission to send Direct Messages"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "usersalt",
-            "required": true,
-            "description": "Target user or users that will receive the message. Can be either a single user's salt or a topic (so it will be sent to all users subscribed to that topic) using the format/topics/<sometopic>"
-          },
-          {
-            "in": "body",
-            "name": "content",
-            "description": "Message to be sent to the user. Four types of messages are defined. Simple messages (do not expect responses), questions (managed as a tree-like multiple choices trees), tasks and challenges (expect direct action from the user and are more customizable).",
-            "required": true,
+            "in": "path",
+            "name": "recipients",
             "schema": {
-              "$ref": "#/definitions/Task"
+              "type": "string"
+            },
+            "required": true,
+            "description": "Can be either a user's id or a topic name to send messages to all users belonging to the same topic."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserContribution"
+              }
             }
           }
-        ],
+        },
         "responses": {
-          "default": {
-            "description": "Successful operation"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "direct messages"
-        ],
-        "summary": "Get a Direct Message already sent to the users",
-        "description": "Read the content of a previously sent Direct Message. This can only be done by logged system administration users.",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System administration user with permission to read Direct Messages"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "userid",
-            "required": true,
-            "description": "User id"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "dmid",
-            "required": false,
-            "description": "Direct Message id"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/dm/answer": {
-      "get": {
-        "tags": [
-          "direct messages"
-        ],
-        "summary": "Get an answer to a sent Direct Message",
-        "description": "Read the answer sent by the user (if available) to a previously sent Direct Message. This can only be done by logged system administration users.",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "username",
-            "required": true,
-            "description": "System administration user with permission to read answers to Direct Messages"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "User's password"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "userid",
-            "required": true,
-            "description": "User id"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "taskid",
-            "required": true,
-            "description": "Task id"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/dm/receptionconfirmation": {
-      "post": {
-        "tags": [
-          "direct messages"
-        ],
-        "summary": "Direct Message reception confirmation",
-        "description": "Receive the confirmation on whether a sent Direct Message was received by the user.",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "token",
-            "required": true,
-            "description": "User's google token"
-          },
-          {
-            "in": "query",
-            "type": "string",
-            "name": "dm",
-            "required": false,
-            "description": "direct message id"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/report": {
-      "post": {
-        "tags": [
-          "reports"
-        ],
-        "summary": "Create a new report",
-        "parameters": [
-          {
-            "in": "header",
-            "type": "string",
-            "name": "email",
-            "required": true,
-            "description": "Super user's login email"
-          },
-          {
-            "in": "header",
-            "type": "string",
-            "name": "password",
-            "required": true,
-            "description": "Super user's password"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "days": {
-                  "type": "string",
-                  "description": "Days on which to send the report"
-                },
-                "tables": {
-                  "type": "string",
-                  "description": "Tables of data to include in the report"
-                },
-                "projectid": {
-                  "type": "string",
-                  "description": "Experiment on which to generate the report"
-                },
-                "message": {
-                  "type": "string",
-                  "description": "Email message"
-                },
-                "anonyomous": {
-                  "type": "string",
-                  "format": "boolean",
-                  "description": "Wether the report must be anonymous or not"
+          "200": {
+            "description": "userContribution sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
                 }
               }
             }
           }
-        ],
-        "responses": {
-          "default": {
-            "description": "successful operation"
-          }
         }
       }
     },
-    "/stream/upload": {
-      "post": {
+    "/userContributions/{userContributionId}": {
+      "get": {
         "tags": [
-          "stream data"
+          "user contributions"
         ],
-        "summary": "Initialize the stream to upload data",
+        "summary": "Get a user contribution type object already sent to the users",
+        "description": "Read the content of a previously sent Direct Message. This can only be done by logged system administration users.",
         "parameters": [
           {
-            "name": "username",
-            "in": "header",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
+            "$ref": "#/components/parameters/Authorization"
           },
           {
-            "name": "password",
-            "in": "header",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
+            "in": "path",
+            "name": "userContributionId",
             "schema": {
-              "$ref": "#/definitions/DataRequest"
-            }
+              "type": "string"
+            },
+            "required": true,
+            "description": "userContribution object id"
           }
         ],
         "responses": {
           "200": {
-            "description": "Subscription accepted"
+            "description": "userContribution sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Error"
+          "404": {
+            "description": "No such userContribution id exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/stream/upload{uploadId}": {
+    "/streams": {
+      "post": {
+        "tags": [
+          "stream data"
+        ],
+        "summary": "Send a subscription request to receive data",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Subscription"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stream successfully initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/streams/{streamId}": {
       "get": {
         "tags": [
           "stream data"
         ],
+        "summary": "Get the details of an existing subscription",
         "parameters": [
           {
-            "name": "username",
-            "in": "query",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
+            "$ref": "#/components/parameters/Authorization"
           },
           {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uploadId",
+            "name": "streamId",
             "in": "path",
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "Successfull"
+            "description": "Stream found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such streamId exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
       },
@@ -347,113 +189,39 @@
         "description": "Stop receiving notification",
         "parameters": [
           {
-            "name": "uploadId",
+            "name": "streamId",
             "in": "path",
-            "type": "string",
+            "schema": {
+              "type": "string"
+            },
             "required": true
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/stream/read": {
-      "post": {
-        "tags": [
-          "stream data"
-        ],
-        "summary": "Create a new reading request",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "header",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
+            "description": "Stream correctly deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           },
-          {
-            "name": "password",
-            "in": "header",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Subscription"
+          "404": {
+            "description": "No such streamId exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Subscription accepted"
-          },
-          "400": {
-            "description": "Error"
-          }
         }
       }
     },
-    "/stream/read/{readId}": {
-      "get": {
-        "tags": [
-          "stream data"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "readId",
-            "in": "path",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfull"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "stream data"
-        ],
-        "summary": "Delete subscription",
-        "description": "Stop receiving notification",
-        "parameters": [
-          {
-            "name": "readId",
-            "in": "path",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/data/upload": {
+    "/data/{userId}": {
       "post": {
         "tags": [
           "batch data"
@@ -461,98 +229,116 @@
         "summary": "Upload a new entity's data",
         "parameters": [
           {
-            "name": "username",
-            "in": "query",
-            "description": "Username login",
-            "required": true,
-            "type": "string"
+            "$ref": "#/components/parameters/Authorization"
           },
           {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
+            "name": "userId",
+            "in": "path",
             "schema": {
-              "$ref": "#/definitions/DataRequest"
+              "type": "string"
             },
-            "required": true
+            "required": true,
+            "description": "a34for230po"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Successfull"
+            "description": "data correctly uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
       },
-      "patch": {
+      "put": {
         "tags": [
           "batch data"
         ],
         "summary": "Update entity's data",
         "parameters": [
           {
-            "name": "username",
-            "in": "query",
-            "description": "System User",
-            "required": true,
-            "type": "string"
+            "$ref": "#/components/parameters/Authorization"
           },
           {
-            "name": "password",
-            "in": "query",
-            "description": "System User's password",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
+            "name": "userId",
+            "in": "path",
             "schema": {
-              "$ref": "#/definitions/DataRequest"
+              "type": "string"
             },
-            "required": true
+            "required": true,
+            "description": "a34for230po"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Successfull"
+            "description": "data correctly updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/data": {
-      "post": {
+      },
+      "get": {
         "tags": [
           "batch data"
         ],
-        "summary": "Send an object specifying the data you want to receive",
+        "summary": "retrieve data you want to receive",
         "parameters": [
           {
-            "name": "username",
-            "in": "query",
-            "description": "Username login",
-            "required": true,
-            "type": "string"
+            "$ref": "#/components/parameters/Authorization"
           },
           {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
+            "name": "userId",
+            "in": "path",
             "schema": {
-              "$ref": "#/definitions/DataRequest"
+              "type": "string"
             },
-            "required": true
+            "required": true,
+            "description": "a34for230po"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "20190624, 20190625, 20190630"
+          },
+          {
+            "name": "properties",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "locationeventpertime, "
           }
         ],
         "responses": {
@@ -563,235 +349,399 @@
       }
     }
   },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
+  "components": {
+    "parameters": {
+      "Authorization": {
+        "in": "header",
+        "schema": {
+          "type": "string"
+        },
+        "name": "Authorization",
+        "required": true,
+        "description": "Access Token"
+      },
+      "UserId": {
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "name": "userId",
+        "required": true,
+        "description": "Target user or users that will receive the message. Can be either a single user's salt or a topic (so it will be sent to all users subscribed to that topic) using the format/topics/<sometopic>"
       }
     },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
-    }
-  },
-  "definitions": {
-    "Task": {
-      "type": "object",
-      "properties": {
-        "t_tile": {
-          "type": "string",
-          "description": "Task title"
+    "schemas": {
+      "Id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id automatically generated",
+            "example": "ei39alwj901kde"
+          }
+        }
+      },
+      "UserContribution": {
+        "type": "object",
+        "properties": {
+          "t_tile": {
+            "type": "string",
+            "description": "Question title",
+            "example": "Test Title"
+          },
+          "t_until": {
+            "type": "string",
+            "format": "integer",
+            "description": "Time to Live",
+            "example": 86400
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "q": {
+                  "$ref": "#/components/schemas/Question"
+                },
+                "a": {
+                  "$ref": "#/components/schemas/Answer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ConditionObject": {
+        "description": "used to show a new question only if a specific answer on a previous question has been chose",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "integer",
+              "format": "integer",
+              "description": "condition answer id",
+              "example": 1
+            },
+            "q": {
+              "type": "integer",
+              "format": "integer",
+              "description": "condition question id",
+              "example": 1
+            }
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "integer"
+          },
+          "l": {
+            "type": "string",
+            "format": "string",
+            "description": "language",
+            "example": "en_US"
+          },
+          "t": {
+            "type": "string",
+            "format": "string",
+            "description": "text",
+            "example": "What are you doing?"
+          },
+          "at": {
+            "type": "string",
+            "format": "string",
+            "description": "can be single choice (s) or multiple (m)",
+            "enum": [
+              "s",
+              "m"
+            ]
+          },
+          "p": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "l": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "language",
+                  "example": "en_US"
+                },
+                "t": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "question's text",
+                  "example": "What are you doing?"
+                }
+              }
+            }
+          }
         },
-        "t_until": {
-          "type": "string",
-          "format": "integer",
-          "description": "Time to Live"
-        },
-        "content": {
-          "type": "array",
-          "items": {
+        "example": {
+          "id": 1,
+          "c": [],
+          "t": "t",
+          "at": "s",
+          "p": [
+            {
+              "l": "en_US",
+              "t": "What are you doing?"
+            },
+            {
+              "l": "it_IT",
+              "t": "Cosa stai facendo?"
+            }
+          ]
+        }
+      },
+      "Answer": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "integer"
+            },
+            "c": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ConditionObject"
+              }
+            },
+            "c_id": {
+              "type": "integer",
+              "format": "integer",
+              "description": "concept id",
+              "example": -1
+            },
+            "p": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "l": {
+                    "type": "string",
+                    "format": "string",
+                    "description": "language",
+                    "example": "en_US"
+                  },
+                  "t": {
+                    "type": "string",
+                    "format": "string",
+                    "description": "text",
+                    "example": "This is my answer"
+                  }
+                }
+              }
+            }
+          },
+          "example": [
+            {
+              "id": 1,
+              "c": [],
+              "c_id": -1,
+              "p": [
+                {
+                  "l": "en_US",
+                  "t": "I am working"
+                },
+                {
+                  "l": "it_IT",
+                  "t": "Sto lavorando"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "c": [],
+              "c_id": -1,
+              "p": [
+                {
+                  "l": "en_US",
+                  "t": "I am studying"
+                },
+                {
+                  "l": "it_IT",
+                  "t": "Sto studiando"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "DataRequest": {
+        "type": "object",
+        "properties": {
+          "entities": {
             "type": "object",
             "properties": {
-              "q": {
-                "$ref": "#/definitions/QuestionAnswerTypeText"
-              },
-              "a": {
-                "$ref": "#/definitions/QuestionAnswerTypeText"
+              "experimentId": {
+                "type": "string",
+                "example": "Wenet01"
               }
             }
-          }
-        }
-      }
-    },
-    "ConditionObject": {
-      "type": "object",
-      "properties": {
-        "a": {
-          "type": "integer",
-          "format": "integer",
-          "description": "condition answer id"
-        },
-        "q": {
-          "type": "integer",
-          "format": "integer",
-          "description": "condition question id"
-        }
-      }
-    },
-    "LanguagePointObject": {
-      "type": "object",
-      "properties": {
-        "l": {
-          "type": "string",
-          "format": "string",
-          "description": "language",
-          "example": "en_US"
-        },
-        "t": {
-          "type": "string",
-          "format": "string",
-          "description": "text",
-          "example": "What are you doing?"
-        }
-      },
-      "example": {
-        "l": "en_US",
-        "t": "What are you doing?"
-      }
-    },
-    "QuestionAnswerTypeText": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "integer"
-        },
-        "c": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConditionObject"
-          }
-        },
-        "c_id": {
-          "type": "integer",
-          "format": "integer",
-          "description": "concept id",
-          "example": -1
-        },
-        "t": {
-          "type": "string",
-          "format": "string",
-          "description": "type"
-        },
-        "at": {
-          "type": "string",
-          "format": "string",
-          "description": "Answer type",
-          "example": "s"
-        },
-        "p": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/LanguagePointObject"
-          }
-        }
-      },
-      "example": {
-        "id": 1,
-        "c": [],
-        "at": "s",
-        "t": "t",
-        "p": [
-          {
-            "l": "en-US",
-            "t": "What are you doing?"
           },
-          {
-            "l": "it-IT",
-            "t": "Cosa stai facendo?"
-          }
-        ]
-      }
-    },
-    "DataRequest": {
-      "type": "object",
-      "properties": {
-        "entities": {
-          "type": "object",
-          "properties": {
-            "experimentId": {
+          "dates": {
+            "type": "array",
+            "items": {
               "type": "string",
-              "description": "If specified returns info about every user partecipating in the experiment"
+              "format": "yyyymmdd"
             },
-            "userId": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "description": "list of user ids"
-              }
+            "example": [
+              20190825,
+              20190826
+            ]
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "json string",
+              "description": "list of properties",
+              "enum": [
+                "locationeventpertime",
+                "accelerometerevent",
+                "gyroscopeevent",
+                "tasksanswers",
+                "tasksquestions",
+                "screenevent"
+              ]
             }
           }
-        },
-        "dates": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "yyyymmdd"
-          }
-        },
+        }
+      },
+      "DataSendRequest": {
+        "type": "object",
         "properties": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "json string",
-            "description": "list of properties"
-          }
-        }
-      }
-    },
-    "Subscription": {
-      "type": "object",
-      "properties": {
-        "description": {
-          "type": "string",
-          "example": "description of the notification"
-        },
-        "entities": {
-          "type": "object",
-          "properties": {
-            "experimentId": {
-              "type": "string",
-              "description": "If specified returns info about every user partecipating in the experiment"
-            },
-            "userId": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "description": "userIds you want to track"
-              }
-            }
-          }
-        },
-        "condition": {
-          "type": "object",
-          "properties": {
+          "entities": {
+            "type": "object",
             "properties": {
-              "type": "array",
-              "items": {
+              "experimentId": {
                 "type": "string",
-                "description": "list of properties that will trigger the notification"
+                "example": "Wenet01"
               }
             }
-          }
-        },
-        "notification": {
-          "type": "object",
+          },
+          "dates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "yyyymmdd"
+            },
+            "example": [
+              20190825,
+              20190826
+            ]
+          },
           "properties": {
-            "url": {
-              "type": "string"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "list of properties with data",
+              "enum": [
+                "locationeventpertime",
+                "accelerometerevent",
+                "gyroscopeevent",
+                "tasksanswers",
+                "tasksquestions",
+                "screenevent"
+              ]
             }
           }
         }
-      }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "description of the notification"
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "description": "If specified returns info about every user partecipating in the experiment",
+                "example": "Wenet01"
+              },
+              "userId": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "userIds you want to track"
+                },
+                "example": "aoqi3481pal13l3qvrfh"
+              }
+            }
+          },
+          "condition": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "list of properties that will trigger the notification on change"
+                },
+                "example": [
+                  "locationeventpertime",
+                  "accelerometerevents"
+                ]
+              }
+            }
+          },
+          "notification": {
+            "description": "an URL enabled to receive POST request",
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://www.myservice.com/receivePOSTrequest"
+              }
+            }
+          },
+          "properties": {
+            "description": "the parameters in this section specify the content of the notification.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "list of properties"
+            },
+            "example": [
+              "locationeventpertime"
+            ]
+          },
+          "minimumNotificationRate": {
+            "description": "set the minimum interval between a notification and the following in seconds",
+            "type": "integer",
+            "example": 60
+          }
         }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EmptyResponse": {
+        "description": "Empty object",
+        "type": "object"
       }
     }
   },
