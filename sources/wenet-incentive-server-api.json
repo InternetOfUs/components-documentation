@@ -1191,11 +1191,11 @@
       "successful_operation": {
         "type": "object",
         "properties": {
-          "massege_id": {
+          "message_id": {
             "type": "integer",
             "example": 145
           },
-          "massege": {
+          "message": {
             "type": "string",
             "example": "successful operation"
           }
@@ -1204,11 +1204,11 @@
       "wrong_community_id": {
         "type": "object",
         "properties": {
-          "massege_id": {
+          "message_id": {
             "type": "integer",
             "example": 12345
           },
-          "massege": {
+          "message": {
             "type": "string",
             "example": "wrong community id"
           }
@@ -1217,11 +1217,11 @@
       "wrong_user_id": {
         "type": "object",
         "properties": {
-          "massege_id": {
+          "message_id": {
             "type": "integer",
             "example": 12345
           },
-          "massege": {
+          "message": {
             "type": "string",
             "example": "wrong user id"
           }
@@ -1230,11 +1230,11 @@
       "wrong_app_id": {
         "type": "object",
         "properties": {
-          "massege_id": {
+          "message_id": {
             "type": "integer",
             "example": 125
           },
-          "massege": {
+          "message": {
             "type": "string",
             "example": "wrong app id"
           }
@@ -1299,7 +1299,7 @@
           },
           "Type": {
             "type": "string",
-            "example": "Massege"
+            "example": "message"
           },
           "Size": {
             "type": "integer",
@@ -1339,7 +1339,7 @@
           },
           "Type": {
             "type": "string",
-            "example": "Massege"
+            "example": "message"
           },
           "Size": {
             "type": "integer",
