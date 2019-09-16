@@ -19,98 +19,13 @@
     }
   ],
   "paths": {
-    "/userContributions/{recipients}": {
-      "post": {
-        "summary": "Send a user contribution type object to user(s)",
-        "tags": [
-          "user contributions"
-        ],
-        "description": "Send questions to the user’s phone.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "recipients",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Can be either a user's id or a topic name to send messages to all users belonging to the same topic."
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserContribution"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "userContribution sent",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Id"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/userContributions/{userContributionId}": {
-      "get": {
-        "tags": [
-          "user contributions"
-        ],
-        "summary": "Get a user contribution type object already sent to the users",
-        "description": "Read the content of a previously sent Direct Message. This can only be done by logged system administration users.",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "in": "path",
-            "name": "userContributionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "userContribution object id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "userContribution sent",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Id"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No such userContribution id exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/streams": {
       "post": {
         "tags": [
           "stream data"
         ],
         "summary": "Send a subscription request to receive data",
+        "description": "Make a subscription to receive info on properties every time some of the condition.properties change",
         "parameters": [
           {
             "$ref": "#/components/parameters/Authorization"
@@ -125,6 +40,36 @@
             }
           }
         },
+        "callbacks": {
+          "propertyChanged": {
+            "notificationCallbackUrl/": {
+              "post": {
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/DataRequest"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Stream successfully initialized",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/EmptyResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Stream successfully initialized",
@@ -132,6 +77,42 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/streams/{appId}": {
+      "get": {
+        "tags": [
+          "stream data"
+        ],
+        "summary": "Get a list of active subscriptions",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ai30384odg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream successfully initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Subscription"
+                  }
                 }
               }
             }
@@ -221,7 +202,7 @@
         }
       }
     },
-    "/data/{userId}": {
+    "/data": {
       "post": {
         "tags": [
           "batch data"
@@ -230,15 +211,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "a34for230po"
           }
         ],
         "requestBody": {
@@ -303,7 +275,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/data/{userId}": {
       "get": {
         "tags": [
           "batch data"
@@ -323,13 +297,22 @@
             "description": "a34for230po"
           },
           {
-            "name": "days",
+            "name": "from",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "required": true,
-            "description": "20190624, 20190625, 20190630"
+            "required": false,
+            "description": "20190825"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "20190901"
           },
           {
             "name": "properties",
@@ -584,33 +567,16 @@
       "DataRequest": {
         "type": "object",
         "properties": {
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "entities": {
             "type": "object",
             "properties": {
-              "experimentId": {
+              "appId": {
                 "type": "string",
                 "example": "Wenet01"
-              }
-            }
-          },
-          "dates": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "yyyymmdd"
-            },
-            "example": [
-              20190825,
-              20190826
-            ]
-          },
-          "notification": {
-            "description": "an URL where to receive POST requests",
-            "type": "object",
-            "properties": {
-              "url": {
-                "type": "string",
-                "example": "https://www.myservice.com/receivePOSTrequest"
               }
             }
           },
@@ -622,7 +588,10 @@
                   "type": "object",
                   "properties": {
                     "locationeventpertime": {
-                      "$ref": "#/components/schemas/LocationObject"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LocationObject"
+                      }
                     }
                   }
                 },
@@ -630,15 +599,43 @@
                   "type": "object",
                   "properties": {
                     "accelerometerevent": {
-                      "$ref": "#/components/schemas/AccelerometerEventObject"
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AccelerometerEventObject"
+                      }
                     }
                   }
                 },
                 {
                   "type": "object",
                   "properties": {
-                    "accelerometerevent": {
-                      "$ref": "#/components/schemas/GyroscopeEventObject"
+                    "gyroscopeevent": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GyroscopeEventObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tasksanswers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TaskAnswer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tasksquestions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TaskQuestion"
+                      }
                     }
                   }
                 }
@@ -650,10 +647,6 @@
       "AccelerometerEventObject": {
         "type": "object",
         "properties": {
-          "day": {
-            "type": "string",
-            "example": 20190825
-          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -675,10 +668,6 @@
       "GyroscopeEventObject": {
         "type": "object",
         "properties": {
-          "day": {
-            "type": "string",
-            "example": 20190825
-          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -700,10 +689,6 @@
       "LocationObject": {
         "type": "object",
         "properties": {
-          "day": {
-            "type": "string",
-            "example": 20190825
-          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -727,6 +712,82 @@
           }
         }
       },
+      "TaskAnswer": {
+        "type": "object",
+        "properties": {
+          "instanceid": {
+            "type": "string",
+            "example": "f161dee2a122af926a9c4285275800942d128c34"
+          },
+          "answer": {
+            "$ref": "#/components/schemas/Answer"
+          },
+          "answerduration": {
+            "type": "string",
+            "example": 20142
+          },
+          "answertimestamp": {
+            "type": "string",
+            "example": 20190909010129450
+          },
+          "day": {
+            "type": "string",
+            "example": 20190910
+          },
+          "instancetimestamp": {
+            "type": "string",
+            "example": 20190911201814344
+          },
+          "notificationtimestamp": {
+            "type": "string",
+            "example": 20190911201816910
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "type": "object",
+                  "example": {}
+                },
+                "qid": {
+                  "type": "string",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "TaskQuestion": {
+        "type": "object",
+        "properties": {
+          "instanceid": {
+            "type": "string",
+            "example": "f161dee2a122af926a9c4285275800942d128c34"
+          },
+          "question": {
+            "$ref": "#/components/schemas/Question"
+          },
+          "day": {
+            "type": "string",
+            "example": 20190910
+          },
+          "instancetimestamp": {
+            "type": "string",
+            "example": 20190911201814344
+          },
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "title": {
+            "type": "string",
+            "example": "Question Title"
+          }
+        }
+      },
       "Subscription": {
         "type": "object",
         "properties": {
@@ -737,7 +798,7 @@
           "entities": {
             "type": "object",
             "properties": {
-              "experimentId": {
+              "appId": {
                 "type": "string",
                 "description": "If specified returns info about every user partecipating in the experiment",
                 "example": "Wenet01"
@@ -749,6 +810,16 @@
                   "description": "userIds you want to track"
                 },
                 "example": "aoqi3481pal13l3qvrfh"
+              }
+            }
+          },
+          "notification": {
+            "description": "an URL where to receive POST requests",
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://www.myservice.com/receivePOSTrequest"
               }
             }
           },
@@ -774,12 +845,11 @@
             "items": {
               "type": "object",
               "description": "list of properties"
-            }
-          },
-          "minimumNotificationRate": {
-            "description": "set the minimum interval between a notification and the following in seconds",
-            "type": "integer",
-            "example": 60
+            },
+            "example": [
+              "locationeventpertime,",
+              "gyroscopeevent"
+            ]
           }
         }
       },
