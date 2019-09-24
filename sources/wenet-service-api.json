@@ -696,22 +696,16 @@ components:
     CoreWeNetUserProfile:
       type: object
       properties:
-        wenetUserId:
+        id:
           type: string
           description: The identifier of the WeNet user
           example: 15837028-645a-4a55-9aaf-ceb846439eba
         name:
-          type: string
-          description: The name of the user
-          example: Julia
-        surname:
-          type: string
-          description: The surname of the user
-          example: Jimenez
+          $ref: '#/components/schemas/UserName'
         dateOfBirth:
           type: string
-          description: The date of birth of the user (with the format `DD/MM/YYYY`)
-          example: 27/11/1988
+          description: The date of birth of the user (with the ISO 8601 format `YYYY-MM-DD`)
+          example: 1988-11-27
         gender:
           type: string
           enum:
@@ -731,6 +725,9 @@ components:
           type: string
           description: The locale of the user
           example: es_ES
+        avatar:
+          type: string
+          description: The url to the image avatar
         nationality:
           type: string
           description: The nationality of the user
@@ -740,7 +737,7 @@ components:
           items:
             type: object
             properties:
-              language:
+              name:
                 type: string
                 description: The language spoken by the user
                 example: Spanish
@@ -748,10 +745,38 @@ components:
                 type: string
                 description: The level
                 example: C2
+              code:
+                type: string
+                description: The ISO 639-1 code that identify the language
+                example: es
         occupation:
           type: string
           description: The occupation of the user
           example: nurse
+
+    UserName:
+      type: object
+      properties:
+        first:
+          type: string
+          description: The first name of the user
+          example: John
+        middle:
+          type: string
+          description: The middle name of the user
+          example: Francis
+        last:
+          type: string
+          description: The last name of the user
+          example: Doe
+        prefix:
+          type: string
+          description: The name prefix
+          example: Dr.
+        suffix:
+          type: string
+          description: The suffix of the name
+          example: Jr.
 
     WeNetUserProfile:
       allOf:
