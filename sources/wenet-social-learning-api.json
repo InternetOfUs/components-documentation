@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is a simple API",
-    "version": "1.0.0",
+    "description": "Component that handle the social context of the users <br /> Task 1 -- Sorting Users for a help request. The task has both a batch and an on demand part. <br /> <img src=\"https://drive.google.com/open?id=1BP_ZbcfVkPaUQVUyJh59b8ljuFDRTHwE\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
+    "version": "2.0.0",
     "title": "Social Learning API",
     "contact": {
       "email": "theo.mantadelis@gmail.com"
@@ -15,18 +15,22 @@
   "tags": [
     {
       "name": "online",
-      "description": "Operations for on-demand use"
+      "description": "Operations that are computed on-demand and immediatly return the result (result is up to date)"
     },
     {
       "name": "offline",
-      "description": "Operations for batch use"
+      "description": "Operations that have been computed on a batch circle and only return latest result (result might be obsolete)"
+    },
+    {
+      "name": "others",
+      "description": "Operations required from others kept for reference (to be removed when documented by others)"
     }
   ],
   "paths": {
     "/profiles": {
       "get": {
         "tags": [
-          "offline"
+          "others"
         ],
         "summary": "Gets all user profile IDs",
         "operationId": "profiles",
@@ -50,8 +54,7 @@
     "/profile_personal": {
       "get": {
         "tags": [
-          "offline",
-          "online"
+          "others"
         ],
         "summary": "Get user profile by ID",
         "operationId": "profile_personal",
@@ -84,8 +87,7 @@
     "/profile_metadata": {
       "get": {
         "tags": [
-          "offline",
-          "online"
+          "others"
         ],
         "summary": "Get user metadata profile by ID",
         "operationId": "profile_metadata",
@@ -118,8 +120,7 @@
     "/profile_friends": {
       "get": {
         "tags": [
-          "offline",
-          "online"
+          "others"
         ],
         "summary": "Get user friend list by ID",
         "operationId": "profile_friends",
@@ -152,7 +153,7 @@
     "/profile_message_threads": {
       "get": {
         "tags": [
-          "offline"
+          "others"
         ],
         "summary": "Get user message thread IDs by user ID",
         "operationId": "profile_message_threads",
@@ -188,8 +189,7 @@
     "/profile_message": {
       "get": {
         "tags": [
-          "online",
-          "offline"
+          "others"
         ],
         "summary": "Get a message by message ID",
         "operationId": "profile_message",
@@ -222,8 +222,7 @@
     "/profile_thread": {
       "get": {
         "tags": [
-          "offline",
-          "online"
+          "others"
         ],
         "summary": "Get a thread by thread ID",
         "operationId": "profile_thread",
@@ -256,7 +255,7 @@
     "/willing_users": {
       "get": {
         "tags": [
-          "online"
+          "others"
         ],
         "summary": "Get users that are willing to assist on a message",
         "operationId": "willing_users",
@@ -299,14 +298,14 @@
             "name": "UID",
             "description": "User ID",
             "required": true,
-            "type": "integer"
+            "type": "string"
           },
           {
             "in": "query",
             "name": "msg_ID",
             "description": "Message ID",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -315,7 +314,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "integer"
+                "type": "string"
               }
             }
           }
@@ -325,7 +324,7 @@
     "/suggest_friends": {
       "post": {
         "tags": [
-          "online"
+          "offline"
         ],
         "summary": "Returns a sorted list of Users that are suggested to be added as friends",
         "description": "Returns a sorted list of Users that are suggested to be added as friends",
@@ -335,7 +334,7 @@
             "name": "UID",
             "description": "User ID",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
@@ -344,7 +343,36 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "integer"
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/learn_norms": {
+      "post": {
+        "tags": [
+          "offline"
+        ],
+        "summary": "Learns underlined community rules to be introduced as norms",
+        "description": "Returns learned norms from community messages",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "CID",
+            "description": "Community ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Norms in form of Prolog predicates",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
               }
             }
           }
