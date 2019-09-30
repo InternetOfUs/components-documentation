@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Component that handle the social context of the users <br /> Task 1 -- Sorting Users for a help request. The task has both a batch and an on demand part. <br /> <img src=\"https://www.dropbox.com/s/3i2jahf95ovhq3r/Suggest.png?dl=0\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
+    "description": "Component that handle the social context of the users <br /> Task 1 -- Sorting Users for a help request. The task has both a batch and an on demand part. <br /> <img src=\"https://drive.google.com/uc?id=1BP_ZbcfVkPaUQVUyJh59b8ljuFDRTHwE\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
     "version": "2.0.0",
     "title": "Social Learning API",
     "contact": {
