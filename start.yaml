@@ -20,13 +20,13 @@ info:
   contact:
     email: carlo.caprini@u-hopper.com
   version: 1.0.0
-servers:
-- url: /
-paths:
-  /object:
-    post:
-      summary: Nothing to do here
-      responses:
-        405:
-          description: Invalid input
-          content: {}
+#servers:
+#- url: /
+#paths:
+#  /object:
+#    post:
+#      summary: Nothing to do here
+#      responses:
+#        405:
+#          description: Invalid input
+#          content: {}
