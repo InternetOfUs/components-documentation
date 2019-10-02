@@ -3,19 +3,19 @@ info:
   title: WeNet - Documentation
   description: This document is the starting point for accessing the various API documentation documents describing the components of the WeNet platform. You can get started by jumping to the documentation of your desired component!
 
+    - [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
+
     - [Incentive Server APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-incentive-server-api.json)
+
+    - [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-logging-analytics-api.yaml)
 
     - [Profile Manager APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-profile-manager-api.json)
 
+    - [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-context-builder-api.json)
+ 
     - [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder.json)
 
     - [Stream Base APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-streambase-api.json)
-
-    - [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
-
-    - [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-context-builder-api.json)
-
-    - [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-logging-analytics-api.yaml)
 
   contact:
     email: carlo.caprini@u-hopper.com
