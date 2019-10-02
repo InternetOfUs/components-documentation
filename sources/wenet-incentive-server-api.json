@@ -12,7 +12,7 @@
   "tags": [
     {
       "name": "incentive",
-      "description": "get information regardind incentives"
+      "description": "get information regardid incentives"
     },
     {
       "name": "norms",
@@ -20,7 +20,7 @@
     },
     {
       "name": "Badges_Issuers",
-      "description": "An Issuer Profile describes an  person that awards Open Badges"
+      "description": "An Issuer Profile describes a person that awards Open Badges"
     },
     {
       "name": "Badges_BadgeType",
