@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: WeNet - Service REST API
+  title: WeNet - Service REST APIs
   description: This document describes the API exposed by the Service component of the WeNet platform.
 
     In particular, the models entities handled by the Service REST API are

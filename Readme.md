@@ -5,11 +5,12 @@ This repository collects the API documentation of the various components of the 
 Here's some _quick links_ for accessing the documentation currently available:
 
 * [Incentive Server APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-incentive-server-api.json)
-* [Interaction Protocol Engine APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-interaction_protocol_engine-api.json)
+* [Profile Manager APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-profile-manager-api.json)
 * [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder.json)
-* [Private Data Manager](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-private_data_manager-api.json)
+* [Stream Base APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-stream-base-api.json)
 * [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
 * [Social Learning APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-learning-api.json)
+* [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-logging-analytics-api.yaml)
 
 Also, you can jump start directly from this [Swagger starting point](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/start.yaml).
 
