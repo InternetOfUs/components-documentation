@@ -8,11 +8,13 @@ Here's some _quick links_ for accessing the documentation currently available:
 * [Profile Manager APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-profile-manager-api.json)
 * [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder.json)
 * [Stream Base APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-streambase-api.json)
-* [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.json)
+* [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service-api.yaml)
 * [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social-context-builder-api.json)
 * [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-logging-analytics-api.yaml)
 
 Also, you can jump start directly from this [Swagger starting point](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/start.yaml).
+
+The models common to the various components can be found [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml).
 
 *Note*: please, keep the above links updated with the reference to the latest stable version of each documentation file.
 
