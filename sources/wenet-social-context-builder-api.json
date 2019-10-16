@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Component that handle the social context of the users <br /> Task 1 -- Sorting Users for a help request. The task has both a batch and an on demand part. <br /> <img src=\"https://drive.google.com/uc?id=1BP_ZbcfVkPaUQVUyJh59b8ljuFDRTHwE\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
+    "description": "Component that handle the social context of the users <br /> Task 1 -- Ordering Users by social preferences. The task has both a batch and an on demand part. <br /> <img src=\"https://drive.google.com/uc?id=1BP_ZbcfVkPaUQVUyJh59b8ljuFDRTHwE\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
     "version": "2.0.0",
     "title": "Social Learning API",
     "contact": {
@@ -252,46 +252,13 @@
         }
       }
     },
-    "/willing_users": {
-      "get": {
-        "tags": [
-          "others"
-        ],
-        "summary": "Get users that are willing to assist on a message",
-        "operationId": "willing_users",
-        "description": "Get users that are willing to assist on a message",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "thread_ID",
-            "description": "Message thread ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Willing User IDs",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/sort_willing_users": {
+    "/order_users_by_social_preference": {
       "post": {
         "tags": [
           "online"
         ],
-        "summary": "Returns a sorted list of Users that are willing to assist on a message",
-        "description": "Returns a sorted list of Users that are willing to assist on a message",
+        "summary": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences",
+        "description": "Returns an ordered list of Users based on social preferences",
         "parameters": [
           {
             "in": "query",
@@ -306,11 +273,21 @@
             "description": "Message ID",
             "required": true,
             "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "users_IDs",
+            "description": "Message ID",
+            "required": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Sorted Willing User IDs",
+            "description": "Ordered list of User IDs",
             "schema": {
               "type": "array",
               "items": {
@@ -577,9 +554,12 @@
           "type": "string",
           "description": "Message Thread ID (this message is public to all that have access to thread)"
         },
-        "msg_type": {
-          "type": "integer",
-          "description": "Message Type"
+        "msg_keywords": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Message Keywords (can be seen as message type)"
+          }
         },
         "msg_text": {
           "type": "string",
