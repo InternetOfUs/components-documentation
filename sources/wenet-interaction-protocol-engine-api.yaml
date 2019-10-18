@@ -1,0 +1,3509 @@
+openapi: 3.0.1
+info:
+  title: WeNet - Interaction protocol engine API
+  description: >-
+		This API will be used to storing and maintaining the task description,
+		and the community description, along with their associated norms, to realize the user
+		interactions between them sending messages guaranteeing that they follow the norms,
+		and to form teams to realize a task.
+		
+		The functionality of the API is organized around the following concepts:
+		
+		 * **Community**: is a group of users with a common goal.
+		 * **Message**: is the atomic communication between users.
+		 * **Norm**: is a rule that restricts or prescribes the behaviour of users.
+		 * **Profile**: is a fixed set of user attributes.
+		 * **Task**: is an individual goal to be achieved by a team.
+		 * **Team**: is a group of individuals set to fulfil a task.
+		 * **Trust**: is the confidence that another user achieve a task.
+		
+		
+		## Community
+		
+		The functionality provided allows to managing members, norms and task types associated with a community.
+		
+		At the moment does not exist any restriction to create communities.
+		Every member of a community has the right to access to:
+		
+		 * The name, description and avatar of the community.
+		 * The task types that can be done in the community.
+		 * The norm of the community.
+		 * The list of members of the community.
+		 * The list of task instances that it is involved.
+		
+		For the rest of the actions it needs to have the privilege to perform the action. This privileges can be:
+		
+		 * **MODIFY_NAME**: a user with this privilege can modify the name of the community.
+		 * **MODIFY_DESCRIPTION**: a user with this privilege can modify the description of the community.
+		 * **MODIFY_KEYWORDS**: a user with this privilege can modify the keywords of the community.
+		 * **MODIFY_AVATAR**: a user with this privilege can modify the avatar image of the community.
+		 * **ADD_NORM**: a user with this privilege can add a new norm into the community.
+		 * **REMOVE_NORM**: a user with this privilege can remove a norm form the community.
+		 * **ADD_MEMBER**: a user with this privilege can add a new user into the community.
+		 * **REMOVE_MEMBER**: a user with this privilege can remove a user from the community.
+		 * **MODIFY_MEMBER_PRIVILEGES**: a user with this privilege can modify the privileges of a community member.
+		 * **VIEW_MEMBER_PRIVILEGES**: a user with this privilege can view the privileges of a community member.
+		 * **ADD_TASK_TYPE**: a user with this privilege can add a new type of task that can be done in the community.
+		 * **REMOVE_TASK_TYPE**: a user with this privilege can remove a type of task that can be done in the community.
+		 * **ADD_TASK_INSTANCE**: a user with this privilege can start a new task to do in a community.
+		
+		
+		On the other hand, to join into a community you have to do the same action to add a member,
+		and to leave a community the same action as remove a member.
+		
+		
+		## Message
+		
+		The functionality provided allows for sending messages.
+		
+		When a user sends a message through the API, the message is sent to the norm interpreter of the user.
+		This interpreter needs to first verify that the message does not violate any of the norms,
+		this includes the community norms, the task norms, the sender’s individual norms, as well as the context-dependent
+		norms that are attached to this message. If the message violates any of those norms,
+		an error message is sent back to the user. However, if the message obeys the norms, then the norm interpreter needs
+		to decide what to do next, usually translated into sending messages to other peers. This decision follows from
+		the community, individual and context-dependent norms, and takes the user’s profile (both public and private)
+		into account as needed. If the message is sent to the interpreter of another user. As in the previous case,
+		the norm interpreter of this new user needs to first verify that the message does not violate any of the community norms.
+		This re-checking upon receipt ensures that the sender’s norm engine has not been manipulated to cheat.
+		If the message violates any of the community norms, then it may either be discarded, or if the community norms
+		require sanctioning, then the appropriate sanctions should be executed. However, if the action obeys the community norms,
+		then the norm interpreter needs to decide what to do next, which is usually translated into sending messages
+		to other peers and/or sending messages to its user. This decision takes into consideration the community norms,
+		the context-dependent norms that are attached to the message, the individual private norms of the human whose interpreter
+		has received this message, as well as their local profile (both private and public). This ensures that the interpreter
+		abides with it is human’s private norms without leaking any of their private norms and profile.
+		
+		
+		## Norm
+		
+		The functionality provided allows to publish norms, and manage the user and community norms.
+		
+		There are norms on the individual (user level), the task level, and the community level.
+		An individual’s norm might be “Suppress incoming messages at night” (and this will
+		be applied for the user who sets this norm only). A task norm might be “Don’t ask my ex”
+		(so that would be applied for a specific task only). A community norm might be
+		“If you don’t volunteer, you cannot ask for help” and it would be enforced on everyone.
+		Given the above, this means that norms will be attached to users, tasks and communities.
+		
+		
+		## Task
+		
+		The functionality provided allows to publish task types, create and manage task instances.
+		
+		There are two concepts associated with the notion of a task: type and instance.
+		A task type describes a generic goal and the norms that will regulate the interactions
+		of the members of any team set to achieve any instance of the task's generic goal.
+		An instance of a task type has a specific goal, a team organized around that goal, and
+		possibly a set of specific norms that extend the task type's generic norms.
+		
+		
+		## Team
+		
+		The functionality provided allows to automatically form teams that have diversity in gender,
+		personality and intelligence.
+		Also, we provide the functions to evaluate the personality and intelligences of users and
+		the result can be kept of the profile attributes.
+		
+	contact:
+    name: UDT-IA, IIIA-CSIC
+    url: http://www.iiia.csic.es/
+  version: 0.6.0
+tags:
+- name: Status
+  description: Allow knowing the current API version.
+- name: Communities
+  description: The functionality provided allows to manage members, norms and task
+    types associated to a community.
+- name: Messages
+  description: The functionality provided allows to send messages.
+- name: Norms
+  description: The functionality provided allows to publish norms, and manage the
+    user and community norms.
+- name: Tasks
+  description: The functionality provided allows to publish task types, create and
+    manage task instances.
+paths:
+  /status:
+    get:
+      tags:
+      - Status
+      summary: Get the status of the API
+      description: Return the current status information of the API
+      operationId: getStatusReport
+      responses:
+        200:
+          description: The API status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/status'
+  /communities:
+    get:
+      tags:
+      - Communities
+      summary: Return the communities that an used can join
+      description: Allow to search for communities that an user can join
+      operationId: getCommunities_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: name
+        in: query
+        description: The pattern to match the name of communities to return
+        schema:
+          type: string
+      - name: description
+        in: query
+        description: The pattern to match the description of communities to return
+        schema:
+          type: string
+      - name: keywords
+        in: query
+        description: The pattern to match the keywords of communities to return
+        schema:
+          type: string
+      - name: userId
+        in: query
+        description: The identifier of the user to get the communities
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The index of the first community to return
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: The number maximum of communities to return
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: The communities that match the patterns
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunitiesPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunitiesPage'
+        401:
+          description: Unauthorized to get the communities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to get the communities
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to get the communities
+        403:
+          description: Unauthorized to get the communities of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the communities
+                  description: Default Response
+                  value:
+                    code: communitiesForbidden
+                    message: You can not get the communities of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the communities
+                  description: Default Response
+                  value:
+                    code: communitiesForbidden
+                    message: You can not get the communities of another user
+    post:
+      tags:
+      - Communities
+      summary: Register a community
+      description: Add a community to the possible communities that the user can play
+      operationId: registerCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Community'
+      responses:
+        200:
+          description: The registered community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Community'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Community'
+        401:
+          description: Unauthorized to register the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to register a community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to register a community
+        400:
+          description: The community to register is wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad community values
+                  description: Default Response
+                  value:
+                    code: badCommunity
+                    message: A community needs a name
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad community values
+                  description: Default Response
+                  value:
+                    code: badCommunity
+                    message: A community needs a name
+  /communities/{communityId}:
+    get:
+      tags:
+      - Communities
+      summary: Return a community associated to the identifier
+      description: Allow to get a community associated to an identifier
+      operationId: getCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The community associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Community'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Community'
+        401:
+          description: Unauthorized to get the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to get the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to get the community
+        403:
+          description: Unauthorized to get the community that you do not play
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community information if you are
+                      not playing on it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community information if you are
+                      not playing on it
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    put:
+      tags:
+      - Communities
+      summary: Update the values of a community
+      description: Allow to update a community associated
+      operationId: updateCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Community'
+      responses:
+        200:
+          description: The updated community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Community'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Community'
+        401:
+          description: Unauthorized to update the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to update the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to update the community
+        403:
+          description: Unauthorized to update the community that you do not play
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not update the community information if you are
+                      not playing on it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not update the community information if you are
+                      not playing on it
+        400:
+          description: The community to register is wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad community values
+                  description: Default Response
+                  value:
+                    code: badCommunity
+                    message: A community needs a name
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad community values
+                  description: Default Response
+                  value:
+                    code: badCommunity
+                    message: A community needs a name
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    delete:
+      tags:
+      - Communities
+      summary: Delete a community
+      description: Allow to delete a community
+      operationId: deleteCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The deleted community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Community'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Community'
+        401:
+          description: Unauthorized to delete the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to delete the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: interactionUnauthorized
+                    message: You are not authorized to delete the community
+        403:
+          description: Unauthorized to delete the community that you do not are the
+            owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not delete the community if you are not the owner
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not delete the community if you are not the owner
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/norms:
+    get:
+      tags:
+      - Communities
+      - Norms
+      summary: Get some community norms
+      description: Allow to obtain the norms associated to a community
+      operationId: getCommunityNorms_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get the norms
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: Index of the first community norm to return
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Number maximum of community norm  to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: The found norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityNormsPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityNormsPage'
+        401:
+          description: Unauthorized to get the norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the norms
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community norms
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the norms
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community norms
+        403:
+          description: You can not get the community norms of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community norms if you no play on
+                    it
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community norms if you not play on
+                      it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community norms if you no play on
+                    it
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community norms if you not play on
+                      it
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    post:
+      tags:
+      - Communities
+      - Norms
+      summary: Add a norm into a community
+      description: Add a norm to be applied in a community
+      operationId: addCommunityNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to add the norm
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The norm to add
+        content:
+          '*/*':
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+      responses:
+        200:
+          description: The added norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+        401:
+          description: Unauthorized to add a norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You can not get the community norms of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a norm into a community of another user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not add a norm to another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a norm into a community of another user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not add a norm to another user
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/norms/{communityNormId}:
+    get:
+      tags:
+      - Communities
+      - Norms
+      summary: Get a community norm
+      description: Get a norm from a community
+      operationId: getCommunityNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get the norm
+        required: true
+        schema:
+          type: string
+      - name: communityNormId
+        in: path
+        description: The identifier of the community norm to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The community norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+        401:
+          description: Unauthorized to get a norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You can not get the community norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You need to play in the community to get the norm
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You need to play in the community to get the norm
+        404:
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    delete:
+      tags:
+      - Communities
+      - Norms
+      summary: Remove a community norm
+      description: Remove a norm from a community
+      operationId: removeCommunityNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to remove the community norm
+        required: true
+        schema:
+          type: string
+      - name: communityNormId
+        in: path
+        description: The identifier of the community norm to remove
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The removed community norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityNorm'
+        401:
+          description: Unauthorized to remove a norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a norm
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You can not remove a community norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to remove a community
+                      norm
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to remove a community
+                      norm
+        404:
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/members:
+    get:
+      tags:
+      - Communities
+      summary: Get the users in a community
+      description: Allow to get the users that plays in a community
+      operationId: getCommunityMembers_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get the users
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: Index of the first community user to return
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Number maximum of community user to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: The community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityMembersPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityMembersPage'
+        401:
+          description: Unauthorized to get the community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get the community users
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get the community users
+        403:
+          description: You can not get the community users if you not play on it
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community  users if you no play on
+                      it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a norm from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get the community  users if you no play on
+                      it
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    post:
+      tags:
+      - Communities
+      summary: 'Add an user into a community '
+      description: Join or add an user into a community.
+      operationId: addCommunityMember_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to add the user
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: User to add into the community
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CommunityMember'
+      responses:
+        200:
+          description: The added community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+        400:
+          description: Bad community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+        401:
+          description: Unauthorized to get the community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to add the community users
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to add the community users
+        403:
+          description: You does not have the privileges to add the user in the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to add an user
+                      into the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to add an user
+                      into the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/members/{userId}:
+    get:
+      tags:
+      - Communities
+      summary: 'Get an user from a community '
+      description: You can use this method to leave or get an user from a community.
+      operationId: getCommunityMember_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get an user
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The identifier of the user to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The modified community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+        400:
+          description: Bad community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+        401:
+          description: Unauthorized to get the community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+                      users
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+                      users
+        403:
+          description: You can not get the information of an user if you not play
+            in the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to modify an
+                      user into the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to modify an
+                      user into the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    put:
+      tags:
+      - Communities
+      summary: 'Modify an user from a community '
+      description: Modify the attributes of a community user.
+      operationId: modifyCommunityMember_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to modify the user
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The identifier of the user to modify
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New values for the community user
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CommunityMember'
+      responses:
+        200:
+          description: The modified community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+        400:
+          description: Bad community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The community user is bad
+                  description: Default Response
+                  value:
+                    code: communitiesBadUser
+                    message: You must to specify the user identifier
+        401:
+          description: Unauthorized to get the community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+                      users
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+                      users
+        403:
+          description: You does not have the privileges to modify the user in the
+            community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to modify community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to modify an
+                      user into the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to modify community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to modify an
+                      user into the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    delete:
+      tags:
+      - Communities
+      summary: 'Remove an user from a community '
+      description: You can use this method to leave or remove an user from a community.
+      operationId: removeCommunityMember_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to remove an user
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The identifier of the user to remove
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The removed community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityMember'
+        401:
+          description: Unauthorized to remove a community users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to remove a community users
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a community users
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to remove a community users
+        403:
+          description: You does not have the privileges to modify the user in the
+            community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to remove an
+                      user from the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a community user
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You does not have the necessary privilege to remove an
+                      user from the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/taskTypes:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      summary: Get the task types that can be done in a community
+      description: Allow to obtain all the types of task that any member of the community
+        can do
+      operationId: getCommunityTaskTypes_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get the task types
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: Index of the first community task type to return
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Number maximum of community task types to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: The found tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskTypesPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskTypesPage'
+        401:
+          description: Unauthorized to get the task types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the task types
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community task types
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the task types
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community task types
+        403:
+          description: You can not get the community task types if you are not a member
+            of the community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task types if you no play
+                    on it
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get information of this community, because
+                      you are not a member
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task types if you no play
+                    on it
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get information of this community, because
+                      you are not a member
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    post:
+      tags:
+      - Communities
+      - Tasks
+      summary: Add a task type into a community
+      description: Add a new type of task that can be done by the members of a community.
+      operationId: addCommunityTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to add the task type
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The task type to add
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TaskType'
+      responses:
+        200:
+          description: The added task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+        401:
+          description: Unauthorized to add a task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a task
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a task
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You does not have the privileges to add a task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a task type
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to add a task type in
+                      the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a task type
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to add a task type in
+                      the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/taskTypes/{communityTaskTypeId}:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      summary: Get a community task type
+      description: Get a community task type.
+      operationId: getCommunityTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to get the task type
+        required: true
+        schema:
+          type: string
+      - name: communityTaskTypeId
+        in: path
+        description: The identifier of the community task type to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The community task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+        401:
+          description: Unauthorized to get a community task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task type
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community task type
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task type
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to the community task type
+        403:
+          description: You does not have the privileges to get a community task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: You must play on the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get information of a community that you are
+                      not in
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: You must play on the community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You can not get information of a community that you are
+                      not in
+        404:
+          description: Not found community or task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+    delete:
+      tags:
+      - Communities
+      - Tasks
+      summary: Remove a community task type
+      description: Remove a community task type. So this kind of task type can not
+        be done more by the members of the community
+      operationId: removeCommunityTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to remove the task type
+        required: true
+        schema:
+          type: string
+      - name: communityTaskTypeId
+        in: path
+        description: The identifier of the community task type to remove
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The removed community task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+        401:
+          description: Unauthorized to remove a community task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a community task
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to remove a community task
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You does not have the privileges to remove a task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a task from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to remove a task type
+                      in the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to remove a task from a community
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to remove a task type
+                      in the community
+        404:
+          description: Not found community or task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/taskInstances:
+    post:
+      tags:
+      - Communities
+      - Tasks
+      summary: Add a task instance into a community
+      description: Add a new task to do in a community.
+      operationId: addCommunityTaskInstance_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to add the task instance
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The task to do by the community
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CommunityTaskInstance'
+      responses:
+        200:
+          description: The added task instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CommunityTaskType'
+        401:
+          description: Unauthorized to add a community task instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a community task instance
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to add a community task instance
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to modify the community
+        403:
+          description: You does not have the privileges to add a new community task
+            instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a task instance
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to add a task to do in
+                      the community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to add a task instance
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to add a task to do in
+                      the community
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /messages:
+    post:
+      tags:
+      - Messages
+      summary: Send a message
+      description: Allow to send a message
+      operationId: sendMessage_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        200:
+          description: The sent message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Message'
+        401:
+          description: Unauthorized to send a message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: messagesUnauthorized
+                    message: You are not authorized to send a message
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: messagesUnauthorized
+                    message: You are not authorized to send a message
+        400:
+          description: The message to send is wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad message values
+                  description: Default Response
+                  value:
+                    code: badMessage
+                    message: A message needs a content
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad message values
+                  description: Default Response
+                  value:
+                    code: badMessage
+                    message: A message needs a content
+  /norms/published:
+    get:
+      tags:
+      - Norms
+      summary: Search for some published norms
+      description: Get some published norms that satisfy some field attributes
+      operationId: searchPublishedNorms_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: name
+        in: query
+        description: The pattern to match the name of norms to return
+        schema:
+          type: string
+      - name: description
+        in: query
+        description: The pattern to match the description of norms to return
+        schema:
+          type: string
+      - name: keywords
+        in: query
+        description: The pattern to match the keywords of norms to return
+        schema:
+          type: array
+          items:
+            type: string
+      - name: offset
+        in: query
+        description: The index of the first norm to return
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: The number maximum of norms to return
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: The norms that match the patterns
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedNormsPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedNormsPage'
+        401:
+          description: Unauthorized to get the norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to get the norms
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to get the norms
+        403:
+          description: Unauthorized to get the norms of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the norms
+                  description: Default Response
+                  value:
+                    code: normsForbidden
+                    message: You can not get the norms of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the norms
+                  description: Default Response
+                  value:
+                    code: normsForbidden
+                    message: You can not get the norms of another user
+    post:
+      tags:
+      - Norms
+      summary: Publish a norm
+      description: Publish a norm to be accessible by the other users on WeNet
+      operationId: publishNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        description: The norm to publish
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PublishedNorm'
+      responses:
+        200:
+          description: The published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+        400:
+          description: The norm to publish is wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad norm values
+                  description: Default Response
+                  value:
+                    code: badNorm
+                    message: A norm needs a name
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad norm values
+                  description: Default Response
+                  value:
+                    code: badNorm
+                    message: A norm needs a name
+        401:
+          description: Unauthorized to publish the norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to publish a norm
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to publish a norm
+  /norms/published/{publishedNormId}:
+    get:
+      tags:
+      - Norms
+      summary: Get a published norm
+      description: Allow to get a published norm
+      operationId: getPublishedNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: publishedNormId
+        in: path
+        description: The identifier of the published norm to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+        401:
+          description: Unauthorized to get the published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to get the published norm
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to get the published norm
+        404:
+          description: Not found norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: normNotFound
+                    message: Not found a published norm associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: normNotFound
+                    message: Not found a published norm associated to the identifier
+    delete:
+      tags:
+      - Norms
+      summary: Delete a published norm
+      description: Allow to delete a published norm
+      operationId: deletePublishedNorm_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: publishedNormId
+        in: path
+        description: The identifier of the published norm to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The deleted published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+        401:
+          description: Unauthorized to delete the published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to delete the published norm
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: normsUnauthorized
+                    message: You are not authorized to delete the published norm
+        403:
+          description: Unauthorized to delete the published norm that you do not are
+            the owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the norm
+                  description: Default Response
+                  value:
+                    code: normForbidden
+                    message: You can not delete the published norm if you are not
+                      the owner
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the norm
+                  description: Default Response
+                  value:
+                    code: normForbidden
+                    message: You can not delete the published norm if you are not
+                      the owner
+        404:
+          description: Not found norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: normNotFound
+                    message: Not found a published norm associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: normNotFound
+                    message: Not found a published norm associated to the identifier
+  /tasks/types/published:
+    get:
+      tags:
+      - Tasks
+      summary: Search for a published task types
+      description: Get some published task types that satisfy some field attributes
+      operationId: searchPublishedTaskTypes_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: name
+        in: query
+        description: The pattern to match the name of task types to return
+        schema:
+          type: string
+      - name: description
+        in: query
+        description: The pattern to match the description of task types to return
+        schema:
+          type: string
+      - name: keywords
+        in: query
+        description: The pattern to match the keywords of task types to return
+        schema:
+          type: array
+          items:
+            type: string
+      - name: offset
+        in: query
+        description: The index of the first task type to return
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: The number maximum of task types to return
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: The type tasks that match the patterns
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskTypesPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskTypesPage'
+        401:
+          description: Unauthorized to get the task types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to get the task types
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to get the task types
+    post:
+      tags:
+      - Tasks
+      summary: Publish a task type
+      description: Publish a task type to be accessible by the other users on WeNet
+      operationId: publishTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        description: The task type to publish
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PublishedTaskType'
+      responses:
+        200:
+          description: The published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+        400:
+          description: The task type to publish is wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad task type values
+                  description: Default Response
+                  value:
+                    code: badTaskType
+                    message: A task type needs a name
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Bad task type values
+                  description: Default Response
+                  value:
+                    code: badTaskType
+                    message: A task type needs a name
+        401:
+          description: Unauthorized to publish the task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to publish a task type
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to publish a task type
+  /tasks/types/published/{publishedTaskTypeId}:
+    get:
+      tags:
+      - Tasks
+      summary: Get a published task type
+      description: Allow to get a published task type
+      operationId: getPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+        401:
+          description: Unauthorized to get the published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to get the published task type
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to get the published task type
+        404:
+          description: Not found published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: tasktypeNotFfound
+                    message: Not found a published task type associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: tasktypeNotFfound
+                    message: Not found a published task type associated to the identifier
+    delete:
+      tags:
+      - Tasks
+      summary: Delete a published task type
+      description: Allow to delete a published task type
+      operationId: deletePublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The deleted published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PublishedTaskType'
+        401:
+          description: Unauthorized to delete the published task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to delete the task type
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: tasksUnauthorized
+                    message: You are not authorized to delete the task type
+        403:
+          description: Unauthorized to delete the task type that you do not are the
+            owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the published task type
+                  description: Default Response
+                  value:
+                    code: tasktypeForbidden
+                    message: You can not delete the published task type if you are
+                      not the owner
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the published task type
+                  description: Default Response
+                  value:
+                    code: tasktypeForbidden
+                    message: You can not delete the published task type if you are
+                      not the owner
+        404:
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: tasktypeNotFfound
+                    message: Not found a published task type associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: tasktypeNotFfound
+                    message: Not found a published task type associated to the identifier
+components:
+  schemas:
+    status:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Contain the version of the API
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+      description: Provide information about the current status of the API
+      xml:
+        name: status
+    CommunitiesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first community returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of communities that satisfies the search.
+          format: int64
+          example: 100
+        communities:
+          type: array
+          description: The set of communities found
+          items:
+            $ref: '#/components/schemas/Community'
+      description: Contains a set of communities found
+      xml:
+        name: CommunitiesPage
+    Community:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the community.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        name:
+          type: string
+          description: The name of the community.
+          example: WeNet
+        description:
+          type: string
+          description: The description of the community.
+          example: A community of users that provide or require help
+        keywords:
+          type: array
+          description: The keywords of the community
+          example:
+          - social interaction
+          - ethics
+          - diversity
+          items:
+            type: string
+        avatar:
+          type: string
+          description: The URL to an image that represents the avatar of the community.
+          example: https://internetofus.eu/wp-content/uploads/sites/38/2019/02/WeNet_logo.png
+        sinceTime:
+          type: integer
+          description: The difference, measured in milliseconds, between the community
+            is active and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571412479710
+      description: This component describes a community of users.
+      xml:
+        name: Community
+    errorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
+      xml:
+        name: errorMessage
+    CommunityNorm:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the community norm.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        sinceTime:
+          type: integer
+          description: The difference, measured in milliseconds, between the norm
+            is applied in the community and midnight, January 1, 1970 UTC.
+          format: int64
+        norm:
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+      description: A norm that is applied in a community
+      xml:
+        name: CommunityNorm
+    CommunityNormsPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first community norm returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of community norms that satisfies the search.
+          format: int64
+          example: 100
+        norms:
+          type: array
+          description: The set of community norms found
+          items:
+            $ref: '#/components/schemas/CommunityNorm'
+      description: Contains a set of community norms found
+      xml:
+        name: CommunityNormsPage
+    Norm:
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+    CommunityMember:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The identifier of the user.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        joinTime:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the user has joined in the community and midnight, January 1, 1970
+            UTC.
+          format: int64
+          example: 1571412636684
+        privileges:
+          type: array
+          description: The privileges of the user on the community
+          items:
+            type: string
+            enum:
+            - MODIFY_NAME
+            - MODIFY_DESCRIPTION
+            - MODIFY_KEYWORDS
+            - MODIFY_AVATAR
+            - ADD_NORM
+            - REMOVE_NORM
+            - ADD_MEMBER
+            - REMOVE_MEMBER
+            - MODIFY_MEMBER_PRIVILEGES
+            - VIEW_MEMBER_PRIVILEGES
+            - ADD_TASK_TYPE
+            - REMOVE_TASK_TYPE
+            - ADD_TASK_INSTANCE
+      description: The information of an member that plays in a community.
+      xml:
+        name: CommunityMember
+    CommunityMembersPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first community member returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of community members that satisfies the search.
+          format: int64
+          example: 100
+        members:
+          type: array
+          description: The set of community members found
+          items:
+            $ref: '#/components/schemas/CommunityMember'
+      description: Contains a set of community members found
+      xml:
+        name: CommunityMembersPage
+    CommunityTaskType:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the type task in a community.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        sinceTime:
+          type: integer
+          description: The difference, measured in milliseconds, between the task
+            type is applied in the community and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571412868697
+        taskType:
+          $ref: '#/components/schemas/TaskType'
+      description: A type of task that can be done in a community
+      xml:
+        name: CommunityTaskType
+    CommunityTaskTypesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first community task returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of community tasks that satisfies the search.
+          format: int64
+          example: 100
+        tasks:
+          type: array
+          description: The set of community tasks found
+          items:
+            $ref: '#/components/schemas/CommunityTaskType'
+      description: Contains a set of community task types found
+      xml:
+        name: CommunityTaskTypesPage
+    Goal:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The code of the goal.
+      description: This component describes an objective to achieve in a task.
+      xml:
+        name: Goal
+    TaskType:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the task type.
+          example: WeNet
+        description:
+          type: string
+          description: The description of the task type.
+          example: A description that explains witch is the action associated to the
+            task
+        audioDescription:
+          type: string
+          description: The URL to an audio file that describe the task type.
+          example: https://internetofus.eu/wp-content/uploads/task_12345.mp3
+        goal:
+          $ref: '#/components/schemas/Goal'
+        norms:
+          type: array
+          description: The norms that has to satisfy the users to do the task.
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+      description: The description of type of task.
+      xml:
+        name: TaskType
+    CommunityTaskInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the task instance.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        taskType:
+          $ref: '#/components/schemas/CommunityTaskType'
+        state:
+          type: array
+          description: The attributes that define the state of the task instance.
+          items:
+            $ref: '#/components/schemas/TaskAttribute'
+        goal:
+          $ref: '#/components/schemas/Goal'
+        team:
+          type: array
+          description: The identifiers of the community members that has to team up
+            to do the task
+          example:
+          - 550e8400-e29b-41d4-a716-446655440000
+          - 1db14dd1-ed9a-463d-a518-54c7c38dcec9
+          items:
+            type: string
+        startDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the task has started and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571413174407
+        deadlineDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            on which the task is expected to be completed and midnight, January 1,
+            1970 UTC.
+          format: int64
+          example: 1571413332583
+        finishedDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the task has concluded and midnight, January 1, 1970 UTC. If it is
+            not set the task is active.
+          format: int64
+          example: 1571413332583
+        updatedDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the task has been updated and midnight, January 1, 1970 UTC. If it
+            is not set the task is active.
+          format: int64
+          example: 1571413332583
+      description: This component describes a community task instance.
+      xml:
+        name: CommunityTaskInstance
+    TaskAttribute:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the attribute.
+          example: communityId
+        value:
+          type: object
+          description: The value of the attribute.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+      description: This component describes an attribute on a task instance.
+      xml:
+        name: TaskAttribute
+    Message:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The content of the message.
+          items:
+            $ref: '#/components/schemas/MessageAttribute'
+        norms:
+          type: array
+          description: The norms associated to the message.
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+      description: This component describes an action that an user wants to do.
+      xml:
+        name: Message
+    MessageAttribute:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the attribute.
+          example: communityId
+        value:
+          type: string
+          description: The value of the attribute.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+      description: This component describes an attribute on the message content.
+      xml:
+        name: MessageAttribute
+    PublishedNorm:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the norm.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        name:
+          type: string
+          description: The name of the norm.
+          example: WeNet
+        description:
+          type: string
+          description: The description of the norm.
+          example: A norm of users that provide or require help
+        keywords:
+          type: array
+          description: The keywords of the norm
+          example:
+          - social interaction
+          - ethics
+          - diversity
+          items:
+            type: string
+        publisherId:
+          type: string
+          description: The identifier of the user that has published the norm.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        publishDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the norm was published and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571413067381
+        norm:
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+      description: A norm that is published to share with all the WeNet users.
+      xml:
+        name: PublishedNorm
+    PublishedNormsPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first published norm returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of published norms that satisfies the search.
+          format: int64
+          example: 100
+        norms:
+          type: array
+          description: The set of published norms found
+          items:
+            $ref: '#/components/schemas/PublishedNorm'
+      description: Contains a set of published norms found
+      xml:
+        name: PublishedNormsPage
+    PublishedTaskType:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The identifier of the published task type.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        keywords:
+          type: array
+          description: The keywords that describe the published task type.
+          example:
+          - social interaction
+          - ethics
+          - diversity
+          items:
+            type: string
+        publisherId:
+          type: string
+          description: The identifier of the user that has published the task type.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        publishDate:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the task type was published and midnight, January 1, 1970 UTC.
+          format: int64
+        taskType:
+          $ref: '#/components/schemas/TaskType'
+      description: A task type that is published to share with all the WeNet users.
+      xml:
+        name: PublishedTaskType
+    PublishedTaskTypesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first published task type returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of published task types that satisfies the
+            search.
+          format: int64
+          example: 100
+        taskTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublishedTaskType'
+      description: Contains a set of published task types found
+      xml:
+        name: PublishedTaskTypesPage

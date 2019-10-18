@@ -1,0 +1,514 @@
+openapi: 3.0.1
+info:
+  title: WeNet - Profile manager API
+  description: >-
+		This API will be used to storing and maintaining the WeNet user profile. A profile 
+		is a set of attributes, and their current values represent the state of the user.
+		These attributes can be:
+		
+		 * **id**: identifier of the WeNet user.
+		 * **name**: the name of the user.
+		 * **dateOfBirth**: the date of birth of the user.
+		 * **gender**: the gender of the user.
+		 * **email**: the email of the user.
+		 * **phoneNumber**: the phone number of the user, on the E.164 format (^\+?[1-9]\d{1,14}$).
+		 * **locale**: the locale used by the user.
+		 * **avatar**: the URL to an image that can be used as an avatar of the user.
+		 * **nationality**: the nationality of the user.
+		 * **languages**: this is a set of languages that the user can understand.
+		 * **occupation**: the occupation of the user.
+		
+		
+		### Language
+		
+		The languages that a user can understand are defined by the **ISO 639-1** code of the language and
+		the linguistic ability level of the person. This level can be:
+		
+		 * **A0**: Beginner/False beginner. The person only knows a few words of the language, if that.
+		 * **A1**: Elementary. The person can ask a few basic questions and ideas, but with a lot of mistakes.
+		 * **A2**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.
+		           It stills to make a lot of big mistakes.
+		 * **B1**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.
+		           It stills to make a lot of big mistakes.
+		 * **B2**: Intermediate. Now the person can converse in many situations, with less serious errors.
+		 * **C1**: Upper-intermediate. The person is comfortable in most situations, still some good mistakes.
+		 * **C2**: Proficient. The person is fluent, pretty much mother tongue. Extremely comfortable, it has complete control over the language.
+		
+		
+		### Gender
+		
+		The gender of a user can be:
+		
+		 * **F**: A person whose gender identity matches the female sex.
+		 * **M**: A person whose gender identity matches the male sex.
+		
+	contact:
+    name: UDT-IA, IIIA-CSIC
+    url: http://www.iiia.csic.es/
+  version: 0.6.0
+tags:
+- name: Status
+  description: Allow knowing the current API version.
+- name: Profiles
+  description: The functionality provided allows to access current and previous values
+    of user attributes that define the user profile.  It also allows you to modify
+    the current values.
+paths:
+  /status:
+    get:
+      tags:
+      - Status
+      summary: Get the status of the API
+      description: Return the current status information of the API
+      operationId: getStatusReport
+      responses:
+        200:
+          description: The API status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/status'
+  /profiles:
+    post:
+      tags:
+      - Profiles
+      summary: Create a profile
+      description: Create a new WeNet user profile
+      operationId: createProfile_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        description: The new profile to create
+        content:
+          '*/*':
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      responses:
+        200:
+          description: The created profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            application/xml:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+        400:
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The profile is not right
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: The phone is not in E.164 format
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The profile is not right
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: The phone is not in E.164 format
+        401:
+          description: Unauthorized to create a profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to create a profile
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to create a profile
+  /profiles/{profileId}:
+    get:
+      tags:
+      - Profiles
+      summary: Return a profile associated to the identifier
+      description: Allow to get a profile associated to an identifier
+      operationId: retrieveProfile_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: profileId
+        in: path
+        description: The identifier of the profile to get
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The profile associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            application/xml:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+        401:
+          description: Unauthorized to get the profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to get the profile
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to get the profile
+        403:
+          description: Unauthorized to get the profile that you do not play
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not get the profile information if you are not
+                      playing on it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not get the profile information if you are not
+                      playing on it
+        404:
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+    put:
+      tags:
+      - Profiles
+      summary: Modify a profile
+      description: Change the attributes of a profile
+      operationId: updateProfile_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: profileId
+        in: path
+        description: The identifier of the profile to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The new values for the profile
+        content:
+          '*/*':
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      responses:
+        200:
+          description: The profile associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            application/xml:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+        400:
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The profile is not right
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: The phone is not in E.164 format
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: The profile is not right
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: The phone is not in E.164 format
+        401:
+          description: Unauthorized to modify the profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to modify the profile
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to modify the profile
+        403:
+          description: Unauthorized to get the profile that you do not play
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to modify the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not modify the profile of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to modify the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not modify the profile of another user
+        404:
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+    delete:
+      tags:
+      - Profiles
+      summary: Delete the profile associated to the identifier
+      description: Allow to delete a profile associated to an identifier
+      operationId: deleteProfile_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: profileId
+        in: path
+        description: The identifier of the profile to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The deleted profile associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            application/xml:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+        401:
+          description: Unauthorized to delete the profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to delete the profile
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You are not authorized to delete the profile
+        403:
+          description: Unauthorized to delete the profile that you do not play
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not delete the profile information if you are
+                      not playing on it
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the profile
+                  description: Default Response
+                  value:
+                    code: profile_forbidden
+                    message: You can not delete the profile information if you are
+                      not playing on it
+        404:
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found Response Example
+                  description: Default Response
+                  value:
+                    code: profile_not_found
+                    message: Not found a profile associated to the identifier
+components:
+  schemas:
+    status:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Contain the version of the API
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+      description: Provide information about the current status of the API
+      xml:
+        name: status
+    errorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
+      xml:
+        name: errorMessage
+    WeNetUserProfile:
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
