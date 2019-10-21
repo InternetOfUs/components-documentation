@@ -45,10 +45,17 @@ info:
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.6.0
+  version: 0.7.0
 tags:
 - name: Status
   description: Allow knowing the current API version.
+- name: Intelligences
+  description: Provide the functionality to evaluate the intelligences of a person
+- name: Personalities
+  description: Provide the functionality to evaluate the personality of a person
+- name: Historic
+  description: The functionality provided allows to access to the values of the models
+    in a previous dates.
 - name: Profiles
   description: The functionality provided allows to access current and previous values
     of user attributes that define the user profile.  It also allows you to modify
@@ -71,6 +78,381 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/status'
+  /intelligences:
+    get:
+      tags:
+      - Profiles
+      - Intelligences
+      summary: Obtain the personality test
+      description: Return the questionnaire used to obtain the intelligences of a
+        person
+      operationId: getPersonalityQuestionnaire_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: Accept-Language
+        in: header
+        description: The preferred language for the text on the questionnaire. If
+          it is not available the texts will be on English.
+        schema:
+          type: string
+          default: en
+        example: en
+      responses:
+        401:
+          description: Unauthorized to get the intelligences questionnaire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: intelligencesUnauthorized
+                    message: You are not authorized to get the intelligences questionnaire
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: intelligencesUnauthorized
+                    message: You are not authorized to get the intelligences questionnaire
+        200:
+          description: The questionnaire to evaluate the intelligences of a person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Questionnaire'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Questionnaire'
+    post:
+      tags:
+      - Profiles
+      - Intelligences
+      summary: Calculate the intelligences of a person
+      description: Evaluate the answers to the intelligences test to obtain the intelligences
+        of the person
+      operationId: calculateIntelligences_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionnaireAnswers'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/QuestionnaireAnswers'
+      responses:
+        401:
+          description: Unauthorized to evaluate the intelligences questionnaire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: intelligencesUnauthorized
+                    message: You are not authorized to evaluate the intelligences
+                      questionnaire
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: intelligencesUnauthorized
+                    message: You are not authorized to evaluate the intelligences
+                      questionnaire
+        200:
+          description: The intelligences of the person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Intelligences'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Intelligences'
+  /personalities:
+    get:
+      tags:
+      - Profiles
+      - Personalities
+      summary: Obtain the personality test
+      description: Return the questionnaire used to obtain the personality of a person
+      operationId: getPersonalityQuestionnaire_2
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: Accept-Language
+        in: header
+        description: The preferred language for the text on the questionnaire. If
+          it is not available the texts will be on English.
+        schema:
+          type: string
+          default: en
+        example: en
+      responses:
+        401:
+          description: Unauthorized to get the personality questionnaire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: personalityUnauthorized
+                    message: You are not authorized to get the personality questionnaire
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: personalityUnauthorized
+                    message: You are not authorized to get the personality questionnaire
+        200:
+          description: The questionnaire to evaluate the personality of a person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Questionnaire'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Questionnaire'
+    post:
+      tags:
+      - Profiles
+      - Personalities
+      summary: Calculate the personality of a person
+      description: Evaluate the answers to the personality test to obtain the personality
+        of the person
+      operationId: calculateIntelligences_2
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionnaireAnswers'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/QuestionnaireAnswers'
+      responses:
+        401:
+          description: Unauthorized to evaluate the personality questionnaire
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: personalityUnauthorized
+                    message: You are not authorized to evaluate the personality questionnaire
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: personalityUnauthorized
+                    message: You are not authorized to evaluate the personality questionnaire
+        200:
+          description: The personality of the person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Intelligences'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Intelligences'
+  /profiles/{profileId}/historic:
+    get:
+      tags:
+      - Historic
+      - Profiles
+      summary: Get the status of the profile in specific time period
+      description: Allow to obtain the historic of profile changes
+      operationId: getAttributes_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: profileId
+        in: path
+        description: The identifier of the profile to get
+        required: true
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: The time stamp inclusive that mark the older limit in witch the
+          profile has to be active. It is the difference, measured in milliseconds,
+          between the time when the profile has to be valid and midnight, January
+          1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+      - name: to
+        in: query
+        description: The time stamp inclusive that mark the newest limit in witch
+          the profile has to be active. It is the difference, measured in milliseconds,
+          between the time when the profile has not more valid and midnight, January
+          1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+      - name: order
+        in: query
+        description: The order in witch has to return the profiles. From the newest
+          to the oldest (DESC) or from the oldest to the newest (ASC).
+        schema:
+          type: string
+          example: ASC
+          default: DESC
+          enum:
+          - DESC
+          - ASC
+      - name: offset
+        in: query
+        description: Index of the first profile to return
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Number maximum of profiles to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: The found profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
+        401:
+          description: Unauthorized to get the profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the profiles
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You have to log in to access to profiles
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the profiles
+                  description: Default Response
+                  value:
+                    code: profilesUnauthorized
+                    message: You have to log in to access to profiles
+        403:
+          description: You can not get the profile of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the profiles of another user
+                  description: Default Response
+                  value:
+                    code: profilesForbidden
+                    message: You can not get the profiles of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the profiles of another user
+                  description: Default Response
+                  value:
+                    code: profilesForbidden
+                    message: You can not get the profiles of another user
+        404:
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: profileNotFound
+                    message: Not found a profile associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: profileNotFound
+                    message: Not found a profile associated to the identifier
   /profiles:
     post:
       tags:
@@ -213,7 +595,7 @@ paths:
                   summary: Unauthorized to get the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not get the profile information if you are not
                       playing on it
             application/xml:
@@ -224,7 +606,7 @@ paths:
                   summary: Unauthorized to get the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not get the profile information if you are not
                       playing on it
         404:
@@ -238,7 +620,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
@@ -248,7 +630,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
     put:
       tags:
@@ -343,7 +725,7 @@ paths:
                   summary: Unauthorized to modify the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not modify the profile of another user
             application/xml:
               schema:
@@ -353,7 +735,7 @@ paths:
                   summary: Unauthorized to modify the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not modify the profile of another user
         404:
           description: Not found profile
@@ -366,7 +748,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
@@ -376,7 +758,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
     delete:
       tags:
@@ -442,7 +824,7 @@ paths:
                   summary: Unauthorized to delete the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not delete the profile information if you are
                       not playing on it
             application/xml:
@@ -453,7 +835,7 @@ paths:
                   summary: Unauthorized to delete the profile
                   description: Default Response
                   value:
-                    code: profile_forbidden
+                    code: profileForbidden
                     message: You can not delete the profile information if you are
                       not playing on it
         404:
@@ -467,7 +849,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
@@ -477,7 +859,7 @@ paths:
                   summary: No found Response Example
                   description: Default Response
                   value:
-                    code: profile_not_found
+                    code: profileNotFound
                     message: Not found a profile associated to the identifier
 components:
   schemas:
@@ -510,5 +892,132 @@ components:
       description: Inform of an error that happens when interacts with the API
       xml:
         name: errorMessage
+    Intelligences:
+      type: object
+    Answer:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the answer
+          example: Compassionate
+        value:
+          type: number
+          description: The value associated with the answer
+          format: double
+          example: -1
+      description: Provide a possible answer for a question
+      xml:
+        name: Answer
+    Question:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the question
+          example: The judges must be
+        help:
+          type: string
+          description: A message to help to answer the question
+          example: 'Example: If a judge judges your brother, you must follow the laws
+            that apply to everyone equally.'
+        answers:
+          type: array
+          description: The possible answers for the question
+          items:
+            $ref: '#/components/schemas/Answer'
+      description: A question used to extract information of a person
+      xml:
+        name: Question
+    QuestionnaireAnswers:
+      type: object
+      properties:
+        answerValues:
+          type: array
+          description: The selected values for the questions on the questionnaire.
+            The answer values are on the same order of the question that refers to
+            the questionnaire.
+          example:
+          - 1
+          - -1
+          - 0
+          - 1
+          - 1
+          - -1
+          - 1
+          - 0
+          - 0
+          - 0
+          - 1
+          - -1
+          - -1
+          - -1
+          - 1
+          items:
+            $ref: '#/components/schemas/Question'
+      description: Contains the selected answers of a questionnaire
+      xml:
+        name: QuestionnaireAnswers
+    Questionnaire:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name that identifies the questionnaire for a human
+          example: Personality test
+        description:
+          type: string
+          description: Explains what attribute of a person it evaluates
+          example: With this questionnaire is possible to obtain the personality of
+            a person.
+        questions:
+          type: array
+          description: The set of questions used to evaluate the person.
+          items:
+            $ref: '#/components/schemas/Question'
+      description: A questionnaire used to evaluate a person attribute
+      xml:
+        name: Questionnaire
+    HistoricWeNetUserProfile:
+      type: object
+      properties:
+        from:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the profile is set and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1457166440
+        to:
+          type: integer
+          description: The difference, measured in milliseconds, between the time
+            when the profile is not more valid and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571664406
+        profile:
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      description: The information of the user profile in a period of time.
+      xml:
+        name: HistoricWeNetUserProfile
+    HistoricWeNetUserProfilesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first profile returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of profiles that satisfies the search.
+          format: int64
+          example: 100
+        profiles:
+          type: array
+          description: The set of profiles found
+          items:
+            $ref: '#/components/schemas/HistoricWeNetUserProfile'
+      description: Contains a set of profiles found
+      xml:
+        name: HistoricWeNetUserProfilesPage
     WeNetUserProfile:
       $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile

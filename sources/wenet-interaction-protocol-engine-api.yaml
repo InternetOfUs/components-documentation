@@ -105,10 +105,17 @@ info:
     Also, we provide the functions to evaluate the personality and intelligences of users and
     the result can be kept of the profile attributes.
     
+    ### Trust
+    
+    The trust over another user is dynamically and will be updated every time they collaborate
+    to achieve a task. Also, you can get or set the trust on another user, on a member of
+    a community, or on a member of a community to fulfil a task type.
+    
+    
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.6.0
+  version: 0.7.0
 tags:
 - name: Status
   description: Allow knowing the current API version.
@@ -123,6 +130,13 @@ tags:
 - name: Tasks
   description: The functionality provided allows to publish task types, create and
     manage task instances.
+- name: Teams
+  description: The functionality provided allows to automatically form teams that
+    have diversity in gender, personality and intelligence. Also we provide the functions
+    to evaluate the personality and intelligences of users and the result can be kept
+    of the profile attributes.
+- name: Trusts
+  description: The functionality provided allows to manage the trust over other users.
 paths:
   /status:
     get:
@@ -3037,6 +3051,2677 @@ paths:
                   value:
                     code: tasktypeNotFfound
                     message: Not found a published task type associated to the identifier
+  /teams:
+    get:
+      tags:
+      - Teams
+      summary: Calculate the number of teams and each sizer that the composite can
+        create
+      description: Obtain how many teams and their size that will be created
+      operationId: getTeamsDistribution_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: numberOfPeople
+        in: query
+        description: The number of people that has to be distributed on different
+          teams
+        required: true
+        schema:
+          type: integer
+          format: int32
+          default: 4
+        example: 10
+      - name: peoplePerTeam
+        in: query
+        description: The number of people that have to be on each team
+        schema:
+          type: integer
+          format: int32
+          default: 2
+        example: 2
+      responses:
+        401:
+          description: Unauthorized to get the teams sizes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: teamsUnauthorized
+                    message: You are not authorized to get the teams sizes
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: teamsUnauthorized
+                    message: You are not authorized to get the teams sizes
+        200:
+          description: The size of the possible teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/teams_distribution'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/teams_distribution'
+    post:
+      tags:
+      - Teams
+      summary: Create teams
+      description: It distributes a group of people in different teams taking into
+        account their personality and intelligences
+      operationId: composite_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      requestBody:
+        description: The information necessary to create the teams
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/composite'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/composite'
+      responses:
+        401:
+          description: Unauthorized to create teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: teamsUnauthorized
+                    message: You are not authorized to create teams
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized Response Example
+                  description: Default Response
+                  value:
+                    code: teamsUnauthorized
+                    message: You are not authorized to create teams
+        200:
+          description: The created teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/composed_teams'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/composed_teams'
+  /trusts/{userId}:
+    get:
+      tags:
+      - Trusts
+      summary: Get the friends that have a trust in an specific range
+      description: Allow to obtain the friends witch trust are in a specific range
+      operationId: getFriendsWithTrust_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trusts
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: minTrust
+        in: path
+        description: The minimum inclusive trust of the users to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 0
+        example: 0
+      - name: maxTrust
+        in: path
+        description: The maximum inclusive trust of the users to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 1
+        example: 1
+      - name: order
+        in: query
+        description: The order in witch has to return the friends trusts. From the
+          highest trust to the lowest (DESC), or from the lowest trust to the highest
+          (ASC).
+        schema:
+          type: string
+          example: ASC
+          default: DESC
+          enum:
+          - DESC
+          - ASC
+      responses:
+        200:
+          description: The trust of the friends that are in the range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+        400:
+          description: Bad search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+        401:
+          description: Unauthorized to get the friend trusts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+        403:
+          description: You can not get the trusts of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+    post:
+      tags:
+      - Trusts
+      summary: Set the trust of an user respect another
+      description: Set the trust of an user respect a friend
+      operationId: setTrustOfFriend_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to set the friend trust
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      requestBody:
+        description: The trust to set over another user
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The set user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to set the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+        403:
+          description: You can not set the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/friends/{friendId}:
+    get:
+      tags:
+      - Trusts
+      summary: Get the trust over another user
+      description: Get the trust of an user respect another
+      operationId: getTrustOfFriend_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trust
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to get the trust
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to get the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    put:
+      tags:
+      - Trusts
+      summary: Update the trust over another user
+      description: Change the trust of an user respect another
+      operationId: updateTrustOfFriend_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to update the friend trust
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to update the trust
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      requestBody:
+        description: The trust to set to the friend
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The updated user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to update the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    delete:
+      tags:
+      - Trusts
+      summary: Remove the trust over another user
+      description: Delete the trust of an user respect another
+      operationId: deleteTrustOfFriend_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to delete the friend trust
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to delete the trust
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The removed user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to delete the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not delete the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/communities/{communityId}:
+    get:
+      tags:
+      - Communities
+      - Trusts
+      summary: Get the friends on a community that have a trust in an specific range
+      description: Allow to obtain the friends on a community witch trust are in a
+        specific range
+      operationId: getFriendsWithTrustOnCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trusts
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: minTrust
+        in: path
+        description: The minimum inclusive trust of the users on a community to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 0
+        example: 0
+      - name: maxTrust
+        in: path
+        description: The maximum inclusive trust of the users on a community to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 1
+        example: 1
+      - name: order
+        in: query
+        description: The order in witch has to return the friends trusts. From the
+          highest trust to the lowest (DESC), or from the lowest trust to the highest
+          (ASC).
+        schema:
+          type: string
+          example: ASC
+          default: DESC
+          enum:
+          - DESC
+          - ASC
+      responses:
+        200:
+          description: The trust of the friends that are in the range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+        400:
+          description: Bad search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+        401:
+          description: Unauthorized to get the friend trusts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+        403:
+          description: You can not get the trusts of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+    post:
+      tags:
+      - Communities
+      - Trusts
+      summary: You can set the trust of an user respect another on a community
+      description: You can set the trust of an user respect a friend on a community
+      operationId: setTrustOfFriendOnCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to set the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      requestBody:
+        description: The trust to set over another user
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The set user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to set the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+        403:
+          description: You can not set the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/communities/{communityId}/friends/{friendId}:
+    get:
+      tags:
+      - Communities
+      - Trusts
+      summary: Get the trust over another user on a community
+      description: Get the trust of an user respect another on a community
+      operationId: getTrustOfFriendOnCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to get the trust on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to get the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    put:
+      tags:
+      - Communities
+      - Trusts
+      summary: Update the trust over another user on a community
+      description: Change the trust of an user respect another on a community
+      operationId: updateTrustOfFriendOnCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to update the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to update the trust on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      requestBody:
+        description: The trust on a community to set to the friend
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The updated user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to update the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    delete:
+      tags:
+      - Communities
+      - Trusts
+      summary: Remove the trust over another user on a community
+      description: Delete the trust of an user respect another on a community
+      operationId: deleteTrustOfFriendOnCommunity_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to delete the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to delete the trust on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The removed user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to delete the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not delete the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/communities/{communityId}/taskTypes/{taskTypeId}:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      - Trusts
+      summary: Get the friends for do an specific task type on a community that have
+        a trust in an specific range
+      description: Allow to obtain the friends on a community witch trust to do a
+        task type are in a specific range
+      operationId: getFriendsWithTrustOnCommunityForTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friends trusts
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type on the community that the friend
+          has to do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: minTrust
+        in: path
+        description: The minimum inclusive trust of the users to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 0
+        example: 0
+      - name: maxTrust
+        in: path
+        description: The maximum inclusive trust of the users to return
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 1
+        example: 1
+      - name: order
+        in: query
+        description: The order in witch has to return the friends trusts. From the
+          highest trust to the lowest (DESC), or from the lowest trust to the highest
+          (ASC).
+        schema:
+          type: string
+          example: ASC
+          default: DESC
+          enum:
+          - DESC
+          - ASC
+      responses:
+        200:
+          description: The trust of the friends that are in the range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+        400:
+          description: Bad search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+        401:
+          description: Unauthorized to get the friend trusts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+        403:
+          description: You can not get the trusts of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+    post:
+      tags:
+      - Communities
+      - Tasks
+      - Trusts
+      summary: You can set the trust of an user respect another to do a task type
+        on a community
+      description: You can set the trust of an user respect a friend to do a task
+        type on a community
+      operationId: setTrustOfFriendOnCommunityForTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to set the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type on the community that the friend
+          has to do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      requestBody:
+        description: The trust to set over another user
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The new user trust to do a task type on a community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to set the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+        403:
+          description: You can not set the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/communities/{communityId}/taskTypes/{taskTypeId}/friends/{friendId}:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      - Trusts
+      summary: Get the trust over another user on a community to do a task type
+      description: Get the trust of an user respect another to do a task type on a
+        community
+      operationId: getTrustOfFriendOnCommunityForTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type on the community that the friend
+          has to do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to get the trust on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to get the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    put:
+      tags:
+      - Communities
+      - Tasks
+      - Trusts
+      summary: Update the trust over another user on a community to do a task type
+      description: Change the trust of an user respect another to do a task type on
+        a community
+      operationId: updateTrustOfFriendOnCommunityForTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to update the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type on the community that the friend
+          has to do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to update the trust to do a task
+          type on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      requestBody:
+        description: The trust to do a task type on a community to set to the friend
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The updated user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to update the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    delete:
+      tags:
+      - Communities
+      - Tasks
+      - Trusts
+      summary: Remove the trust over another user to do a task type on a community
+      description: Delete the trust of an user respect another to do a task type on
+        a community
+      operationId: deleteTrustOfFriendForTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to delete the friend trust on a community
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: communityId
+        in: path
+        description: The identifier of the community where the friend plays
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type on the community that the friend
+          has to do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to delete the trust of the task
+          type on a community
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The removed user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to delete the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not delete the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/publishedTaskTypes/{publishedTaskTypeId}:
+    get:
+      tags:
+      - Tasks
+      - Trusts
+      summary: Get the friends that have a trust in an specific range to do a published
+        task type
+      description: Allow to obtain the friends that if they do a published task type
+        have a trust in a specific range
+      operationId: getFriendsWithTrustForPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friends trusts
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type that the friend will
+          do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: minTrust
+        in: path
+        description: The minimum inclusive trust for the user to return if they will
+          do the published task type
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 0
+        example: 0
+      - name: maxTrust
+        in: path
+        description: The maximum inclusive trust for the user to return if they will
+          do the published task type
+        required: true
+        schema:
+          type: number
+          format: double
+          default: 1
+        example: 1
+      - name: order
+        in: query
+        description: The order in witch has to return the friends trusts. From the
+          highest trust to the lowest (DESC), or from the lowest trust to the highest
+          (ASC).
+        schema:
+          type: string
+          example: ASC
+          default: DESC
+          enum:
+          - DESC
+          - ASC
+      responses:
+        200:
+          description: The trust of the friends that are in the range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trusts_page'
+        400:
+          description: Bad search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unexpected search parameter value
+                  description: Default Response
+                  value:
+                    code: badMinTrust
+                    message: The minimum trust has to be on the range [0,1]
+        401:
+          description: Unauthorized to get the friend trusts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustsUnauthorized
+                    message: You have to log in to access to the trusts
+        403:
+          description: You can not get the trusts of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trusts of another user
+                  description: Default Response
+                  value:
+                    code: trustsForbidden
+                    message: You can not get the trusts of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: userNotFound
+                    message: Not found an user associated to the identifier
+    post:
+      tags:
+      - Tasks
+      - Trusts
+      summary: You can set the trust of an user respect another to do a published
+        task type
+      description: You can set the trust of an user respect a friend that it do a
+        published task type
+      operationId: setTrustOfFriendForPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to set the friend trust for a published
+          task type
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type to set the trust for
+          the friend
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      requestBody:
+        description: The trust to set over another user
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The set user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to set the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to set the user trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the user trust
+        403:
+          description: You can not set the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to set the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not set the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+  /trusts/{userId}/publishedTaskTypes/{publishedTaskTypeId}/friends/{friendId}:
+    get:
+      tags:
+      - Tasks
+      - Trusts
+      summary: Get the trust over another user to do a published task type
+      description: Get the trust of an user respect another to do a published task
+        type
+      operationId: getTrustOfFriendForPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to get the friend trust to do a published
+          task type
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type that the friend will
+          do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to get the trust
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to get the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not get the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    put:
+      tags:
+      - Tasks
+      - Trusts
+      summary: Update the trust over another user to do a published task type
+      description: Change the trust of an user respect another to do a published task
+        type
+      operationId: updateTrustOfFriendForPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to update the friend trust to do a
+          published task type
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type that the friend will
+          do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to update the trust to do a published
+          task type
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      requestBody:
+        description: The trust that the fiend will do a published task type
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/trust'
+      responses:
+        200:
+          description: The updated user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to update the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to update the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not get the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to update the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not update the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+    delete:
+      tags:
+      - Tasks
+      - Trusts
+      summary: Remove the trust over another user when do a published task type
+      description: Delete the trust of an user respect another if it do a published
+        task type
+      operationId: deleteTrustOfFriendForPublishedTaskType_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: userId
+        in: path
+        description: The identifier of the user to delete the friend trust when do
+          a published task type
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: publishedTaskTypeId
+        in: path
+        description: The identifier of the published task type where the friend will
+          do
+        required: true
+        schema:
+          type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+      - name: friendId
+        in: path
+        description: The identifier of the friend to delete the trust to do a published
+          task type
+        required: true
+        schema:
+          type: string
+        example: 123e4567-e89b-12d3-a456-426655440000
+      responses:
+        200:
+          description: The removed user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trust'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/trust'
+        401:
+          description: Unauthorized to delete the user trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to delete the trust
+                  description: Default Response
+                  value:
+                    code: trustUnauthorized
+                    message: You have to log in to access to the trust
+        403:
+          description: You can not delete the trust values of another user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to delete the trust of another user
+                  description: Default Response
+                  value:
+                    code: trustForbidden
+                    message: You can not delete the trust of another user
+        404:
+          description: Not found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/errorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: trustNotFound
+                    message: Not found an user associated to the identifier
 components:
   schemas:
     status:
@@ -3507,3 +6192,357 @@ components:
       description: Contains a set of published task types found
       xml:
         name: PublishedTaskTypesPage
+    composed_teams:
+      type: object
+      properties:
+        optimal:
+          type: boolean
+          description: If this is 'true' the created teams are the best possible
+          example: true
+        teams:
+          type: array
+          description: The teams that have been created
+          items:
+            $ref: '#/components/schemas/team'
+      description: The information of the composed teams
+      xml:
+        name: composed_teams
+    team:
+      type: object
+      properties:
+        peopleIds:
+          type: array
+          description: The identifiers of the people that form the team
+          example:
+          - 550e8400-e29b-41d4-a716-446655440000
+          - 1db14dd1-ed9a-463d-a518-54c7c38dcec9
+          xml:
+            name: people_ids
+          items:
+            type: string
+        verbal_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the verbal intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        logic_mathematics_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the logic-mathematics intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        visual_spatial_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the visual-spatial intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        kinestesica_corporal_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the kinestesica-corporal intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        musical_rhythmic_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the musical-rhythmic intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        intrapersonal_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the intrapersonal intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        interpersonal_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the interpersonal intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+        naturalist_environmental_leader_id:
+          type: string
+          description: The identifier of the person on the team that is the leader
+            of the naturalist-environmental intelligence
+          example: 550e8400-e29b-41d4-a716-446655440000
+      description: A set of people aggregated to do something
+      xml:
+        name: team
+    Intelligences:
+      type: object
+      properties:
+        verbal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The verbal intelligence
+          format: double
+          example: 0.1
+        logicMathematics:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The logic-mathematics intelligence
+          format: double
+          example: 0.2
+        visualSpatial:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The visual-spatial intelligence
+          format: double
+          example: 0.3
+        kinestesicaCorporal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The kinestesica-corporal intelligence
+          format: double
+          example: 0.4
+        musicalRhythmic:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The musical-rhythmic intelligence
+          format: double
+          example: 0.5
+        intrapersonal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The intrapersonal intelligence
+          format: double
+          example: 0.6
+        interpersonal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The interpersonal intelligence
+          format: double
+          example: 0.7
+        naturalistEnvironmental:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The naturalist-environmental intelligence
+          format: double
+          example: 0.8
+      description: Provide information about the intelligences of a person
+      xml:
+        name: Intelligences
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Contain the identifier of the person
+          example: 550e8400-e29b-41d4-a716-446655440000
+        personality:
+          $ref: '#/components/schemas/Personality'
+        intelligences:
+          $ref: '#/components/schemas/Intelligences'
+      description: Provide information about a person
+      xml:
+        name: Person
+    Personality:
+      type: object
+      properties:
+        perception:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The perception grade of a person
+          format: double
+          example: 0.1
+        judgment:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The judgment grade of a person
+          format: double
+          example: 0.2
+        extrovert:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The extrovert grade of a person
+          format: double
+          example: 0.3
+        attitude:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The attitude grade of a person
+          format: double
+          example: 0.4
+      description: Provide information about the personality of a person
+      xml:
+        name: Personality
+    composite:
+      type: object
+      properties:
+        people_per_team:
+          minimum: 2
+          type: integer
+          description: The size of the teams to create
+          format: int32
+          example: 2
+        at_most:
+          type: boolean
+          description: If this is 'true' the size of the teams cannot be more than
+            the specified on 'people_per_team'
+          example: true
+        performance:
+          maximum: 1
+          minimum: 0
+          type: number
+          description: This value allows defining the balancing of the teams. When
+            it is near 0.5 create similar teams, when it is near to 0 the worst are
+            the leaders and when it is near to 1 the bests are the leaders.
+          format: double
+          example: 0.5
+        time:
+          minimum: 0
+          type: integer
+          description: The maximum seconds that it has to calculate the best combination.
+            When it is reached return the best team composition that it has found.
+          format: int32
+          example: 30
+        people:
+          minItems: 4
+          type: array
+          description: Contain the people that have to be distributed on different
+            teams
+          items:
+            $ref: '#/components/schemas/Person'
+        requirements:
+          $ref: '#/components/schemas/requirements'
+      description: Provide information about how the teams have to be created
+      xml:
+        name: composite
+    requirement:
+      type: object
+      properties:
+        level:
+          maximum: 1
+          minimum: 0
+          type: number
+          description: The level of the intelligence that the team has to reach
+          format: double
+          example: 0.5
+        importance:
+          minimum: 1
+          type: integer
+          description: The importance of the intelligence on the team
+          format: int32
+          example: 1
+      description: Describe the required values for intelligence on the team that
+        will be created
+      xml:
+        name: requirement
+    requirements:
+      type: object
+      properties:
+        verbal:
+          $ref: '#/components/schemas/requirement'
+        logic_mathematics:
+          $ref: '#/components/schemas/requirement'
+        visual_spatial:
+          $ref: '#/components/schemas/requirement'
+        kinestesica_corporal:
+          $ref: '#/components/schemas/requirement'
+        musical_rhythmic:
+          $ref: '#/components/schemas/requirement'
+        intrapersonal:
+          $ref: '#/components/schemas/requirement'
+        interpersonal:
+          $ref: '#/components/schemas/requirement'
+        naturalist_environmental:
+          $ref: '#/components/schemas/requirement'
+      description: Describe the requirements of the teams that will be created
+      xml:
+        name: requirements
+    team_distribution:
+      type: object
+      properties:
+        quantity:
+          minimum: 1
+          type: integer
+          description: The number of teams of the specified size
+          format: int32
+          example: 2
+        size:
+          minimum: 0
+          type: integer
+          description: The size of each team
+          format: int32
+          example: 2
+      description: Provide information about the distribution of the number of teams
+        of a specific size
+      xml:
+        name: team_distribution
+    teams_distribution:
+      required:
+      - number_of_people
+      - people_per_team
+      type: object
+      properties:
+        number_of_people:
+          type: integer
+          description: The number of people that have distributed on the teams
+          format: int32
+          example: 10
+        people_per_team:
+          type: integer
+          description: The expected number of people on each team
+          format: int32
+          example: 2
+        basic:
+          maxItems: 2
+          type: array
+          description: Contain the distribution of the people on teams when the size
+            is a minimum
+          items:
+            $ref: '#/components/schemas/team_distribution'
+        atMost:
+          maxItems: 2
+          type: array
+          description: Contain the distribution of the people on teams when the size
+            is a maximum
+          xml:
+            name: at_most
+          items:
+            $ref: '#/components/schemas/team_distribution'
+      description: Describe how a set of people will be distributed on a set of teams
+      xml:
+        name: teams_distribution
+    trust:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The identifier of the user that this is the trust.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        value:
+          type: number
+          description: The trust over the user. It has to be on the range [0,1].
+          example: 0.43
+      description: The information of the trust of an user respect another.
+      xml:
+        name: trust
+    trusts_page:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first trust returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of trusts that satisfies the search.
+          format: int64
+          example: 100
+        trusts:
+          type: array
+          description: The set of trusts found
+          items:
+            $ref: '#/components/schemas/trust'
+      description: Contains a set of trusts found
+      xml:
+        name: trusts_page
