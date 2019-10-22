@@ -115,7 +115,7 @@ info:
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.7.0
+  version: 0.7.1
 tags:
 - name: Status
   description: Allow knowing the current API version.
@@ -151,10 +151,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status'
+                $ref: '#/components/schemas/Status'
             application/xml:
               schema:
-                $ref: '#/components/schemas/status'
+                $ref: '#/components/schemas/Status'
   /communities:
     get:
       tags:
@@ -217,7 +217,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -227,7 +227,7 @@ paths:
                     message: You are not authorized to get the communities
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -240,7 +240,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the communities
@@ -250,7 +250,7 @@ paths:
                     message: You can not get the communities of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the communities
@@ -292,7 +292,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -302,7 +302,7 @@ paths:
                     message: You are not authorized to register a community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -315,7 +315,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad community values
@@ -325,7 +325,7 @@ paths:
                     message: A community needs a name
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad community values
@@ -369,7 +369,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -379,7 +379,7 @@ paths:
                     message: You are not authorized to get the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -392,7 +392,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community
@@ -403,7 +403,7 @@ paths:
                       not playing on it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community
@@ -417,7 +417,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -427,7 +427,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -475,7 +475,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -485,7 +485,7 @@ paths:
                     message: You are not authorized to update the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -498,7 +498,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the community
@@ -509,7 +509,7 @@ paths:
                       not playing on it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the community
@@ -523,7 +523,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad community values
@@ -533,7 +533,7 @@ paths:
                     message: A community needs a name
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad community values
@@ -546,7 +546,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -556,7 +556,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -599,7 +599,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -609,7 +609,7 @@ paths:
                     message: You are not authorized to delete the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -623,7 +623,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the community
@@ -633,7 +633,7 @@ paths:
                     message: You can not delete the community if you are not the owner
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the community
@@ -646,7 +646,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -656,7 +656,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -715,7 +715,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the norms
@@ -725,7 +725,7 @@ paths:
                     message: You have to log in to access to the community norms
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the norms
@@ -738,7 +738,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the community norms if you no play on
@@ -750,7 +750,7 @@ paths:
                       it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the community norms if you no play on
@@ -765,7 +765,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -775,7 +775,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -825,7 +825,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a norm
@@ -835,7 +835,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a norm
@@ -848,7 +848,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a norm into a community of another user
@@ -858,7 +858,7 @@ paths:
                     message: You can not add a norm to another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a norm into a community of another user
@@ -871,7 +871,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -881,7 +881,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -932,7 +932,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get a norm
@@ -942,7 +942,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get a norm
@@ -955,7 +955,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get a norm from a community
@@ -965,7 +965,7 @@ paths:
                     message: You need to play in the community to get the norm
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get a norm from a community
@@ -978,7 +978,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -988,7 +988,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1038,7 +1038,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a norm
@@ -1048,7 +1048,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a norm
@@ -1061,7 +1061,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a norm from a community
@@ -1072,7 +1072,7 @@ paths:
                       norm
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a norm from a community
@@ -1086,7 +1086,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1096,7 +1096,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1154,7 +1154,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1164,7 +1164,7 @@ paths:
                     message: You have to log in to access to get the community users
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1177,7 +1177,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a norm from a community
@@ -1188,7 +1188,7 @@ paths:
                       it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a norm from a community
@@ -1202,7 +1202,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1212,7 +1212,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1261,7 +1261,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1271,7 +1271,7 @@ paths:
                     message: You must to specify the user identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1284,7 +1284,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1294,7 +1294,7 @@ paths:
                     message: You have to log in to access to add the community users
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1307,7 +1307,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add community user
@@ -1318,7 +1318,7 @@ paths:
                       into the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add community user
@@ -1332,7 +1332,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1342,7 +1342,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1392,7 +1392,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1402,7 +1402,7 @@ paths:
                     message: You must to specify the user identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1415,7 +1415,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1426,7 +1426,7 @@ paths:
                       users
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1441,7 +1441,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get community user
@@ -1452,7 +1452,7 @@ paths:
                       user into the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get community user
@@ -1466,7 +1466,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1476,7 +1476,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1531,7 +1531,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1541,7 +1541,7 @@ paths:
                     message: You must to specify the user identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The community user is bad
@@ -1554,7 +1554,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1565,7 +1565,7 @@ paths:
                       users
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the community users
@@ -1580,7 +1580,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to modify community user
@@ -1591,7 +1591,7 @@ paths:
                       user into the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to modify community user
@@ -1605,7 +1605,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1615,7 +1615,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1664,7 +1664,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a community users
@@ -1674,7 +1674,7 @@ paths:
                     message: You have to log in to access to remove a community users
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a community users
@@ -1688,7 +1688,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a community user
@@ -1699,7 +1699,7 @@ paths:
                       user from the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a community user
@@ -1713,7 +1713,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1723,7 +1723,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1783,7 +1783,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the task types
@@ -1793,7 +1793,7 @@ paths:
                     message: You have to log in to access to the community task types
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the task types
@@ -1807,7 +1807,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the community task types if you no play
@@ -1819,7 +1819,7 @@ paths:
                       you are not a member
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the community task types if you no play
@@ -1834,7 +1834,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1844,7 +1844,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1894,7 +1894,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a task
@@ -1904,7 +1904,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a task
@@ -1917,7 +1917,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a task type
@@ -1928,7 +1928,7 @@ paths:
                       the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a task type
@@ -1942,7 +1942,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -1952,7 +1952,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2003,7 +2003,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get a community task type
@@ -2013,7 +2013,7 @@ paths:
                     message: You have to log in to access to the community task type
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get a community task type
@@ -2026,7 +2026,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: You must play on the community
@@ -2037,7 +2037,7 @@ paths:
                       not in
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: You must play on the community
@@ -2051,7 +2051,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2061,7 +2061,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2112,7 +2112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a community task
@@ -2122,7 +2122,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to remove a community task
@@ -2135,7 +2135,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a task from a community
@@ -2146,7 +2146,7 @@ paths:
                       in the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to remove a task from a community
@@ -2160,7 +2160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2170,7 +2170,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2221,7 +2221,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a community task instance
@@ -2231,7 +2231,7 @@ paths:
                     message: You have to log in to access to modify the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to add a community task instance
@@ -2245,7 +2245,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a task instance
@@ -2256,7 +2256,7 @@ paths:
                       the community
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to add a task instance
@@ -2270,7 +2270,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2280,7 +2280,7 @@ paths:
                     message: Not found a community associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -2323,7 +2323,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2333,7 +2333,7 @@ paths:
                     message: You are not authorized to send a message
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2346,7 +2346,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad message values
@@ -2356,7 +2356,7 @@ paths:
                     message: A message needs a content
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad message values
@@ -2423,7 +2423,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2433,7 +2433,7 @@ paths:
                     message: You are not authorized to get the norms
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2446,7 +2446,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the norms
@@ -2456,7 +2456,7 @@ paths:
                     message: You can not get the norms of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the norms
@@ -2499,7 +2499,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad norm values
@@ -2509,7 +2509,7 @@ paths:
                     message: A norm needs a name
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad norm values
@@ -2522,7 +2522,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2532,7 +2532,7 @@ paths:
                     message: You are not authorized to publish a norm
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2576,7 +2576,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2586,7 +2586,7 @@ paths:
                     message: You are not authorized to get the published norm
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2599,7 +2599,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2609,7 +2609,7 @@ paths:
                     message: Not found a published norm associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2652,7 +2652,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2662,7 +2662,7 @@ paths:
                     message: You are not authorized to delete the published norm
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2676,7 +2676,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the norm
@@ -2687,7 +2687,7 @@ paths:
                       the owner
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the norm
@@ -2701,7 +2701,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2711,7 +2711,7 @@ paths:
                     message: Not found a published norm associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2778,7 +2778,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2788,7 +2788,7 @@ paths:
                     message: You are not authorized to get the task types
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2831,7 +2831,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad task type values
@@ -2841,7 +2841,7 @@ paths:
                     message: A task type needs a name
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Bad task type values
@@ -2854,7 +2854,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2864,7 +2864,7 @@ paths:
                     message: You are not authorized to publish a task type
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2908,7 +2908,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2918,7 +2918,7 @@ paths:
                     message: You are not authorized to get the published task type
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2931,7 +2931,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2941,7 +2941,7 @@ paths:
                     message: Not found a published task type associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -2984,7 +2984,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -2994,7 +2994,7 @@ paths:
                     message: You are not authorized to delete the task type
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -3008,7 +3008,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the published task type
@@ -3019,7 +3019,7 @@ paths:
                       not the owner
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the published task type
@@ -3033,7 +3033,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -3043,7 +3043,7 @@ paths:
                     message: Not found a published task type associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -3091,7 +3091,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -3101,7 +3101,7 @@ paths:
                     message: You are not authorized to get the teams sizes
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -3114,10 +3114,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/teams_distribution'
+                $ref: '#/components/schemas/TeamsDistribution'
             application/xml:
               schema:
-                $ref: '#/components/schemas/teams_distribution'
+                $ref: '#/components/schemas/TeamsDistribution'
     post:
       tags:
       - Teams
@@ -3138,17 +3138,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/composite'
+              $ref: '#/components/schemas/Composite'
           application/xml:
             schema:
-              $ref: '#/components/schemas/composite'
+              $ref: '#/components/schemas/Composite'
       responses:
         401:
           description: Unauthorized to create teams
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -3158,7 +3158,7 @@ paths:
                     message: You are not authorized to create teams
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -3171,10 +3171,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/composed_teams'
+                $ref: '#/components/schemas/ComposedTeams'
             application/xml:
               schema:
-                $ref: '#/components/schemas/composed_teams'
+                $ref: '#/components/schemas/ComposedTeams'
   /trusts/{userId}:
     get:
       tags:
@@ -3233,16 +3233,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
         400:
           description: Bad search parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -3252,7 +3252,7 @@ paths:
                     message: The minimum trust has to be on the range [0,1]
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -3265,7 +3265,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3275,7 +3275,7 @@ paths:
                     message: You have to log in to access to the trusts
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3288,7 +3288,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -3298,7 +3298,7 @@ paths:
                     message: You can not get the trusts of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -3311,7 +3311,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3321,7 +3321,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3355,23 +3355,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The set user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to set the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -3381,7 +3381,7 @@ paths:
                     message: You have to log in to access to the user trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -3394,7 +3394,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -3404,7 +3404,7 @@ paths:
                     message: You can not set the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -3417,7 +3417,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3427,7 +3427,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3470,16 +3470,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to get the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3489,7 +3489,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3502,7 +3502,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -3512,7 +3512,7 @@ paths:
                     message: You can not get the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -3525,7 +3525,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3535,7 +3535,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3576,23 +3576,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The updated user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to update the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -3602,7 +3602,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -3615,7 +3615,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -3625,7 +3625,7 @@ paths:
                     message: You can not update the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -3638,7 +3638,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3648,7 +3648,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3690,16 +3690,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to delete the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -3709,7 +3709,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -3722,7 +3722,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -3732,7 +3732,7 @@ paths:
                     message: You can not delete the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -3745,7 +3745,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3755,7 +3755,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3830,16 +3830,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
         400:
           description: Bad search parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -3849,7 +3849,7 @@ paths:
                     message: The minimum trust has to be on the range [0,1]
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -3862,7 +3862,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3872,7 +3872,7 @@ paths:
                     message: You have to log in to access to the trusts
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -3885,7 +3885,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -3895,7 +3895,7 @@ paths:
                     message: You can not get the trusts of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -3908,7 +3908,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3918,7 +3918,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -3960,23 +3960,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The set user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to set the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -3986,7 +3986,7 @@ paths:
                     message: You have to log in to access to the user trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -3999,7 +3999,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -4009,7 +4009,7 @@ paths:
                     message: You can not set the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -4022,7 +4022,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4032,7 +4032,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4083,16 +4083,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to get the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4102,7 +4102,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4115,7 +4115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -4125,7 +4125,7 @@ paths:
                     message: You can not get the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -4138,7 +4138,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4148,7 +4148,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4197,23 +4197,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The updated user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to update the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -4223,7 +4223,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -4236,7 +4236,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -4246,7 +4246,7 @@ paths:
                     message: You can not update the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -4259,7 +4259,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4269,7 +4269,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4319,16 +4319,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to delete the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -4338,7 +4338,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -4351,7 +4351,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -4361,7 +4361,7 @@ paths:
                     message: You can not delete the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -4374,7 +4374,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4384,7 +4384,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4469,16 +4469,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
         400:
           description: Bad search parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -4488,7 +4488,7 @@ paths:
                     message: The minimum trust has to be on the range [0,1]
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -4501,7 +4501,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4511,7 +4511,7 @@ paths:
                     message: You have to log in to access to the trusts
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4524,7 +4524,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -4534,7 +4534,7 @@ paths:
                     message: You can not get the trusts of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -4547,7 +4547,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4557,7 +4557,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4610,23 +4610,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The new user trust to do a task type on a community
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to set the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -4636,7 +4636,7 @@ paths:
                     message: You have to log in to access to the user trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -4649,7 +4649,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -4659,7 +4659,7 @@ paths:
                     message: You can not set the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -4672,7 +4672,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4682,7 +4682,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4743,16 +4743,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to get the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4762,7 +4762,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -4775,7 +4775,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -4785,7 +4785,7 @@ paths:
                     message: You can not get the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -4798,7 +4798,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4808,7 +4808,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4868,23 +4868,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The updated user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to update the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -4894,7 +4894,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -4907,7 +4907,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -4917,7 +4917,7 @@ paths:
                     message: You can not update the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -4930,7 +4930,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -4940,7 +4940,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5001,16 +5001,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to delete the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -5020,7 +5020,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -5033,7 +5033,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -5043,7 +5043,7 @@ paths:
                     message: You can not delete the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -5056,7 +5056,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5066,7 +5066,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5145,16 +5145,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trusts_page'
+                $ref: '#/components/schemas/TrustsPage'
         400:
           description: Bad search parameters
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -5164,7 +5164,7 @@ paths:
                     message: The minimum trust has to be on the range [0,1]
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unexpected search parameter value
@@ -5177,7 +5177,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -5187,7 +5187,7 @@ paths:
                     message: You have to log in to access to the trusts
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -5200,7 +5200,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -5210,7 +5210,7 @@ paths:
                     message: You can not get the trusts of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trusts of another user
@@ -5223,7 +5223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5233,7 +5233,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5279,23 +5279,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The set user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to set the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -5305,7 +5305,7 @@ paths:
                     message: You have to log in to access to the user trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to set the user trust
@@ -5318,7 +5318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -5328,7 +5328,7 @@ paths:
                     message: You can not set the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to set the trust of another user
@@ -5341,7 +5341,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5351,7 +5351,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5405,16 +5405,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to get the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -5424,7 +5424,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the trust
@@ -5437,7 +5437,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -5447,7 +5447,7 @@ paths:
                     message: You can not get the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the trust of another user
@@ -5460,7 +5460,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5470,7 +5470,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5523,23 +5523,23 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/trust'
+              $ref: '#/components/schemas/Trust'
       responses:
         200:
           description: The updated user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to update the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -5549,7 +5549,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to update the trust
@@ -5562,7 +5562,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -5572,7 +5572,7 @@ paths:
                     message: You can not update the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to update the trust of another user
@@ -5585,7 +5585,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5595,7 +5595,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5649,16 +5649,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
             application/xml:
               schema:
-                $ref: '#/components/schemas/trust'
+                $ref: '#/components/schemas/Trust'
         401:
           description: Unauthorized to delete the user trust
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -5668,7 +5668,7 @@ paths:
                     message: You have to log in to access to the trust
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the trust
@@ -5681,7 +5681,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -5691,7 +5691,7 @@ paths:
                     message: You can not delete the trust of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to delete the trust of another user
@@ -5704,7 +5704,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5714,7 +5714,7 @@ paths:
                     message: Not found an user associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -5724,7 +5724,7 @@ paths:
                     message: Not found an user associated to the identifier
 components:
   schemas:
-    status:
+    Status:
       type: object
       properties:
         version:
@@ -5738,7 +5738,7 @@ components:
           example: UDT-IA, IIIA-CSIC
       description: Provide information about the current status of the API
       xml:
-        name: status
+        name: Status
     CommunitiesPage:
       type: object
       properties:
@@ -5797,7 +5797,7 @@ components:
       description: This component describes a community of users.
       xml:
         name: Community
-    errorMessage:
+    ErrorMessage:
       type: object
       properties:
         code:
@@ -5810,7 +5810,7 @@ components:
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
       xml:
-        name: errorMessage
+        name: ErrorMessage
     CommunityNorm:
       type: object
       properties:
@@ -6192,7 +6192,61 @@ components:
       description: Contains a set of published task types found
       xml:
         name: PublishedTaskTypesPage
-    composed_teams:
+    TeamDistribution:
+      type: object
+      properties:
+        quantity:
+          minimum: 1
+          type: integer
+          description: The number of teams of the specified size
+          format: int32
+          example: 2
+        size:
+          minimum: 0
+          type: integer
+          description: The size of each team
+          format: int32
+          example: 2
+      description: Provide information about the distribution of the number of teams
+        of a specific size
+      xml:
+        name: TeamDistribution
+    TeamsDistribution:
+      required:
+      - number_of_people
+      - people_per_team
+      type: object
+      properties:
+        number_of_people:
+          type: integer
+          description: The number of people that have distributed on the teams
+          format: int32
+          example: 10
+        people_per_team:
+          type: integer
+          description: The expected number of people on each team
+          format: int32
+          example: 2
+        basic:
+          maxItems: 2
+          type: array
+          description: Contain the distribution of the people on teams when the size
+            is a minimum
+          items:
+            $ref: '#/components/schemas/TeamDistribution'
+        atMost:
+          maxItems: 2
+          type: array
+          description: Contain the distribution of the people on teams when the size
+            is a maximum
+          xml:
+            name: at_most
+          items:
+            $ref: '#/components/schemas/TeamDistribution'
+      description: Describe how a set of people will be distributed on a set of teams
+      xml:
+        name: TeamsDistribution
+    ComposedTeams:
       type: object
       properties:
         optimal:
@@ -6203,11 +6257,11 @@ components:
           type: array
           description: The teams that have been created
           items:
-            $ref: '#/components/schemas/team'
+            $ref: '#/components/schemas/Team'
       description: The information of the composed teams
       xml:
-        name: composed_teams
-    team:
+        name: ComposedTeams
+    Team:
       type: object
       properties:
         peopleIds:
@@ -6262,7 +6316,49 @@ components:
           example: 550e8400-e29b-41d4-a716-446655440000
       description: A set of people aggregated to do something
       xml:
-        name: team
+        name: Team
+    Composite:
+      type: object
+      properties:
+        people_per_team:
+          minimum: 2
+          type: integer
+          description: The size of the teams to create
+          format: int32
+          example: 2
+        at_most:
+          type: boolean
+          description: If this is 'true' the size of the teams cannot be more than
+            the specified on 'people_per_team'
+          example: true
+        performance:
+          maximum: 1
+          minimum: 0
+          type: number
+          description: This value allows defining the balancing of the teams. When
+            it is near 0.5 create similar teams, when it is near to 0 the worst are
+            the leaders and when it is near to 1 the bests are the leaders.
+          format: double
+          example: 0.5
+        time:
+          minimum: 0
+          type: integer
+          description: The maximum seconds that it has to calculate the best combination.
+            When it is reached return the best team composition that it has found.
+          format: int32
+          example: 30
+        people:
+          minItems: 4
+          type: array
+          description: Contain the people that have to be distributed on different
+            teams
+          items:
+            $ref: '#/components/schemas/Person'
+        requirements:
+          $ref: '#/components/schemas/Requirements'
+      description: Provide information about how the teams have to be created
+      xml:
+        name: Composite
     Intelligences:
       type: object
       properties:
@@ -6373,49 +6469,7 @@ components:
       description: Provide information about the personality of a person
       xml:
         name: Personality
-    composite:
-      type: object
-      properties:
-        people_per_team:
-          minimum: 2
-          type: integer
-          description: The size of the teams to create
-          format: int32
-          example: 2
-        at_most:
-          type: boolean
-          description: If this is 'true' the size of the teams cannot be more than
-            the specified on 'people_per_team'
-          example: true
-        performance:
-          maximum: 1
-          minimum: 0
-          type: number
-          description: This value allows defining the balancing of the teams. When
-            it is near 0.5 create similar teams, when it is near to 0 the worst are
-            the leaders and when it is near to 1 the bests are the leaders.
-          format: double
-          example: 0.5
-        time:
-          minimum: 0
-          type: integer
-          description: The maximum seconds that it has to calculate the best combination.
-            When it is reached return the best team composition that it has found.
-          format: int32
-          example: 30
-        people:
-          minItems: 4
-          type: array
-          description: Contain the people that have to be distributed on different
-            teams
-          items:
-            $ref: '#/components/schemas/Person'
-        requirements:
-          $ref: '#/components/schemas/requirements'
-      description: Provide information about how the teams have to be created
-      xml:
-        name: composite
-    requirement:
+    Requirement:
       type: object
       properties:
         level:
@@ -6434,84 +6488,30 @@ components:
       description: Describe the required values for intelligence on the team that
         will be created
       xml:
-        name: requirement
-    requirements:
+        name: Requirement
+    Requirements:
       type: object
       properties:
         verbal:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         logic_mathematics:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         visual_spatial:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         kinestesica_corporal:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         musical_rhythmic:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         intrapersonal:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         interpersonal:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
         naturalist_environmental:
-          $ref: '#/components/schemas/requirement'
+          $ref: '#/components/schemas/Requirement'
       description: Describe the requirements of the teams that will be created
       xml:
-        name: requirements
-    team_distribution:
-      type: object
-      properties:
-        quantity:
-          minimum: 1
-          type: integer
-          description: The number of teams of the specified size
-          format: int32
-          example: 2
-        size:
-          minimum: 0
-          type: integer
-          description: The size of each team
-          format: int32
-          example: 2
-      description: Provide information about the distribution of the number of teams
-        of a specific size
-      xml:
-        name: team_distribution
-    teams_distribution:
-      required:
-      - number_of_people
-      - people_per_team
-      type: object
-      properties:
-        number_of_people:
-          type: integer
-          description: The number of people that have distributed on the teams
-          format: int32
-          example: 10
-        people_per_team:
-          type: integer
-          description: The expected number of people on each team
-          format: int32
-          example: 2
-        basic:
-          maxItems: 2
-          type: array
-          description: Contain the distribution of the people on teams when the size
-            is a minimum
-          items:
-            $ref: '#/components/schemas/team_distribution'
-        atMost:
-          maxItems: 2
-          type: array
-          description: Contain the distribution of the people on teams when the size
-            is a maximum
-          xml:
-            name: at_most
-          items:
-            $ref: '#/components/schemas/team_distribution'
-      description: Describe how a set of people will be distributed on a set of teams
-      xml:
-        name: teams_distribution
-    trust:
+        name: Requirements
+    Trust:
       type: object
       properties:
         user_id:
@@ -6524,8 +6524,8 @@ components:
           example: 0.43
       description: The information of the trust of an user respect another.
       xml:
-        name: trust
-    trusts_page:
+        name: Trust
+    TrustsPage:
       type: object
       properties:
         offset:
@@ -6542,7 +6542,7 @@ components:
           type: array
           description: The set of trusts found
           items:
-            $ref: '#/components/schemas/trust'
+            $ref: '#/components/schemas/Trust'
       description: Contains a set of trusts found
       xml:
-        name: trusts_page
+        name: TrustsPage

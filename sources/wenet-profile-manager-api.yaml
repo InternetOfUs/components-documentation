@@ -17,7 +17,13 @@ info:
      * **nationality**: the nationality of the user.
      * **languages**: this is a set of languages that the user can understand.
      * **occupation**: the occupation of the user.
-    
+     * **norms**: the individual norms of the user.
+     * **plannedActivities**: the activities planned by the user.
+     * **relevantLocations**: the locations of interest for the user - may be the home or work location -.
+     * **relationships**: the relations of this user with other users.
+     * **socialPractices**: the social practices of the user.
+     * **personalBehaviours**: the personal behaviors of the user.
+     
     
     ### Language
     
@@ -45,7 +51,7 @@ info:
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.7.0
+  version: 0.7.1
 tags:
 - name: Status
   description: Allow knowing the current API version.
@@ -74,10 +80,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/status'
+                $ref: '#/components/schemas/Status'
             application/xml:
               schema:
-                $ref: '#/components/schemas/status'
+                $ref: '#/components/schemas/Status'
   /intelligences:
     get:
       tags:
@@ -109,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -119,7 +125,7 @@ paths:
                     message: You are not authorized to get the intelligences questionnaire
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -166,7 +172,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -177,7 +183,7 @@ paths:
                       questionnaire
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -225,7 +231,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -235,7 +241,7 @@ paths:
                     message: You are not authorized to get the personality questionnaire
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -282,7 +288,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -292,7 +298,7 @@ paths:
                     message: You are not authorized to evaluate the personality questionnaire
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -389,7 +395,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the profiles
@@ -399,7 +405,7 @@ paths:
                     message: You have to log in to access to profiles
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the profiles
@@ -412,7 +418,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the profiles of another user
@@ -422,7 +428,7 @@ paths:
                     message: You can not get the profiles of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Forbidden to get the profiles of another user
@@ -435,7 +441,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -445,7 +451,7 @@ paths:
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found response example
@@ -489,7 +495,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The profile is not right
@@ -499,7 +505,7 @@ paths:
                     message: The phone is not in E.164 format
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The profile is not right
@@ -512,7 +518,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -522,7 +528,7 @@ paths:
                     message: You are not authorized to create a profile
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -566,7 +572,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -576,7 +582,7 @@ paths:
                     message: You are not authorized to get the profile
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -589,7 +595,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the profile
@@ -600,7 +606,7 @@ paths:
                       playing on it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to get the profile
@@ -614,7 +620,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -624,7 +630,7 @@ paths:
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -673,7 +679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The profile is not right
@@ -683,7 +689,7 @@ paths:
                     message: The phone is not in E.164 format
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: The profile is not right
@@ -696,7 +702,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -706,7 +712,7 @@ paths:
                     message: You are not authorized to modify the profile
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -719,7 +725,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to modify the profile
@@ -729,7 +735,7 @@ paths:
                     message: You can not modify the profile of another user
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to modify the profile
@@ -742,7 +748,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -752,7 +758,7 @@ paths:
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -795,7 +801,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -805,7 +811,7 @@ paths:
                     message: You are not authorized to delete the profile
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized Response Example
@@ -818,7 +824,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the profile
@@ -829,7 +835,7 @@ paths:
                       not playing on it
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: Unauthorized to delete the profile
@@ -843,7 +849,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -853,7 +859,7 @@ paths:
                     message: Not found a profile associated to the identifier
             application/xml:
               schema:
-                $ref: '#/components/schemas/errorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
               examples:
                 Default Response:
                   summary: No found Response Example
@@ -863,7 +869,7 @@ paths:
                     message: Not found a profile associated to the identifier
 components:
   schemas:
-    status:
+    Status:
       type: object
       properties:
         version:
@@ -877,8 +883,8 @@ components:
           example: UDT-IA, IIIA-CSIC
       description: Provide information about the current status of the API
       xml:
-        name: status
-    errorMessage:
+        name: Status
+    ErrorMessage:
       type: object
       properties:
         code:
@@ -891,9 +897,7 @@ components:
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
       xml:
-        name: errorMessage
-    Intelligences:
-      type: object
+        name: ErrorMessage
     Answer:
       type: object
       properties:
@@ -929,6 +933,28 @@ components:
       description: A question used to extract information of a person
       xml:
         name: Question
+    Questionnaire:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name that identifies the questionnaire for a human
+          example: Personality test
+        description:
+          type: string
+          description: Explains what attribute of a person it evaluates
+          example: With this questionnaire is possible to obtain the personality of
+            a person.
+        questions:
+          type: array
+          description: The set of questions used to evaluate the person.
+          items:
+            $ref: '#/components/schemas/Question'
+      description: A questionnaire used to evaluate a person attribute
+      xml:
+        name: Questionnaire
+    Intelligences:
+      type: object
     QuestionnaireAnswers:
       type: object
       properties:
@@ -958,26 +984,6 @@ components:
       description: Contains the selected answers of a questionnaire
       xml:
         name: QuestionnaireAnswers
-    Questionnaire:
-      type: object
-      properties:
-        name:
-          type: string
-          description: A name that identifies the questionnaire for a human
-          example: Personality test
-        description:
-          type: string
-          description: Explains what attribute of a person it evaluates
-          example: With this questionnaire is possible to obtain the personality of
-            a person.
-        questions:
-          type: array
-          description: The set of questions used to evaluate the person.
-          items:
-            $ref: '#/components/schemas/Question'
-      description: A questionnaire used to evaluate a person attribute
-      xml:
-        name: Questionnaire
     HistoricWeNetUserProfile:
       type: object
       properties:
