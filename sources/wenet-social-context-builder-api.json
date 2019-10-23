@@ -14,15 +14,11 @@
   },
   "tags": [
     {
-      "name": "online",
-      "description": "Operations that are computed on-demand and immediatly return the result (result is up to date)"
+      "name": "provided",
+      "description": "Operations that are provided by the social hub"
     },
     {
-      "name": "offline",
-      "description": "Operations that have been computed on a batch circle and only return latest result (result might be obsolete)"
-    },
-    {
-      "name": "others",
+      "name": "required",
       "description": "Operations required from others kept for reference (to be removed when documented by others)"
     }
   ],
@@ -30,7 +26,7 @@
     "/profiles": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Gets all user profile IDs",
         "operationId": "profiles",
@@ -54,7 +50,7 @@
     "/profile_personal": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get user profile by ID",
         "operationId": "profile_personal",
@@ -87,7 +83,7 @@
     "/profile_metadata": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get user metadata profile by ID",
         "operationId": "profile_metadata",
@@ -120,7 +116,7 @@
     "/profile_friends": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get user friend list by ID",
         "operationId": "profile_friends",
@@ -153,7 +149,7 @@
     "/profile_message_threads": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get user message thread IDs by user ID",
         "operationId": "profile_message_threads",
@@ -189,7 +185,7 @@
     "/profile_message": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get a message by message ID",
         "operationId": "profile_message",
@@ -222,7 +218,7 @@
     "/profile_thread": {
       "get": {
         "tags": [
-          "others"
+          "required"
         ],
         "summary": "Get a thread by thread ID",
         "operationId": "profile_thread",
@@ -255,10 +251,10 @@
     "/order_users_by_social_preference": {
       "post": {
         "tags": [
-          "online"
+          "provided"
         ],
-        "summary": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences",
-        "description": "Returns an ordered list of Users based on social preferences",
+        "summary": "Returns an ordered list of Users based on social preferences",
+        "description": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.",
         "parameters": [
           {
             "in": "query",
@@ -301,10 +297,10 @@
     "/suggest_friends": {
       "post": {
         "tags": [
-          "offline"
+          "provided"
         ],
         "summary": "Returns a sorted list of Users that are suggested to be added as friends",
-        "description": "Returns a sorted list of Users that are suggested to be added as friends",
+        "description": "Returns a sorted list of Users that are suggested to be added as friends. This operation has been previously computed on a batch cycle and only return latest result.",
         "parameters": [
           {
             "in": "query",
@@ -330,10 +326,10 @@
     "/learn_norms": {
       "post": {
         "tags": [
-          "offline"
+          "provided"
         ],
-        "summary": "Learns underlined community rules to be introduced as norms",
-        "description": "Returns learned norms from community messages",
+        "summary": "Learns underlined community rules to be introduced as norms (TBD)",
+        "description": "Returns learned norms from community messages (TBD). This operation has been previously computed on a batch cycle and only return latest result.",
         "parameters": [
           {
             "in": "query",
