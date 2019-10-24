@@ -1,0 +1,329 @@
+openapi: 3.0.1
+info:
+  title: WeNet - Authentication Manager
+  description: This document describes the API exposed by the Authentication Manager of the WeNet platform. These the operations that can be performed by taking advantage of this component.
+
+    * Manage modules. Both use case applications build on top of the WeNet platform and components of the platform itself can be registered as modules in this manager. The field _type_ can be used in order to differentiate the two types.
+
+    * Manage users. Once a user is created, it can be associated to multiple authentication mechanisms (e.g. Facebook and email/password credentials).
+
+    * Authenticate modules. A module can be authententicated by specifying its unique id/secret pair.
+
+    * Authenticate a user. Any of the authentication mechanisms associated to a user can be user in order to authenticate him. Upon a successfull authentication, the id of the associated user is going to be returned.
+
+  contact:
+    email: carlo.caprini@u-hopper.com
+  version: 1.0.0
+
+# servers:
+# - url: /
+
+paths:
+
+  /module:
+    post:
+      summary: Create a new authentication module
+      tags:
+        - Module
+      description: This endpoint allows to create a new authentication module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Module'
+      responses:
+        201:
+          description: Module created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+
+  /module/{moduleId}:
+    get:
+      summary: Get the details of a module
+      tags:
+        - Module
+      description: This endpoint allows to get the details of a module.
+      parameters:
+        - in: path
+          name: moduleId
+          schema:
+            type: string
+          required: true
+          description: The Id of the module
+      responses:
+        200:
+          description: The details of the requested module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+
+    put:
+      summary: Update the details of a module
+      tags:
+        - Module
+      description: This endpoint allows to create a module.
+      parameters:
+        - in: path
+          name: moduleId
+          schema:
+            type: string
+          required: true
+          description: The Id of the module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Module'
+      responses:
+        200:
+          description: The details of the requested module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+
+    delete:
+      summary: Delete an existing module
+      tags:
+        - Module
+      description: This endpoint allows to delete a module.
+      parameters:
+        - in: path
+          name: moduleId
+          schema:
+            type: string
+          required: true
+          description: The Id of the module
+      responses:
+        200:
+          description: Model correctly deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user:
+    post:
+      summary: Create new user
+      tags:
+        - User
+      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy. The response includes the Id of the newly created user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeNetUser'
+      responses:
+        201:
+          description: WeNet user correctly created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeNetUser'
+
+  /user/{userId}/auth:
+    post:
+      summary: Add a new authentication type for the user
+      tags:
+        - User
+      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy. The response includes the Id of the newly created user.
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+            example: 15837028-645a-4a55-9aaf-ceb846439eba
+          required: true
+          description: The Id of the module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationOption'
+            example:
+              type: emailPass
+              email: user.example@email.com
+              password: theUserGreatPassword
+      responses:
+        201:
+          description: Authentication credentials correctly associated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeNetUser'
+
+  /auth/module:
+    post:
+      summary: Authenticate a module
+      tags:
+        - Authentication
+      description: This endpoint allows to authenticate a module
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModuleCredentials'
+      responses:
+        200:
+          description: Credentials are correct
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        401:
+          description: The provided credentials are not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /auth/user:
+    post:
+      summary: Authenticate a user
+      tags:
+        - Authentication
+      description: This endpoint allows to authenticate a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/FacebookAuthentication'
+                - $ref: '#/components/schemas/EmailPassAuthentication'
+              discriminator:
+                propertyName: type
+              example:
+                type: facebook
+                facebookId: 376528374
+      responses:
+        200:
+          description: The user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeNetUser'
+        401:
+          description: The provided credentials are not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+
+components:
+  schemas:
+
+    # Module
+
+    ModuleCredentials:
+      description: The module credentials
+      properties:
+        moduleId:
+          type: string
+          description: The Id of the module
+          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
+        moduleToken:
+          type: string
+          description: The Id of the module
+          example: aisfuh9s8fnkdfhg9d8fgkdjfgnhkduyfgidjkfgkdh
+
+    Module:
+      description: The module that can be authenticated by the Authentication Manager
+      allOf:
+        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/CreateUpdateTsDetails'
+        - $ref: '#/components/schemas/ModuleCredentials'
+      properties:
+        moduleId:
+          type: string
+          readOnly: true
+        moduleToken:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          description: The name of the module
+          example: WeNet scenario app
+        type:
+          type: string
+          description: The type of the module (e.g. application, platform component)
+          example: wenet application
+          nullable: true
+
+    # User and authentication
+
+    AuthenticationAccountType:
+      type: string
+      description: The AuthenticationAccountType simply defines the allowed types of authentication account available.
+      enum:
+        - facebook
+        - emailPass
+
+    AuthenticationAccount:
+      description: The authentication account is a generic model that defines all those properties that are common to an authentication account. In general, such an account can be used for authenticating in the WeNet platform and it is associated to a WeNet User.
+      allOf:
+        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/CreateUpdateTsDetails'
+      oneOf:
+        - $ref: '#/components/schemas/FacebookAuthentication'
+        - $ref: '#/components/schemas/EmailPassAuthentication'
+      properties:
+        accountId:
+          type: string
+          readOnly: true
+          example: b375dd78-ce75-41cc-82f0-34a6c65da5b5
+          description: The identifier of the account
+        type:
+          $ref: '#/components/schemas/AuthenticationAccountType'
+        wenetUserId:
+          type: string
+          readOnly: true
+          description: The WeNet user identifier this account is linked to
+
+    AuthenticationOption:
+      oneOf:
+        - $ref: '#/components/schemas/FacebookAuthentication'
+        - $ref: '#/components/schemas/EmailPassAuthentication'
+
+    FacebookAuthentication:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - facebook
+        facebookUserId:
+          type: string
+          example: 23098jdghf98h
+
+    EmailPassAuthentication:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - emailPass
+        email:
+          type: string
+          example: user.example@email.com
+        password:
+          type: string
+          example: theUserGreatPassword
+          writeOnly: true
+
+    WeNetUser:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The identifier of the WeNet user
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+        authenticationAccounts:
+          type: array
+          writeOnly: true
+          items:
+            $ref: '#/components/schemas/AuthenticationAccount'
+
+    EmptyResponse:
+      type: object
