@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "WeNet - Incentive Server APIs",
+    "description": "Incentive Server APIs",
     "version": "1.0.0",
     "title": "Incentive Server APIs",
     "contact": {
@@ -13,6 +13,10 @@
     {
       "name": "incentive",
       "description": "get information regardid incentives"
+    },
+    {
+      "name": "enquiry incentives",
+      "description": "issue a complaint regarding an  incentive"
     },
     {
       "name": "norms",
@@ -663,6 +667,57 @@
         }
       }
     },
+    "/enquiry_incentives/app/{app_id}/users/{user_id}": {
+      "post": {
+        "tags": [
+          "enquiry incentives"
+        ],
+        "summary": "submit complaint",
+        "operationId": "enquiry_incentives",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "The user id that issue complaint",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The app id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The added norm.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/complaint"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "submit completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/incentive/enable_incentive": {
       "post": {
         "tags": [
@@ -1081,6 +1136,23 @@
             "default": true
           }
         }
+      },
+      "complaint": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content of the complaint",
+            "example": "the incentive was inappropriate"
+          },
+          "incentive": {
+            "type": "string",
+            "description": "The content of the regard incentive"
+          }
+        },
+        "required": [
+          "content"
+        ]
       },
       "norms": {
         "type": "object",
