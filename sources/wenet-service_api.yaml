@@ -291,7 +291,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile'
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
         404:
           description: No such wenet user exists
           content:
