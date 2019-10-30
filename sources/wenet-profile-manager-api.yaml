@@ -51,7 +51,7 @@ info:
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.7.1
+  version: 0.8.0
 tags:
 - name: Status
   description: Allow knowing the current API version.
