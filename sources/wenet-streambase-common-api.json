@@ -562,7 +562,7 @@
           ]
         }
       },
-      "DataRequestsArray": {
+      "DataRequestArray": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/DataRequest"
