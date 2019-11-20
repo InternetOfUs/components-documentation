@@ -14,19 +14,260 @@
   },
   "tags": [
     {
-      "name": "provided",
-      "description": "Operations that are provided by the social hub"
+      "name": "Social Relations",
+      "description": "Operations that manipulate the social relations"
     },
     {
-      "name": "required",
+      "name": "Social User Ranking",
+      "description": "Operations that relate with user to user social ranking and social preferences"
+    },
+    {
+      "name": "Depreted",
       "description": "Operations required from others kept for reference (to be removed when documented by others)"
     }
   ],
   "paths": {
+    "/social_hub/user_relations/{UID}": {
+      "get": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Returns the user IDs that the user has relations",
+        "description": "Returns User IDs that the user has the filtered relations. Quering without a relation returns all users that have a relation with weight > 0 with the user. Quering for one relation type it returns all the users that have that type relation with weight > 0. Finally, by quering for multiple relation types by summing the integer of types you get users that have all type relations with the user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "Relation_Type",
+            "description": "Relation Type to Filter",
+            "required": false,
+            "type": "integer",
+            "enum": [
+              "family",
+              "friend",
+              "contact",
+              "colleague",
+              "other"
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "UIDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social_hub/delete_user_relation": {
+      "delete": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Deletes the relation among two users",
+        "description": "Deletes the relation among two users by setting the weight to 0. Requires the two UIDs and the relation type",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID1",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "UID2",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "Relation_Type",
+            "description": "Relation Type to set Weight to 0",
+            "required": true,
+            "type": "integer",
+            "enum": [
+              "family",
+              "friend",
+              "contact",
+              "colleague",
+              "other"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletion successesful"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social_hub/modify_user_relation": {
+      "put": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Modifies the relation weight among two users",
+        "description": "Modifies the relation among two users by changing the weight",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID1",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "UID2",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "Relation_Type",
+            "description": "Relation Type to set Weight to 0",
+            "required": true,
+            "type": "integer",
+            "enum": [
+              "family",
+              "friend",
+              "contact",
+              "colleague",
+              "other"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "Weight",
+            "description": "Relation Weight",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Modification successesful"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social_hub/create_relation": {
+      "put": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Creates the relation entry among two users",
+        "description": "Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID1",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "UID2",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "Relation_Type",
+            "description": "Relation Type to set Weight to 0",
+            "required": true,
+            "type": "integer",
+            "enum": [
+              "family",
+              "friend",
+              "contact",
+              "colleague",
+              "other"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "Weight",
+            "description": "Relation Weight 0-1",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Creation successful"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social_hub/import_relations": {
+      "put": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Imports user relations from a social app such as Facebook (TBD what is supported)",
+        "description": "Imports user relations from a social app such as Facebook. The process after called and given access to the appropriate app will create relations that are marked with source the app. The weight of such relations is TBD",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "APP_UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Import successful"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
     "/profiles": {
       "get": {
         "tags": [
-          "required"
+          "Depreted"
         ],
         "summary": "Gets all user profile IDs",
         "operationId": "profiles",
@@ -50,7 +291,7 @@
     "/profile_personal": {
       "get": {
         "tags": [
-          "required"
+          "Depreted"
         ],
         "summary": "Get user profile by ID",
         "operationId": "profile_personal",
@@ -83,7 +324,7 @@
     "/profile_metadata": {
       "get": {
         "tags": [
-          "required"
+          "Depreted"
         ],
         "summary": "Get user metadata profile by ID",
         "operationId": "profile_metadata",
@@ -185,7 +426,7 @@
     "/profile_message": {
       "get": {
         "tags": [
-          "required"
+          "Depreted"
         ],
         "summary": "Get a message by message ID",
         "operationId": "profile_message",
@@ -218,7 +459,7 @@
     "/profile_thread": {
       "get": {
         "tags": [
-          "required"
+          "Depreted"
         ],
         "summary": "Get a thread by thread ID",
         "operationId": "profile_thread",
@@ -248,10 +489,47 @@
         }
       }
     },
-    "/order_users_by_social_preference": {
+    "/test": {
       "post": {
         "tags": [
           "provided"
+        ],
+        "summary": "test",
+        "description": "test",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": null,
+              "$ref": "#/definitions/message_thread"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ordered list of User IDs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order_users_by_social_preference": {
+      "post": {
+        "tags": [
+          "Social User Ranking"
         ],
         "summary": "Returns an ordered list of Users based on social preferences",
         "description": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.",
