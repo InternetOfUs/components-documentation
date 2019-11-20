@@ -312,7 +312,7 @@
           "200": {
             "description": "User Profile",
             "schema": {
-              "$ref": "#/definitions/user_profile"
+              "$ref": "#/components/schemas/CoreWeNetUserProfile"
             }
           },
           "400": {
