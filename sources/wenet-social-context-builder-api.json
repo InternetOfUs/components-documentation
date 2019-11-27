@@ -22,11 +22,65 @@
       "description": "Operations that relate with user to user social ranking and social preferences"
     },
     {
-      "name": "Depreted",
-      "description": "Operations required from others kept for reference (to be removed when documented by others)"
+      "name": "Social Relation Learning",
+      "description": "Operations that learn a social relation"
+    },
+    {
+      "name": "Norms Learning",
+      "description": "This section is TBD"
+    },
+    {
+      "name": "Deprecated",
+      "description": "Operations that are kept for internal reference (to be removed when documented by others)"
     }
   ],
   "paths": {
+    "/social_hub/user_relations/": {
+      "get": {
+        "tags": [
+          "Social Relations"
+        ],
+        "summary": "Returns all relations filtered by type",
+        "description": "Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "Relation_Type",
+            "description": "Relation Type to Filter",
+            "required": false,
+            "type": "integer",
+            "enum": [
+              "family",
+              "friend",
+              "contact",
+              "colleague",
+              "other"
+            ]
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Relations",
+            "schema": {
+              "$ref": "#/definitions/user_relation"
+            }
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
     "/social_hub/user_relations/{UID}": {
       "get": {
         "tags": [
@@ -183,7 +237,7 @@
           "Social Relations"
         ],
         "summary": "Creates the relation entry among two users",
-        "description": "Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value",
+        "description": "Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.",
         "parameters": [
           {
             "in": "query",
@@ -267,7 +321,7 @@
     "/profiles": {
       "get": {
         "tags": [
-          "Depreted"
+          "Deprecated"
         ],
         "summary": "Gets all user profile IDs",
         "operationId": "profiles",
@@ -291,7 +345,7 @@
     "/profile_personal": {
       "get": {
         "tags": [
-          "Depreted"
+          "Deprecated"
         ],
         "summary": "Get user profile by ID",
         "operationId": "profile_personal",
@@ -312,7 +366,7 @@
           "200": {
             "description": "User Profile",
             "schema": {
-              "$ref": "#/components/schemas/CoreWeNetUserProfile"
+              "$ref": "#/definitions/user_profile"
             }
           },
           "400": {
@@ -324,7 +378,7 @@
     "/profile_metadata": {
       "get": {
         "tags": [
-          "Depreted"
+          "Deprecated"
         ],
         "summary": "Get user metadata profile by ID",
         "operationId": "profile_metadata",
@@ -357,7 +411,7 @@
     "/profile_friends": {
       "get": {
         "tags": [
-          "required"
+          "Deprecated"
         ],
         "summary": "Get user friend list by ID",
         "operationId": "profile_friends",
@@ -390,7 +444,7 @@
     "/profile_message_threads": {
       "get": {
         "tags": [
-          "required"
+          "Deprecated"
         ],
         "summary": "Get user message thread IDs by user ID",
         "operationId": "profile_message_threads",
@@ -426,7 +480,7 @@
     "/profile_message": {
       "get": {
         "tags": [
-          "Depreted"
+          "Deprecated"
         ],
         "summary": "Get a message by message ID",
         "operationId": "profile_message",
@@ -459,7 +513,7 @@
     "/profile_thread": {
       "get": {
         "tags": [
-          "Depreted"
+          "Deprecated"
         ],
         "summary": "Get a thread by thread ID",
         "operationId": "profile_thread",
@@ -489,43 +543,6 @@
         }
       }
     },
-    "/test": {
-      "post": {
-        "tags": [
-          "provided"
-        ],
-        "summary": "test",
-        "description": "test",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "UID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": null,
-              "$ref": "#/definitions/message_thread"
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ordered list of User IDs",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
     "/order_users_by_social_preference": {
       "post": {
         "tags": [
@@ -542,21 +559,23 @@
             "type": "string"
           },
           {
-            "in": "query",
-            "name": "msg_ID",
-            "description": "Message ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
+            "in": "body",
             "name": "users_IDs",
             "description": "Message ID",
             "required": true,
-            "type": "array",
-            "items": {
-              "type": "string"
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
+          },
+          {
+            "in": "query",
+            "name": "Task_ID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -572,13 +591,97 @@
         }
       }
     },
-    "/suggest_friends": {
+    "/create_user_preference": {
       "post": {
         "tags": [
-          "provided"
+          "Social User Ranking"
         ],
-        "summary": "Returns a sorted list of Users that are suggested to be added as friends",
-        "description": "Returns a sorted list of Users that are suggested to be added as friends. This operation has been previously computed on a batch cycle and only return latest result.",
+        "summary": "Creates the underlying structures that allow a user to rank other users.",
+        "description": "Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "users_IDs",
+            "description": "Message ID",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "Task_ID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created Structure succesfully"
+          }
+        }
+      }
+    },
+    "/modify_user_preference": {
+      "post": {
+        "tags": [
+          "Social User Ranking"
+        ],
+        "summary": "Modifies the underlying structures that allow a user to rank other users.",
+        "description": "Given a set of ranked users it modifies the underlying structure to rank users taking in account the newly given order. The structure is stored under a Task Tag-ID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "UID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "users_IDs",
+            "description": "Message ID",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "Task_ID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Modified Structure succesfully"
+          }
+        }
+      }
+    },
+    "/suggest_connection": {
+      "post": {
+        "tags": [
+          "Social Relation Learning"
+        ],
+        "summary": "Returns a sorted list of Users that are suggested to be added as connections",
+        "description": "Returns a sorted list of Users that are suggested to be added as new connections to the user. This operation has been previously computed on a batch cycle and only return latest result.",
         "parameters": [
           {
             "in": "query",
@@ -590,7 +693,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Sorted a List of User IDs to be suggested as friends",
+            "description": "Sorted by weight a List of User relations to be suggested as new relations. Also the type is suggested but the user should be able to modify. The initial weight of the relation is TBD.",
             "schema": {
               "type": "array",
               "items": {
@@ -604,7 +707,7 @@
     "/learn_norms": {
       "post": {
         "tags": [
-          "provided"
+          "Norms Learning"
         ],
         "summary": "Learns underlined community rules to be introduced as norms (TBD)",
         "description": "Returns learned norms from community messages (TBD). This operation has been previously computed on a batch cycle and only return latest result.",
@@ -632,6 +735,44 @@
     }
   },
   "definitions": {
+    "user_relation": {
+      "type": "object",
+      "description": "A User to User relation.",
+      "properties": {
+        "UserID1": {
+          "type": "string",
+          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
+          "description": "User ID 1 a unique identifier"
+        },
+        "UserID2": {
+          "type": "string",
+          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
+          "description": "User ID 2 a unique identifier"
+        },
+        "RelationType": {
+          "type": "integer",
+          "enum": [
+            "friend",
+            "family",
+            "contact",
+            "colleague",
+            "other"
+          ],
+          "example": "contact",
+          "description": "The relation type among the two users"
+        },
+        "Weight": {
+          "type": "number",
+          "example": 0.6,
+          "description": "A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation."
+        },
+        "SourceID": {
+          "type": "string",
+          "example": "Facebook",
+          "description": "An AppID that indicates where the relation originated from."
+        }
+      }
+    },
     "user_profile": {
       "type": "object",
       "description": "User Profile Personal Information. What is filled by user.",
