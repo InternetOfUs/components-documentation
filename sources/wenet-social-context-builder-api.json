@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Component that handle the social context of the users <br /> Task 1 -- Ordering Users by social preferences. The task has both a batch and an on demand part. <br /> <img src=\"https://drive.google.com/uc?id=1BP_ZbcfVkPaUQVUyJh59b8ljuFDRTHwE\" /> <br />Task 2 -- Suggesting new friends. This task is fully backend and is performed as batch job. <br />Task 3 -- Learning norms from social habbits. To be discussed... <br />",
+    "description": "This component builds and maintains the social part of a user’s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the user’s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the user’s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteer’s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are “convincing” to the user.",
     "version": "2.0.0",
     "title": "Social Learning API",
     "contact": {
@@ -22,6 +22,10 @@
       "description": "Operations that relate with user to user social ranking and social preferences"
     },
     {
+      "name": "Social Explanations",
+      "description": "Accessing and updating social explanations on the inclusion of volunteers"
+    },
+    {
       "name": "Social Relation Learning",
       "description": "Operations that learn a social relation"
     },
@@ -35,7 +39,7 @@
     }
   ],
   "paths": {
-    "/social_hub/user_relations/": {
+    "/social/relations/": {
       "get": {
         "tags": [
           "Social Relations"
@@ -44,13 +48,6 @@
         "description": "Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.",
         "parameters": [
           {
-            "in": "path",
-            "name": "UID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
             "in": "query",
             "name": "Relation_Type",
             "description": "Relation Type to Filter",
@@ -70,57 +67,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Relations",
-            "schema": {
-              "$ref": "#/definitions/user_relation"
-            }
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social_hub/user_relations/{UID}": {
-      "get": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Returns the user IDs that the user has relations",
-        "description": "Returns User IDs that the user has the filtered relations. Quering without a relation returns all users that have a relation with weight > 0 with the user. Quering for one relation type it returns all the users that have that type relation with weight > 0. Finally, by quering for multiple relation types by summing the integer of types you get users that have all type relations with the user.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "UID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "Relation_Type",
-            "description": "Relation Type to Filter",
-            "required": false,
-            "type": "integer",
-            "enum": [
-              "family",
-              "friend",
-              "contact",
-              "colleague",
-              "other"
-            ]
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "UIDs",
+            "description": "User Relations",
             "schema": {
               "type": "array",
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/user_relation"
               }
             }
           },
@@ -130,24 +81,17 @@
         }
       }
     },
-    "/social_hub/delete_user_relation": {
-      "delete": {
+    "/social/relations/{userID}": {
+      "get": {
         "tags": [
           "Social Relations"
         ],
-        "summary": "Deletes the relation among two users",
-        "description": "Deletes the relation among two users by setting the weight to 0. Requires the two UIDs and the relation type",
+        "summary": "Returns the user IDs that the user has relations",
+        "description": "Returns User IDs that the user has the filtered relations. Quering without a relation returns all users that have a relation with weight > 0 with the user. Quering for one relation type it returns all the users that have that type relation with weight > 0. Finally, by quering for multiple relation types by summing the integer of types you get users that have all type relations with the user.",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID1",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "UID2",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
             "required": true,
             "type": "string"
@@ -155,8 +99,8 @@
           {
             "in": "query",
             "name": "Relation_Type",
-            "description": "Relation Type to set Weight to 0",
-            "required": true,
+            "description": "Relation Type to Filter",
+            "required": false,
             "type": "integer",
             "enum": [
               "family",
@@ -167,9 +111,18 @@
             ]
           }
         ],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "200": {
-            "description": "Deletion successesful"
+            "description": "User Relations",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user_relation"
+              }
+            }
           },
           "401": {
             "description": "Unknown user ID"
@@ -177,7 +130,7 @@
         }
       }
     },
-    "/social_hub/modify_user_relation": {
+    "/social/relations/{userID}/update": {
       "put": {
         "tags": [
           "Social Relations"
@@ -186,23 +139,23 @@
         "description": "Modifies the relation among two users by changing the weight",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID1",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
-            "name": "UID2",
+            "name": "userID2",
             "description": "User ID",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
-            "name": "Relation_Type",
-            "description": "Relation Type to set Weight to 0",
+            "name": "relationType",
+            "description": "Relation Type to update weight",
             "required": true,
             "type": "integer",
             "enum": [
@@ -231,7 +184,7 @@
         }
       }
     },
-    "/social_hub/create_relation": {
+    "/social/relations/{userID}/create": {
       "put": {
         "tags": [
           "Social Relations"
@@ -240,15 +193,15 @@
         "description": "Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID1",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
             "required": true,
             "type": "string"
           },
           {
             "in": "query",
-            "name": "UID2",
+            "name": "userID2",
             "description": "User ID",
             "required": true,
             "type": "string"
@@ -285,7 +238,7 @@
         }
       }
     },
-    "/social_hub/import_relations": {
+    "/social/relations/{userID}/import": {
       "put": {
         "tags": [
           "Social Relations"
@@ -294,8 +247,8 @@
         "description": "Imports user relations from a social app such as Facebook. The process after called and given access to the appropriate app will create relations that are marked with source the app. The weight of such relations is TBD",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
             "required": true,
             "type": "string"
@@ -311,6 +264,105 @@
         "responses": {
           "200": {
             "description": "Import successful"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social/explanations/{userID}/{taskID}/create": {
+      "put": {
+        "tags": [
+          "Social Explanations"
+        ],
+        "summary": "Create and initialize a social explanation structure for the user",
+        "description": "Create and initialize a social explanation structure for the user. This is contextualized on the type of task.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Social Explanation"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social/explanations/{userID}/{taskID}/update": {
+      "put": {
+        "tags": [
+          "Social Explanations"
+        ],
+        "summary": "Updates a social explanation structure for the user",
+        "description": "Updates a social explanation structure for the user. This is contextualized on the type of task.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Social Explanation"
+          },
+          "401": {
+            "description": "Unknown user ID"
+          }
+        }
+      }
+    },
+    "/social/explanations/{userID}/{taskID}": {
+      "get": {
+        "tags": [
+          "Social Explanations"
+        ],
+        "summary": "Returns the social explanation structure for the user",
+        "description": "Returns the social explanation structure for the user. This is contextualized on the type of task.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Social Explanation"
           },
           "401": {
             "description": "Unknown user ID"
@@ -543,7 +595,7 @@
         }
       }
     },
-    "/order_users_by_social_preference": {
+    "/social/preferences/{userID}/{taskID}": {
       "post": {
         "tags": [
           "Social User Ranking"
@@ -552,9 +604,16 @@
         "description": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
             "required": true,
             "type": "string"
           },
@@ -569,13 +628,6 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "in": "query",
-            "name": "Task_ID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
@@ -591,7 +643,7 @@
         }
       }
     },
-    "/create_user_preference": {
+    "/social/preferences/{userID}/{taskID}/create": {
       "post": {
         "tags": [
           "Social User Ranking"
@@ -600,9 +652,16 @@
         "description": "Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
             "required": true,
             "type": "string"
           },
@@ -617,13 +676,6 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "in": "query",
-            "name": "Task_ID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
@@ -633,7 +685,7 @@
         }
       }
     },
-    "/modify_user_preference": {
+    "/social/preferences/{userID}/update": {
       "post": {
         "tags": [
           "Social User Ranking"
@@ -642,9 +694,16 @@
         "description": "Given a set of ranked users it modifies the underlying structure to rank users taking in account the newly given order. The structure is stored under a Task Tag-ID.",
         "parameters": [
           {
-            "in": "query",
-            "name": "UID",
+            "in": "path",
+            "name": "userID",
             "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "taskID",
+            "description": "Task ID, the exact form and what a Task ID is it is TBD",
             "required": true,
             "type": "string"
           },
@@ -659,13 +718,6 @@
                 "type": "string"
               }
             }
-          },
-          {
-            "in": "query",
-            "name": "Task_ID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
