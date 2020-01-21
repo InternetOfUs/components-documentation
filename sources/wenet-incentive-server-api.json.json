@@ -1,0 +1,1883 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Incentive Server APIs",
+    "version": "1.0.0",
+    "title": "Incentive Server APIs",
+    "contact": {
+      "name": "Daniel Benzaken",
+      "email": "Benzaked@post.bgu.ac.il"
+    }
+  },
+  "tags": [
+    {
+      "name": "incentive",
+      "description": "get information regardid incentives"
+    },
+    {
+      "name": "enquiry incentives",
+      "description": "issue a complaint regarding an  incentive"
+    },
+    {
+      "name": "norms",
+      "description": "post, update and  get norms."
+    },
+    {
+      "name": "Badges_Issuers",
+      "description": "An Issuer Profile describes a person that awards Open Badges"
+    },
+    {
+      "name": "Badges_BadgeType",
+      "description": "A BadgeType is a type of badge that an Issuer may award over and over (creating many Assertions of that BadgeType, each for a different recipient)"
+    },
+    {
+      "name": "Badges_Assertions",
+      "description": "An Assertion is an instance of a BadgeType  that is awarded to one recipient."
+    }
+  ],
+  "paths": {
+    "/norm/apps/{app_id}/users/{user_id}": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a user norm",
+        "operationId": "user_norm_update",
+        "description": "adds a user norm.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "The identifier of the user.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The added norm.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "norm saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get the user norms",
+        "operationId": "get_user_norms",
+        "description": "get the user norms",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "The identifier of the user.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norms"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norm/apps/{app_id}community/{community_id}": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "adds a community norm",
+        "operationId": "community_norm_update",
+        "description": "adds a community norm",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "community_id",
+            "description": "The identifier of the community.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "norm saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          },
+          "description": "norm to add"
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get the community norms",
+        "operationId": "get_community_norms",
+        "description": "get the community norms",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "community_id",
+            "description": "The identifier of the community.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norms"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norm/apps/{app_id}": {
+      "post": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "Adds a general norm",
+        "operationId": "general_norm_update",
+        "description": "adds an general norm",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "norm saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get a general norm",
+        "operationId": "get_general_norm",
+        "description": "get a general norm",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "norm_id",
+            "description": "The identifier of the norm.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/norms/apps/{app_id}/{norm_id}": {
+      "put": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "Update the values by norm ID",
+        "description": "Update a norm by id.",
+        "operationId": "update_norm",
+        "parameters": [
+          {
+            "name": "norm_id",
+            "in": "path",
+            "description": "The identifier of the norm",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/norm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated community",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/norm"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/norm"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong norm id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "norms"
+        ],
+        "summary": "get norm by id.",
+        "operationId": "get_norm",
+        "description": "get norm by id.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "norm_id",
+            "description": "The identifier of the norm.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The identifier of the app.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/norm"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong norm id.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Default Response": {
+                    "value": {
+                      "code": 125,
+                      "message": "wrong norm id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/incentive/apps/{app_id}/community/{community_id}": {
+      "get": {
+        "tags": [
+          "incentive"
+        ],
+        "summary": "searches for all incentive infos of a community of users",
+        "operationId": "community_incentive",
+        "description": "searches for a community of users of a specific application and returns incentive information of the users.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "community_id",
+            "description": "the community id to search",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "the app that the user pagination",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/incentive_info_community"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong community_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_community_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "wrong app_id parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_app_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/incentive/apps/{app_id}/users/{user_id}": {
+      "get": {
+        "tags": [
+          "incentive"
+        ],
+        "summary": "searches for user incentive info",
+        "operationId": "user_incentive",
+        "description": "searches for a user of a specific application and returns incentive information of that user.\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "the user id to search",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "the app that the user pagination",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "community_id",
+            "description": "the community id  which the incentive relates",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful search.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/incentive_info_user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user_id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "wrong app_id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_app_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/incentive/disable_incentive": {
+      "post": {
+        "tags": [
+          "incentive"
+        ],
+        "summary": "Disable the incentive  server",
+        "operationId": "disable_incentive",
+        "requestBody": {
+          "description": "The request body for disabling the incentive server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/disable_incentive"
+              }
+            }
+          }
+        },
+        "description": "Disable the incentive server\n",
+        "responses": {
+          "200": {
+            "description": "successfuly disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The server is already disabled"
+          },
+          "404": {
+            "description": "Reason not found"
+          }
+        }
+      }
+    },
+    "/enquiry_incentives/app/{app_id}/users/{user_id}": {
+      "post": {
+        "tags": [
+          "enquiry incentives"
+        ],
+        "summary": "submit complaint",
+        "operationId": "enquiry_incentives",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "description": "The user id that issue complaint",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "app_id",
+            "description": "The app id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The added norm.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/complaint"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "submit completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Content not found"
+          }
+        }
+      }
+    },
+    "/incentive/enable_incentive": {
+      "post": {
+        "tags": [
+          "incentive"
+        ],
+        "summary": "enable the incentive server",
+        "operationId": "enable_incentive",
+        "requestBody": {
+          "description": "The request body for enabling the incentive server",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/enable_incentive"
+              }
+            }
+          }
+        },
+        "description": "Enable the incentive server\n",
+        "responses": {
+          "200": {
+            "description": "successfuly enabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successful_operation"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The server is already enabled"
+          },
+          "404": {
+            "description": "Reason not found"
+          }
+        }
+      }
+    },
+    "/badges/issuers": {
+      "post": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer"
+            ]
+          }
+        ],
+        "summary": "Create a new Issuer",
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Issuer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Issuer"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_Issuers"
+        ]
+      }
+    },
+    "/badges/issuers/{entity_id}/badgeTypes": {
+      "post": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer"
+            ]
+          }
+        ],
+        "summary": "Create a new BadgeType",
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/BadgeType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/BadgeType"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entity_id",
+            "in": "path"
+          }
+        ],
+        "tags": [
+          "Badges_BadgeType"
+        ]
+      }
+    },
+    "/badges/badgeTypes/{entity_id}": {
+      "put": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Update an existing BadgeType.  Previously issued BadgeInstances will NOT be updated",
+        "responses": {
+          "200": {
+            "description": "Successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/BadgeType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "404": {
+            "description": "BadgeType not found"
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entity_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/BadgeType_put"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeType"
+        ]
+      }
+    },
+    "/badges/badgeTypes/{entity_id}/assertions": {
+      "post": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Issue an Assertion to a single recipient",
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Assertion"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entity_id",
+            "description": "badgeType entity_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Assertion"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_Assertions"
+        ]
+      },
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Get a list of Assertions for a single BadgeType",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/definitions/Assertion"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entity_id",
+            "in": "path"
+          },
+          {
+            "description": "A recipient identifier to filter by",
+            "schema": {
+              "type": "string"
+            },
+            "name": "recipient",
+            "in": "query"
+          },
+          {
+            "description": "Request pagination of results",
+            "schema": {
+              "type": "string"
+            },
+            "name": "num",
+            "in": "query"
+          }
+        ],
+        "tags": [
+          "Badges_Assertions"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "successful_operation": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "integer",
+            "example": 145
+          },
+          "message": {
+            "type": "string",
+            "example": "successful operation"
+          }
+        }
+      },
+      "wrong_community_id": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "message": {
+            "type": "string",
+            "example": "wrong community id"
+          }
+        }
+      },
+      "wrong_user_id": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "message": {
+            "type": "string",
+            "example": "wrong user id"
+          }
+        }
+      },
+      "wrong_app_id": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "type": "integer",
+            "example": 125
+          },
+          "message": {
+            "type": "string",
+            "example": "wrong app id"
+          }
+        }
+      },
+      "NormOperator": {
+        "type": "string",
+        "description": "The operator of the norm",
+        "enum": [
+          "EQUALS",
+          "LESS_THAN",
+          "GREATER_THAN",
+          "LESS_EQ_THAN",
+          "GREATER_EQ_THAN"
+        ]
+      },
+      "norm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The identifier of the norm",
+            "example": "15837028-645a-4a55-9aaf-ceb846439eba",
+            "readOnly": true
+          },
+          "attribute": {
+            "type": "string",
+            "description": "The name of the attribute whose value the norm should be compared to",
+            "example": "has_car"
+          },
+          "operator": {
+            "$ref": "#/components/schemas/NormOperator"
+          },
+          "comparison": {
+            "type": "string",
+            "description": "The norm value for the comparison",
+            "example": true
+          },
+          "nagation": {
+            "type": "boolean",
+            "description": "Specified if a negation operator should be applied",
+            "example": true,
+            "default": true
+          }
+        }
+      },
+      "disable_incentive": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The reason for disabling the incentive server",
+            "example": "good justify for disabling"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "enable_incentive": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The reason for enabling the incentive server",
+            "example": "good justify for enabling"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "complaint": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The content of the complaint",
+            "example": "the incentive was inappropriate"
+          },
+          "incentive": {
+            "type": "string",
+            "description": "The content of the regard incentive"
+          }
+        },
+        "required": [
+          "content"
+        ]
+      },
+      "norms": {
+        "type": "object",
+        "properties": {
+          "norms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/norm"
+            }
+          }
+        }
+      },
+      "u_norm": {
+        "type": "object",
+        "properties": {
+          "norm_id": {
+            "type": "string",
+            "example": 6687483
+          },
+          "Location": {
+            "type": "string",
+            "example": "Europe"
+          },
+          "Type": {
+            "type": "string",
+            "example": "message"
+          },
+          "Size": {
+            "type": "integer",
+            "example": 128
+          },
+          "frequncy": {
+            "type": "integer",
+            "example": 500
+          },
+          "channel": {
+            "type": "string",
+            "example": "web"
+          }
+        }
+      },
+      "incentive_info_user": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "incentive_type",
+          "incentive_quantity"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "incentive_type": {
+            "type": "integer",
+            "example": 2
+          },
+          "incentive_quantity": {
+            "type": "number",
+            "format": "float",
+            "example": 0.89
+          }
+        }
+      },
+      "incentive_info_community": {
+        "type": "object",
+        "required": [
+          "user_id",
+          "incentive_type",
+          "incentive_quantity"
+        ],
+        "properties": {
+          "community_id": {
+            "type": "integer",
+            "example": 12345
+          },
+          "incentive_type": {
+            "type": "integer",
+            "example": 2
+          },
+          "incentive_quantity": {
+            "type": "number",
+            "format": "float",
+            "example": 0.89
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AccessToken": {
+      "required": [
+        "token",
+        "issuer",
+        "expires"
+      ],
+      "properties": {
+        "token": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "issuer": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "expires": {
+          "type": "string",
+          "format": "DateTimeField"
+        }
+      }
+    },
+    "Assertion": {
+      "required": [
+        "recipient"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"Assertion\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this Assertion",
+          "format": "string"
+        },
+        "openBadgeId": {
+          "type": "string",
+          "description": "URL of the OpenBadge compliant json",
+          "format": "url"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the Assertion was created",
+          "format": "ISO8601 timestamp"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "BadgeUser who created the Assertion",
+          "format": "entityId"
+        },
+        "badgeType": {
+          "type": "string",
+          "description": "BadgeType that issued this Assertion",
+          "format": "entityId"
+        },
+        "badgeclassOpenBadgeId": {
+          "type": "string",
+          "description": "URL of the BadgeType to award",
+          "format": "url"
+        },
+        "issuer": {
+          "type": "string",
+          "format": "EntityRelatedFieldV2"
+        },
+        "issuerOpenBadgeId": {
+          "type": "string",
+          "format": "URLField"
+        },
+        "image": {
+          "type": "string",
+          "description": "URL to the baked assertion image",
+          "format": "url"
+        },
+        "recipient": {
+          "type": "object",
+          "properties": {
+            "identity": {
+              "type": "string",
+              "description": "Either the hash of the identity or the plaintext value",
+              "format": "string"
+            },
+            "type": {
+              "enum": [
+                "email",
+                "openBadgeId",
+                "telephone",
+                "url"
+              ],
+              "type": "string",
+              "description": "Type of identifier used to identify recipient"
+            },
+            "hashed": {
+              "type": "boolean",
+              "description": "Whether or not the identity value is hashed."
+            },
+            "plaintextIdentity": {
+              "type": "string",
+              "description": "The plaintext identity"
+            }
+          },
+          "description": "Recipient that was issued the Assertion"
+        },
+        "issuedOn": {
+          "type": "string",
+          "description": "Timestamp when the Assertion was issued",
+          "format": "ISO8601 timestamp"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Markdown narrative of the achievement",
+          "format": "markdown"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/definitions/AssertionEvidence"
+          },
+          "type": "array",
+          "description": "List of evidence associated with the achievement"
+        },
+        "revoked": {
+          "type": "boolean",
+          "description": "True if this Assertion has been revoked"
+        },
+        "revocationReason": {
+          "type": "string",
+          "description": "Short description of why the Assertion was revoked",
+          "format": "string"
+        },
+        "expires": {
+          "type": "string",
+          "description": "Timestamp when the Assertion expires",
+          "format": "ISO8601 timestamp"
+        },
+        "extensions": {
+          "type": "string",
+          "format": "DictField"
+        },
+        "badgeclassName": {
+          "type": "string",
+          "description": "Name of BadgeType to create assertion against, case insensitive",
+          "format": "string"
+        }
+      }
+    },
+    "AssertionEvidence": {
+      "required": [],
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "URL of a webpage presenting evidence of the achievement",
+          "format": "url"
+        },
+        "narrative": {
+          "type": "string",
+          "description": "Markdown narrative that describes the achievement",
+          "format": "markdown"
+        }
+      }
+    },
+    "BadgeType_put": {
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"BadgeType\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this BadgeType",
+          "format": "string"
+        },
+        "openBadgeId": {
+          "type": "string",
+          "description": "URL of the OpenBadge compliant json",
+          "format": "url"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the BadgeType was created",
+          "format": "ISO8601 timestamp"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "BadgeUser who created this BadgeType",
+          "format": "entityId"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "entityId of the Issuer who owns the BadgeType",
+          "format": "entityId"
+        },
+        "issuerOpenBadgeId": {
+          "type": "string",
+          "format": "URLField"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the BadgeType",
+          "format": "string"
+        },
+        "image": {
+          "type": "string",
+          "description": "Base64 encoded string of an image that represents the BadgeType.",
+          "format": "data:image/png;base64"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the BadgeType",
+          "format": "string"
+        },
+        "criteriaUrl": {
+          "type": "string",
+          "description": "External URL that describes in a human-readable format the criteria for the BadgeType",
+          "format": "url"
+        },
+        "criteriaNarrative": {
+          "type": "string",
+          "description": "Markdown formatted description of the criteria.note, criteriaNarrative or criteriaUrl is required.",
+          "format": "markdown"
+        },
+        "alignments": {
+          "items": {
+            "$ref": "#/definitions/BadgeTypeAlignment"
+          },
+          "type": "array",
+          "description": "List of objects describing objectives or educational standards"
+        },
+        "tags": {
+          "description": "List of tags that describe the BadgeType,one or more strings.",
+          "items": {
+            "type": "string",
+            "format": "string"
+          },
+          "type": "array"
+        },
+        "expires": {
+          "description": "Expiration period for Assertions awarded from this BadgeType",
+          "$ref": "#/definitions/BadgeTypeExpiration"
+        },
+        "extensions": {
+          "type": "string",
+          "format": "DictField"
+        }
+      }
+    },
+    "BadgeType": {
+      "required": [
+        "name",
+        "description",
+        "image",
+        "criteriaNarrative"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"BadgeType\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this BadgeType",
+          "format": "string"
+        },
+        "openBadgeId": {
+          "type": "string",
+          "description": "URL of the OpenBadge compliant json",
+          "format": "url"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the BadgeType was created",
+          "format": "ISO8601 timestamp"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "BadgeUser who created this BadgeType",
+          "format": "entityId"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "entityId of the Issuer who owns the BadgeType",
+          "format": "entityId"
+        },
+        "issuerOpenBadgeId": {
+          "type": "string",
+          "format": "URLField"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the BadgeType",
+          "format": "string"
+        },
+        "image": {
+          "type": "string",
+          "description": "Base64 encoded string of an image that represents the BadgeType.",
+          "format": "data:image/png;base64"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the BadgeType",
+          "format": "string"
+        },
+        "criteriaUrl": {
+          "type": "string",
+          "description": "External URL that describes in a human-readable format the criteria for the BadgeType",
+          "format": "url"
+        },
+        "criteriaNarrative": {
+          "type": "string",
+          "description": "Markdown formatted description of the criteria.note, criteriaNarrative or criteriaUrl is required.",
+          "format": "markdown"
+        },
+        "alignments": {
+          "items": {
+            "$ref": "#/definitions/BadgeTypeAlignment"
+          },
+          "type": "array",
+          "description": "List of objects describing objectives or educational standards"
+        },
+        "tags": {
+          "description": "List of tags that describe the BadgeType,one or more strings.",
+          "items": {
+            "type": "string",
+            "format": "string"
+          },
+          "type": "array"
+        },
+        "expires": {
+          "description": "Expiration period for Assertions awarded from this BadgeType",
+          "$ref": "#/definitions/BadgeTypeExpiration"
+        },
+        "extensions": {
+          "type": "string",
+          "format": "DictField"
+        }
+      }
+    },
+    "BadgeTypeAlignment": {
+      "required": [
+        "targetName",
+        "targetUrl"
+      ],
+      "properties": {
+        "targetName": {
+          "type": "string",
+          "format": "StripTagsCharField"
+        },
+        "targetUrl": {
+          "type": "string",
+          "format": "URLField"
+        },
+        "targetDescription": {
+          "type": "string",
+          "format": "StripTagsCharField"
+        },
+        "targetFramework": {
+          "type": "string",
+          "format": "StripTagsCharField"
+        },
+        "targetCode": {
+          "type": "string",
+          "format": "StripTagsCharField"
+        }
+      }
+    },
+    "BadgeTypeExpiration": {
+      "required": [
+        "amount",
+        "duration"
+      ],
+      "properties": {
+        "amount": {
+          "type": "string",
+          "format": "IntegerField"
+        },
+        "duration": {
+          "type": "string",
+          "format": "ChoiceField"
+        }
+      }
+    },
+    "BadgeUser": {
+      "required": [
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"BadgeUser\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this BadgeUser",
+          "format": "string"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "Given name",
+          "format": "string"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Family name",
+          "format": "string"
+        },
+        "emails": {
+          "items": {
+            "$ref": "#/definitions/BadgeUserEmail"
+          },
+          "type": "array"
+        },
+        "url": {
+          "type": "string",
+          "format": "ListField"
+        },
+        "telephone": {
+          "type": "string",
+          "format": "ListField"
+        },
+        "agreedTermsVersion": {
+          "type": "string",
+          "format": "IntegerField"
+        },
+        "marketingOptIn": {
+          "type": "string",
+          "format": "BooleanField"
+        },
+        "badgrDomain": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "hasPasswordSet": {
+          "type": "string",
+          "format": "SerializerMethodField"
+        }
+      }
+    },
+    "BadgeUserEmail": {
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "entityId": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address associated with a BadgeUser",
+          "format": "email"
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "True if the email address has been verified"
+        },
+        "primary": {
+          "type": "boolean",
+          "description": "True for a single email address to receive email notifications"
+        }
+      }
+    },
+    "BadgeUserToken": {
+      "required": [],
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Access token to use in the Authorization header",
+          "format": "string"
+        }
+      }
+    },
+    "Collection": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"Collection\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this Collection",
+          "format": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Collection",
+          "format": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the Collection",
+          "format": "text"
+        },
+        "share_url": {
+          "type": "string",
+          "description": "A public URL for sharing the Collection",
+          "format": "url"
+        },
+        "published": {
+          "type": "boolean",
+          "description": "True if the Collection has a public share URL"
+        },
+        "assertions": {
+          "items": {
+            "$ref": "#/definitions/Assertion"
+          },
+          "type": "array",
+          "description": "List of Assertions in the collection"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the Collection was created",
+          "format": "ISO8601 timestamp"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "BadgeUser who created this Collection",
+          "format": "entityId"
+        }
+      }
+    },
+    "Issuer": {
+      "required": [
+        "name",
+        "email",
+        "url"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "description": "\"Issuer\"",
+          "format": "string"
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Unique identifier for this Issuer",
+          "format": "string"
+        },
+        "openBadgeId": {
+          "type": "string",
+          "description": "URL of the OpenBadge compliant json",
+          "format": "url"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the Issuer was created",
+          "format": "ISO8601 timestamp"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "BadgeUser who created this Issuer",
+          "format": "entityId"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Issuer",
+          "format": "string"
+        },
+        "image": {
+          "type": "string",
+          "description": "Base64 encoded string of an image that represents the Issuer",
+          "format": "data:image/png;base64"
+        },
+        "email": {
+          "type": "string",
+          "description": "must be a verified email on the authenticating user’s Badgr account. Get /v2/users/self to retrieve your profile and see your verified email addresses.",
+          "format": "email"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the Issuer",
+          "format": "text"
+        },
+        "url": {
+          "type": "string",
+          "description": "Homepage or website associated with the Issuer",
+          "format": "url"
+        },
+        "staff": {
+          "items": {
+            "$ref": "#/definitions/IssuerStaff"
+          },
+          "type": "array"
+        },
+        "extensions": {
+          "type": "string",
+          "format": "DictField"
+        },
+        "badgrDomain": {
+          "type": "string",
+          "format": "CharField"
+        }
+      }
+    },
+    "IssuerStaff": {
+      "required": [
+        "user",
+        "role"
+      ],
+      "properties": {
+        "entityType": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "entityId": {
+          "type": "string",
+          "format": "CharField"
+        },
+        "userProfile": {
+          "type": "string",
+          "format": "StaffUserProfileSerializerV2"
+        },
+        "user": {
+          "type": "string",
+          "format": "EntityRelatedFieldV2"
+        },
+        "role": {
+          "enum": [
+            "staff",
+            "editor",
+            "owner"
+          ],
+          "type": "string"
+        }
+      }
+    }
+  }
+}
