@@ -257,6 +257,7 @@ components:
           enum:
             - M
             - F
+            - O
           example: F
         email:
           type: string
@@ -291,6 +292,14 @@ components:
                 type: string
                 description: The level
                 example: C2
+                enum:
+                    - A0
+                    - A1
+                    - A2
+                    - B1
+                    - B2
+                    - C1
+                    - C2
               code:
                 type: string
                 description: The ISO 639-1 code that identify the language
