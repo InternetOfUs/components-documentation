@@ -1,0 +1,873 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "This is a simple description of the Streambase Common APIs",
+    "version": "1.0.0",
+    "title": "Streambase Commons",
+    "termsOfService": "http://unitn/terms/",
+    "contact": {
+      "email": "s.decristofaro@unitn.it"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/i-log/streams": {
+      "post": {
+        "tags": [
+          "i-Log Streams"
+        ],
+        "summary": "Send a subscription request to receive data",
+        "description": "Make a subscription to receive info on properties every time some of the condition.properties change",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Subscription"
+              }
+            }
+          }
+        },
+        "callbacks": {
+          "propertyChanged": {
+            "notificationCallbackUrl/": {
+              "post": {
+                "requestBody": {
+                  "required": true,
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "$ref": "#/components/schemas/DataRequestArray"
+                      }
+                    }
+                  }
+                },
+                "responses": {
+                  "200": {
+                    "description": "Stream successfully initialized",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "$ref": "#/components/schemas/EmptyResponse"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stream successfully initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "i-Log Streams"
+        ],
+        "summary": "Get a list of active subscriptions",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ai30384odg"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream successfully initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Subscription"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/i-log/streams/{streamId}": {
+      "get": {
+        "tags": [
+          "i-Log Streams"
+        ],
+        "summary": "Get the details of an existing subscription",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "streamId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such streamId exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "i-Log Streams"
+        ],
+        "summary": "Delete subscription",
+        "description": "Stop receiving notification",
+        "parameters": [
+          {
+            "name": "streamId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream correctly deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such streamId exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/i-log/data": {
+      "post": {
+        "tags": [
+          "i-Log Batch Data"
+        ],
+        "summary": "Upload a new entity's data",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestArray"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "data correctly uploaded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "i-Log Batch Data"
+        ],
+        "summary": "Update entity's data",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "a34for230po"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestArray"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "data correctly updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/i-log/data/{userId}": {
+      "get": {
+        "tags": [
+          "i-Log Batch Data"
+        ],
+        "summary": "retrieve data you want to receive",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "a34for230po"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "20190825"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "20190901"
+          },
+          {
+            "name": "properties",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "locationeventpertime"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "data correctly retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataRequest"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Authorization": {
+        "in": "header",
+        "schema": {
+          "type": "string"
+        },
+        "name": "Authorization",
+        "required": true,
+        "description": "Access Token"
+      },
+      "UserId": {
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "name": "userId",
+        "required": true,
+        "description": "Target user or users that will receive the message. Can be either a single user's salt or a topic (so it will be sent to all users subscribed to that topic) using the format/topics/<sometopic>"
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id automatically generated",
+            "example": "ei39alwj901kde"
+          }
+        }
+      },
+      "UserContribution": {
+        "type": "object",
+        "properties": {
+          "t_tile": {
+            "type": "string",
+            "description": "Question title",
+            "example": "Test Title"
+          },
+          "t_until": {
+            "type": "string",
+            "format": "integer",
+            "description": "Time to Live",
+            "example": 86400
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "q": {
+                  "$ref": "#/components/schemas/Question"
+                },
+                "a": {
+                  "$ref": "#/components/schemas/Answer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ConditionObject": {
+        "description": "used to show a new question only if a specific answer on a previous question has been chose",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "integer",
+              "format": "integer",
+              "description": "condition answer id",
+              "example": 1
+            },
+            "q": {
+              "type": "integer",
+              "format": "integer",
+              "description": "condition question id",
+              "example": 1
+            }
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "integer"
+          },
+          "l": {
+            "type": "string",
+            "format": "string",
+            "description": "language",
+            "example": "en_US"
+          },
+          "t": {
+            "type": "string",
+            "format": "string",
+            "description": "text",
+            "example": "What are you doing?"
+          },
+          "at": {
+            "type": "string",
+            "format": "string",
+            "description": "can be single choice (s) or multiple (m)",
+            "enum": [
+              "s",
+              "m"
+            ]
+          },
+          "p": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "l": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "language",
+                  "example": "en_US"
+                },
+                "t": {
+                  "type": "string",
+                  "format": "string",
+                  "description": "question's text",
+                  "example": "What are you doing?"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "id": 1,
+          "c": [],
+          "t": "t",
+          "at": "s",
+          "p": [
+            {
+              "l": "en_US",
+              "t": "What are you doing?"
+            },
+            {
+              "l": "it_IT",
+              "t": "Cosa stai facendo?"
+            }
+          ]
+        }
+      },
+      "Answer": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "integer"
+            },
+            "c": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ConditionObject"
+              }
+            },
+            "c_id": {
+              "type": "integer",
+              "format": "integer",
+              "description": "concept id",
+              "example": -1
+            },
+            "p": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "l": {
+                    "type": "string",
+                    "format": "string",
+                    "description": "language",
+                    "example": "en_US"
+                  },
+                  "t": {
+                    "type": "string",
+                    "format": "string",
+                    "description": "text",
+                    "example": "This is my answer"
+                  }
+                }
+              }
+            }
+          },
+          "example": [
+            {
+              "id": 1,
+              "c": [],
+              "c_id": -1,
+              "p": [
+                {
+                  "l": "en_US",
+                  "t": "I am working"
+                },
+                {
+                  "l": "it_IT",
+                  "t": "Sto lavorando"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "c": [],
+              "c_id": -1,
+              "p": [
+                {
+                  "l": "en_US",
+                  "t": "I am studying"
+                },
+                {
+                  "l": "it_IT",
+                  "t": "Sto studiando"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "DataRequestArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DataRequest"
+        }
+      },
+      "DataRequest": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "locationeventpertime": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LocationObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "accelerometerevent": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AccelerometerEventObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "gyroscopeevent": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/GyroscopeEventObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tasksanswers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TaskAnswer"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tasksquestions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TaskQuestion"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "AccelerometerEventObject": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "x": {
+            "type": "string",
+            "example": 2.37
+          },
+          "y": {
+            "type": "string",
+            "example": 8.36
+          },
+          "z": {
+            "type": "string",
+            "example": 4.68
+          }
+        }
+      },
+      "GyroscopeEventObject": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "x": {
+            "type": "string",
+            "example": 2.37
+          },
+          "y": {
+            "type": "string",
+            "example": 8.36
+          },
+          "z": {
+            "type": "string",
+            "example": 4.68
+          }
+        }
+      },
+      "LocationObject": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "example": 201908252359000
+          },
+          "point": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "string",
+                "example": 22.1492
+              },
+              "longitude": {
+                "type": "string",
+                "example": -101.03609
+              },
+              "altitude": {
+                "type": "string",
+                "example": 1845.29208
+              }
+            }
+          }
+        }
+      },
+      "TaskAnswer": {
+        "type": "object",
+        "properties": {
+          "instanceid": {
+            "type": "string",
+            "example": "f161dee2a122af926a9c4285275800942d128c34"
+          },
+          "answer": {
+            "$ref": "#/components/schemas/Answer"
+          },
+          "answerduration": {
+            "type": "string",
+            "example": 20142
+          },
+          "answertimestamp": {
+            "type": "string",
+            "example": 20190909010129450
+          },
+          "day": {
+            "type": "string",
+            "example": 20190910
+          },
+          "instancetimestamp": {
+            "type": "string",
+            "example": 20190911201814344
+          },
+          "notificationtimestamp": {
+            "type": "string",
+            "example": 20190911201816910
+          },
+          "payload": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "type": "object",
+                  "example": {}
+                },
+                "qid": {
+                  "type": "string",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "TaskQuestion": {
+        "type": "object",
+        "properties": {
+          "instanceid": {
+            "type": "string",
+            "example": "f161dee2a122af926a9c4285275800942d128c34"
+          },
+          "question": {
+            "$ref": "#/components/schemas/Question"
+          },
+          "day": {
+            "type": "string",
+            "example": 20190910
+          },
+          "instancetimestamp": {
+            "type": "string",
+            "example": 20190911201814344
+          },
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "title": {
+            "type": "string",
+            "example": "Question Title"
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "description of the notification"
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "userIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "userIds you want to track"
+                },
+                "example": [
+                  "aoqi3481pal13l3qvrfh"
+                ]
+              }
+            }
+          },
+          "notification": {
+            "description": "an URL where to receive POST requests",
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://www.myservice.com/receivePOSTrequest"
+              }
+            }
+          },
+          "condition": {
+            "type": "object",
+            "properties": {
+              "onchange": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "list of properties that will trigger the notification on change"
+                },
+                "example": [
+                  "locationeventpertime",
+                  "accelerometerevents"
+                ]
+              }
+            }
+          },
+          "properties": {
+            "description": "the parameters in this section specify the content of the notification.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "list of properties"
+            },
+            "example": [
+              "locationeventpertime,",
+              "gyroscopeevent"
+            ]
+          }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EmptyResponse": {
+        "description": "Empty object",
+        "type": "object"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

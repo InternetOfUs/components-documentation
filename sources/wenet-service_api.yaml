@@ -272,6 +272,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
+  /task:
+    post:
+      summary: Create new task
+      tags:
+        - Task
+      description: This entpoint allows to create a new task
+      parameters:
+        - in: path
+          name: taskId
+          schema:
+            type: integer
+          required: true
+          description: The Id of the task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
+      responses:
+        201:
+          description: Task correctly created
+
+
   /task/{taskId}:
     get:
       summary: Get the details of an existing task
@@ -299,26 +322,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-    post:
-      summary: Create new task
-      tags:
-        - Task
-      description: This entpoint allows to create a new task
-      parameters:
-        - in: path
-          name: taskId
-          schema:
-            type: integer
-          required: true
-          description: The Id of the task
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
-      responses:
-        201:
-          description: Task correctly created
+
 
     put:
       summary: Update task

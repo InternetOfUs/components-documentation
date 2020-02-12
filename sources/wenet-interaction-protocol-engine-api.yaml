@@ -89,13 +89,11 @@ info:
     
     ## Task
     
-    The functionality provided allows to publish task types, create and manage task instances.
+    The task is associated to the next concepts:
     
-    There are two concepts associated with the notion of a task: type and instance.
-    A task type describes a generic goal and the norms that will regulate the interactions
-    of the members of any team set to achieve any instance of the task's generic goal.
-    An instance of a task type has a specific goal, a team organized around that goal, and
-    possibly a set of specific norms that extend the task type's generic norms.
+     * **TaskType**: describe the attributes and norms that describe the goal of the task.
+     * **TaskInstance**: the instance of a task type that is active.
+     * **TaskView**: maintains the state of the task instance from the point of view of an specific user.
     
     
     ## Team
@@ -115,7 +113,7 @@ info:
   contact:
     name: UDT-IA, IIIA-CSIC
     url: http://www.iiia.csic.es/
-  version: 0.7.1
+  version: 0.8.0
 tags:
 - name: Status
   description: Allow knowing the current API version.
@@ -2179,6 +2177,125 @@ paths:
                     code: communityNotFound
                     message: Not found a community associated to the identifier
   /communities/{communityId}/taskInstances:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      summary: Get the task instances on a community
+      description: Provide a list of task instances active on a community.
+      operationId: getCommunityTaskInstances_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community to add the task instance
+        required: true
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: Index of the first community task instance to return
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: limit
+        in: query
+        description: Number maximum of community task instances to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: The added task instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskInstancesPage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TaskInstancesPage'
+        401:
+          description: Unauthorized to get a community task instances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task instances
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get information of the
+                      community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task instances
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get information of the
+                      community
+        403:
+          description: You does not have the privileges to get the community task
+            instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task instances
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to get the task instances
+                      of a community that you do not play
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task instances
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to get the task instances
+                      of a community that you do not play
+        404:
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
     post:
       tags:
       - Communities
@@ -2205,17 +2322,17 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/CommunityTaskInstance'
+              $ref: '#/components/schemas/TaskInstance'
       responses:
         200:
           description: The added task instance
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CommunityTaskType'
+                $ref: '#/components/schemas/TaskInstance'
             application/xml:
               schema:
-                $ref: '#/components/schemas/CommunityTaskType'
+                $ref: '#/components/schemas/TaskInstance'
         401:
           description: Unauthorized to add a community task instance
           content:
@@ -2267,6 +2384,122 @@ paths:
                       the community
         404:
           description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: No found response example
+                  description: Default Response
+                  value:
+                    code: communityNotFound
+                    message: Not found a community associated to the identifier
+  /communities/{communityId}/taskInstances/{taskId}/taskViews/{userId}:
+    get:
+      tags:
+      - Communities
+      - Tasks
+      summary: Get the task view of an user on a community
+      description: Provide the status of a task for an user on a community.
+      operationId: getCommunityTaskView_1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Provide the authorization code
+        required: true
+        schema:
+          type: string
+        example: WeNet 89673098lkjbfjihg8103760
+      - name: communityId
+        in: path
+        description: The identifier of the community where is the task instance
+        required: true
+        schema:
+          type: string
+      - name: taskId
+        in: path
+        description: The identifier of the task instance to get the task view
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The identifier of the user to get the view of the task instance
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The task view
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskView'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/TaskView'
+        401:
+          description: Unauthorized to get a community task view
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task view
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get information of the
+                      community
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Unauthorized to get a community task view
+                  description: Default Response
+                  value:
+                    code: communitiesUnauthorized
+                    message: You have to log in to access to get information of the
+                      community
+        403:
+          description: You does not have the privileges to get the community task
+            view
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task instances
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to get the task view
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                Default Response:
+                  summary: Forbidden to get the community task instances
+                  description: Default Response
+                  value:
+                    code: communityForbidden
+                    message: You do not have the privileges to get the task view
+        404:
+          description: Not found community, task instance or user
           content:
             application/json:
               schema:
@@ -5947,79 +6180,81 @@ components:
       description: Contains a set of community task types found
       xml:
         name: CommunityTaskTypesPage
-    Goal:
+    TaskAttributeType:
       type: object
       properties:
-        code:
+        name:
           type: string
-          description: The code of the goal.
-      description: This component describes an objective to achieve in a task.
+          description: The name of the attribute.
+          example: communityId
+        description:
+          type: string
+          description: The description of the attribute.
+          example: The identifier of the community
+        type:
+          type: string
+          description: The type of the attribute values.
+          example: Integer
+      description: This component describes an attribute type.
       xml:
-        name: Goal
+        name: TaskAttributeType
     TaskType:
       type: object
       properties:
         name:
           type: string
-          description: The name of the task type.
-          example: WeNet
+          description: The name that identify the task type.
+          example: Help me
         description:
           type: string
-          description: The description of the task type.
-          example: A description that explains witch is the action associated to the
-            task
-        audioDescription:
-          type: string
-          description: The URL to an audio file that describe the task type.
-          example: https://internetofus.eu/wp-content/uploads/task_12345.mp3
-        goal:
-          $ref: '#/components/schemas/Goal'
-        norms:
+          description: The text that describe the task type.
+          example: Help an user to do something
+        constantNorms:
           type: array
-          description: The norms that has to satisfy the users to do the task.
+          description: The norms that describe the interaction of the users to do
+            the tasks.
           items:
             $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+        norms:
+          type: array
+          description: The norms that describe the interaction of the users to do
+            the tasks that can be modified by the requester.
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+        attributes:
+          type: array
+          description: The attribute that has to be instantiated when create the task.
+          items:
+            $ref: '#/components/schemas/TaskAttributeType'
+        constantAttributes:
+          type: array
+          description: The constant attributes that define the task.
+          items:
+            $ref: '#/components/schemas/TaskAttributeType'
       description: The description of type of task.
       xml:
         name: TaskType
-    CommunityTaskInstance:
+    TaskInstance:
       type: object
       properties:
-        id:
-          type: string
-          description: The identifier of the task instance.
-          example: bf274393-1e7b-4d40-a897-88cb96277edd
-        taskType:
-          $ref: '#/components/schemas/CommunityTaskType'
-        state:
+        type:
+          $ref: '#/components/schemas/TaskType'
+        norms:
           type: array
-          description: The attributes that define the state of the task instance.
+          description: The norms that define the interaction of users to do the task.
           items:
-            $ref: '#/components/schemas/TaskAttribute'
-        goal:
-          $ref: '#/components/schemas/Goal'
-        team:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/Norm
+        globalState:
           type: array
-          description: The identifiers of the community members that has to team up
-            to do the task
-          example:
-          - 550e8400-e29b-41d4-a716-446655440000
-          - 1db14dd1-ed9a-463d-a518-54c7c38dcec9
+          description: The constant attributes that define the task.
           items:
-            type: string
+            $ref: '#/components/schemas/TaskAttributeType'
         startDate:
           type: integer
           description: The difference, measured in milliseconds, between the time
             when the task has started and midnight, January 1, 1970 UTC.
           format: int64
           example: 1571413174407
-        deadlineDate:
-          type: integer
-          description: The difference, measured in milliseconds, between the time
-            on which the task is expected to be completed and midnight, January 1,
-            1970 UTC.
-          format: int64
-          example: 1571413332583
         finishedDate:
           type: integer
           description: The difference, measured in milliseconds, between the time
@@ -6034,23 +6269,49 @@ components:
             is not set the task is active.
           format: int64
           example: 1571413332583
-      description: This component describes a community task instance.
+      description: An instance of the task to do.
       xml:
-        name: CommunityTaskInstance
-    TaskAttribute:
+        name: TaskInstance
+    TaskInstancesPage:
       type: object
       properties:
-        name:
-          type: string
-          description: The name of the attribute.
-          example: communityId
-        value:
-          type: object
-          description: The value of the attribute.
-          example: bf274393-1e7b-4d40-a897-88cb96277edd
-      description: This component describes an attribute on a task instance.
+        offset:
+          type: integer
+          description: The index of the first published task type returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of published task instances that satisfies
+            the search.
+          format: int64
+          example: 100
+        taskInstances:
+          type: array
+          description: The set of published task instances found
+          items:
+            $ref: '#/components/schemas/TaskInstance'
+      description: Contains a set of published task instances found
       xml:
-        name: TaskAttribute
+        name: TaskInstancesPage
+    TaskView:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The identifier of the user that is the view of the task.
+          example: bf274393-1e7b-4d40-a897-88cb96277edd
+        task:
+          $ref: '#/components/schemas/TaskInstance'
+        localState:
+          type: array
+          description: The local attributes that define the task state from the point
+            of view of the user.
+          items:
+            $ref: '#/components/schemas/TaskAttributeType'
+      description: A description that can be understand by a human.
+      xml:
+        name: TaskView
     Message:
       type: object
       properties:
