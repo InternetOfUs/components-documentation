@@ -30,6 +30,13 @@ The models common to the various components can be found [here](http://swagger.u
 
 *Note*: please, keep the above links updated with the reference to the latest stable version of each documentation file.
 
+## Postman collections
+
+_"Postman is a collaboration platform for API development. Postman's features simplify each step of building an API and streamline collaboration so you can create better APIs—faster."_ - _Postman_
+
+The postman collections of the various components defined in this documentation are available in the folder `/postman_collections`.
+In addition to each component's collection, the export of the required environmental variables may be present: use it in order to simplify the setup of the queries you are going to reproduce.
+
 ## How to
 
 ### 1. Write your documentation
