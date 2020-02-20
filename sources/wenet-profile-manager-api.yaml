@@ -1,11 +1,9 @@
 openapi: 3.0.1
 info:
   title: WeNet - Profile manager API
-  description: >-
-    This API will be used to storing and maintaining the WeNet user profile. A profile 
-    is a set of attributes, and their current values represent the state of the user.
-    These attributes can be:
-    
+  description: |-
+    This API will be used to storing and maintaining the WeNet user profile. A profile is a set of attributes, and their current values represent the state of the user. These attributes can be:
+
      * **id**: identifier of the WeNet user.
      * **name**: the name of the user.
      * **dateOfBirth**: the date of birth of the user.
@@ -23,13 +21,11 @@ info:
      * **relationships**: the relations of this user with other users.
      * **socialPractices**: the social practices of the user.
      * **personalBehaviours**: the personal behaviors of the user.
-     
-    
+
+
     ### Language
-    
-    The languages that a user can understand are defined by the **ISO 639-1** code of the language and
-    the linguistic ability level of the person. This level can be:
-    
+    The languages that a user can understand are defined by the **ISO 639-1** code of the language and the linguistic ability level of the person. This level can be:
+
      * **A0**: Beginner/False beginner. The person only knows a few words of the language, if that.
      * **A1**: Elementary. The person can ask a few basic questions and ideas, but with a lot of mistakes.
      * **A2**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.
@@ -39,22 +35,28 @@ info:
      * **B2**: Intermediate. Now the person can converse in many situations, with less serious errors.
      * **C1**: Upper-intermediate. The person is comfortable in most situations, still some good mistakes.
      * **C2**: Proficient. The person is fluent, pretty much mother tongue. Extremely comfortable, it has complete control over the language.
-    
-    
+
+
     ### Gender
-    
     The gender of a user can be:
-    
+
      * **F**: A person whose gender identity matches the female sex.
      * **M**: A person whose gender identity matches the male sex.
-    
   contact:
-    name: UDT-IA, IIIA-CSIC
-    url: http://www.iiia.csic.es/
-  version: 0.8.0
+    name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
+    email: rosell (at) iiia.csic.es
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.9.0
+servers:
+- url: http://ardid.iiia.csic.es/dummy-wenet-profile-manager/
+  description: Dummy server
+- url: TO-DO
+  description: Teesting server
 tags:
-- name: Status
-  description: Allow knowing the current API version.
+- name: Other
+  description: Other services provided by the API.
 - name: Intelligences
   description: Provide the functionality to evaluate the intelligences of a person
 - name: Personalities
@@ -67,40 +69,15 @@ tags:
     of user attributes that define the user profile.  It also allows you to modify
     the current values.
 paths:
-  /status:
-    get:
-      tags:
-      - Status
-      summary: Get the status of the API
-      description: Return the current status information of the API
-      operationId: getStatusReport
-      responses:
-        200:
-          description: The API status
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Status'
   /intelligences:
     get:
       tags:
-      - Profiles
       - Intelligences
-      summary: Obtain the personality test
+      summary: Obtain the intelligences test
       description: Return the questionnaire used to obtain the intelligences of a
         person
-      operationId: getPersonalityQuestionnaire_1
+      operationId: retrieveIntelligencesQuestionnaire
       parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
       - name: Accept-Language
         in: header
         description: The preferred language for the text on the questionnaire. If
@@ -110,113 +87,48 @@ paths:
           default: en
         example: en
       responses:
-        401:
-          description: Unauthorized to get the intelligences questionnaire
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: intelligencesUnauthorized
-                    message: You are not authorized to get the intelligences questionnaire
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: intelligencesUnauthorized
-                    message: You are not authorized to get the intelligences questionnaire
-        200:
+        "200":
           description: The questionnaire to evaluate the intelligences of a person
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Questionnaire'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Questionnaire'
     post:
       tags:
-      - Profiles
       - Intelligences
-      summary: Calculate the intelligences of a person
-      description: Evaluate the answers to the intelligences test to obtain the intelligences
-        of the person
-      operationId: calculateIntelligences_1
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
+      summary: Calculate the Gardner intelligences of a person
+      description: Evaluate the answers to the intelligences test to obtain the Gardner
+        intelligences of the person
+      operationId: calculateGardnerIntelligences
       requestBody:
+        description: The values of the answers that the person has selected on the
+          intelligences questionnaire.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/QuestionnaireAnswers'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/QuestionnaireAnswers'
+        required: true
       responses:
-        401:
-          description: Unauthorized to evaluate the intelligences questionnaire
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: intelligencesUnauthorized
-                    message: You are not authorized to evaluate the intelligences
-                      questionnaire
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: intelligencesUnauthorized
-                    message: You are not authorized to evaluate the intelligences
-                      questionnaire
-        200:
-          description: The intelligences of the person
+        "200":
+          description: The Gardner intelligences of the person
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Intelligences'
-            application/xml:
+        "404":
+          description: If it can not calculate the Gardner intelligences
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Intelligences'
+                $ref: '#/components/schemas/Personality'
   /personalities:
     get:
       tags:
-      - Profiles
       - Personalities
       summary: Obtain the personality test
       description: Return the questionnaire used to obtain the personality of a person
-      operationId: getPersonalityQuestionnaire_2
+      operationId: retrievePersonalityQuestionnaire
       parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
       - name: Accept-Language
         in: header
         description: The preferred language for the text on the questionnaire. If
@@ -226,95 +138,348 @@ paths:
           default: en
         example: en
       responses:
-        401:
-          description: Unauthorized to get the personality questionnaire
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: personalityUnauthorized
-                    message: You are not authorized to get the personality questionnaire
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: personalityUnauthorized
-                    message: You are not authorized to get the personality questionnaire
-        200:
+        "200":
           description: The questionnaire to evaluate the personality of a person
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Questionnaire'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Questionnaire'
     post:
       tags:
-      - Profiles
       - Personalities
       summary: Calculate the personality of a person
       description: Evaluate the answers to the personality test to obtain the personality
         of the person
-      operationId: calculateIntelligences_2
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
+      operationId: calculatePersonality
       requestBody:
+        description: The values of the answers that the person has selected on the
+          personality questionnaire.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/QuestionnaireAnswers'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/QuestionnaireAnswers'
+        required: true
       responses:
-        401:
-          description: Unauthorized to evaluate the personality questionnaire
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: personalityUnauthorized
-                    message: You are not authorized to evaluate the personality questionnaire
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: personalityUnauthorized
-                    message: You are not authorized to evaluate the personality questionnaire
-        200:
+        "200":
           description: The personality of the person
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Intelligences'
-            application/xml:
+                $ref: '#/components/schemas/Personality'
+        "404":
+          description: If it can not calculate the personality
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Intelligences'
+                $ref: '#/components/schemas/Personality'
+  /profiles/{profileId}:
+    get:
+      tags:
+      - Profiles
+      summary: Return a profile associated to the identifier
+      description: Allow to get a profile associated to an identifier
+      operationId: retrieveProfile
+      parameters:
+      - name: profileId
+        in: path
+        description: The identifier of the profile to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The profile associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                FoundProfile:
+                  description: FoundProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Profiles
+      summary: Modify a profile
+      description: Change the attributes of a profile
+      operationId: updateProfile
+      parameters:
+      - name: profileId
+        in: path
+        description: The identifier of the profile to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the profile
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: ""
+                first: null
+                middle: null
+                last: null
+                suffix: III
+              dateOfBirth:
+                year: 1979
+                month: 6
+                day: 4
+              email: jfk3@ex.president.gov
+              languages:
+              - name: English
+                code: en
+                level: C2
+              - name: French
+                code: fr
+                level: B2
+              occupation: Conferenciant
+        required: true
+      responses:
+        "200":
+          description: The updated profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                UpdatedProfile:
+                  description: UpdatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Profiles
+      summary: Delete the profile associated to the identifier
+      description: Allow to delete a profile associated to an identifier
+      operationId: deleteProfile
+      parameters:
+      - name: profileId
+        in: path
+        description: The identifier of the profile to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The profile was deleted successfully
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles:
+    post:
+      tags:
+      - Profiles
+      summary: Create a profile
+      description: Create a new WeNet user profile
+      operationId: createProfile
+      requestBody:
+        description: The new profile to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: Dr.
+                first: John
+                middle: Fidgerald
+                last: Kenedy
+                suffix: Jr
+              dateOfBirth:
+                year: 1973
+                month: 2
+                day: 24
+              gender: M
+              email: jfk@president.gov
+              phoneNumber: +1202-456-1111
+              locale: en_US
+              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+              nationality: American
+              languages:
+              - name: English
+                code: en
+                level: C2
+              occupation: President
+              norms: []
+              plannedActivities:
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Visit Marilyn
+                status: cancelled
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Go to Dallas
+                status: confirmed
+              relevantLocations:
+              - label: White house
+                latitude: 38.897957
+                longitude: -77.03656
+              relationships: []
+              socialPractices: []
+              personalBehaviors: []
+        required: true
+      responses:
+        "200":
+          description: The created profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                CreatedProfile:
+                  description: CreatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{profileId}/historic:
     get:
       tags:
@@ -322,21 +487,8 @@ paths:
       - Profiles
       summary: Get the status of the profile in specific time period
       description: Allow to obtain the historic of profile changes
-      operationId: getAttributes_1
+      operationId: retrieveProfileHistoricPage
       parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
-      - name: profileId
-        in: path
-        description: The identifier of the profile to get
-        required: true
-        schema:
-          type: string
       - name: from
         in: query
         description: The time stamp inclusive that mark the older limit in witch the
@@ -346,6 +498,8 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 1457166440
+          default: 0
       - name: to
         in: query
         description: The time stamp inclusive that mark the newest limit in witch
@@ -355,6 +509,8 @@ paths:
         schema:
           type: integer
           format: int64
+          example: 1571664406
+          default: 92233720368547757
       - name: order
         in: query
         description: The order in witch has to return the profiles. From the newest
@@ -362,195 +518,26 @@ paths:
         schema:
           type: string
           example: ASC
-          default: DESC
+          default: ASC
           enum:
           - DESC
           - ASC
       - name: offset
         in: query
-        description: Index of the first profile to return
+        description: Index of the first profile to return.
         schema:
           type: integer
-          format: int32
+          format: int64
+          example: 10
           default: 0
       - name: limit
         in: query
-        description: Number maximum of profiles to return
+        description: Number maximum of profiles to return.
         schema:
           type: integer
-          format: int32
+          format: int64
+          example: 100
           default: 10
-      responses:
-        200:
-          description: The found profiles
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
-        401:
-          description: Unauthorized to get the profiles
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to get the profiles
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You have to log in to access to profiles
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to get the profiles
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You have to log in to access to profiles
-        403:
-          description: You can not get the profile of another user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Forbidden to get the profiles of another user
-                  description: Default Response
-                  value:
-                    code: profilesForbidden
-                    message: You can not get the profiles of another user
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Forbidden to get the profiles of another user
-                  description: Default Response
-                  value:
-                    code: profilesForbidden
-                    message: You can not get the profiles of another user
-        404:
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found response example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found response example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-  /profiles:
-    post:
-      tags:
-      - Profiles
-      summary: Create a profile
-      description: Create a new WeNet user profile
-      operationId: createProfile_1
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
-      requestBody:
-        description: The new profile to create
-        content:
-          '*/*':
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-      responses:
-        200:
-          description: The created profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-            application/xml:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-        400:
-          description: Bad profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: The profile is not right
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: The phone is not in E.164 format
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: The profile is not right
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: The phone is not in E.164 format
-        401:
-          description: Unauthorized to create a profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to create a profile
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to create a profile
-  /profiles/{profileId}:
-    get:
-      tags:
-      - Profiles
-      summary: Return a profile associated to the identifier
-      description: Allow to get a profile associated to an identifier
-      operationId: retrieveProfile_1
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
       - name: profileId
         in: path
         description: The identifier of the profile to get
@@ -558,403 +545,34 @@ paths:
         schema:
           type: string
       responses:
-        200:
-          description: The profile associated to the identifier
+        "200":
+          description: The found profiles
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-            application/xml:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-        401:
-          description: Unauthorized to get the profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to get the profile
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to get the profile
-        403:
-          description: Unauthorized to get the profile that you do not play
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to get the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not get the profile information if you are not
-                      playing on it
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to get the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not get the profile information if you are not
-                      playing on it
-        404:
+                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
+        "404":
           description: Not found profile
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-    put:
+  /versions:
+    get:
       tags:
-      - Profiles
-      summary: Modify a profile
-      description: Change the attributes of a profile
-      operationId: updateProfile_1
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
-      - name: profileId
-        in: path
-        description: The identifier of the profile to update
-        required: true
-        schema:
-          type: string
-      requestBody:
-        description: The new values for the profile
-        content:
-          '*/*':
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      - Other
+      summary: Get the version of the API
+      description: Return the current API version
+      operationId: getVersion
       responses:
-        200:
-          description: The profile associated to the identifier
+        "200":
+          description: The API version
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-            application/xml:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-        400:
-          description: Bad profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: The profile is not right
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: The phone is not in E.164 format
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: The profile is not right
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: The phone is not in E.164 format
-        401:
-          description: Unauthorized to modify the profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to modify the profile
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to modify the profile
-        403:
-          description: Unauthorized to get the profile that you do not play
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to modify the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not modify the profile of another user
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to modify the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not modify the profile of another user
-        404:
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-    delete:
-      tags:
-      - Profiles
-      summary: Delete the profile associated to the identifier
-      description: Allow to delete a profile associated to an identifier
-      operationId: deleteProfile_1
-      parameters:
-      - name: Authorization
-        in: header
-        description: Provide the authorization code
-        required: true
-        schema:
-          type: string
-        example: WeNet 89673098lkjbfjihg8103760
-      - name: profileId
-        in: path
-        description: The identifier of the profile to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: The deleted profile associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-            application/xml:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-        401:
-          description: Unauthorized to delete the profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to delete the profile
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized Response Example
-                  description: Default Response
-                  value:
-                    code: profilesUnauthorized
-                    message: You are not authorized to delete the profile
-        403:
-          description: Unauthorized to delete the profile that you do not play
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to delete the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not delete the profile information if you are
-                      not playing on it
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: Unauthorized to delete the profile
-                  description: Default Response
-                  value:
-                    code: profileForbidden
-                    message: You can not delete the profile information if you are
-                      not playing on it
-        404:
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-              examples:
-                Default Response:
-                  summary: No found Response Example
-                  description: Default Response
-                  value:
-                    code: profileNotFound
-                    message: Not found a profile associated to the identifier
+                $ref: '#/components/schemas/version'
 components:
   schemas:
-    Status:
-      type: object
-      properties:
-        version:
-          type: string
-          description: Contain the version of the API
-          example: 1.0.0
-        vendor:
-          type: string
-          description: Contain information of the organization that has implemented
-            the API
-          example: UDT-IA, IIIA-CSIC
-      description: Provide information about the current status of the API
-      xml:
-        name: Status
-    ErrorMessage:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Contain code that identifies the error
-          example: error_code
-        message:
-          type: string
-          description: Contain a brief description of the error to be read by a human
-          example: Error readable by a human
-      description: Inform of an error that happens when interacts with the API
-      xml:
-        name: ErrorMessage
-    Answer:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the answer
-          example: Compassionate
-        value:
-          type: number
-          description: The value associated with the answer
-          format: double
-          example: -1
-      description: Provide a possible answer for a question
-      xml:
-        name: Answer
-    Question:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the question
-          example: The judges must be
-        help:
-          type: string
-          description: A message to help to answer the question
-          example: 'Example: If a judge judges your brother, you must follow the laws
-            that apply to everyone equally.'
-        answers:
-          type: array
-          description: The possible answers for the question
-          items:
-            $ref: '#/components/schemas/Answer'
-      description: A question used to extract information of a person
-      xml:
-        name: Question
-    Questionnaire:
-      type: object
-      properties:
-        name:
-          type: string
-          description: A name that identifies the questionnaire for a human
-          example: Personality test
-        description:
-          type: string
-          description: Explains what attribute of a person it evaluates
-          example: With this questionnaire is possible to obtain the personality of
-            a person.
-        questions:
-          type: array
-          description: The set of questions used to evaluate the person.
-          items:
-            $ref: '#/components/schemas/Question'
-      description: A questionnaire used to evaluate a person attribute
-      xml:
-        name: Questionnaire
-    Intelligences:
-      type: object
     QuestionnaireAnswers:
       type: object
       properties:
@@ -980,10 +598,163 @@ components:
           - -1
           - 1
           items:
-            $ref: '#/components/schemas/Question'
+            type: number
+            format: double
       description: Contains the selected answers of a questionnaire
-      xml:
-        name: QuestionnaireAnswers
+    Intelligences:
+      type: object
+      properties:
+        verbal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The verbal intelligence
+          format: double
+          example: 0.1
+        logicMathematics:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The logic-mathematics intelligence
+          format: double
+          example: 0.2
+        visualSpatial:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The visual-spatial intelligence
+          format: double
+          example: 0.3
+        kinestesicaCorporal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The kinestesica-corporal intelligence
+          format: double
+          example: 0.4
+        musicalRhythmic:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The musical-rhythmic intelligence
+          format: double
+          example: 0.5
+        intrapersonal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The intrapersonal intelligence
+          format: double
+          example: 0.6
+        interpersonal:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The interpersonal intelligence
+          format: double
+          example: 0.7
+        naturalistEnvironmental:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The naturalist-environmental intelligence
+          format: double
+          example: 0.8
+      description: Provide information about the intelligences of a person
+    Personality:
+      type: object
+      properties:
+        perception:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The perception grade of a person
+          format: double
+          example: 0.1
+        judgment:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The judgment grade of a person
+          format: double
+          example: 0.2
+        extrovert:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The extrovert grade of a person
+          format: double
+          example: 0.3
+        attitude:
+          maximum: 1.0
+          minimum: 0.0
+          type: number
+          description: The attitude grade of a person
+          format: double
+          example: 0.4
+        MBTI:
+          type: string
+          description: ' Myers–Briggs Type Indicator of the person personality'
+          example: INFJ
+      description: Provide information about the personality of a person
+    Answer:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the answer
+          example: Compassionate
+        value:
+          type: number
+          description: The value associated with the answer
+          format: double
+          example: -1
+    Question:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the question
+          example: The judges must be
+        help:
+          type: string
+          description: A message to help to answer the question
+          example: 'Example: If a judge judges your brother, you must follow the laws
+            that apply to everyone equally.'
+        answers:
+          type: array
+          description: The possible answers for the question
+          items:
+            $ref: '#/components/schemas/Answer'
+    Questionnaire:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name that identifies the questionnaire for a human
+          example: Personality test
+        description:
+          type: string
+          description: Explains what attribute of a person it evaluates
+          example: With this questionnaire is possible to obtain the personality of
+            a person.
+        questions:
+          type: array
+          description: The set of questions used to evaluate the person.
+          items:
+            $ref: '#/components/schemas/Question'
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
     HistoricWeNetUserProfile:
       type: object
       properties:
@@ -1000,10 +771,8 @@ components:
           format: int64
           example: 1571664406
         profile:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
       description: The information of the user profile in a period of time.
-      xml:
-        name: HistoricWeNetUserProfile
     HistoricWeNetUserProfilesPage:
       type: object
       properties:
@@ -1023,7 +792,22 @@ components:
           items:
             $ref: '#/components/schemas/HistoricWeNetUserProfile'
       description: Contains a set of profiles found
-      xml:
-        name: HistoricWeNetUserProfilesPage
     WeNetUserProfile:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c0512480f89ae267d6fc0dcf42db0f3a50d01e8/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+    version:
+      type: object
+      properties:
+        api:
+          type: string
+          description: Contain the implementation version number of the API
+          example: 1.0.0
+        software:
+          type: string
+          description: Contain the implementation version number of the software
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+      description: Provide the version information of the API

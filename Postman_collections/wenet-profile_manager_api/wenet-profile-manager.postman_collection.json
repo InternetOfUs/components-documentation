@@ -1,0 +1,352 @@
+{
+	"info": {
+		"_postman_id": "5867f464-c959-4e64-b6e1-e45040290ccd",
+		"name": "wenet-profile-manager",
+		"description": "Examples to interact with the API that will be used to storing and maintaining the WeNet user profile.\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get the API version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/versions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"profileId\", jsonData.id);",
+							"pm.collectionVariables.set(\"creationTs\", jsonData._creationTs);",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": {\n        \"prefix\": \"Dr.\",\n        \"first\": \"John\",\n        \"middle\": \"Fidgerald\",\n        \"last\": \"Kenedy\",\n        \"suffix\": \"Jr\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1973,\n        \"month\": 2,\n        \"day\": 24\n    },\n    \"gender\": \"M\",\n    \"email\": \"jfk@president.gov\",\n    \"phoneNumber\": \"+1202-456-1111\",\n    \"locale\": \"en_US\",\n    \"avatar\": \"https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg\",\n    \"nationality\": \"American\",\n    \"languages\": [\n        {\n            \"name\": \"English\",\n            \"code\": \"en\",\n            \"level\": \"C2\"\n        }\n    ],\n    \"occupation\": \"President\",\n    \"norms\": [],\n    \"plannedActivities\": [\n        {\n            \"startTime\": \"2017-07-21T17:32:03Z\",\n            \"endTime\": \"2019-07-21T17:32:23Z\",\n            \"description\": \"Visit Marilyn\",\n            \"status\": \"cancelled\"\n        },\n        {\n            \"startTime\": \"2017-07-21T17:32:03Z\",\n            \"endTime\": \"2019-07-21T17:32:23Z\",\n            \"description\": \"Go to Dallas\",\n            \"status\": \"confirmed\"\n        }\n    ],\n    \"relevantLocations\": [\n        {\n            \"label\": \"White house\",\n            \"latitude\": 38.897957,\n            \"longitude\": -77.03656\n        }\n    ],\n    \"relationships\": [],\n    \"socialPractices\": [],\n    \"personalBehaviors\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/profiles/{{profileId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{profileId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b58986a-51d6-439e-8bc5-7e283a4d40db",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": {\n        \"prefix\": \"\",\n        \"first\": null,\n        \"middle\": null,\n        \"last\": null,\n        \"suffix\": \"III\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1979,\n        \"month\": 6,\n        \"day\": 4\n    },\n    \"email\": \"jfk3@ex.president.gov\",\n    \"languages\": [\n        {\n            \"name\": \"English\",\n            \"code\": \"en\",\n            \"level\": \"C2\"\n        },\n        {\n            \"name\": \"French\",\n            \"code\": \"fr\",\n            \"level\": \"B2\"\n        }\n    ],\n    \"occupation\": \"Conferenciant\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{profileId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{profileId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrive profile historic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/profiles/{{profileId}}/historic?from={{creationTs}}&to={{lastUpdateTs}}&order=ASC&offset=0&limit=10",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{profileId}}",
+						"historic"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "{{creationTs}}",
+							"description": "The time stamp inclusive that mark the older limit in witch the profile has to be active. It is the difference, measured in milliseconds, between the time when the profile has to be valid and midnight, January 1, 1970 UTC."
+						},
+						{
+							"key": "to",
+							"value": "{{lastUpdateTs}}",
+							"description": "The time stamp inclusive that mark the newest limit "
+						},
+						{
+							"key": "order",
+							"value": "ASC",
+							"description": "The order in witch has to return the profiles. From the newest to the oldest (DESC) or from the oldest to the newest (ASC)."
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"description": "Index of the first profile to return."
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Number maximum of profiles to return."
+						}
+					]
+				},
+				"description": "Obtain all the changes that has bene done over a profile."
+			},
+			"response": []
+		},
+		{
+			"name": "Retrive Personality questionnaire",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en",
+						"description": "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/personalities",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"personalities"
+					]
+				},
+				"description": "Obtain all the changes that has bene done over a profile."
+			},
+			"response": []
+		},
+		{
+			"name": "Calculate personality",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"answerValues\": [\n        1,\n        -1,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        -1,\n        -1,\n        -1,\n        0,\n        -1,\n        -1,\n        0,\n        1,\n        1,\n        -1,\n        1,\n        1\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/personalities",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"personalities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrive Personality questionnaire Copy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en",
+						"description": "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/intelligences",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"intelligences"
+					]
+				},
+				"description": "Obtain all the changes that has bene done over a profile."
+			},
+			"response": []
+		},
+		{
+			"name": "Calculate Gardner intelligences",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"answerValues\": [\n        1,\n        0.5,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        0.5,\n        0.5,\n        0.5,\n        0,\n        0.5,\n        0.5,\n        0,\n        1,\n        1,\n        0.5,\n        1,\n        1,\n        1,\n        0.5,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        0.5,\n        0.5,\n        0.5,\n        0,\n        0.5,\n        0.5,\n        0,\n        1,\n        1,\n        0.5,\n        1,\n        1\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/intelligences",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"intelligences"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "036772a0-8edd-43c2-a227-7c16a035ab05",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5377d156-0764-46d9-bc01-b9700a0dc864",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "ac16c873-52d5-4ae6-8875-b0c5905cc0bc",
+			"key": "server",
+			"value": "http://ardid.iiia.csic.es/dev-wenet-profile-manager",
+			"type": "string"
+		},
+		{
+			"id": "927d9b7f-772e-4b82-94ca-b8064d4b744e",
+			"key": "profileId",
+			"value": "5e4eb5699724032d0f4ce235",
+			"type": "string"
+		},
+		{
+			"id": "3e775f20-ec24-460e-b35b-32e8d373c418",
+			"key": "creationTs",
+			"value": 1582216553138,
+			"type": "number"
+		},
+		{
+			"id": "d761e1db-f613-4efe-b379-8040a9c27728",
+			"key": "lastUpdateTs",
+			"value": 1582216787747,
+			"type": "number"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
