@@ -497,7 +497,7 @@ components:
       properties:
         type:
           type: string
-          example: "text"
+          enum: ["textual_message"]
         value:
           type: string
           example: "I need someone to pick up my son at school"
@@ -507,7 +507,10 @@ components:
       properties:
         type:
           type: string
-          example: "volunteer"
+          enum: ["action_request"]
+        payload:
+          type: string
+          example: volunteer
         value:
           type: string
           example: "I can do it!"
@@ -515,9 +518,9 @@ components:
     Entity:
       type: object
       properties:
-        type:
+        name:
           type: string
-          example: "value"
+          example: "location"
         value:
           type: string
           example: "school"
@@ -525,6 +528,7 @@ components:
           type: number
           format: float
           example: 0.94
+          nullable: true
 
     Message:
       type: object
@@ -581,7 +585,8 @@ components:
             confidence:
               type: number
               format: float
-              example: 0.87
+              example: 0.87,
+              nullable: true
         entities:
           type: array
           items:
