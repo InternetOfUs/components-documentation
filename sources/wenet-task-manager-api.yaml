@@ -1,0 +1,182 @@
+openapi: 3.0.1
+info:
+  title: WeNet - Task manager API
+  description: This API will be used to storing and maintaining the WeNet user task.
+  contact:
+    name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
+    email: rosell (at) iiia.csic.es
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 0.1.0
+servers:
+- url: http://ardid.iiia.csic.es/dev-wenet-task-manager/
+  description: Develop server
+tags:
+- name: Other
+  description: Other services provided by the API.
+- name: Tasks
+  description: The functionality provided allows to access the user task.
+paths:
+  /tasks:
+    post:
+      tags:
+      - Tasks
+      summary: Create a task
+      description: Create a new WeNet user task
+      operationId: createTask
+      requestBody:
+        description: The new task to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The created task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}:
+    get:
+      tags:
+      - Tasks
+      summary: Return a task associated to the identifier
+      description: Allow to get a task associated to an identifier
+      operationId: retrieveTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Tasks
+      summary: Modify a task
+      description: Change the attributes of a task
+      operationId: updateTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The updated task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete the task associated to the identifier
+      description: Allow to delete a task associated to an identifier
+      operationId: deleteTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task was deleted successfully
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /versions:
+    get:
+      tags:
+      - Other
+      summary: Get the version of the API
+      description: Return the current API version
+      operationId: getVersion
+      responses:
+        "200":
+          description: The API version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/version'
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
+    version:
+      type: object
+      properties:
+        api:
+          type: string
+          description: Contain the implementation version number of the API
+          example: 1.0.0
+        software:
+          type: string
+          description: Contain the implementation version number of the software
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+      description: Provide the version information of the API
