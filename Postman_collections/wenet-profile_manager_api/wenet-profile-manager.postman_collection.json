@@ -137,6 +137,24 @@
 			"response": []
 		},
 		{
+			"name": "Delete profile",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/profiles/{{profileId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{profileId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Retrive profile historic",
 			"request": {
 				"method": "GET",
@@ -324,27 +342,27 @@
 	],
 	"variable": [
 		{
-			"id": "ac16c873-52d5-4ae6-8875-b0c5905cc0bc",
+			"id": "945d54f2-b873-49cb-a7b2-aaecf7058cd9",
 			"key": "server",
 			"value": "http://ardid.iiia.csic.es/dev-wenet-profile-manager",
 			"type": "string"
 		},
 		{
-			"id": "927d9b7f-772e-4b82-94ca-b8064d4b744e",
+			"id": "9db5fe69-1b39-4c4d-a095-c20345eb1156",
 			"key": "profileId",
-			"value": "5e4eb5699724032d0f4ce235",
+			"value": "5e54f999fc1864448ac8d56d",
 			"type": "string"
 		},
 		{
-			"id": "3e775f20-ec24-460e-b35b-32e8d373c418",
+			"id": "25fb0e30-90c3-42a1-a2f2-03c53370e62a",
 			"key": "creationTs",
-			"value": 1582216553138,
+			"value": 1582627225572,
 			"type": "number"
 		},
 		{
-			"id": "d761e1db-f613-4efe-b379-8040a9c27728",
+			"id": "0413a1d6-0343-4002-a895-c502dff385aa",
 			"key": "lastUpdateTs",
-			"value": 1582216787747,
+			"value": 1582627225572,
 			"type": "number"
 		}
 	],
