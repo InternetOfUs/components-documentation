@@ -178,19 +178,19 @@
 	],
 	"variable": [
 		{
-			"id": "5bb0f7a0-55b2-45ee-b87e-f34bd7fc835e",
+			"id": "70f3d71e-3496-4b88-957a-9664ee4e7a93",
 			"key": "server",
-			"value": "http://ardid.iiia.csic.es/dev-wenet-task-manager/",
+			"value": "http://ardid.iiia.csic.es/wenet-task-manager/0.2.0",
 			"type": "string"
 		},
 		{
-			"id": "d9a73bd7-6a09-4dc3-8471-eb09a0a1d234",
+			"id": "897e80d8-f8e9-4ccd-8edc-011a72a3f312",
 			"key": "taskId",
-			"value": "5e54fcea82f1a63e71c6e4bb",
+			"value": "5e5e5615c31ce42be7fd7511",
 			"type": "string"
 		},
 		{
-			"id": "c5738fec-8457-4c89-a72f-f52bcc06e5d4",
+			"id": "03d42da2-df03-4751-ac56-0b2e0824dcb8",
 			"key": "lastUpdateTs",
 			"value": null,
 			"type": "any"

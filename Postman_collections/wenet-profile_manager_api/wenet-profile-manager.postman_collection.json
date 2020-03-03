@@ -342,27 +342,27 @@
 	],
 	"variable": [
 		{
-			"id": "945d54f2-b873-49cb-a7b2-aaecf7058cd9",
+			"id": "1c129393-cec2-4137-b862-7404a9ac83b9",
 			"key": "server",
-			"value": "http://ardid.iiia.csic.es/dev-wenet-profile-manager",
+			"value": "http://ardid.iiia.csic.es/wenet-profile-manager/0.10.0",
 			"type": "string"
 		},
 		{
-			"id": "9db5fe69-1b39-4c4d-a095-c20345eb1156",
+			"id": "30bb93db-490a-4498-b2c4-a9519e0f04ee",
 			"key": "profileId",
-			"value": "5e54f999fc1864448ac8d56d",
+			"value": "5e5e4a738a8453143d81e508",
 			"type": "string"
 		},
 		{
-			"id": "25fb0e30-90c3-42a1-a2f2-03c53370e62a",
+			"id": "f547f95f-c247-448c-98b3-5dcf9bf66469",
 			"key": "creationTs",
-			"value": 1582627225572,
+			"value": 1583237747,
 			"type": "number"
 		},
 		{
-			"id": "0413a1d6-0343-4002-a895-c502dff385aa",
+			"id": "52bd0f98-c1c9-4aac-a9a9-1df9cb06bc3d",
 			"key": "lastUpdateTs",
-			"value": 1582627225572,
+			"value": 1583237805,
 			"type": "number"
 		}
 	],

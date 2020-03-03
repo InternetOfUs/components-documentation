@@ -48,12 +48,10 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.9.0
+  version: 0.10.0
 servers:
-- url: http://ardid.iiia.csic.es/dummy-wenet-profile-manager/
-  description: Dummy server
-- url: TO-DO
-  description: Teesting server
+- url: http://ardid.iiia.csic.es/wenet-profile-manager/0.10.0/
+  description: Testing server
 tags:
 - name: Other
   description: Other services provided by the API.
@@ -172,6 +170,116 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Personality'
+  /profiles:
+    post:
+      tags:
+      - Profiles
+      summary: Create a profile
+      description: Create a new WeNet user profile
+      operationId: createProfile
+      requestBody:
+        description: The new profile to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: Dr.
+                first: John
+                middle: Fidgerald
+                last: Kenedy
+                suffix: Jr
+              dateOfBirth:
+                year: 1973
+                month: 2
+                day: 24
+              gender: M
+              email: jfk@president.gov
+              phoneNumber: +1202-456-1111
+              locale: en_US
+              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+              nationality: American
+              languages:
+              - name: English
+                code: en
+                level: C2
+              occupation: President
+              norms: []
+              plannedActivities:
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Visit Marilyn
+                status: cancelled
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Go to Dallas
+                status: confirmed
+              relevantLocations:
+              - label: White house
+                latitude: 38.897957
+                longitude: -77.03656
+              relationships: []
+              socialPractices: []
+              personalBehaviors: []
+        required: true
+      responses:
+        "200":
+          description: The created profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                CreatedProfile:
+                  description: CreatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{profileId}:
     get:
       tags:
@@ -370,116 +478,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles:
-    post:
-      tags:
-      - Profiles
-      summary: Create a profile
-      description: Create a new WeNet user profile
-      operationId: createProfile
-      requestBody:
-        description: The new profile to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-            example:
-              name:
-                prefix: Dr.
-                first: John
-                middle: Fidgerald
-                last: Kenedy
-                suffix: Jr
-              dateOfBirth:
-                year: 1973
-                month: 2
-                day: 24
-              gender: M
-              email: jfk@president.gov
-              phoneNumber: +1202-456-1111
-              locale: en_US
-              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-              nationality: American
-              languages:
-              - name: English
-                code: en
-                level: C2
-              occupation: President
-              norms: []
-              plannedActivities:
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Visit Marilyn
-                status: cancelled
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Go to Dallas
-                status: confirmed
-              relevantLocations:
-              - label: White house
-                latitude: 38.897957
-                longitude: -77.03656
-              relationships: []
-              socialPractices: []
-              personalBehaviors: []
-        required: true
-      responses:
-        "200":
-          description: The created profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
-              examples:
-                CreatedProfile:
-                  description: CreatedProfile
-                  value:
-                    id: 5e4ced814e1dc208a5f7bd25
-                    name:
-                      prefix: Dr.
-                      first: John
-                      middle: Fidgerald
-                      last: Kenedy
-                      suffix: Jr
-                    dateOfBirth:
-                      year: 1973
-                      month: 2
-                      day: 24
-                    gender: M
-                    email: jfk@president.gov
-                    phoneNumber: +1 202-456-1111
-                    locale: en_US
-                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-                    nationality: American
-                    languages:
-                    - name: English
-                      code: en
-                      level: C2
-                    occupation: President
-                    plannedActivities:
-                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Visit Marilyn
-                      status: cancelled
-                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Go to Dallas
-                      status: confirmed
-                    relevantLocations:
-                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
-                      label: White house
-                      latitude: 38.897957
-                      longitude: -77.03656
-                    _creationTs: 1582099841815
-                    _lastUpdateTs: 1582099841815
-        "400":
-          description: Bad profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{profileId}/historic:
     get:
       tags:
@@ -573,6 +571,52 @@ paths:
                 $ref: '#/components/schemas/version'
 components:
   schemas:
+    Answer:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the answer
+          example: Compassionate
+        value:
+          type: number
+          description: The value associated with the answer
+          format: double
+          example: -1
+    Question:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the question
+          example: The judges must be
+        help:
+          type: string
+          description: A message to help to answer the question
+          example: 'Example: If a judge judges your brother, you must follow the laws
+            that apply to everyone equally.'
+        answers:
+          type: array
+          description: The possible answers for the question
+          items:
+            $ref: '#/components/schemas/Answer'
+    Questionnaire:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name that identifies the questionnaire for a human
+          example: Personality test
+        description:
+          type: string
+          description: Explains what attribute of a person it evaluates
+          example: With this questionnaire is possible to obtain the personality of
+            a person.
+        questions:
+          type: array
+          description: The set of questions used to evaluate the person.
+          items:
+            $ref: '#/components/schemas/Question'
     QuestionnaireAnswers:
       type: object
       properties:
@@ -697,52 +741,6 @@ components:
           description: ' Myers–Briggs Type Indicator of the person personality'
           example: INFJ
       description: Provide information about the personality of a person
-    Answer:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the answer
-          example: Compassionate
-        value:
-          type: number
-          description: The value associated with the answer
-          format: double
-          example: -1
-    Question:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the question
-          example: The judges must be
-        help:
-          type: string
-          description: A message to help to answer the question
-          example: 'Example: If a judge judges your brother, you must follow the laws
-            that apply to everyone equally.'
-        answers:
-          type: array
-          description: The possible answers for the question
-          items:
-            $ref: '#/components/schemas/Answer'
-    Questionnaire:
-      type: object
-      properties:
-        name:
-          type: string
-          description: A name that identifies the questionnaire for a human
-          example: Personality test
-        description:
-          type: string
-          description: Explains what attribute of a person it evaluates
-          example: With this questionnaire is possible to obtain the personality of
-            a person.
-        questions:
-          type: array
-          description: The set of questions used to evaluate the person.
-          items:
-            $ref: '#/components/schemas/Question'
     ErrorMessage:
       type: object
       properties:
@@ -760,14 +758,15 @@ components:
       properties:
         from:
           type: integer
-          description: The difference, measured in milliseconds, between the time
-            when the profile is set and midnight, January 1, 1970 UTC.
+          description: The difference, measured in seconds, between the time when
+            the profile is modified to have the current state and midnight, January
+            1, 1970 UTC.
           format: int64
           example: 1457166440
         to:
           type: integer
-          description: The difference, measured in milliseconds, between the time
-            when the profile is not more valid and midnight, January 1, 1970 UTC.
+          description: The difference, measured in seconds, between the time when
+            the profile is not more valid and midnight, January 1, 1970 UTC.
           format: int64
           example: 1571664406
         profile:

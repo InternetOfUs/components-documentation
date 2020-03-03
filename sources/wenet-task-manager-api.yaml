@@ -8,43 +8,16 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.1.0
+  version: 0.2.0
 servers:
-- url: http://ardid.iiia.csic.es/dev-wenet-task-manager/
-  description: Develop server
+- url: http://ardid.iiia.csic.es/wenet-task-manager/0.2.0/
+  description: Testing server
 tags:
 - name: Other
   description: Other services provided by the API.
 - name: Tasks
   description: The functionality provided allows to access the user task.
 paths:
-  /tasks:
-    post:
-      tags:
-      - Tasks
-      summary: Create a task
-      description: Create a new WeNet user task
-      operationId: createTask
-      requestBody:
-        description: The new task to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
-        required: true
-      responses:
-        "200":
-          description: The created task
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
-        "400":
-          description: Bad task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /tasks/{taskId}:
     get:
       tags:
@@ -131,6 +104,33 @@ paths:
           description: The task was deleted successfully
         "404":
           description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks:
+    post:
+      tags:
+      - Tasks
+      summary: Create a task
+      description: Create a new WeNet user task
+      operationId: createTask
+      requestBody:
+        description: The new task to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The created task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
           content:
             application/json:
               schema:
