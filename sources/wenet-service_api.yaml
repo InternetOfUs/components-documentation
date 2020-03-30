@@ -322,28 +322,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-
-
-    put:
-      summary: Update task
-      tags:
-        - Task
-      description: This entpoint allows to create a new task
-      parameters:
-        - in: path
-          name: taskId
-          schema:
-            type: integer
-          required: true
-          description: The Id of the task
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
-      responses:
-        201:
-          description: Task correctly created
+    # put:
+    #   summary: Update task
+    #   tags:
+    #     - Task
+    #   description: This entpoint allows to create a new task
+    #   parameters:
+    #     - in: path
+    #       name: taskId
+    #       schema:
+    #         type: integer
+    #       required: true
+    #       description: The Id of the task
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
+    #   responses:
+    #     201:
+    #       description: Task correctly created
 
 components:
   schemas:
@@ -354,15 +352,42 @@ components:
         creationTs:
           type: integer
           readOnly: true
-          description: The timestamp representing the account creation instant
+          description: The UTC epoch timestamp representing the account creation instant
           example: 1563871899
-        lastUpdateTs:
+        lastupdateTs:
           type: integer
           readOnly: true
-          description: The timestamp representing the last update instant
+          description: The UTC epoch timestamp representing the last update instant
           example: 1563898764
 
     # App
+
+    AppAssociationPlatform:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - telegram
+            - wenet
+
+    WeNetPlatform:
+      allOf:
+        - $ref: '#/components/schemas/AppAssociationPlatform'
+      properties:
+        type:
+          example: wenet
+
+    TelegramPlatform:
+      allOf:
+        - $ref: '#/components/schemas/AppAssociationPlatform'
+      properties:
+        type:
+          example: telegram
+        botId:
+          type: string
+          description: The ID of the Telegram bot
+        # any other information required for setting up the Telegram login on the
 
     App:
       description: The app of a wenet use case scenario
@@ -379,14 +404,20 @@ components:
           description: The Id of the wenet app
           example: aisfuh9s8fnkdfhg9d8fgkdjfgnhkduyfgidjkfgkdh
           readOnly: true
-        name:
+        allowedPlatforms:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/TelegramPlatform'
+              # - $ref: '#/components/schemas/WeNetPlatform'
+        messageCallbackUrl:
           type: string
+          nullable: true
+          description: The callback url for receiving messages from WeNet
+        metadata:
+          type: object
           description: The name of the wenet app
           example: WeNet scenario app
-        creationTs:
-          type: integer
-          readOnly: true
-          description: The timestamp representing the app creation instant
 
     # User and authentication
 

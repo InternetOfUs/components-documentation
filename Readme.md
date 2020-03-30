@@ -28,6 +28,8 @@ Here's some _quick links_ for accessing the documentation currently available:
 
 Also, you can jump start directly from this [Swagger starting point](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/start.yaml).
 
+The structures of the messages created by WeNet for the applications as responses to the users' messages are described [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-messages_for_apps.yaml).
+
 The models common to the various components can be found [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml).
 
 *Note*: please, keep the above links updated with the reference to the latest stable version of each documentation file.

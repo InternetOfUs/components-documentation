@@ -1,0 +1,68 @@
+openapi: 3.0.1
+info:
+  title: WeNet - Messages for the Applications
+  description: This document collects the models describing the messages that the WeNet application is going to create and provide to application as responses for the users. In particular, there are going to be two type of messages
+
+    * textual messages represent simple and general purpose messages used for notifying users about the conversation development (e.g. confirmations, errors, ...)
+
+    * task notifications represent task dedicated messages providing information about the development of an ongoing task (e.g. there is a new volunteer for a task, there is a new task a user may be interested in, ...)
+
+
+    Any application built on top of the WeNet platform will need to expose a dedicated endpoint where the messages for the application are going to be posted by WeNet.
+    Such endpoint is going to be specified in the application configuration.
+
+  contact:
+    email: carlo.caprini@u-hopper.com
+  version: 1.0.0
+
+components:
+  schemas:
+
+    Message:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the message (either message or taskNotification)
+          enum:
+            - textualMessage
+            - taskNotification
+        recipientId:
+          type: string
+          description: The WeNet identifier of the user the message is meant for
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+
+    TextualMessage:
+      allOf:
+        - $ref: '#/components/schemas/Message'
+      properties:
+        type:
+          example: textualMessage
+        text:
+          type: string
+          description: The message for the user
+          example: Congrats, your new task has been correcly created!
+
+    TaskNotification:
+      allOf:
+        - $ref: '#/components/schemas/Message'
+      properties:
+        type:
+          example: taskNotification
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        notificationType:
+          type: string
+          enum:
+            - taskProposal
+            - volunteerProposal
+            - taskConcluded
+            - messageFromUser
+          example: taskProposal
+        text:
+          type: string
+          description: The message for the user
+          example: A new task you may be interested in has just been created, check it out!
+        # we should include here the information about the user (for volunteerProposal and messageFromUser)
