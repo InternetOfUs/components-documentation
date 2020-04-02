@@ -31,38 +31,114 @@ components:
           type: string
           description: The WeNet identifier of the user the message is meant for
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        text:
+          type: string
+          description: The message for the user
 
     TextualMessage:
+      description: A simple textual message from WeNet to the user
       allOf:
         - $ref: '#/components/schemas/Message'
       properties:
         type:
           example: textualMessage
+          description: The textual message type
+          enum:
+            - textualMessage
         text:
-          type: string
-          description: The message for the user
           example: Congrats, your new task has been correcly created!
 
     TaskNotification:
+      description: A message regarding a task, it could be about
+
+        * a task proposal to a possible volunteer
+
+        * a volunteer proposal to the task creator
+
+        * a message about an activa task exchanged between two task participants
+
+        * the conclusion of a task
       allOf:
         - $ref: '#/components/schemas/Message'
       properties:
         type:
           example: taskNotification
+          description: The task notification type
+          enum:
+            - taskNotification
         taskId:
           type: string
           description: The identifier of the target task
           example: 28961582-84d2-41d1-b555-c09dce046831
+        # task:
         notificationType:
           type: string
           enum:
             - taskProposal
-            - volunteerProposal
-            - taskConcluded
+            - taskVolunteer
             - messageFromUser
+            - taskConcluded
           example: taskProposal
         text:
-          type: string
-          description: The message for the user
           example: A new task you may be interested in has just been created, check it out!
         # we should include here the information about the user (for volunteerProposal and messageFromUser)
+
+    TaskProposalNotification:
+      description: This notification is used in order to propose a user to volunteer to a newly created task
+      allOf:
+        - $ref: '#/components/schemas/TaskNotification'
+      properties:
+        notificationType:
+            type: string
+            enum:
+              - taskProposal
+
+    TaskVoluntertNotification:
+      description: This notification is used in order to notify the task creator that a new volunteer is proposing to participate to the task
+      allOf:
+        - $ref: '#/components/schemas/TaskNotification'
+      properties:
+        notificationType:
+          example: taskVolunteer
+          enum:
+            - taskVolunteer
+        volunteerId:
+          type: string
+          description: The wenet id of the user who is volunteering for the task
+
+    MessageFromUserNotification:
+      description: This notification is used in order to send a message exchanged between two participants to the same task
+      allOf:
+        - $ref: '#/components/schemas/TaskNotification'
+      properties:
+        notificationType:
+          example: messageFromUser
+          enum:
+            - messageFromUser
+        senderId:
+          type: string
+          description: The wenet id of the user who wrote the message for the recipient user
+          example: ef3990b4-d75e-4339-b78a-125c23ab4614
+
+    TaskConcludedNotification:
+      description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
+
+        * successfull (if completed correctly)
+
+        * failed (if something went wrong)
+
+        * cancelled (the creator cancelled the task)
+      allOf:
+        - $ref: '#/components/schemas/TaskNotification'
+      properties:
+        notificationType:
+          type: string
+          enum:
+            - taskConcluded
+        outcome:
+          type: string
+          description: The outcome of the task (has it been completed with success or not)
+          enum:
+            - cancelled
+            - successfull
+            - failed
