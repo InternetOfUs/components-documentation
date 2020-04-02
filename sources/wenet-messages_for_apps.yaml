@@ -31,6 +31,9 @@ components:
           type: string
           description: The WeNet identifier of the user the message is meant for
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        title:
+          type: string
+          description: The title of the message
         text:
           type: string
           description: The message for the user
@@ -45,6 +48,8 @@ components:
           description: The textual message type
           enum:
             - textualMessage
+        title:
+          example: Task created
         text:
           example: Congrats, your new task has been correcly created!
 
@@ -79,9 +84,6 @@ components:
             - messageFromUser
             - taskConcluded
           example: taskProposal
-        text:
-          example: A new task you may be interested in has just been created, check it out!
-        # we should include here the information about the user (for volunteerProposal and messageFromUser)
 
     TaskProposalNotification:
       description: This notification is used in order to propose a user to volunteer to a newly created task
@@ -92,6 +94,10 @@ components:
             type: string
             enum:
               - taskProposal
+        title:
+          example: A new task for you
+        text:
+          example: A new task you may be interested in has just been created, check it out!
 
     TaskVoluntertNotification:
       description: This notification is used in order to notify the task creator that a new volunteer is proposing to participate to the task
@@ -105,6 +111,10 @@ components:
         volunteerId:
           type: string
           description: The wenet id of the user who is volunteering for the task
+        title:
+          example: A new volunteer for your task
+        text:
+          example: A user volunteer to participate in your task, check him out!
 
     MessageFromUserNotification:
       description: This notification is used in order to send a message exchanged between two participants to the same task
@@ -119,6 +129,11 @@ components:
           type: string
           description: The wenet id of the user who wrote the message for the recipient user
           example: ef3990b4-d75e-4339-b78a-125c23ab4614
+        title:
+          example: Message from Paperino
+        text:
+          description: The text written by the sender user
+          example: Cool, loking forward to participate to your task!
 
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
@@ -142,3 +157,7 @@ components:
             - cancelled
             - successfull
             - failed
+        title:
+          example: Task concluded
+        text:
+          example: The task was successfully completed, grat job!
