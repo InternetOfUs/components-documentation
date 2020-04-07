@@ -1,6 +1,16 @@
 # WeNet Documentation
 
-This repository collects the API documentation of the various components of the WeNet platform.
+## Component availability
+
+The production components can be reached at the following urls:
+
+* service APIs: https://wenet.u-hopper.com/service
+* profile manager: https://wenet.u-hopper.com/profile_manager
+* task manager: https://wenet.u-hopper.com/task_manager
+* personal context builder: https://wenet.u-hopper.com/personal_context_builder
+* social context builder: https://wenet.u-hopper.com/social_context_builder
+
+## Documentation
 
 Here's some _quick links_ for accessing the documentation currently available:
 
