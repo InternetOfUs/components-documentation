@@ -233,7 +233,7 @@ components:
     Module:
       description: The module that can be authenticated by the Authentication Manager
       allOf:
-        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/CreateUpdateTsDetails'
+        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CreateUpdateTsDetails'
         - $ref: '#/components/schemas/ModuleCredentials'
       properties:
         moduleId:
@@ -264,7 +264,7 @@ components:
     AuthenticationAccount:
       description: The authentication account is a generic model that defines all those properties that are common to an authentication account. In general, such an account can be used for authenticating in the WeNet platform and it is associated to a WeNet User.
       allOf:
-        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/CreateUpdateTsDetails'
+        - $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CreateUpdateTsDetails'
       oneOf:
         - $ref: '#/components/schemas/FacebookAuthentication'
         - $ref: '#/components/schemas/EmailPassAuthentication'

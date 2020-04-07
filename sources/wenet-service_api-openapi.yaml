@@ -114,25 +114,52 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-  /user:
-    summary: Create new WeNet user with the specified authentication credentials
+  # /user:
+  #   summary: Create new WeNet user with the specified authentication credentials
+  #   post:
+  #     summary: Create new WeNet user
+  #     tags:
+  #       - WeNet user
+  #     description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy. The response includes the Id of the newly created wenet user.
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/FacebookAuthentication'
+  #     responses:
+  #       201:
+  #         description: WeNet user correctly created
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/WeNetUser'
+
+  /user/profile/init/{wenetUserId}:
     post:
-      summary: Create new WeNet user
+      summary: Create an empty user profile
       tags:
-        - WeNet user
-      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy. The response includes the Id of the newly created wenet user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FacebookAuthentication'
+        - WeNet user profile
+      description: This entpoint allows to initialize an empty WeNet user profile. It is expected to be used upon the creation of a new user.
+      parameters:
+        - in: path
+          name: wenetUserId
+          schema:
+            type: integer
+          required: true
+          description: The Id of the wenet user
       responses:
-        201:
+        200:
           description: WeNet user correctly created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WeNetUser'
+                $ref: '#/components/schemas/EmptyResponse'
+        404:
+          description: The profile for the user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
   /user/profile/{wenetUserId}:
     get:
@@ -153,7 +180,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile'
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
         404:
           description: No such wenet user exists
           content:
@@ -177,14 +204,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/CoreWeNetUserProfile'
+              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
       responses:
         200:
           description: WeNet user correctly created
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile'
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
         404:
           description: No such wenet user exists
           content:
@@ -289,7 +316,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
+              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
       responses:
         201:
           description: Task correctly created
@@ -314,7 +341,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
         404:
           description: No such wenet user exists
           content:
@@ -338,7 +365,7 @@ paths:
     #     content:
     #       application/json:
     #         schema:
-    #           $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models.yaml#/components/schemas/Task'
+    #           $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
     #   responses:
     #     201:
     #       description: Task correctly created
