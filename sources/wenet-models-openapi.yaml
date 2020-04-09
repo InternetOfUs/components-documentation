@@ -382,55 +382,156 @@ components:
 
     # Tasks
 
-    TaskState:
-      type: string
-      description: The current state of a task.
-      enum:
-        - Open
-        - PendingAssignment
-        - Assigned
-        - Completed
-        - Expired
-        - Cancelled
+    TaskType:
+      type: object
+      description: Describe a type of task that can be done by the users.
+      properties:
+        id:
+          type: string
+          description: Identifier of the type
+          readOnly: true
+          example: 4a559aafceb8464
+        name:
+          type: string
+          description: A name that identify the type.
+          example: Eat together task
+        description:
+          type: string
+          description: A human readable description of the task objective.
+          example: A task for organizing social dinners
+        keywords:
+          type: array
+          description: The keywords that describe the task type.
+          example:
+            - social interaction
+            - eat
+          items:
+            type: string
+        norms:
+          type: array
+          description: The norms that describe the interaction of the users to do the tasks of this type.
+          items:
+            $ref: '#/components/schemas/Norm'
+        attributes:
+          type: array
+          description: The attribute that has to be instantiated when create the task of this type.
+          items:
+            $ref: '#/components/schemas/TaskAttributeType'
+        constants:
+          type: array
+          description: The attribute with a fixed value.
+          items:
+            $ref: '#/components/schemas/TaskAttribute'
+
+    TaskAttributeType:
+      type: object
+      description: Describe an attribute that has to be initialized whne start a task of an specific type.
+      properties:
+        name:
+          type: string
+          description: The name of the attribute.
+          example: communityId
+        description:
+          type: string
+          description: A human readable description of the attribute.
+          example: The identifier of the community.
+        type:
+          type: string
+          enum: [string, number, boolean, profileId]
+          description: >
+             The type of the attribute values. It can be:
+             * 'string' - If it is a string value.
+             * 'number' - If it is a number value.
+             * 'boolean' - If it is a boolean value.
+             * 'profileId' - If it represent the identifier of a WeNet user.
+        isArray:
+          type: boolean
+          description: This is 'true' if teh attribute is an array of values of the specified type.
+          default: false
+
+    TaskAttribute:
+      type: object
+      description: Describe the current value of a task attribute.
+      properties:
+        name:
+          type: string
+          description: The name of the attribute
+          example: communityId
+        value:
+          description: The value of the attribute
 
     Task:
-      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+      description: A wenet task
       properties:
-        taskId:
+        id:
           type: string
           description: The unique identifier of the task
           readOnly: true
-          example: b129e550-9c9b-43cf-8559-2b79ad986610
-        creationTs:
-          type: integer
-          readOnly: true
-          description: The timestamp representing the task creation instant
-          example: 1563800000
-          nullable: true
-        state:
-          $ref: '#/components/schemas/TaskState'
-          nullable: true
-        requesterUserId:
+          example: b129e5509c9bb79
+        taskTypeId:
+          type: string
+          description: The identifier of the task type associated to the task
+          example: b129e5509c9bb79
+        requesterId:
           type: string
           description: The identifier of the WeNet user who created the task
           example: 15837028-645a-4a55-9aaf-ceb846439eba
-          nullable: true
+          nullable: false
+        appId:
+          type: string
+          description: The identifier of the application the task is associated to
+          example: yub129e5509bb79
+        goal:
+          type: object
+          description: The explanation of the task objective.
+          nullable: false
+          properties:
+            name:
+              type: string
+              description: A short description of the task goal.
+              example: Go to dinner together
+            description:
+              type: string
+              description: A human readable description of the objective of the task.
+              example: It is my aniversary and I want to celebrate together.
         startTs:
           type: integer
-          description: The timestamp representing the time the task should be started
+          description: The UTC epoch timestamp representing the time the task should be started
           example: 1563900000
-          nullable: true
         endTs:
           type: integer
-          description: The timestamp representing the time the task should be completed by
+          description: The UTC epoch timestamp representing the time the task should be completed by
           example: 1563930000
-          nullable: true
         deadlineTs:
           type: integer
-          description: The timestamp representing the deadline time for offering help
+          description: The UTC epoch timestamp representing the deadline time for offering help
           example: 1563920000
-          nullable: true
         norms:
           type: array
+          description: The set of norms that define the interaction of the user when do the task
           items:
             $ref: '#/components/schemas/Norm'
+        attributes:
+          type: array
+          description: The set of attributes that define the task.
+          items:
+            $ref: '#/components/schemas/TaskAttribute'
+
+    TaskTransaction:
+      type: object
+      description: Describe a transition to do over a task
+      properties:
+        taskId:
+          description: The unique identifier this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        typeId:
+          type: string
+          description: The identifier of the task type associated to it.
+        attributes:
+          type: array
+          description: The attributes that are set to the transaction.
+          items:
+            $ref: '#/components/schemas/TaskAttribute'
