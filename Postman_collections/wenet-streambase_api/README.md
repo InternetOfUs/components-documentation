@@ -2,6 +2,10 @@
 
 ## Versions
 
+### 0.0.5
+
+- Updated the apis to use the ilogbase
+
 ### 0.0.4
 
 - Slightly changed Entity Object

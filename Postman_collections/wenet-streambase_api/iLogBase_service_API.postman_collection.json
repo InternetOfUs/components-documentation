@@ -32,7 +32,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/data",
+							"raw": "http://streambase1.disi.unitn.it:8096/data",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -40,7 +40,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"data"
 							]
@@ -72,7 +72,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/data",
+							"raw": "http://streambase1.disi.unitn.it:8096/data",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -80,7 +80,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"data"
 							]
@@ -115,14 +115,14 @@
 							}
 						},
 						"url": {
-							"raw": "streambase1.disi.unitn.it:8099/data/a0030ae67402c930177f0a0be2bbd65286fa5ee2?experimentId=testtest&from=20200301&to=20200312&properties=tasksanswers",
+							"raw": "streambase1.disi.unitn.it:8096/data/a0030ae67402c930177f0a0be2bbd65286fa5ee2?experimentId=testtest&from=20200301&to=20200312&properties=tasksanswers",
 							"host": [
 								"streambase1",
 								"disi",
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"data",
 								"a0030ae67402c930177f0a0be2bbd65286fa5ee2"
@@ -176,7 +176,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/data/?experimentId=march&properties=tasksanswers&from=20200310&to=20200318",
+							"raw": "http://streambase1.disi.unitn.it:8096/data/?experimentId=march&properties=tasksanswers&from=20200310&to=20200318",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -184,7 +184,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"data",
 								""
@@ -223,7 +223,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/data/users/statistics?experimentId=march&from=20200309&to=20200310&properties=timediariesquestions, tasksquestions",
+							"raw": "http://streambase1.disi.unitn.it:8096/data/users/statistics?experimentId=march&from=20200309&to=20200310&properties=timediariesquestions, tasksquestions",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -231,7 +231,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"data",
 								"users",
@@ -271,7 +271,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/entities/users?experimentId=testexperiment",
+							"raw": "http://streambase1.disi.unitn.it:8096/entities/users?experimentId=testexperiment",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -279,7 +279,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"entities",
 								"users"
@@ -324,7 +324,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/streams",
+							"raw": "http://streambase1.disi.unitn.it:8096/streams",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -332,7 +332,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"streams"
 							]
@@ -370,7 +370,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/streams/ue91Edir498lzua0inaygh",
+							"raw": "http://streambase1.disi.unitn.it:8096/streams/ue91Edir498lzua0inaygh",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -378,7 +378,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"streams",
 								"ue91Edir498lzua0inaygh"
@@ -421,7 +421,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/streams/ue91Edir498lzua0inaygh",
+							"raw": "http://streambase1.disi.unitn.it:8096/streams/ue91Edir498lzua0inaygh",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -429,7 +429,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"streams",
 								"ue91Edir498lzua0inaygh"
@@ -472,7 +472,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://streambase1.disi.unitn.it:8099/streams/source/i-Log",
+							"raw": "http://streambase1.disi.unitn.it:8096/streams/source/i-Log",
 							"protocol": "http",
 							"host": [
 								"streambase1",
@@ -480,7 +480,7 @@
 								"unitn",
 								"it"
 							],
-							"port": "8099",
+							"port": "8096",
 							"path": [
 								"streams",
 								"source",
