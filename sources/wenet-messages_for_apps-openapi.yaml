@@ -99,7 +99,7 @@ components:
         text:
           example: A new task you may be interested in has just been created, check it out!
 
-    TaskVoluntertNotification:
+    TaskVolunteerNotification:
       description: This notification is used in order to notify the task creator that a new volunteer is proposing to participate to the task
       allOf:
         - $ref: '#/components/schemas/TaskNotification'
