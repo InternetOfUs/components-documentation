@@ -347,6 +347,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+  
+  /task_transaction:
+    post:
+      summary: Create a new task transaction
+      tags:
+        - TaskTransaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
+      responses:
+        201:
+          description: TaskTransaction created
+          content:
+            application/json:
+             schema:
+               $ref: '#/components/schemas/EmptyResponse'
 
     # put:
     #   summary: Update task
