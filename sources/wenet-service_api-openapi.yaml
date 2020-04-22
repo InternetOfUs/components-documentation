@@ -24,31 +24,31 @@ servers:
 
 paths:
 
-  /app:
-    post:
-      summary: Create a new wenet app
-      tags:
-        - App
-      description: This endpoint allows to create a new wenet app.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/App'
-      responses:
-        200:
-          description: App created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/App'
+  # /app:
+  #   post:
+  #     summary: Create a new wenet app
+  #     tags:
+  #       - App
+  #     description: This endpoint allows to create a new wenet app.
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/App'
+  #     responses:
+  #       200:
+  #         description: App created
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/App'
 
   /app/{appId}:
     get:
       summary: Get the details of an app
       tags:
         - App
-      description: This endpoint allows to create a new wenet app.
+      description: This endpoint allows to get the details of an existing wenet app.
       parameters:
         - in: path
           name: appId
@@ -64,30 +64,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/App'
 
-    put:
-      summary: Update the details of an app
-      tags:
-        - App
-      description: This endpoint allows to create a new wenet app.
-      parameters:
-        - in: path
-          name: appId
-          schema:
-            type: string
-          required: true
-          description: The Id of the wenet app
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/App'
-      responses:
-        200:
-          description: The details of the requested app
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/App'
+    # put:
+    #   summary: Update the details of an app
+    #   tags:
+    #     - App
+    #   description: This endpoint allows to create a new wenet app.
+    #   parameters:
+    #     - in: path
+    #       name: appId
+    #       schema:
+    #         type: string
+    #       required: true
+    #       description: The Id of the wenet app
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/App'
+    #   responses:
+    #     200:
+    #       description: The details of the requested app
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/App'
 
   /user/authenticate:
     post:
@@ -99,7 +99,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FacebookAuthentication'
+              $ref: '#/components/schemas/TelegramAuthenticationAccount'
       responses:
         200:
           description: Correct authentication
@@ -113,6 +113,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
+  /user/accounts:
+    get:
+      summary: Get the accounts associated to a WeNet user
+      tags:
+        - WeNet user
+      description: This endpoint allows to authenticate a WeNet user by taking advantage of one of the available authentication strategies. The response includes the Id of the associated wenet user.
+      parameters:
+        - in: query
+          name: appId
+          schema:
+            type: string
+          required: true
+          description: The Id of the wenet app
+        - in: query
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The Id of the wenet user
+      responses:
+        200:
+          description: The (active) accounts associated to the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeNetUserWithAccounts'
+        401:
+          description: No WeNet user associated to authentication credentials provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  # /user/account/metadata:
+  #   post:
+  #     summary: Update user account metadata
+  #     tags:
+  #       - WeNet user
+  #     description: This endpoint allows to override the existing account metadata with the new provided ones.
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             anyOf:
+  #               - $ref: '#/components/schemas/TelegramAuthenticationAccount'
+  #             properties:
+  #               metadata:
+  #                 type: object
+  #     responses:
+  #       200:
+  #         description: Correct authentication
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/EmptyResponse'
+  #       401:
+  #         description: No WeNet user associated to authentication credentials provided
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/EmptyResponse'
 
   # /user:
   #   summary: Create new WeNet user with the specified authentication credentials
@@ -347,7 +409,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
-  
+
   /task_transaction:
     post:
       summary: Create a new task transaction
@@ -413,25 +475,27 @@ components:
           type: string
           enum:
             - telegram
-            - wenet
+            # - wenet
 
-    WeNetPlatform:
-      allOf:
-        - $ref: '#/components/schemas/AppAssociationPlatform'
-      properties:
-        type:
-          example: wenet
+    # WeNetPlatform:
+    #   allOf:
+    #     - $ref: '#/components/schemas/AppAssociationPlatform'
+    #   properties:
+    #     type:
+    #       description: The type of platform
+    #       example: wenet
 
     TelegramPlatform:
       allOf:
         - $ref: '#/components/schemas/AppAssociationPlatform'
       properties:
         type:
-          example: telegram
-        botId:
           type: string
-          description: The ID of the Telegram bot
-        # any other information required for setting up the Telegram login on the
+          example: telegram
+        botUsername:
+          type: string
+          description: The username of the Telegram bot
+          example: incredible_new_bot
 
     App:
       description: The app of a wenet use case scenario
@@ -457,113 +521,110 @@ components:
         messageCallbackUrl:
           type: string
           nullable: true
-          description: The callback url for receiving messages from WeNet
+          description: The endpoint responsible for receiving the messages generated by the wenet platform for the users
+          example: https://app.endpoint.com/messages
         metadata:
           type: object
-          description: The name of the wenet app
-          example: WeNet scenario app
+          description: App metadata (such as its name and description)
 
     # User and authentication
 
-    AuthenticationAccountType:
-      type: string
-      description: The AuthenticationAccountType simply defines the allowed types of authentication account available.
-      enum:
-        - facebook
-        - userPass
-
     AuthenticationAccount:
       type: object
-      description: The authentication account is a generic model that defines all those properties that are common to an authentication account. In general, such an account can be used for authenticating in the WeNet platform and it is associated to a WeNet User.
       properties:
-        accountId:
+        type:
           type: string
-          readOnly: true
-          example: b375dd78-ce75-41cc-82f0-34a6c65da5b5
-          description: The identifier of the account
-        accountType:
-          $ref: '#/components/schemas/AuthenticationAccountType'
-        wenetUserId:
+          description: The type of authentication
+          enum:
+            - telegram
+        appId:
           type: string
+          description: The application for which the authentication should be performed
+          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
+        metadata:
+          type: object
           readOnly: true
-          description: The WeNet user identifier this account is linked to
-        creationTs:
-          type: integer
-          readOnly: true
-          description: The timestamp representing the account creation instant
+          description: Open metadata dictionary
 
-    FacebookAuthentication:
+    TelegramAuthenticationAccount:
       allOf:
         - $ref: '#/components/schemas/AuthenticationAccount'
       properties:
-        accountType:
+        type:
           type: string
           enum:
-            - facebook
-        facebookUserId:
-          type: string
-          example: 23098jdghf98h
-
+            - telegram
+          example: telegram
+        telegramId:
+          type: number
+          example: 785433782
+          description: The telegram id of the user
 
     WeNetUser:
       type: object
       properties:
-        wenetUserId:
+        userId:
           type: string
           description: The identifier of the WeNet user
           example: 15837028-645a-4a55-9aaf-ceb846439eba
-        authenticationAccounts:
+
+    WeNetUserWithAccounts:
+      allOf:
+        - $ref: '#/components/schemas/WeNetUser'
+      properties:
+        accounts:
           type: array
-          writeOnly: true
+          readOnly: true
           items:
-            $ref: '#/components/schemas/AuthenticationAccount'
+            allOf:
+              - $ref: '#/components/schemas/TelegramAuthenticationAccount'
 
     # ACL
 
-    ACL:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The identifier of the ACL
-          example: 08dfogkjdnfg
+    # ACL:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       description: The identifier of the ACL
+    #       example: 08dfogkjdnfg
 
-    PublicACL:
-      description: Public access to all wenet apps
-      allOf:
-        - $ref: '#/components/schemas/ACL'
+    # PublicACL:
+    #   description: Public access to all wenet apps
+    #   allOf:
+    #     - $ref: '#/components/schemas/ACL'
 
-    PrivateACL:
-      description: Private access only to the app that created the data piece in the first place
-      allOf:
-        - $ref: '#/components/schemas/ACL'
-      properties:
-        appId:
-          type: string
-          description: The Id of the wenet app having access to the data
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
+    # PrivateACL:
+    #   description: Private access only to the app that created the data piece in the first place
+    #   allOf:
+    #     - $ref: '#/components/schemas/ACL'
+    #   properties:
+    #     appId:
+    #       type: string
+    #       description: The Id of the wenet app having access to the data
+    #       example: 3e557acc-e846-4736-8218-3f64d8e68d8c
 
-    CustomACL:
-      description: Private access only to the app that created the data piece in the first place
-      allOf:
-        - $ref: '#/components/schemas/ACL'
-      properties:
-        rules:
-          type: array
-          items:
-            type: object
-            properties:
-              appId:
-                type: string
-                description: The identifier of the wenet app the rule is associated to
-                example: 6712a3ed-821e-4e93-95f1-3dd39dde1001
-              access:
-                type: string
-                description: The identifier of the wenet app having access to the data
-                example: 8b9c98b5-7510-4d8c-bf04-219490d0dac7
-                enum:
-                  - write
-                  - read
+    # CustomACL:
+    #   description: Private access only to the app that created the data piece in the first place
+    #   allOf:
+    #     - $ref: '#/components/schemas/ACL'
+    #   properties:
+    #     rules:
+    #       type: array
+    #       items:
+    #         type: object
+    #         properties:
+    #           appId:
+    #             type: string
+    #             description: The identifier of the wenet app the rule is associated to
+    #             example: 6712a3ed-821e-4e93-95f1-3dd39dde1001
+    #           access:
+    #             type: string
+    #             description: The identifier of the wenet app having access to the data
+    #             example: 8b9c98b5-7510-4d8c-bf04-219490d0dac7
+    #             enum:
+    #               - write
+    #               - read
 
     # Messages
 
