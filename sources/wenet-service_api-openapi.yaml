@@ -147,34 +147,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-  # /user/account/metadata:
-  #   post:
-  #     summary: Update user account metadata
-  #     tags:
-  #       - WeNet user
-  #     description: This endpoint allows to override the existing account metadata with the new provided ones.
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             anyOf:
-  #               - $ref: '#/components/schemas/TelegramAuthenticationAccount'
-  #             properties:
-  #               metadata:
-  #                 type: object
-  #     responses:
-  #       200:
-  #         description: Correct authentication
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/EmptyResponse'
-  #       401:
-  #         description: No WeNet user associated to authentication credentials provided
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/EmptyResponse'
+  /user/account/metadata:
+    post:
+      summary: Update user account metadata
+      tags:
+        - WeNet user
+      description: This endpoint allows to override the existing account metadata with the new provided ones.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/TelegramAuthenticationAccount'
+              properties:
+                userId:
+                  type: string
+                  example: 15837028-645a-4a55-9aaf-ceb846439eba
+                metadata:
+                  readOnly: false
+      responses:
+        200:
+          description: Correct authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        401:
+          description: No WeNet user associated to authentication credentials provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
   # /user:
   #   summary: Create new WeNet user with the specified authentication credentials
