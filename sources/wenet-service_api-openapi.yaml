@@ -21,7 +21,7 @@ info:
 
 servers:
   - url: https://wenet.u-hopper.com/dev/service
-    description: Testing instance 
+    description: Testing instance
 
 paths:
 
@@ -64,6 +64,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/App'
+
+  /app/{appId}/users:
+    get:
+      summary: Get the list of all users associated to an app
+      tags:
+        - App
+      description: This endpoint allows to get the list of user ids of users who enabled the specified wenet app.
+      parameters:
+        - in: path
+          name: appId
+          schema:
+            type: string
+          required: true
+          description: The Id of the wenet app
+      responses:
+        200:
+          description: The details of the requested app
+          content:
+            application/json:
+              schema:
+                type: array
+                description: The ids of the users who enabled the app
+                items:
+                  type: string
+                  example: 123
 
     # put:
     #   summary: Update the details of an app
