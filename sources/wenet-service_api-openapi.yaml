@@ -15,6 +15,13 @@ info:
 
     - Task
 
+
+    Two different types of authentication are available and must be used accordingly.
+
+    - WeNet application should authenticate their requests by specifying in the headers of their requests the values *appId* and *appToken*;
+
+    - WeNet component should authenticate their requests by specifying the unique *apikey* that has been assigned to them.
+
   contact:
     email: carlo.caprini@u-hopper.com
   version: 1.0.0
@@ -50,6 +57,8 @@ paths:
       tags:
         - App
       description: This endpoint allows to get the details of an existing wenet app.
+      security:
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: appId
@@ -71,6 +80,8 @@ paths:
       tags:
         - App
       description: This endpoint allows to get the list of user ids of users who enabled the specified wenet app.
+      security:
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: appId
@@ -122,7 +133,8 @@ paths:
         - WeNet user
       description: This endpoint allows to authenticate a WeNet user by taking advantage of one of the available authentication strategies. The response includes the Id of the associated wenet user.
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       requestBody:
         content:
           application/json:
@@ -149,7 +161,8 @@ paths:
         - WeNet user
       description: This endpoint allows to authenticate a WeNet user by taking advantage of one of the available authentication strategies. The response includes the Id of the associated wenet user.
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       parameters:
         - in: query
           name: appId
@@ -184,7 +197,8 @@ paths:
         - WeNet user
       description: This endpoint allows to override the existing account metadata with the new provided ones.
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       requestBody:
         content:
           application/json:
@@ -238,7 +252,7 @@ paths:
         - WeNet user profile
       description: This entpoint allows to initialize an empty WeNet user profile. It is expected to be used upon the creation of a new user.
       security:
-        - ApiKeyAuth: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -266,7 +280,9 @@ paths:
         - WeNet user profile
       description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy.
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -294,7 +310,7 @@ paths:
         - WeNet user profile
       description: This entpoint allows to update the _core_ profile of a wenet user. This is possible by providing the complete user profile that will override the exising one.
       security:
-        - ApiKeyAuth: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -408,7 +424,8 @@ paths:
         - Task
       description: This entpoint allows to create a new task
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       parameters:
         - in: path
           name: taskId
@@ -433,7 +450,8 @@ paths:
         - Task
       description: This entpoint allows to get the details of an existing task
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       parameters:
         - in: path
           name: taskId
@@ -461,7 +479,8 @@ paths:
       tags:
         - Task
       security:
-        - ApiKeyAuth: []
+        - AppIdAuth: []
+          AppTokenAuth: []
       requestBody:
         content:
           application/json:
@@ -500,10 +519,21 @@ components:
 
   securitySchemes:
 
-    ApiKeyAuth:
+    AppIdAuth:
+      type: apiKey
+      in: header
+      name: appId
+
+    AppTokenAuth:
       type: apiKey
       in: header
       name: appToken
+
+    ApikeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+
 
   schemas:
 
