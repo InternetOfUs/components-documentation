@@ -42,16 +42,28 @@ info:
 
      * **F**: A person whose gender identity matches the female sex.
      * **M**: A person whose gender identity matches the male sex.
+
+    ### Trust
+    The trust over another user is dynamically and will be updated every time they collaborate to achieve a task. When an user has received help it can rate the performance of the user that had helped it. For this it has to post a **UserPerformanceRatingEvent**.
+    When an user want to konw its trust of another user it can ask for the trust for a community or taskType, and also specify how the trust has to be calculated. The aggregation of **UserPerformanceRatingEvent** that generated the trust of an user repect another, you can use the next functions:
+
+     * **RECENCY_BASED** this is based on the recency rating events. It is the function used on uHelp.
+     * **AVERAGE** the trust is the average of the rating event.
+     * **MEDIAN** the trust is the median of the rating event.
+     * **MINIMUM** the trust is the minimum rating.
+     * **MAXIMUM** the trust is the maximum rating.
   contact:
     name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
-    email: rosell (at) iiia.csic.es
+    email: rosell@iiia.csic.es
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.10.0
+  version: 0.11.0
 servers:
-- url: http://ardid.iiia.csic.es/wenet-profile-manager/0.10.0/
+- url: http://ardid.iiia.csic.es/wenet-profile-manager/0.12.0/
   description: Testing server
+- url: https://wenet.u-hopper.com/profile_manager/
+  description: Production server
 tags:
 - name: Other
   description: Other services provided by the API.
@@ -66,6 +78,8 @@ tags:
   description: The functionality provided allows to access current and previous values
     of user attributes that define the user profile.  It also allows you to modify
     the current values.
+- name: Trusts
+  description: The functionality provided allows to manage the trust over other users.
 paths:
   /intelligences:
     get:
@@ -182,7 +196,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: Dr.
@@ -229,7 +243,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 CreatedProfile:
                   description: CreatedProfile
@@ -280,7 +294,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{profileId}:
+  /profiles/{userId}:
     get:
       tags:
       - Profiles
@@ -288,9 +302,9 @@ paths:
       description: Allow to get a profile associated to an identifier
       operationId: retrieveProfile
       parameters:
-      - name: profileId
+      - name: userId
         in: path
-        description: The identifier of the profile to get
+        description: The identifier of the user to get
         required: true
         schema:
           type: string
@@ -301,7 +315,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 FoundProfile:
                   description: FoundProfile
@@ -359,9 +373,9 @@ paths:
       description: Change the attributes of a profile
       operationId: updateProfile
       parameters:
-      - name: profileId
+      - name: userId
         in: path
-        description: The identifier of the profile to update
+        description: The identifier of the user to update
         required: true
         schema:
           type: string
@@ -371,7 +385,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: ""
@@ -399,7 +413,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 UpdatedProfile:
                   description: UpdatedProfile
@@ -463,9 +477,9 @@ paths:
       description: Allow to delete a profile associated to an identifier
       operationId: deleteProfile
       parameters:
-      - name: profileId
+      - name: userId
         in: path
-        description: The identifier of the profile to delete
+        description: The identifier of the user to delete
         required: true
         schema:
           type: string
@@ -478,7 +492,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{profileId}/historic:
+  /profiles/{userId}/historic:
     get:
       tags:
       - Historic
@@ -536,9 +550,9 @@ paths:
           format: int64
           example: 100
           default: 10
-      - name: profileId
+      - name: userId
         in: path
-        description: The identifier of the profile to get
+        description: The identifier of the user to get
         required: true
         schema:
           type: string
@@ -553,6 +567,125 @@ paths:
           description: Not found profile
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /trusts/{sourceId}/with/{targetId}:
+    get:
+      tags:
+      - Trusts
+      summary: Calculate the trust of an user respect another
+      description: Allow to obtain the trust that an user have respect another in
+        general, respect the relationship, on a community or by task type.
+      operationId: calculateTrust
+      parameters:
+      - name: membership
+        in: query
+        description: The type of relationship with the user that is calculating the
+          trust. It can be a Perl compatible regular expressions (PCRE) that has to
+          match the relationships on the trust events to aggregate.
+        schema:
+          type: string
+          example: friend
+      - name: communityId
+        in: query
+        description: The identifier of the community to get the trust. It can be a
+          Perl compatible regular expressions (PCRE) that has to match the community
+          identifiers on the trust events to aggregate.
+        schema:
+          type: string
+          example: 88cb96277edd
+      - name: taskTypeId
+        in: query
+        description: The identifier of the task type to get the trust. It can be a
+          Perl compatible regular expressions (PCRE) that has to match the task type
+          identifiers on the trust events to aggregate.
+        schema:
+          type: string
+          example: 77edd88cb962
+      - name: reportFrom
+        in: query
+        description: The time stamp inclusive that mark the older limit in witch the
+          trust event has reported. It is the difference, measured in seconds, between
+          the time when the trust events were reported and midnight, January 1, 1970
+          UTC.
+        schema:
+          type: integer
+          format: int64
+          example: 1457166440
+          default: 0
+      - name: reportTo
+        in: query
+        description: The time stamp inclusive that mark the newest limit in witch
+          the trust event has reported. It is the difference, measured in seconds,
+          between the time when the trust events were reported and midnight, January
+          1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+          example: 1571664406
+          default: 92233720368547757
+      - name: aggregation
+        in: query
+        description: The type of aggregation that has to be used to calculate the
+          trust.
+        schema:
+          type: string
+          example: "1571664406"
+          default: RECENCY_BASED
+          enum:
+          - RECENCY_BASED
+          - AVERAGE
+          - MEDIAN
+          - MINIMUM
+          - MAXIMUM
+      - name: sourceId
+        in: path
+        description: The identifier as reference that want to obtain the trust respect
+          its point of view
+        required: true
+        schema:
+          type: string
+      - name: targetId
+        in: path
+        description: The identifier of the user that want to have the trust
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: The calculated trust
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trust'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /trusts/rating:
+    post:
+      tags:
+      - Trusts
+      summary: Rate an user performance
+      description: Store an event that rating the performance of an user over a task
+        that it has done in WeNet
+      operationId: addTrustEvent
+      requestBody:
+        description: The event to store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPerformanceRatingEvent'
+        required: true
+      responses:
+        "204":
+          description: The event has been stored
+        "400":
+          description: Bad event
+          content:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /versions:
@@ -770,7 +903,7 @@ components:
           format: int64
           example: 1571664406
         profile:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: The information of the user profile in a period of time.
     HistoricWeNetUserProfilesPage:
       type: object
@@ -792,7 +925,71 @@ components:
             $ref: '#/components/schemas/HistoricWeNetUserProfile'
       description: Contains a set of profiles found
     WeNetUserProfile:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/WeNetUserProfile
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+    Trust:
+      type: object
+      properties:
+        value:
+          type: number
+          description: The trust over an user respect another. It has to be on the
+            range [0,1].
+          example: 0.43
+        calculatedTime:
+          type: integer
+          description: The difference, measured in seconds, between the trust was
+            calculated and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571412479710
+      description: The calculated trust between two users.
+    UserPerformanceRatingEvent:
+      type: object
+      properties:
+        sourceId:
+          type: string
+          description: The identifier of the user that is providing the performance
+            of another user.
+          example: 88cb96277edd
+        targetId:
+          type: string
+          description: The identifier of the user that has perform the task.
+          example: bf2743937ed6
+        relationship:
+          type: string
+          description: The relationship with the user that has perform the task
+          example: friend
+          enum:
+          - friend
+          - colleague
+          - follower
+          - family
+          - acquaintance
+        communityId:
+          type: string
+          description: The identifier of the community where the user has performed
+            the task
+          example: 43937ed6ty32
+        taskTypeId:
+          type: string
+          description: The identifier of task type that the rating user has done.
+          example: 4ty37ed63932
+        taskId:
+          type: string
+          description: The identifier of task that the rating user has done.
+          example: d64ty39s7e32
+        rating:
+          type: number
+          description: The rating of the user performance. It has to be on the range
+            [0,1].
+          format: double
+          example: 0.43
+        reportTime:
+          type: integer
+          description: The difference, measured in seconds, between the time when
+            this event was reported and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571412479710
+      description: The event is used to rate the performance of an user over a task
+        that it has done in WeNet.
     version:
       type: object
       properties:
