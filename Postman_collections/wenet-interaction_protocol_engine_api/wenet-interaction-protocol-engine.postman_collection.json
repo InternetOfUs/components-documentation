@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "05a057f2-9337-4877-8af7-ab6e2ee7d9ba",
+		"name": "wenet-interaction-protocol-engine",
+		"description": "Examples to interact with the API that will be used to manage the interaction between weNet users.\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get the API version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/versions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send a message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\":{}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/messages",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publih a norm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b62569c4-4339-4de6-a0b5-34d2a843bea4",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"normId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"norm\":{}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve published norm",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update published norm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b58986a-51d6-439e-8bc5-7e283a4d40db",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"state\": \"PendingAssignment\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "036772a0-8edd-43c2-a227-7c16a035ab05",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5377d156-0764-46d9-bc01-b9700a0dc864",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "92fd30e9-0fce-423f-a388-06771a83c1de",
+			"key": "server",
+			"value": "https://wenet.u-hopper.com/dev/interaction_protocol_engine",
+			"type": "string"
+		},
+		{
+			"id": "a981d0f0-6947-4919-ba77-7e81979ba88d",
+			"key": "normId",
+			"value": "0",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
