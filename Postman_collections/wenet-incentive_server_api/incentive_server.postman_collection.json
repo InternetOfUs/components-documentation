@@ -1,0 +1,241 @@
+{
+	"variables": [],
+	"info": {
+		"name": "incentive_server",
+		"_postman_id": "c055fcd3-f948-f0d7-1f36-8fa1422256d9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "searches for all incentive infos of a community of users",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/apps/1/community/46654",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "searches for user incentive info",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/apps/1/users/46654",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable incentive",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/enable_incentive",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n  \"reason\": \"enable incentive server for testing \"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Disable incentive",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/disable_incentive",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n  \"reason\": \"enable incentive server for testing \"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Emquiry incentives",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/enquiry_incentives/apps/1/users/46654",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"content\": \"the incentive was inappropriate\",\n\t\"incentive\":\"String\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new badge issuer",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"New Postman Issuer 4\",\n  \"email\": \"wenet.badges@gmail.com\",\n  \"description\": \"Here's an issuer I'm creating from Postman\",\n  \"url\": \"http://example.com\"\n}"
+				},
+				"description": "you have to supply an authorized email - \"wenet.badges@gmail.com\""
+			},
+			"response": []
+		},
+		{
+			"name": "Create BadgeTypes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"BadgeClass entityID obtained\", function () {",
+							"    var result = pm.response.json().result[0]",
+							"    pm.environment.set(\"latest_badgeclass_entity_id\", result.entityId);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers/TAgRa3NxT0yme-iYBrtyeQ/badgeTypes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"My Newest Tiny BadgeClass 4\",\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\",\n  \"description\": \"This is a tiny badge with a tiny little image. People who earn it might have done something tiny to deserve it.\",\n  \"criteriaUrl\": \"https://tinybuddha.com/blog/30-accomplishments-to-be-proud-of/\",\n  \"criteriaNarrative\": \"Do something both small and meaningful\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update an existing BadgeType ",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/5ealYJioSYiZVpXMrBT6ww",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Issue an Assertion to a single recipient",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/Od4wk54eRGuYWRkki95ijA/assertions",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"recipient\": {\n    \"identity\": \"benzaked@possasdat.bgu.ac.il\",\n    \"type\": \"email\",\n    \"hashed\": true\n  },\n  \"narrative\": \"This is an overall narrative describing how the badge was earned.\",\n  \"evidence\": [\n    {\n      \"url\": \"http://example.com\",\n      \"narrative\": \"This is a narrative describing the individual evidence item.\"\n    }\n  ],\n  \"expires\": \"2025-03-31T23:59:59Z\",\n  \"notify\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get a list of assertions for a single BadgeType",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/5ealYJioSYiZVpXMrBT6ww/assertions/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"entityType\": \"string\",\n  \"entityId\": \"string\",\n  \"firstName\": \"Daniel\",\n  \"lastName\": \"ben\",\n  \"emails\": [\n    {\n      \"email\": \"user@example.com\",\n      \"primary\": true\n    }\n  ],\n  \"hasPasswordSet\": \"string\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
