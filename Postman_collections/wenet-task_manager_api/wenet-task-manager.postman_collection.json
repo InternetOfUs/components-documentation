@@ -185,7 +185,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"After covid Party\",\n    \t\"description\":\"Celebrate a big party after we have won teh COVID deseaze.\"\n    }\n}",
+					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"After covid Party\",\n    \t\"description\":\"Celebrate a big party after we have won teh COVID deseaze.\"\n    },\n    \"deadlineTs\":1606935600,\n    \"startTs\":1609356600,\n\t\"endTs\":1609360200\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -217,6 +217,75 @@
 					"path": [
 						"tasks",
 						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/tasks",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "requesterId",
+							"value": "5ebd80ef829c2405a3064fbe",
+							"disabled": true
+						},
+						{
+							"key": "goalName",
+							"value": ".*",
+							"disabled": true
+						},
+						{
+							"key": "goalDescription",
+							"value": ".*",
+							"disabled": true
+						},
+						{
+							"key": "startFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "startTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "endFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "endTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "deadlineFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "deadlineTo",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -360,37 +429,37 @@
 	],
 	"variable": [
 		{
-			"id": "0aacfbab-23e8-4c34-9e85-d920351accb8",
+			"id": "ac161f52-559a-4531-a1af-9ae52bb4b21c",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/task_manager",
 			"type": "string"
 		},
 		{
-			"id": "ff80326d-0912-4b7d-b9b9-42e6de2fdf66",
+			"id": "505a72aa-8674-4fcb-97ba-fec9de6db933",
 			"key": "taskId",
-			"value": null,
-			"type": "any"
+			"value": "5ec420cda6355828b60b842c",
+			"type": "string"
 		},
 		{
-			"id": "47ef8fe9-a2c7-49b1-8edb-e8b8678c1979",
+			"id": "e0b12e75-9fd1-49f2-80c7-95bab5539503",
 			"key": "lastUpdateTs",
 			"value": null,
 			"type": "any"
 		},
 		{
-			"id": "9b463321-ca7c-4b26-99b2-d68ef8e8ce9b",
+			"id": "06de2af8-936d-4296-9851-1f25ca70c8c2",
 			"key": "taskTypeId",
 			"value": "5ebd800528b21a1bc194e2c8",
 			"type": "string"
 		},
 		{
-			"id": "c66bfb94-db14-449a-bf79-3c7ae8c1cd44",
+			"id": "37342200-52af-4831-b5a0-4f60d84676a7",
 			"key": "requesterId",
 			"value": "5ebd80ef829c2405a3064fbe",
 			"type": "string"
 		},
 		{
-			"id": "4d36c6da-8d3c-49c5-b0d8-d4a025972d94",
+			"id": "e8265ff6-c6e7-48a0-bd46-9ff0794b1b8f",
 			"key": "appId",
 			"value": "1",
 			"type": "string"
