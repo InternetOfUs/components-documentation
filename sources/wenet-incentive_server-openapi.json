@@ -19,6 +19,9 @@
       "description": "issue a complaint regarding an  incentive"
     },
     {
+      "name": "Tasks"
+    },
+    {
       "name": "norms",
       "description": "post, update and  get norms."
     },
@@ -144,6 +147,47 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/wrong_user_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Tasks": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Post data about the task status",
+        "operationId": "Post Data the task status",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/task_status"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task_status"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
                 }
               }
             }
@@ -1026,6 +1070,42 @@
             "example": "successful operation"
           }
         }
+      },
+      "BAD_REQUEST": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "example": "the field X is required"
+          }
+        }
+      },
+      "task_status": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "example": "WeNet_user5"
+          },
+          "task_id": {
+            "type": "string",
+            "example": "WeNet_task"
+          },
+          "Action": {
+            "type": "string",
+            "example": "Starts"
+          },
+          "message": {
+            "type": "string",
+            "example": "some message"
+          }
+        },
+        "required": [
+          "user_id",
+          "task_id",
+          "Action",
+          "message"
+        ]
       },
       "wrong_community_id": {
         "type": "object",
