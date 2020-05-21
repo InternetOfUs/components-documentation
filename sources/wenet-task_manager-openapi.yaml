@@ -27,213 +27,6 @@ tags:
 - name: Tasks
   description: The functionality provided allows to access the user task.
 paths:
-  /tasks/transactions:
-    post:
-      tags:
-      - Tasks
-      summary: Do a task transaction
-      description: Called when when to do an action over a task
-      operationId: doTaskTransaction
-      requestBody:
-        description: The task transaction to do
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
-        required: true
-      responses:
-        "200":
-          description: The started task transaction
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
-        "400":
-          description: Bad task transaction
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /tasks/types/{taskTypeId}:
-    get:
-      tags:
-      - Tasks
-      summary: Return a task type associated to the identifier
-      description: Allow to get a task type associated to an identifier
-      operationId: retrieveTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The task type associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Tasks
-      summary: Modify a task type
-      description: Change the attributes of a task type
-      operationId: updateTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the task type
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        required: true
-      responses:
-        "200":
-          description: The updated task type
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "400":
-          description: Bad task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Tasks
-      summary: Delete the task type associated to the identifier
-      description: Allow to delete a task type associated to an identifier
-      operationId: deleteTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: The task type was deleted successfully
-        "404":
-          description: Not found task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /tasks/{taskId}:
-    get:
-      tags:
-      - Tasks
-      summary: Return a task associated to the identifier
-      description: Allow to get a task associated to an identifier
-      operationId: retrieveTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The task associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Tasks
-      summary: Modify a task
-      description: Change the attributes of a task
-      operationId: updateTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the task
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        required: true
-      responses:
-        "200":
-          description: The updated task
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        "400":
-          description: Bad task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Tasks
-      summary: Delete the task associated to the identifier
-      description: Allow to delete a task associated to an identifier
-      operationId: deleteTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: The task was deleted successfully
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /tasks:
     get:
       tags:
@@ -253,6 +46,13 @@ paths:
         in: query
         description: An user identifier or or a Perl compatible regular expressions
           (PCRE) that has to match the requester identifier of the tasks to return.
+        schema:
+          type: string
+          example: 1e346fd440
+      - name: taskTypeId
+        in: query
+        description: A task type identifier or or a Perl compatible regular expressions
+          (PCRE) that has to match the task type identifier of the tasks to return.
         schema:
           type: string
           example: 1e346fd440
@@ -379,6 +179,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}:
+    get:
+      tags:
+      - Tasks
+      summary: Return a task associated to the identifier
+      description: Allow to get a task associated to an identifier
+      operationId: retrieveTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Tasks
+      summary: Modify a task
+      description: Change the attributes of a task
+      operationId: updateTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The updated task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete the task associated to the identifier
+      description: Allow to delete a task associated to an identifier
+      operationId: deleteTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task was deleted successfully
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks/types:
     get:
       tags:
@@ -451,6 +341,123 @@ paths:
                 $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "400":
           description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/types/{taskTypeId}:
+    get:
+      tags:
+      - Tasks
+      summary: Return a task type associated to the identifier
+      description: Allow to get a task type associated to an identifier
+      operationId: retrieveTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task type associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Tasks
+      summary: Modify a task type
+      description: Change the attributes of a task type
+      operationId: updateTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task type
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The updated task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete the task type associated to the identifier
+      description: Allow to delete a task type associated to an identifier
+      operationId: deleteTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task type was deleted successfully
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/transactions:
+    post:
+      tags:
+      - Tasks
+      summary: Do a task transaction
+      description: Called when when to do an action over a task
+      operationId: doTaskTransaction
+      requestBody:
+        description: The task transaction to do
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        required: true
+      responses:
+        "200":
+          description: The started task transaction
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        "400":
+          description: Bad task transaction
           content:
             application/json:
               schema:
