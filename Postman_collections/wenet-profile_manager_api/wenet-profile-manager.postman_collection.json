@@ -342,27 +342,27 @@
 	],
 	"variable": [
 		{
-			"id": "1c129393-cec2-4137-b862-7404a9ac83b9",
+			"id": "f5ba2228-8b06-40b5-b828-062b0cb35c27",
 			"key": "server",
-			"value": "http://ardid.iiia.csic.es/wenet-profile-manager/0.10.0",
+			"value": "https://wenet.u-hopper.com/dev/profile_manager",
 			"type": "string"
 		},
 		{
-			"id": "30bb93db-490a-4498-b2c4-a9519e0f04ee",
+			"id": "9aadf1a8-ce3d-4198-905e-d2869534cec7",
 			"key": "profileId",
-			"value": "5e5e4a738a8453143d81e508",
+			"value": "5ebd80ef829c2405a3064fbe",
 			"type": "string"
 		},
 		{
-			"id": "f547f95f-c247-448c-98b3-5dcf9bf66469",
+			"id": "c7843bd2-57d6-4e8c-b8b1-3f3c57689e2d",
 			"key": "creationTs",
-			"value": 1583237747,
+			"value": 1589477616,
 			"type": "number"
 		},
 		{
-			"id": "52bd0f98-c1c9-4aac-a9a9-1df9cb06bc3d",
+			"id": "3b8bd1f7-bdff-4e4c-adc6-d60028d3f974",
 			"key": "lastUpdateTs",
-			"value": 1583237805,
+			"value": 1589477616,
 			"type": "number"
 		}
 	],

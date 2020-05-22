@@ -24,15 +24,15 @@
 			"response": []
 		},
 		{
-			"name": "Create task",
+			"name": "Create task type",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
+						"id": "34d5897d-0146-492b-83d4-79ce1ed25176",
 						"exec": [
 							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"taskId\", jsonData.taskId);",
+							"pm.collectionVariables.set(\"taskTypeId\", jsonData.id);",
 							""
 						],
 						"type": "text/javascript"
@@ -51,7 +51,141 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"state\":\"Open\"\n}",
+					"raw": "{\n    \"name\":\"Eat together\",\n    \"transactions\":[\n    \t{\n    \t\t\"label\":\"acceptToAttend\"\n    \t}\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/types",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task type",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"types",
+						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update task type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "760b6694-3a82-4c0b-b14c-0924a8f0119c",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"state\": \"PendingAssignment\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"types",
+						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete task type",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"types",
+						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"taskId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"After covid Party\",\n    \t\"description\":\"Celebrate a big party after we have won teh COVID deseaze.\"\n    },\n    \"deadlineTs\":1606935600,\n    \"startTs\":1609356600,\n\t\"endTs\":1609360200\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -83,6 +217,78 @@
 					"path": [
 						"tasks",
 						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/tasks?appId=1&requesterId=1",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": "1"
+						},
+						{
+							"key": "requesterId",
+							"value": "1"
+						},
+						{
+							"key": "taskTypeId",
+							"value": "5eb55e4d8690836ef7a7dde3",
+							"disabled": true
+						},
+						{
+							"key": "goalName",
+							"value": ".*",
+							"disabled": true
+						},
+						{
+							"key": "goalDescription",
+							"value": ".*",
+							"disabled": true
+						},
+						{
+							"key": "startFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "startTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "endFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "endTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "deadlineFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "deadlineTo",
+							"value": null,
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -152,6 +358,54 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create task transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "60ad1c4c-eab1-441d-9fc5-2f0e9f2af766",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"taskId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"acceptToAttend\",\n    \"attributes\":{}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/transactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"transactions"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -178,22 +432,40 @@
 	],
 	"variable": [
 		{
-			"id": "70f3d71e-3496-4b88-957a-9664ee4e7a93",
+			"id": "ac834b98-f27f-41e7-830e-585667afca7e",
 			"key": "server",
-			"value": "http://ardid.iiia.csic.es/wenet-task-manager/0.2.0",
+			"value": "https://wenet.u-hopper.com/dev/task_manager",
 			"type": "string"
 		},
 		{
-			"id": "897e80d8-f8e9-4ccd-8edc-011a72a3f312",
+			"id": "689679ec-09f7-4ba9-a45e-4f29b99b30dc",
 			"key": "taskId",
-			"value": "5e5e5615c31ce42be7fd7511",
+			"value": "5ec420cda6355828b60b842c",
 			"type": "string"
 		},
 		{
-			"id": "03d42da2-df03-4751-ac56-0b2e0824dcb8",
+			"id": "2a5fdd19-e730-4e7b-b33f-a3393b9f384b",
 			"key": "lastUpdateTs",
 			"value": null,
 			"type": "any"
+		},
+		{
+			"id": "48542962-d853-464e-83ee-0e66a40d3e05",
+			"key": "taskTypeId",
+			"value": "5ebd800528b21a1bc194e2c8",
+			"type": "string"
+		},
+		{
+			"id": "e23aa22d-e4e3-4408-b9b6-ac9cb230828f",
+			"key": "requesterId",
+			"value": "5ebd80ef829c2405a3064fbe",
+			"type": "string"
+		},
+		{
+			"id": "0d2decdc-7f7e-4cad-9482-d7b2536114b7",
+			"key": "appId",
+			"value": "1",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}

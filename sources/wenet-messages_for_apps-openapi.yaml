@@ -18,8 +18,57 @@ info:
 components:
   schemas:
 
-    Message:
+    BaseMessage:
       type: object
+      properties:
+        type:
+          type: string
+          description: The type of the message (either message or taskNotification)
+          enum:
+            - textualMessage
+            - taskNotification
+            - event
+
+    Event:
+      description: An event about something that happened in WeNet
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+      properties:
+        type:
+          example: event
+          description: The event message type
+          enum:
+            - event
+        eventType:
+          type: string
+          enum:
+            - newUserForPlatform
+          description: The event type
+
+    NewUserForPlatform:
+      description: A new user activated an app platform
+      allOf:
+        - $ref: '#/components/schemas/Event'
+      properties:
+        eventType:
+          example: newUserForPlatform
+        app:
+          type: string
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+          description: The associated app id
+        userId:
+          description: Wenet user id
+          type: string
+          example:
+        platform:
+          type: string
+          example: telegram
+          enum:
+            - telegram
+
+    Message:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
       properties:
         type:
           type: string
@@ -116,6 +165,26 @@ components:
         text:
           example: A user volunteer to participate in your task, check him out!
 
+    TaskSelectionNotification:
+      description: This notification is used in order to notify the user who volunteerd about the decision of the task creator
+      allOf:
+        - $ref: '#/components/schemas/TaskNotification'
+      properties:
+        notificationType:
+          example: selecitonVolunteer
+          enum:
+            - selecitonVolunteer
+        title:
+          example: You have been accepted as volunteer
+        text:
+          example: Cool! You will be participating to the task!
+        outcome:
+          type: string
+          enum:
+            - accepted
+            - refused
+          example: accepted
+
     MessageFromUserNotification:
       description: This notification is used in order to send a message exchanged between two participants to the same task
       allOf:
@@ -155,8 +224,9 @@ components:
           description: The outcome of the task (has it been completed with success or not)
           enum:
             - cancelled
-            - successfull
+            - completed
             - failed
+          example: completed
         title:
           example: Task concluded
         text:

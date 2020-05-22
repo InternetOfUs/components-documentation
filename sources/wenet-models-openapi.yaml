@@ -382,6 +382,22 @@ components:
 
     # Tasks
 
+    TaskTransactionType:
+      type: object
+      properties:
+        label:
+          type: string
+          example: acceptVolunteer
+        description:
+          type: string
+          description: A human readable description of the task objective.
+          example: A task for organizing social dinners
+        attributes:
+          type: array
+          description: The attribute that has to be instantiated when create the task of this type.
+          items:
+            $ref: '#/components/schemas/TaskAttributeType'
+
     TaskType:
       type: object
       description: Describe a type of task that can be done by the users.
@@ -407,21 +423,26 @@ components:
             - eat
           items:
             type: string
-        norms:
-          type: array
-          description: The norms that describe the interaction of the users to do the tasks of this type.
-          items:
-            $ref: '#/components/schemas/Norm'
+        # norms:
+        #   type: array
+        #   description: The norms that describe the interaction of the users to do the tasks of this type.
+        #   items:
+        #     $ref: '#/components/schemas/Norm'
         attributes:
           type: array
           description: The attribute that has to be instantiated when create the task of this type.
           items:
             $ref: '#/components/schemas/TaskAttributeType'
-        constants:
+        transactions:
           type: array
-          description: The attribute with a fixed value.
+          description: The supported transaction types for the task
           items:
-            $ref: '#/components/schemas/TaskAttribute'
+            $ref: '#/components/schemas/TaskTransactionType'
+        # constants:
+        #   type: array
+        #   description: The attribute with a fixed value.
+        #   items:
+        #     $ref: '#/components/schemas/TaskAttribute'
 
     TaskAttributeType:
       type: object
@@ -448,17 +469,6 @@ components:
           type: boolean
           description: This is 'true' if teh attribute is an array of values of the specified type.
           default: false
-
-    TaskAttribute:
-      type: object
-      description: Describe the current value of a task attribute.
-      properties:
-        name:
-          type: string
-          description: The name of the attribute
-          example: communityId
-        value:
-          description: The value of the attribute
 
     Task:
       allOf:
@@ -514,10 +524,8 @@ components:
           items:
             $ref: '#/components/schemas/Norm'
         attributes:
-          type: array
-          description: The set of attributes that define the task.
-          items:
-            $ref: '#/components/schemas/TaskAttribute'
+          type: object
+          description: The set of attributes that define the task
 
     TaskTransaction:
       type: object
@@ -527,11 +535,10 @@ components:
           description: The unique identifier this transaction is associated to
           example: b129e5509c9bb79
           type: string
-        typeId:
+        label:
           type: string
-          description: The identifier of the task type associated to it.
+          description: The label associated to the transaction type
+          example: acceptVolunteer
         attributes:
-          type: array
-          description: The attributes that are set to the transaction.
-          items:
-            $ref: '#/components/schemas/TaskAttribute'
+          type: object
+          description: The attributes that are set in the associated transaction type

@@ -1,23 +1,184 @@
 openapi: 3.0.1
 info:
   title: WeNet - Task manager API
-  description: This API will be used to storing and maintaining the WeNet user task.
+  description: |-
+    This API will be used to storing and maintaining the WeNet user task. The task is associated to the next concepts:
+
+       * **TaskType**: describe the attributes and norms that describe the generic goal of a task.
+       * **Task**: the instance of a task type that is active.
+       * **TaskView**: maintains the state of the task instance from the point of view of an specific user.
   contact:
     name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
     email: rosell (at) iiia.csic.es
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.2.0
+  version: 0.3.0
 servers:
-- url: http://ardid.iiia.csic.es/wenet-task-manager/0.2.0/
-  description: Testing server
+- url: https://wenet.u-hopper.com/task_manager
+  description: WeNet production server
+- url: https://wenet.u-hopper.com/dev/task_manager
+  description: WeNet development server server
+- url: http://ardid.iiia.csic.es/wenet/task-manager/0.3.0/
+  description: IIIA development server
 tags:
 - name: Other
   description: Other services provided by the API.
 - name: Tasks
   description: The functionality provided allows to access the user task.
 paths:
+  /tasks:
+    get:
+      tags:
+      - Tasks
+      summary: Return a page of task that match the query parameters
+      description: Allow to get a page of task with the specified query parameters
+      operationId: retrieveTasksPage
+      parameters:
+      - name: appId
+        in: query
+        description: An application identifier or or a Perl compatible regular expressions
+          (PCRE) that has to match the application identifier of the tasks to return.
+        schema:
+          type: string
+          example: "1"
+      - name: requesterId
+        in: query
+        description: An user identifier or or a Perl compatible regular expressions
+          (PCRE) that has to match the requester identifier of the tasks to return.
+        schema:
+          type: string
+          example: 1e346fd440
+      - name: taskTypeId
+        in: query
+        description: A task type identifier or or a Perl compatible regular expressions
+          (PCRE) that has to match the task type identifier of the tasks to return.
+        schema:
+          type: string
+          example: 1e346fd440
+      - name: goalName
+        in: query
+        description: A goal name or a Perl compatible regular expressions (PCRE) that
+          has to match the goal name of the tasks to return.
+        schema:
+          type: string
+          example: .*together.*
+      - name: goalDescription
+        in: query
+        description: A goal description or a Perl compatible regular expressions (PCRE)
+          that has to match the goal name of the tasks to return.
+        schema:
+          type: string
+          example: .*dinner.*
+      - name: startFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum start
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1457166440
+          default: 0
+      - name: startTo
+        in: query
+        description: The difference, measured in seconds, between the maximum start
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1571664406
+          default: 92233720368547757
+      - name: endFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum end
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1457166440
+          default: 0
+      - name: endTo
+        in: query
+        description: The difference, measured in seconds, between the maximum end
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1571664406
+          default: 92233720368547757
+      - name: deadlineFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum deadline
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1457166440
+          default: 0
+      - name: deadlineTo
+        in: query
+        description: The difference, measured in seconds, between the maximum deadline
+          time stamp of the task and midnight, January 1, 1970 UTC
+        schema:
+          type: integer
+          format: int64
+          example: 1571664406
+          default: 92233720368547757
+      - name: offset
+        in: query
+        description: The index of the first task type to return.
+        schema:
+          type: integer
+          format: int64
+          example: 5
+          default: 0
+      - name: limit
+        in: query
+        description: The number maximum of task types to return.
+        schema:
+          type: integer
+          format: int64
+          example: 5
+          default: 10
+      responses:
+        "200":
+          description: The task associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskPage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Tasks
+      summary: Create a task
+      description: Create a new task
+      operationId: createTask
+      requestBody:
+        description: The new task to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The created task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks/{taskId}:
     get:
       tags:
@@ -39,7 +200,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "404":
           description: Not found task
           content:
@@ -65,7 +226,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -73,7 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -108,29 +269,195 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /tasks:
-    post:
+  /tasks/types:
+    get:
       tags:
       - Tasks
-      summary: Create a task
-      description: Create a new WeNet user task
-      operationId: createTask
-      requestBody:
-        description: The new task to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
-        required: true
+      summary: Return a task type associated to the identifier
+      description: Allow to get a task type associated to an identifier
+      operationId: retrieveTaskTypePage
+      parameters:
+      - name: name
+        in: query
+        description: The pattern to match the name of task types to return
+        schema:
+          type: string
+      - name: description
+        in: query
+        description: The pattern to match the description of task types to return
+        schema:
+          type: string
+      - name: keywords
+        in: query
+        description: The pattern to match the keywords of task types to return
+        schema:
+          type: array
+          items:
+            type: string
+      - name: offset
+        in: query
+        description: The index of the first task type to return
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: The number maximum of task types to return
+        schema:
+          type: integer
+          format: int32
       responses:
         "200":
-          description: The created task
+          description: The task types that match the search.
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/571266f9402fb78cf01bf1d9cdb23d2989a7882a/sources/wenet-models.yaml#/components/schemas/Task
+                $ref: '#/components/schemas/TaskTypePage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Tasks
+      summary: Create a task type
+      description: Create a new task type
+      operationId: createTaskType
+      requestBody:
+        description: The new task type to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The created task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "400":
-          description: Bad task
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/types/{taskTypeId}:
+    get:
+      tags:
+      - Tasks
+      summary: Return a task type associated to the identifier
+      description: Allow to get a task type associated to an identifier
+      operationId: retrieveTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task type associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Tasks
+      summary: Modify a task type
+      description: Change the attributes of a task type
+      operationId: updateTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task type
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The updated task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete the task type associated to the identifier
+      description: Allow to delete a task type associated to an identifier
+      operationId: deleteTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task type was deleted successfully
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/transactions:
+    post:
+      tags:
+      - Tasks
+      summary: Do a task transaction
+      description: Called when when to do an action over a task
+      operationId: doTaskTransaction
+      requestBody:
+        description: The task transaction to do
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        required: true
+      responses:
+        "200":
+          description: The started task transaction
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        "400":
+          description: Bad task transaction
           content:
             application/json:
               schema:
@@ -163,6 +490,44 @@ components:
           description: Contain a brief description of the error to be read by a human
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
+    TaskPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first task returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of tasks that satisfies the search.
+          format: int64
+          example: 100
+        tasks:
+          type: array
+          description: The set of tasks found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+      description: Contains a set of tasks
+    TaskTypePage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first task type returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of task types that satisfies the search.
+          format: int64
+          example: 100
+        taskTypes:
+          type: array
+          description: The set of task types found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+      description: Contains a set of task types
     version:
       type: object
       properties:
