@@ -1,0 +1,24 @@
+# WENET iLOGBASE API
+
+## Versions
+
+### 0.0.5
+
+- Updated the apis to use the ilogbase
+
+### 0.0.4
+
+- Slightly changed Entity Object
+
+### 0.0.3
+
+- Fixed the format of timediariesquestion
+
+### 0.0.2
+
+- (Slightly) Changed the format of the post (and put) json content
+
+### 0.0.1
+
+- Subscriptions and batch data apis
+- Postman collection of dummy implementation

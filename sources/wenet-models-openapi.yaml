@@ -205,30 +205,54 @@ components:
         #     - $ref: '#/components/schemas/CustomACL'
         # trustLevel:
 
+    Label:
+      type: object
+      description: label
+      properties:
+        name:
+          type: string
+          description: name of the label
+        semantic_class:
+          type: number
+          description: number that represent the category of the label
+        latitude:
+          type: number
+          description: latitude of the label for the user
+        longitude:
+          type: number
+          description: longitude of the label for the user
+        
+    ScoredLabel:
+      type: object
+      description: Label with score
+      properties:
+        label:
+          $ref: '#/components/schemas/Label'
+        score:
+          type: number
+          description: score of the label
     Routine:
       type: object
+      description: 'Labels distribution for a given user, time and weekday'
       properties:
-        id:
+        user_id:
           type: string
-          description: The identifier of the routine
-          example: oishd0godlkgj
-        label:
+          description: id of the user
+        weekday:
           type: string
-          description: The label of the routine
-          example: work
-        proximity:
-          type: string
-          description: The identifier of the routine
-          example: oishd0godlkgj
-        from_time:
-          type: string
-          format: time
-          example: 18:00
-        to_time:
-          type: string
-          format: time
-          example: 22:00
-
+          description: day of the week
+        label_distribution:
+          description: 'Time slots'
+          type: object
+          additionalProperties:
+            description: 'Distribution of the labels'
+            type: array
+            items:
+              $ref: '#/components/schemas/ScoredLabel'
+        confidence:
+          type: number
+          description: confidence of the result
+          
     CoreWeNetUserProfile:
       type: object
       properties:

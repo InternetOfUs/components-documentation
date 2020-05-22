@@ -228,7 +228,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/tasks",
+					"raw": "{{server}}/tasks?appId=1&requesterId=1",
 					"host": [
 						"{{server}}"
 					],
@@ -238,12 +238,15 @@
 					"query": [
 						{
 							"key": "appId",
-							"value": "2",
-							"disabled": true
+							"value": "1"
 						},
 						{
 							"key": "requesterId",
-							"value": "5ebd80ef829c2405a3064fbe",
+							"value": "1"
+						},
+						{
+							"key": "taskTypeId",
+							"value": "5eb55e4d8690836ef7a7dde3",
 							"disabled": true
 						},
 						{
@@ -429,37 +432,37 @@
 	],
 	"variable": [
 		{
-			"id": "ac161f52-559a-4531-a1af-9ae52bb4b21c",
+			"id": "ac834b98-f27f-41e7-830e-585667afca7e",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/task_manager",
 			"type": "string"
 		},
 		{
-			"id": "505a72aa-8674-4fcb-97ba-fec9de6db933",
+			"id": "689679ec-09f7-4ba9-a45e-4f29b99b30dc",
 			"key": "taskId",
 			"value": "5ec420cda6355828b60b842c",
 			"type": "string"
 		},
 		{
-			"id": "e0b12e75-9fd1-49f2-80c7-95bab5539503",
+			"id": "2a5fdd19-e730-4e7b-b33f-a3393b9f384b",
 			"key": "lastUpdateTs",
 			"value": null,
 			"type": "any"
 		},
 		{
-			"id": "06de2af8-936d-4296-9851-1f25ca70c8c2",
+			"id": "48542962-d853-464e-83ee-0e66a40d3e05",
 			"key": "taskTypeId",
 			"value": "5ebd800528b21a1bc194e2c8",
 			"type": "string"
 		},
 		{
-			"id": "37342200-52af-4831-b5a0-4f60d84676a7",
+			"id": "e23aa22d-e4e3-4408-b9b6-ac9cb230828f",
 			"key": "requesterId",
 			"value": "5ebd80ef829c2405a3064fbe",
 			"type": "string"
 		},
 		{
-			"id": "e8265ff6-c6e7-48a0-bd46-9ff0794b1b8f",
+			"id": "0d2decdc-7f7e-4cad-9482-d7b2536114b7",
 			"key": "appId",
 			"value": "1",
 			"type": "string"
