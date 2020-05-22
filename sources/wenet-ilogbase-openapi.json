@@ -18,6 +18,249 @@
     }
   ],
   "paths": {
+    "/experiment": {
+      "post": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Create a new experiment",
+        "description": "Create a new experiment to start collecting data from user that subscribe to the experiment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Experiment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Experiment successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Update an existing experiment",
+        "description": "Update an existing experiment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Experiment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Experiment successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      }
+    },
+    "/experiment/{experimentId}": {
+      "get": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Get the details of an existing experiment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "experimentId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experiment successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Experiment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Get the details of an existing experiment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "experimentId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experiment successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Experiment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      }
+    },
+    "/experiment/{experimentId}/sensor/": {
+      "get": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Get the list of available sensors",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "experimentId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experiment list of available sensors",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      }
+    },
+    "/experiment/{experimentId}/sensor/{sensorId}": {
+      "get": {
+        "tags": [
+          "experiment"
+        ],
+        "summary": "Get the list of available sensors",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "experimentId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "sensorId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experiment list of available sensors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          }
+        }
+      }
+    },
     "/experimentSubscription": {
       "post": {
         "tags": [
@@ -1484,7 +1727,7 @@
             "type": "string",
             "example": "description of the notification"
           },
-          "entities": {
+          "entity": {
             "type": "object",
             "properties": {
               "id": {
