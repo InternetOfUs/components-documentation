@@ -630,20 +630,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "in": "query",
-            "name": "community_id",
-            "description": "the community id  which the incentive relates",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful search.",
+            "description": "successful search",
             "content": {
               "application/json": {
                 "schema": {
@@ -1271,25 +1262,115 @@
         }
       },
       "incentive_info_user": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "incentive_type",
-          "incentive_quantity"
-        ],
         "properties": {
-          "user_id": {
-            "type": "integer",
-            "example": 12345
-          },
-          "incentive_type": {
-            "type": "integer",
-            "example": 2
+          "app_id": {
+            "type": "string",
+            "example": "dsad"
           },
           "incentive_quantity": {
             "type": "number",
-            "format": "float",
             "example": 0.89
+          },
+          "incentives": {
+            "type": "object",
+            "properties": {
+              "messages": {
+                "type": "object",
+                "properties": {
+                  "message_content": {
+                    "type": "string",
+                    "example": "greatjob"
+                  }
+                }
+              },
+              "badges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "issuedOn": {
+                      "type": "string",
+                      "example": "2020-05-17T13:53:16.075Z"
+                    },
+                    "expires": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "revoked": {
+                      "type": "boolean"
+                    },
+                    "badgeclassOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/public/badges/DqQzjMKWQNipb1o9Fbaqjw"
+                    },
+                    "issuerOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/public/issuers/mT7hgXVkQMShRxRWIusVSg"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/media/uploads/badges/assertion-MoCTfswuQE2O0FYKzClCCA.png"
+                    },
+                    "entityType": {
+                      "type": "string",
+                      "example": "Assertion"
+                    },
+                    "badgeclass": {
+                      "type": "string",
+                      "example": "DqQzjMKWQNipb1o9Fbaqjw"
+                    },
+                    "createdBy": {
+                      "type": "string",
+                      "example": "R7Kk2wD3RJaNLVIjqckQWw"
+                    },
+                    "narrative": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "revocationReason": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "entityId": {
+                      "type": "string",
+                      "example": "MoCTfswuQE2O0FYKzClCCA"
+                    },
+                    "recipient": {
+                      "type": "object",
+                      "properties": {
+                        "salt": {
+                          "type": "string",
+                          "example": "4bafbe8b878e427aa26c4ad66949dd79"
+                        },
+                        "plaintextIdentity": {
+                          "type": "string",
+                          "example": "ahunter@cook.biz"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "email"
+                        },
+                        "hashed": {
+                          "type": "boolean"
+                        },
+                        "identity": {
+                          "type": "string",
+                          "example": "sha256$48e716dc0a6e467ece2255a7110bb2d50172269e9125a5696952a31167093347"
+                        }
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-05-17T13:53:16.078Z"
+                    },
+                    "issuer": {
+                      "type": "string",
+                      "example": "mT7hgXVkQMShRxRWIusVSg"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
