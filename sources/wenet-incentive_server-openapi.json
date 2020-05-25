@@ -154,7 +154,7 @@
         }
       }
     },
-    "/Tasks": {
+    "/Tasks/TaskStatus": {
       "post": {
         "tags": [
           "Tasks"
@@ -575,7 +575,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/incentive_info_community"
+                    "$ref": "#/components/schemas/incentive_info_user"
                   }
                 }
               }
@@ -1077,6 +1077,10 @@
           "user_id": {
             "type": "string",
             "example": "WeNet_user5"
+          },
+          "community_id": {
+            "type": "string",
+            "example": "WeNet_community_5"
           },
           "task_id": {
             "type": "string",
