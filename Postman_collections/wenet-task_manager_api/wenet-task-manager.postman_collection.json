@@ -228,7 +228,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/tasks?appId=1&requesterId=1",
+					"raw": "{{server}}/tasks?appId=1&hasCloseTs=true",
 					"host": [
 						"{{server}}"
 					],
@@ -242,7 +242,8 @@
 						},
 						{
 							"key": "requesterId",
-							"value": "1"
+							"value": "1",
+							"disabled": true
 						},
 						{
 							"key": "taskTypeId",
@@ -286,6 +287,20 @@
 						},
 						{
 							"key": "deadlineTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "hasCloseTs",
+							"value": "true"
+						},
+						{
+							"key": "closeFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "closeTo",
 							"value": null,
 							"disabled": true
 						}
@@ -367,8 +382,7 @@
 					"script": {
 						"id": "60ad1c4c-eab1-441d-9fc5-2f0e9f2af766",
 						"exec": [
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"taskId\", jsonData.id);",
+							"",
 							""
 						],
 						"type": "text/javascript"
@@ -387,7 +401,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"acceptToAttend\",\n    \"attributes\":{}\n}",
+					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"selectionVolunteer\",\n    \"attributes\":{\"volunteerId\":\"2\"}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -432,37 +446,37 @@
 	],
 	"variable": [
 		{
-			"id": "ac834b98-f27f-41e7-830e-585667afca7e",
+			"id": "ba028aa5-a54d-4414-9881-605f7104587a",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/task_manager",
 			"type": "string"
 		},
 		{
-			"id": "689679ec-09f7-4ba9-a45e-4f29b99b30dc",
+			"id": "361b3a57-7bc3-4d7c-8374-9a1aafac0e45",
 			"key": "taskId",
-			"value": "5ec420cda6355828b60b842c",
+			"value": "5ecff4702078fb229cddda0c",
 			"type": "string"
 		},
 		{
-			"id": "2a5fdd19-e730-4e7b-b33f-a3393b9f384b",
+			"id": "c3528976-5545-4251-ba3d-95217a50e01a",
 			"key": "lastUpdateTs",
 			"value": null,
 			"type": "any"
 		},
 		{
-			"id": "48542962-d853-464e-83ee-0e66a40d3e05",
+			"id": "da946f84-c7bd-4669-b54d-e1db0648565e",
 			"key": "taskTypeId",
-			"value": "5ebd800528b21a1bc194e2c8",
+			"value": "5ecff45b2078fb229cddda0b",
 			"type": "string"
 		},
 		{
-			"id": "e23aa22d-e4e3-4408-b9b6-ac9cb230828f",
+			"id": "b4fe34b7-5acf-457b-a163-d324971a3538",
 			"key": "requesterId",
 			"value": "5ebd80ef829c2405a3064fbe",
 			"type": "string"
 		},
 		{
-			"id": "0d2decdc-7f7e-4cad-9482-d7b2536114b7",
+			"id": "7e18a9f7-8604-4d26-ae38-671f9260deda",
 			"key": "appId",
 			"value": "1",
 			"type": "string"
