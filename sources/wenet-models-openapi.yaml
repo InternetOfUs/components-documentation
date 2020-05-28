@@ -221,7 +221,7 @@ components:
         longitude:
           type: number
           description: longitude of the label for the user
-        
+
     ScoredLabel:
       type: object
       description: Label with score
@@ -252,7 +252,7 @@ components:
         confidence:
           type: number
           description: confidence of the result
-          
+
     CoreWeNetUserProfile:
       type: object
       properties:
@@ -542,6 +542,11 @@ components:
           type: integer
           description: The UTC epoch timestamp representing the deadline time for offering help
           example: 1563920000
+        closeTs:
+          type: integer
+          description: The UTC epoch timestamp representing the time the task is closed. It its not defined the task still open.
+          nullable: true
+          example: 1563930000
         norms:
           type: array
           description: The set of norms that define the interaction of the user when do the task

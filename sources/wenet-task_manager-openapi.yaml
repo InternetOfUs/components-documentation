@@ -34,13 +34,13 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.3.0
+  version: 0.3.1
 servers:
 - url: https://wenet.u-hopper.com/prod/task_manager
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/task_manager
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/task-manager/0.3.0/
+- url: http://ardid.iiia.csic.es/wenet/task-manager/0.3/
   description: IIIA development server
 tags:
 - name: Other
@@ -57,7 +57,7 @@ paths:
       tags:
       - Tasks
       summary: Search for some tasks
-      description: Allow to get a page of task with the specified query parameters
+      description: Allow to get a page of task with the specified query parameters.
       operationId: retrieveTasksPage
       parameters:
       - name: appId
@@ -138,6 +138,29 @@ paths:
       - name: deadlineTo
         in: query
         description: The difference, measured in seconds, between the maximum deadline
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: hasCloseTs
+        in: query
+        description: This is 'true' if the task to return has defined a 'closeTs'.
+          Thus that the tasks are closed.
+        schema:
+          type: boolean
+        example: false
+      - name: closeFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum close
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: closeTo
+        in: query
+        description: The difference, measured in seconds, between the maximum close
           time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
