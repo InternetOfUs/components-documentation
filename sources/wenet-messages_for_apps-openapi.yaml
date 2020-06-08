@@ -207,7 +207,7 @@ components:
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
 
-        * successfull (if completed correctly)
+        * completed (if completed correctly)
 
         * failed (if something went wrong)
 
