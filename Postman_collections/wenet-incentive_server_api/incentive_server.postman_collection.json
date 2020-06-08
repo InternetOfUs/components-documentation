@@ -10,7 +10,7 @@
 		{
 			"name": "searches for all incentive infos of a community of users",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/apps/1/community/46654",
+				"url": "https://localhost:/incentive/apps/1/community/46654",
 				"method": "GET",
 				"header": [
 					{
@@ -232,6 +232,48 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"entityType\": \"string\",\n  \"entityId\": \"string\",\n  \"firstName\": \"Daniel\",\n  \"lastName\": \"ben\",\n  \"emails\": [\n    {\n      \"email\": \"user@example.com\",\n      \"primary\": true\n    }\n  ],\n  \"hasPasswordSet\": \"string\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stream locationevent",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/locationevent",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"locationeventpertime\": {\n\t\t\"experimentId\": \"wenetTest\",\n\t\t\"userid\": \"1\",\n\t\t\"timestamp\": \"201908252357000\",\n\t\t\"day\": \"20190825\",\n\t\t\"accuracy\": 23.2,\n\t\t\"lucene\": \"lucene\",\n\t\t\"provider\": \"gps\",\n\t\t\"speed\": 2.3,\n\t\t\"point\": {\n\t\t\t\"latitude\": 22.1492,\n\t\t\t\"longitude\": -101.03609,\n\t\t\t\"altitude\": 1845.29208\n\t\t}\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stream TouchEvent",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/TouchEvent",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"touchevent\": {\n\t\t\"experimentId\": \"wenetTest\",\n                    \"userid\": \"1\",\n                    \"timestamp\": \"2020052105142943\",\n                    \"day\": \"20200521\"\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stream SocialRelation",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/SocialRelation",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"socialrelations\": {\n\t\t\"experimentid\": \"wenetTest\",\n\t\t\"userid\": \"1\",\n\t\t\"day\": \"20200521\",\n\t\t\"timestamp\": \"202004212357000\",\n\t\t\"source\": \"twitter\",\n\t\t\"content\": {\n\t\t\t\"eventtype\": \"follows\",\n\t\t\t\"value\": \"1\",\n\t\t\t\"userdestinationid\": \"8\"\n\t\t}\n\t}\n}"
 				},
 				"description": ""
 			},

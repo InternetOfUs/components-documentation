@@ -22,6 +22,9 @@
       "name": "Tasks"
     },
     {
+      "name": "Stream"
+    },
+    {
       "name": "norms",
       "description": "post, update and  get norms."
     },
@@ -178,6 +181,129 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/task_status"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/locationevent": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log location",
+        "operationId": "Post stream data I-log location",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/locationevent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/locationevent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/SocialRelation": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log SocialRelation",
+        "operationId": "Post stream data I-log SocialRelation",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/socialrelations"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/socialrelations"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/touchevent": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log touchevent",
+        "operationId": "Post stream data I-log touchevent",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/touchevent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/touchevent"
                 }
               }
             }
@@ -1068,6 +1194,138 @@
           "field": {
             "type": "string",
             "example": "the field X is required"
+          }
+        }
+      },
+      "touchevent": {
+        "type": "object",
+        "properties": {
+          "touchevent": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 2020052105142943
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              }
+            }
+          }
+        }
+      },
+      "socialrelations": {
+        "type": "object",
+        "properties": {
+          "socialrelations": {
+            "type": "object",
+            "properties": {
+              "experimentid": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 202004212357000
+              },
+              "source": {
+                "type": "string",
+                "example": "twitter"
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "eventtype": {
+                    "type": "string",
+                    "example": "follows"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "userdestinationid": {
+                    "type": "string",
+                    "example": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "locationevent": {
+        "type": "object",
+        "properties": {
+          "locationeventpertime": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 201908252357000
+              },
+              "day": {
+                "type": "string",
+                "example": 20190825
+              },
+              "accuracy": {
+                "type": "number",
+                "example": 23.2
+              },
+              "lucene": {
+                "type": "string",
+                "example": "lucene"
+              },
+              "provider": {
+                "type": "string",
+                "example": "gps"
+              },
+              "speed": {
+                "type": "number",
+                "example": 2.3
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number",
+                    "example": 22.1492
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "example": -101.03609
+                  },
+                  "altitude": {
+                    "type": "number",
+                    "example": 1845.29208
+                  }
+                }
+              }
+            }
           }
         }
       },
