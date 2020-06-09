@@ -10,8 +10,8 @@
 		{
 			"name": "searches for all incentive infos of a community of users",
 			"request": {
-				"url": "https://localhost:/incentive/apps/1/community/46654",
-				"method": "GET",
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/Stream/TouchEvent",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -19,7 +19,10 @@
 						"description": ""
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"touchevent\": {\n\n\t\t\"timestamp\": \"202005271sdaads1150800\",\n\t\t\"userid\": \"1\",\n\t\t\"experimentid\": \"wenetTest\",\n\t\t\"type\": \"None\"\n\t}\n}"
+				},
 				"description": ""
 			},
 			"response": []
@@ -122,7 +125,7 @@
 			"response": []
 		},
 		{
-			"name": "Create BadgeTypes",
+			"name": "Create BadgeClass",
 			"event": [
 				{
 					"listen": "test",
@@ -145,7 +148,7 @@
 				}
 			],
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers/TAgRa3NxT0yme-iYBrtyeQ/badgeTypes",
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers/TAgRa3NxT0yme-iYBrtyeQ/BadgeClasses",
 				"method": "POST",
 				"header": [
 					{
@@ -169,14 +172,14 @@
 			"response": []
 		},
 		{
-			"name": "Update an existing BadgeType ",
+			"name": "Update an existing BadgeClass",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/5ealYJioSYiZVpXMrBT6ww",
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/kFV-IDMRSmyHeW4CBab3dg",
 				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
+						"value": "application/json",
 						"description": ""
 					},
 					{
@@ -186,7 +189,10 @@
 						"disabled": true
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"My Newest Tiny BadgeClass 3\",\n\t\"description\": \"New desc\"\n}"
+				},
 				"description": ""
 			},
 			"response": []
@@ -194,7 +200,7 @@
 		{
 			"name": "Issue an Assertion to a single recipient",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/Od4wk54eRGuYWRkki95ijA/assertions",
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/Od4wk54eRGuYWRkki95ijA/assertions",
 				"method": "POST",
 				"header": [
 					{
@@ -214,7 +220,7 @@
 		{
 			"name": "get a list of assertions for a single BadgeType",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/badgeTypes/5ealYJioSYiZVpXMrBT6ww/assertions/",
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/5ealYJioSYiZVpXMrBT6ww/assertions/",
 				"method": "GET",
 				"header": [
 					{
@@ -274,6 +280,26 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"socialrelations\": {\n\t\t\"experimentid\": \"wenetTest\",\n\t\t\"userid\": \"1\",\n\t\t\"day\": \"20200521\",\n\t\t\"timestamp\": \"202004212357000\",\n\t\t\"source\": \"twitter\",\n\t\t\"content\": {\n\t\t\t\"eventtype\": \"follows\",\n\t\t\t\"value\": \"1\",\n\t\t\t\"userdestinationid\": \"8\"\n\t\t}\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST a Task status ",
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/incentive_server/Tasks/TaskStatus/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"WeNet_user5\",\n  \"community_id\": \"WeNet_community_5\",\n  \"task_id\": \"WeNet_task\",\n  \"Action\": \"Starts\"\n}"
 				},
 				"description": ""
 			},
