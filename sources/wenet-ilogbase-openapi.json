@@ -14,7 +14,7 @@
   },
   "servers": [
     {
-      "url": "http://streambase1.disi.unitn.it:8096/"
+      "url": "https://wenet.u-hopper.com/dev/streambase"
     }
   ],
   "paths": {
