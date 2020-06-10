@@ -2,56 +2,9 @@ openapi: 3.0.1
 info:
   title: WeNet - Profile manager API
   description: |-
-    This API will be used to storing and maintaining the WeNet user profile. A profile is a set of attributes, and their current values represent the state of the user. These attributes can be:
+    The profile manager component is the one responsible for storing and maintaining the WeNet user profiles and its historic. An user profile is a set of attributes that define the state of the user. Some of these attributes are filled in by the user, such as name, email, telephone,..., or by  other components of the platform, such as social relationships, routines,.... Every time a profile is modified a copy of the previous profile values is stored in the historic. This allows to know, to the rest of components, how the state of the user evolves in the time.
 
-     * **id**: identifier of the WeNet user.
-     * **name**: the name of the user.
-     * **dateOfBirth**: the date of birth of the user.
-     * **gender**: the gender of the user.
-     * **email**: the email of the user.
-     * **phoneNumber**: the phone number of the user, on the E.164 format (^\+?[1-9]\d{1,14}$).
-     * **locale**: the locale used by the user.
-     * **avatar**: the URL to an image that can be used as an avatar of the user.
-     * **nationality**: the nationality of the user.
-     * **languages**: this is a set of languages that the user can understand.
-     * **occupation**: the occupation of the user.
-     * **norms**: the individual norms of the user.
-     * **plannedActivities**: the activities planned by the user.
-     * **relevantLocations**: the locations of interest for the user - may be the home or work location -.
-     * **relationships**: the relations of this user with other users.
-     * **socialPractices**: the social practices of the user.
-     * **personalBehaviours**: the personal behaviors of the user.
-
-
-    ### Language
-    The languages that a user can understand are defined by the **ISO 639-1** code of the language and the linguistic ability level of the person. This level can be:
-
-     * **A0**: Beginner/False beginner. The person only knows a few words of the language, if that.
-     * **A1**: Elementary. The person can ask a few basic questions and ideas, but with a lot of mistakes.
-     * **A2**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.
-               It stills to make a lot of big mistakes.
-     * **B1**: Pre-intermediate. Limited vocabulary, but with some help the person can participate in basic conversations.
-               It stills to make a lot of big mistakes.
-     * **B2**: Intermediate. Now the person can converse in many situations, with less serious errors.
-     * **C1**: Upper-intermediate. The person is comfortable in most situations, still some good mistakes.
-     * **C2**: Proficient. The person is fluent, pretty much mother tongue. Extremely comfortable, it has complete control over the language.
-
-
-    ### Gender
-    The gender of a user can be:
-
-     * **F**: A person whose gender identity matches the female sex.
-     * **M**: A person whose gender identity matches the male sex.
-
-    ### Trust
-    The trust over another user is dynamically and will be updated every time they collaborate to achieve a task. When an user has received help it can rate the performance of the user that had helped it. For this it has to post a **UserPerformanceRatingEvent**.
-    When an user want to konw its trust of another user it can ask for the trust for a community or taskType, and also specify how the trust has to be calculated. The aggregation of **UserPerformanceRatingEvent** that generated the trust of an user repect another, you can use the next functions:
-
-     * **RECENCY_BASED** this is based on the recency rating events. It is the function used on uHelp.
-     * **AVERAGE** the trust is the average of the rating event.
-     * **MEDIAN** the trust is the median of the rating event.
-     * **MINIMUM** the trust is the minimum rating.
-     * **MAXIMUM** the trust is the maximum rating.
+    Another responsibility of the profile manager is to evaluate the trust of one user over another when it is doing some action. The trust is dynamic and will be updated every time they collaborate to achieve a task. When a user has received help it can rate the performance of the user that has helped it. For this it has to post a performance rating event to the profile manager. These events are used by the profile manager when it has to provide the trust that has an user that another does a certain action.
   contact:
     name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
     email: rosell@iiia.csic.es
@@ -60,10 +13,12 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 0.11.0
 servers:
-- url: http://ardid.iiia.csic.es/wenet-profile-manager/0.12.0/
-  description: Testing server
-- url: https://wenet.u-hopper.com/profile_manager/
-  description: Production server
+- url: https://wenet.u-hopper.com/prod/profile_manager
+  description: WeNet production server
+- url: https://wenet.u-hopper.com/dev/profile_manager
+  description: WeNet development server server
+- url: http://ardid.iiia.csic.es/wenet/profile-manager/0.3.0/
+  description: IIIA development server
 tags:
 - name: Other
   description: Other services provided by the API.
@@ -298,8 +253,8 @@ paths:
     get:
       tags:
       - Profiles
-      summary: Return a profile associated to the identifier
-      description: Allow to get a profile associated to an identifier
+      summary: Return a profile
+      description: Allow to get the profile with the specified identifier
       operationId: retrieveProfile
       parameters:
       - name: userId
@@ -473,8 +428,8 @@ paths:
     delete:
       tags:
       - Profiles
-      summary: Delete the profile associated to the identifier
-      description: Allow to delete a profile associated to an identifier
+      summary: Delete a profiler
+      description: Allow to delete a profile with an specific identifier
       operationId: deleteProfile
       parameters:
       - name: userId
@@ -567,6 +522,30 @@ paths:
           description: Not found profile
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /trusts/rating:
+    post:
+      tags:
+      - Trusts
+      summary: Rate an user performance
+      description: Store an event that rating the performance of an user over a task
+        that it has done in WeNet
+      operationId: addTrustEvent
+      requestBody:
+        description: The event to store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPerformanceRatingEvent'
+        required: true
+      responses:
+        "204":
+          description: The event has been stored
+        "400":
+          description: Bad event
+          content:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /trusts/{sourceId}/with/{targetId}:
@@ -662,30 +641,6 @@ paths:
           description: Bad request
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /trusts/rating:
-    post:
-      tags:
-      - Trusts
-      summary: Rate an user performance
-      description: Store an event that rating the performance of an user over a task
-        that it has done in WeNet
-      operationId: addTrustEvent
-      requestBody:
-        description: The event to store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserPerformanceRatingEvent'
-        required: true
-      responses:
-        "204":
-          description: The event has been stored
-        "400":
-          description: Bad event
-          content:
-            '*/*':
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /versions:
@@ -926,21 +881,6 @@ components:
       description: Contains a set of profiles found
     WeNetUserProfile:
       $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-    Trust:
-      type: object
-      properties:
-        value:
-          type: number
-          description: The trust over an user respect another. It has to be on the
-            range [0,1].
-          example: 0.43
-        calculatedTime:
-          type: integer
-          description: The difference, measured in seconds, between the trust was
-            calculated and midnight, January 1, 1970 UTC.
-          format: int64
-          example: 1571412479710
-      description: The calculated trust between two users.
     UserPerformanceRatingEvent:
       type: object
       properties:
@@ -990,6 +930,21 @@ components:
           example: 1571412479710
       description: The event is used to rate the performance of an user over a task
         that it has done in WeNet.
+    Trust:
+      type: object
+      properties:
+        value:
+          type: number
+          description: The trust over an user respect another. It has to be on the
+            range [0,1].
+          example: 0.43
+        calculatedTime:
+          type: integer
+          description: The difference, measured in seconds, between the trust was
+            calculated and midnight, January 1, 1970 UTC.
+          format: int64
+          example: 1571412479710
+      description: The calculated trust between two users.
     version:
       type: object
       properties:

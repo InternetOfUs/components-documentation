@@ -166,14 +166,14 @@ components:
           example: A user volunteer to participate in your task, check him out!
 
     TaskSelectionNotification:
-      description: This notification is used in order to notify the user who volunteerd about the decision of the task creator
+      description: This notification is used in order to notify the user who volunteered about the decision of the task creator
       allOf:
         - $ref: '#/components/schemas/TaskNotification'
       properties:
         notificationType:
-          example: selecitonVolunteer
+          example: selectionVolunteer
           enum:
-            - selecitonVolunteer
+            - selectionVolunteer
         title:
           example: You have been accepted as volunteer
         text:
@@ -207,7 +207,7 @@ components:
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
 
-        * successfull (if completed correctly)
+        * completed (if completed correctly)
 
         * failed (if something went wrong)
 

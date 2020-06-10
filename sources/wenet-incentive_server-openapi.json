@@ -22,6 +22,9 @@
       "name": "Tasks"
     },
     {
+      "name": "Stream"
+    },
+    {
       "name": "norms",
       "description": "post, update and  get norms."
     },
@@ -30,12 +33,12 @@
       "description": "An Issuer Profile describes a person that awards Open Badges"
     },
     {
-      "name": "Badges_BadgeType",
-      "description": "A BadgeType is a type of badge that an Issuer may award over and over (creating many Assertions of that BadgeType, each for a different recipient)"
+      "name": "Badges_BadgeClass",
+      "description": "A BadgeClass is a type of badge that an Issuer may award over and over (creating many Assertions of that BadgeClass, each for a different recipient)"
     },
     {
       "name": "Badges_Assertions",
-      "description": "An Assertion is an instance of a BadgeType  that is awarded to one recipient."
+      "description": "An Assertion is an instance of a BadgeClass  that is awarded to one recipient."
     }
   ],
   "paths": {
@@ -154,7 +157,7 @@
         }
       }
     },
-    "/Tasks": {
+    "/Tasks/TaskStatus": {
       "post": {
         "tags": [
           "Tasks"
@@ -178,6 +181,170 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/task_status"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/locationevent": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log location",
+        "operationId": "Post stream data I-log location",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/locationevent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/locationevent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/SocialRelation": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log SocialRelation",
+        "operationId": "Post stream data I-log SocialRelation",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/socialrelations"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/socialrelations"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/touchevent": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log touchevent",
+        "operationId": "Post stream data I-log touchevent",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/touchevent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/touchevent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Stream/TimeDiariesAnswers": {
+      "post": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Post stream data I-log TimeDiariesAnswers",
+        "operationId": "Post stream data I-log TimeDiariesAnswers",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/timediariesanswers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/timediariesanswers"
                 }
               }
             }
@@ -575,7 +742,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/incentive_info_community"
+                    "$ref": "#/components/schemas/incentive_info_user"
                   }
                 }
               }
@@ -630,20 +797,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "in": "query",
-            "name": "community_id",
-            "description": "the community id  which the incentive relates",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful search.",
+            "description": "successful search",
             "content": {
               "application/json": {
                 "schema": {
@@ -847,7 +1005,7 @@
         ]
       }
     },
-    "/badges/issuers/{entity_id}/badgeTypes": {
+    "/badges/issuers/{entity_id}/BadgeClasses": {
       "post": {
         "security": [
           {
@@ -856,14 +1014,14 @@
             ]
           }
         ],
-        "summary": "Create a new BadgeType",
+        "summary": "Create a new BadgeClass",
         "responses": {
           "201": {
             "description": "Successfully created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/definitions/BadgeType"
+                  "$ref": "#/definitions/BadgeClass"
                 }
               }
             }
@@ -876,7 +1034,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/BadgeType"
+                "$ref": "#/definitions/BadgeClass"
               }
             }
           }
@@ -892,11 +1050,11 @@
           }
         ],
         "tags": [
-          "Badges_BadgeType"
+          "Badges_BadgeClass"
         ]
       }
     },
-    "/badges/badgeTypes/{entity_id}": {
+    "/badges/BadgeClasses/{entity_id}": {
       "put": {
         "security": [
           {
@@ -906,14 +1064,14 @@
             ]
           }
         ],
-        "summary": "Update an existing BadgeType.  Previously issued BadgeInstances will NOT be updated",
+        "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
         "responses": {
           "200": {
             "description": "Successfully updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/definitions/BadgeType"
+                  "$ref": "#/definitions/BadgeClass"
                 }
               }
             }
@@ -922,7 +1080,7 @@
             "description": "Validation error"
           },
           "404": {
-            "description": "BadgeType not found"
+            "description": "BadgeClass not found"
           }
         },
         "parameters": [
@@ -939,17 +1097,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/BadgeType_put"
+                "$ref": "#/definitions/BadgeClass_put"
               }
             }
           }
         },
         "tags": [
-          "Badges_BadgeType"
+          "Badges_BadgeClass"
         ]
       }
     },
-    "/badges/badgeTypes/{entity_id}/assertions": {
+    "/badges/BadgeClasses/{entity_id}/assertions": {
       "post": {
         "security": [
           {
@@ -982,7 +1140,7 @@
               "type": "string"
             },
             "name": "entity_id",
-            "description": "badgeType entity_id",
+            "description": "BadgeClass entity_id",
             "in": "path"
           }
         ],
@@ -1008,7 +1166,7 @@
             ]
           }
         ],
-        "summary": "Get a list of Assertions for a single BadgeType",
+        "summary": "Get a list of Assertions for a single BadgeClass",
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -1080,12 +1238,242 @@
           }
         }
       },
+      "touchevent": {
+        "type": "object",
+        "properties": {
+          "touchevent": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 2020052105142943
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              }
+            }
+          }
+        }
+      },
+      "timediariesanswers": {
+        "type": "object",
+        "properties": {
+          "timediariesanswers": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userId": {
+                "type": "string",
+                "example": 1
+              },
+              "instanceid": {
+                "type": "string",
+                "example": "instance26141"
+              },
+              "instancetimestamp": {
+                "type": "string",
+                "example": 20200525221719000
+              },
+              "notificationtimestamp": {
+                "type": "string",
+                "example": 20200525221719000
+              },
+              "answertimestamp": {
+                "type": "string",
+                "example": 20200525221719000
+              },
+              "delta": {
+                "type": "integer",
+                "format": "int32",
+                "example": 6141
+              },
+              "answerduration": {
+                "type": "integer",
+                "format": "int32",
+                "example": 550
+              },
+              "answer": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "cnt": {
+                        "type": "string",
+                        "example": "reading"
+                      },
+                      "qid": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                      },
+                      "aid": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 4
+                      },
+                      "cid": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 3405
+                      }
+                    }
+                  }
+                }
+              },
+              "payload": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "payload": {
+                      "type": "object",
+                      "properties": null
+                    },
+                    "qid": {
+                      "type": "string",
+                      "example": 1
+                    }
+                  }
+                }
+              },
+              "day": {
+                "type": "string",
+                "example": 20200525
+              }
+            }
+          }
+        }
+      },
+      "socialrelations": {
+        "type": "object",
+        "properties": {
+          "socialrelations": {
+            "type": "object",
+            "properties": {
+              "experimentid": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 202004212357000
+              },
+              "source": {
+                "type": "string",
+                "example": "twitter"
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "eventtype": {
+                    "type": "string",
+                    "example": "follows"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "userdestinationid": {
+                    "type": "string",
+                    "example": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "locationevent": {
+        "type": "object",
+        "properties": {
+          "locationeventpertime": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 201908252357000
+              },
+              "day": {
+                "type": "string",
+                "example": 20190825
+              },
+              "accuracy": {
+                "type": "number",
+                "example": 23.2
+              },
+              "lucene": {
+                "type": "string",
+                "example": "lucene"
+              },
+              "provider": {
+                "type": "string",
+                "example": "gps"
+              },
+              "speed": {
+                "type": "number",
+                "example": 2.3
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number",
+                    "example": 22.1492
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "example": -101.03609
+                  },
+                  "altitude": {
+                    "type": "number",
+                    "example": 1845.29208
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "task_status": {
         "type": "object",
         "properties": {
           "user_id": {
             "type": "string",
             "example": "WeNet_user5"
+          },
+          "community_id": {
+            "type": "string",
+            "example": "WeNet_community_5"
           },
           "task_id": {
             "type": "string",
@@ -1103,8 +1491,7 @@
         "required": [
           "user_id",
           "task_id",
-          "Action",
-          "message"
+          "Action"
         ]
       },
       "wrong_community_id": {
@@ -1271,25 +1658,115 @@
         }
       },
       "incentive_info_user": {
-        "type": "object",
-        "required": [
-          "user_id",
-          "incentive_type",
-          "incentive_quantity"
-        ],
         "properties": {
-          "user_id": {
-            "type": "integer",
-            "example": 12345
-          },
-          "incentive_type": {
-            "type": "integer",
-            "example": 2
+          "app_id": {
+            "type": "string",
+            "example": "dsad"
           },
           "incentive_quantity": {
             "type": "number",
-            "format": "float",
             "example": 0.89
+          },
+          "incentives": {
+            "type": "object",
+            "properties": {
+              "messages": {
+                "type": "object",
+                "properties": {
+                  "message_content": {
+                    "type": "string",
+                    "example": "greatjob"
+                  }
+                }
+              },
+              "badges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "issuedOn": {
+                      "type": "string",
+                      "example": "2020-05-17T13:53:16.075Z"
+                    },
+                    "expires": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "revoked": {
+                      "type": "boolean"
+                    },
+                    "badgeclassOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/public/badges/DqQzjMKWQNipb1o9Fbaqjw"
+                    },
+                    "issuerOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/public/issuers/mT7hgXVkQMShRxRWIusVSg"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://45.83.41.233:8000/media/uploads/badges/assertion-MoCTfswuQE2O0FYKzClCCA.png"
+                    },
+                    "entityType": {
+                      "type": "string",
+                      "example": "Assertion"
+                    },
+                    "badgeclass": {
+                      "type": "string",
+                      "example": "DqQzjMKWQNipb1o9Fbaqjw"
+                    },
+                    "createdBy": {
+                      "type": "string",
+                      "example": "R7Kk2wD3RJaNLVIjqckQWw"
+                    },
+                    "narrative": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "revocationReason": {
+                      "type": "string",
+                      "format": "nullable"
+                    },
+                    "entityId": {
+                      "type": "string",
+                      "example": "MoCTfswuQE2O0FYKzClCCA"
+                    },
+                    "recipient": {
+                      "type": "object",
+                      "properties": {
+                        "salt": {
+                          "type": "string",
+                          "example": "4bafbe8b878e427aa26c4ad66949dd79"
+                        },
+                        "plaintextIdentity": {
+                          "type": "string",
+                          "example": "ahunter@cook.biz"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "email"
+                        },
+                        "hashed": {
+                          "type": "boolean"
+                        },
+                        "identity": {
+                          "type": "string",
+                          "example": "sha256$48e716dc0a6e467ece2255a7110bb2d50172269e9125a5696952a31167093347"
+                        }
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-05-17T13:53:16.078Z"
+                    },
+                    "issuer": {
+                      "type": "string",
+                      "example": "mT7hgXVkQMShRxRWIusVSg"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -1370,14 +1847,14 @@
           "description": "BadgeUser who created the Assertion",
           "format": "entityId"
         },
-        "badgeType": {
+        "BadgeClass": {
           "type": "string",
-          "description": "BadgeType that issued this Assertion",
+          "description": "BadgeClass that issued this Assertion",
           "format": "entityId"
         },
         "badgeclassOpenBadgeId": {
           "type": "string",
-          "description": "URL of the BadgeType to award",
+          "description": "URL of the BadgeClass to award",
           "format": "url"
         },
         "issuer": {
@@ -1459,7 +1936,7 @@
         },
         "badgeclassName": {
           "type": "string",
-          "description": "Name of BadgeType to create assertion against, case insensitive",
+          "description": "Name of BadgeClass to create assertion against, case insensitive",
           "format": "string"
         }
       }
@@ -1479,7 +1956,7 @@
         }
       }
     },
-    "BadgeType_put": {
+    "BadgeClass_put": {
       "required": [
         "name",
         "description"
@@ -1487,12 +1964,12 @@
       "properties": {
         "entityType": {
           "type": "string",
-          "description": "\"BadgeType\"",
+          "description": "\"BadgeClass\"",
           "format": "string"
         },
         "entityId": {
           "type": "string",
-          "description": "Unique identifier for this BadgeType",
+          "description": "Unique identifier for this BadgeClass",
           "format": "string"
         },
         "openBadgeId": {
@@ -1502,17 +1979,17 @@
         },
         "createdAt": {
           "type": "string",
-          "description": "Timestamp when the BadgeType was created",
+          "description": "Timestamp when the BadgeClass was created",
           "format": "ISO8601 timestamp"
         },
         "createdBy": {
           "type": "string",
-          "description": "BadgeUser who created this BadgeType",
+          "description": "BadgeUser who created this BadgeClass",
           "format": "entityId"
         },
         "issuer": {
           "type": "string",
-          "description": "entityId of the Issuer who owns the BadgeType",
+          "description": "entityId of the Issuer who owns the BadgeClass",
           "format": "entityId"
         },
         "issuerOpenBadgeId": {
@@ -1521,22 +1998,22 @@
         },
         "name": {
           "type": "string",
-          "description": "Name of the BadgeType",
+          "description": "Name of the BadgeClass",
           "format": "string"
         },
         "image": {
           "type": "string",
-          "description": "Base64 encoded string of an image that represents the BadgeType.",
+          "description": "Base64 encoded string of an image that represents the BadgeClass.",
           "format": "data:image/png;base64"
         },
         "description": {
           "type": "string",
-          "description": "Short description of the BadgeType",
+          "description": "Short description of the BadgeClass",
           "format": "string"
         },
         "criteriaUrl": {
           "type": "string",
-          "description": "External URL that describes in a human-readable format the criteria for the BadgeType",
+          "description": "External URL that describes in a human-readable format the criteria for the BadgeClass",
           "format": "url"
         },
         "criteriaNarrative": {
@@ -1546,13 +2023,13 @@
         },
         "alignments": {
           "items": {
-            "$ref": "#/definitions/BadgeTypeAlignment"
+            "$ref": "#/definitions/BadgeClassAlignment"
           },
           "type": "array",
           "description": "List of objects describing objectives or educational standards"
         },
         "tags": {
-          "description": "List of tags that describe the BadgeType,one or more strings.",
+          "description": "List of tags that describe the BadgeClass,one or more strings.",
           "items": {
             "type": "string",
             "format": "string"
@@ -1560,8 +2037,8 @@
           "type": "array"
         },
         "expires": {
-          "description": "Expiration period for Assertions awarded from this BadgeType",
-          "$ref": "#/definitions/BadgeTypeExpiration"
+          "description": "Expiration period for Assertions awarded from this BadgeClass",
+          "$ref": "#/definitions/BadgeClassExpiration"
         },
         "extensions": {
           "type": "string",
@@ -1569,7 +2046,7 @@
         }
       }
     },
-    "BadgeType": {
+    "BadgeClass": {
       "required": [
         "name",
         "description",
@@ -1579,12 +2056,12 @@
       "properties": {
         "entityType": {
           "type": "string",
-          "description": "\"BadgeType\"",
+          "description": "\"BadgeClass\"",
           "format": "string"
         },
         "entityId": {
           "type": "string",
-          "description": "Unique identifier for this BadgeType",
+          "description": "Unique identifier for this BadgeClass",
           "format": "string"
         },
         "openBadgeId": {
@@ -1594,17 +2071,17 @@
         },
         "createdAt": {
           "type": "string",
-          "description": "Timestamp when the BadgeType was created",
+          "description": "Timestamp when the BadgeClass was created",
           "format": "ISO8601 timestamp"
         },
         "createdBy": {
           "type": "string",
-          "description": "BadgeUser who created this BadgeType",
+          "description": "BadgeUser who created this BadgeClass",
           "format": "entityId"
         },
         "issuer": {
           "type": "string",
-          "description": "entityId of the Issuer who owns the BadgeType",
+          "description": "entityId of the Issuer who owns the BadgeClass",
           "format": "entityId"
         },
         "issuerOpenBadgeId": {
@@ -1613,22 +2090,22 @@
         },
         "name": {
           "type": "string",
-          "description": "Name of the BadgeType",
+          "description": "Name of the BadgeClass",
           "format": "string"
         },
         "image": {
           "type": "string",
-          "description": "Base64 encoded string of an image that represents the BadgeType.",
+          "description": "Base64 encoded string of an image that represents the BadgeClass.",
           "format": "data:image/png;base64"
         },
         "description": {
           "type": "string",
-          "description": "Short description of the BadgeType",
+          "description": "Short description of the BadgeClass",
           "format": "string"
         },
         "criteriaUrl": {
           "type": "string",
-          "description": "External URL that describes in a human-readable format the criteria for the BadgeType",
+          "description": "External URL that describes in a human-readable format the criteria for the BadgeClass",
           "format": "url"
         },
         "criteriaNarrative": {
@@ -1638,13 +2115,13 @@
         },
         "alignments": {
           "items": {
-            "$ref": "#/definitions/BadgeTypeAlignment"
+            "$ref": "#/definitions/BadgeClassAlignment"
           },
           "type": "array",
           "description": "List of objects describing objectives or educational standards"
         },
         "tags": {
-          "description": "List of tags that describe the BadgeType,one or more strings.",
+          "description": "List of tags that describe the BadgeClass,one or more strings.",
           "items": {
             "type": "string",
             "format": "string"
@@ -1652,8 +2129,8 @@
           "type": "array"
         },
         "expires": {
-          "description": "Expiration period for Assertions awarded from this BadgeType",
-          "$ref": "#/definitions/BadgeTypeExpiration"
+          "description": "Expiration period for Assertions awarded from this BadgeClass",
+          "$ref": "#/definitions/BadgeClassExpiration"
         },
         "extensions": {
           "type": "string",
@@ -1661,7 +2138,7 @@
         }
       }
     },
-    "BadgeTypeAlignment": {
+    "BadgeClassAlignment": {
       "required": [
         "targetName",
         "targetUrl"
@@ -1689,7 +2166,7 @@
         }
       }
     },
-    "BadgeTypeExpiration": {
+    "BadgeClassExpiration": {
       "required": [
         "amount",
         "duration"
