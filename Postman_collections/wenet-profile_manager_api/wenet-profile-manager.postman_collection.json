@@ -316,6 +316,120 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Rate user performance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sourceId\": \"{{sourceId}}\",\n    \"targetId\": \"{{targetId}}\",\n    \"appId\": \"{{appId}}\",\n    \"rating\": 0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/trusts/rating",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"trusts",
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get trust for user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sourceId\": \"{{sourceId}}\",\n    \"targetId\": \"{{targetId}}\",\n    \"appId\": \"{{appId}}\",\n    \"rating\": 0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/trusts/{{sourceId}}/with/{{targetId}}?appId={{appId}}&aggregator=RECENCY_BASED",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"trusts",
+						"{{sourceId}}",
+						"with",
+						"{{targetId}}"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": "{{appId}}"
+						},
+						{
+							"key": "communityId",
+							"value": "{{communityId}}",
+							"disabled": true
+						},
+						{
+							"key": "taskTypeId",
+							"value": "{{taskTypeId}}",
+							"disabled": true
+						},
+						{
+							"key": "taskId",
+							"value": "{{taskId}}",
+							"disabled": true
+						},
+						{
+							"key": "relationship",
+							"value": "{{relationship}}",
+							"disabled": true
+						},
+						{
+							"key": "reportFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "reportTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "aggregator",
+							"value": "RECENCY_BASED",
+							"description": "Type of aggregation: RECENCY_BASED, MAXIMUM,MINIMUM, AVERAGE or MEDIAN"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -342,28 +456,70 @@
 	],
 	"variable": [
 		{
-			"id": "f5ba2228-8b06-40b5-b828-062b0cb35c27",
+			"id": "cf0e3bce-a664-4f5a-8a88-cad1a52b1306",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/profile_manager",
 			"type": "string"
 		},
 		{
-			"id": "9aadf1a8-ce3d-4198-905e-d2869534cec7",
+			"id": "57869045-866e-4710-9969-619a87194952",
 			"key": "profileId",
-			"value": "5ebd80ef829c2405a3064fbe",
+			"value": "5ee24d887639bb23c1e3ec20",
 			"type": "string"
 		},
 		{
-			"id": "c7843bd2-57d6-4e8c-b8b1-3f3c57689e2d",
+			"id": "c762a2d5-8434-4fa0-b28f-e78f90b5271c",
 			"key": "creationTs",
-			"value": 1589477616,
+			"value": 1591889289,
 			"type": "number"
 		},
 		{
-			"id": "3b8bd1f7-bdff-4e4c-adc6-d60028d3f974",
+			"id": "7d92e79d-ba5f-415c-b302-9690782b9ad6",
 			"key": "lastUpdateTs",
-			"value": 1589477616,
+			"value": 1591889289,
 			"type": "number"
+		},
+		{
+			"id": "6feebdd4-b217-492c-b378-68e0ec3b47ff",
+			"key": "appId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "15b1371a-6e1b-40c3-a21e-fda1b42b0993",
+			"key": "taskId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "660dd2aa-8404-4eb5-9e63-b5a548e548d7",
+			"key": "taskTypeId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "a933354f-37a8-4d2f-8918-eeff113482ec",
+			"key": "communityId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "d11e8c8b-2016-4a52-8050-28ff099770b6",
+			"key": "sourceId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "b69d1bc7-8933-49c3-8841-4e15aae94235",
+			"key": "targetId",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"id": "69b44bbe-9e53-424f-92db-a24db3fea906",
+			"key": "relationship",
+			"value": "",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}
