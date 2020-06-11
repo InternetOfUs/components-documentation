@@ -4,7 +4,13 @@ info:
   description: |-
     The profile manager component is the one responsible for storing and maintaining the WeNet user profiles and its historic. An user profile is a set of attributes that define the state of the user. Some of these attributes are filled in by the user, such as name, email, telephone,..., or by  other components of the platform, such as social relationships, routines,.... Every time a profile is modified a copy of the previous profile values is stored in the historic. This allows to know, to the rest of components, how the state of the user evolves in the time.
 
-    Another responsibility of the profile manager is to evaluate the trust of one user over another when it is doing some action. The trust is dynamic and will be updated every time they collaborate to achieve a task. When a user has received help it can rate the performance of the user that has helped it. For this it has to post a performance rating event to the profile manager. These events are used by the profile manager when it has to provide the trust that has an user that another does a certain action.
+    Another responsibility of the profile manager is to evaluate the trust of one user over another when it is doing some action. The trust is dynamic and will be updated every time they collaborate to achieve a task. When a user has received help it can rate the performance of the user that has helped it. For this it has to post a performance rating event to the profile manager. These events are used by the profile manager when it has to provide the trust that has an user that another does a certain action. When you want to calculate the trust, you must specify some parameters that are used to select with events has to be aggregated to obtain the trust. Also you must define the aggregation function, that can be:
+
+     - RECENCY_BASED: the trust is the averge of the last 'n' rating events. At the moment n=5.
+     - AVERAGE: the trust is the average of all the rating events.
+     - MEDIAN: the trust is the median of all the rating events.
+     - MINIMUM: the trust is the minimum rating of all the events.
+     - MAXIMUM: the trust is the maximum rating of all the events.
   contact:
     name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
     email: rosell@iiia.csic.es
@@ -540,8 +546,12 @@ paths:
               $ref: '#/components/schemas/UserPerformanceRatingEvent'
         required: true
       responses:
-        "204":
+        "201":
           description: The event has been stored
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserPerformanceRatingEvent'
         "400":
           description: Bad event
           content:
@@ -557,66 +567,6 @@ paths:
         general, respect the relationship, on a community or by task type.
       operationId: calculateTrust
       parameters:
-      - name: membership
-        in: query
-        description: The type of relationship with the user that is calculating the
-          trust. It can be a Perl compatible regular expressions (PCRE) that has to
-          match the relationships on the trust events to aggregate.
-        schema:
-          type: string
-          example: friend
-      - name: communityId
-        in: query
-        description: The identifier of the community to get the trust. It can be a
-          Perl compatible regular expressions (PCRE) that has to match the community
-          identifiers on the trust events to aggregate.
-        schema:
-          type: string
-          example: 88cb96277edd
-      - name: taskTypeId
-        in: query
-        description: The identifier of the task type to get the trust. It can be a
-          Perl compatible regular expressions (PCRE) that has to match the task type
-          identifiers on the trust events to aggregate.
-        schema:
-          type: string
-          example: 77edd88cb962
-      - name: reportFrom
-        in: query
-        description: The time stamp inclusive that mark the older limit in witch the
-          trust event has reported. It is the difference, measured in seconds, between
-          the time when the trust events were reported and midnight, January 1, 1970
-          UTC.
-        schema:
-          type: integer
-          format: int64
-          example: 1457166440
-          default: 0
-      - name: reportTo
-        in: query
-        description: The time stamp inclusive that mark the newest limit in witch
-          the trust event has reported. It is the difference, measured in seconds,
-          between the time when the trust events were reported and midnight, January
-          1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-          example: 1571664406
-          default: 92233720368547757
-      - name: aggregation
-        in: query
-        description: The type of aggregation that has to be used to calculate the
-          trust.
-        schema:
-          type: string
-          example: "1571664406"
-          default: RECENCY_BASED
-          enum:
-          - RECENCY_BASED
-          - AVERAGE
-          - MEDIAN
-          - MINIMUM
-          - MAXIMUM
       - name: sourceId
         in: path
         description: The identifier as reference that want to obtain the trust respect
@@ -630,6 +580,86 @@ paths:
         required: true
         schema:
           type: string
+      - name: appId
+        in: query
+        description: An application identifier to be equals on the events to use on
+          the calculus. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the application identifier of the events to use on the calculus
+          if you write between '/'. For example to use the events for the aplications
+          '1' and '2' you must pass as 'appId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: communityId
+        in: query
+        description: An community identifier to be equals on the events to use on
+          the calculus. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the application identifier of events to use on the calculus
+          if you write between '/'. For example to use the events for the communities
+          '1' and '2' you must pass as 'communityId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: taskTypeId
+        in: query
+        description: An task type identifier to be equals on the events to use on
+          the calculus. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the application identifier of events to use on the calculus
+          if you write between '/'. For example to use the events for the task types
+          '1' and '2' you must pass as 'taskTypeId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: taskId
+        in: query
+        description: An task identifier to be equals on the events to use on the calculus.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the application identifier of the events to use on the calculus if you write
+          between '/'. For example to use the events for the tasks '1' and '2' you
+          must pass as 'taskId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: relationship
+        in: query
+        description: A relationship to be equals on the events to use on the calculus.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the application identifier of the tasks to return if you write between '/'.
+          For example to use the events for the relationships 'friend' and 'family'
+          you must pass as 'relationship' '/^[friend|family]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: reportFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum report
+          time stamp of the event and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: reportTo
+        in: query
+        description: The difference, measured in seconds, between the maximum report
+          time stamp of the event and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: aggregator
+        in: query
+        description: The type of aggregation that has to be used to calculate the
+          trust.
+        schema:
+          type: string
+          example: MAXIMUM
+          default: RECENCY_BASED
+          enum:
+          - RECENCY_BASED
+          - AVERAGE
+          - MEDIAN
+          - MINIMUM
+          - MAXIMUM
       responses:
         "200":
           description: The calculated trust
@@ -903,6 +933,11 @@ components:
           - follower
           - family
           - acquaintance
+        appId:
+          type: string
+          description: The identifier of the application where the user has performed
+            the task
+          example: 7ens723h6ty32
         communityId:
           type: string
           description: The identifier of the community where the user has performed
