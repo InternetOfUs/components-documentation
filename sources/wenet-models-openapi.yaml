@@ -198,12 +198,11 @@ components:
             - family
             - acquaintance
           example: friend
-        # acl:
-        #   anyOf:
-        #     - $ref: '#/components/schemas/PublicACL'
-        #     - $ref: '#/components/schemas/PrivateACL'
-        #     - $ref: '#/components/schemas/CustomACL'
-        # trustLevel:
+        weight:
+          type: number
+          nullable: true
+          description: A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation.
+          example: 0.2
 
     Label:
       type: object
