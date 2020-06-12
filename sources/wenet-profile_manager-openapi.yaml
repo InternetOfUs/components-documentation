@@ -462,61 +462,56 @@ paths:
       description: Allow to obtain the historic of profile changes
       operationId: retrieveProfileHistoricPage
       parameters:
-      - name: from
-        in: query
-        description: The time stamp inclusive that mark the older limit in witch the
-          profile has to be active. It is the difference, measured in milliseconds,
-          between the time when the profile has to be valid and midnight, January
-          1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-          example: 1457166440
-          default: 0
-      - name: to
-        in: query
-        description: The time stamp inclusive that mark the newest limit in witch
-          the profile has to be active. It is the difference, measured in milliseconds,
-          between the time when the profile has not more valid and midnight, January
-          1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-          example: 1571664406
-          default: 92233720368547757
-      - name: order
-        in: query
-        description: The order in witch has to return the profiles. From the newest
-          to the oldest (DESC) or from the oldest to the newest (ASC).
-        schema:
-          type: string
-          example: ASC
-          default: ASC
-          enum:
-          - DESC
-          - ASC
-      - name: offset
-        in: query
-        description: Index of the first profile to return.
-        schema:
-          type: integer
-          format: int64
-          example: 10
-          default: 0
-      - name: limit
-        in: query
-        description: Number maximum of profiles to return.
-        schema:
-          type: integer
-          format: int64
-          example: 100
-          default: 10
       - name: userId
         in: path
-        description: The identifier of the user to get
+        description: The identifier of the user to get the historic profiles
         required: true
         schema:
           type: string
+      - name: from
+        in: query
+        description: The difference, measured in seconds, between the minimum time
+          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: to
+        in: query
+        description: The difference, measured in seconds, between the maximum time
+          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: order
+        in: query
+        description: The order in witch has to return the profiles. From the newest
+          to the oldest (descendant '-') or from the oldest to the newest (ascendant
+          '+').
+        schema:
+          type: string
+          example: '-'
+          default: +
+          enum:
+          - '-'
+          - +
+      - name: offset
+        in: query
+        description: The index of the first task type to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of task types to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
       responses:
         "200":
           description: The found profiles

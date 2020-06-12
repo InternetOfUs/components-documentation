@@ -160,7 +160,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/profiles/{{profileId}}/historic?from={{creationTs}}&to={{lastUpdateTs}}&order=ASC&offset=0&limit=10",
+					"raw": "{{server}}/profiles/{{profileId}}/historic?from={{creationTs}}&to={{lastUpdateTs}}&order=-&offset=0&limit=10",
 					"host": [
 						"{{server}}"
 					],
@@ -173,17 +173,17 @@
 						{
 							"key": "from",
 							"value": "{{creationTs}}",
-							"description": "The time stamp inclusive that mark the older limit in witch the profile has to be active. It is the difference, measured in milliseconds, between the time when the profile has to be valid and midnight, January 1, 1970 UTC."
+							"description": "The difference, measured in seconds, between the minimum time stamp when the profile was enabled and midnight, January 1, 1970 UTC"
 						},
 						{
 							"key": "to",
 							"value": "{{lastUpdateTs}}",
-							"description": "The time stamp inclusive that mark the newest limit "
+							"description": "The difference, measured in seconds, between the maximum time stamp when the profile was enabled and midnight, January 1, 1970 UTC"
 						},
 						{
 							"key": "order",
-							"value": "ASC",
-							"description": "The order in witch has to return the profiles. From the newest to the oldest (DESC) or from the oldest to the newest (ASC)."
+							"value": "-",
+							"description": "The order in witch has to return the profiles. From the newest to the oldest (descendant '-') or from the oldest to the newest (ascendant '+')."
 						},
 						{
 							"key": "offset",
@@ -456,67 +456,67 @@
 	],
 	"variable": [
 		{
-			"id": "cf0e3bce-a664-4f5a-8a88-cad1a52b1306",
+			"id": "4774bb2a-0bd1-4e37-9d5d-61af65befe91",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/profile_manager",
 			"type": "string"
 		},
 		{
-			"id": "57869045-866e-4710-9969-619a87194952",
+			"id": "64196d71-4a9d-4205-9115-32ff143109bd",
 			"key": "profileId",
 			"value": "5ee24d887639bb23c1e3ec20",
 			"type": "string"
 		},
 		{
-			"id": "c762a2d5-8434-4fa0-b28f-e78f90b5271c",
+			"id": "a70b90d7-d675-41ab-a96b-331c9784c474",
 			"key": "creationTs",
 			"value": 1591889289,
 			"type": "number"
 		},
 		{
-			"id": "7d92e79d-ba5f-415c-b302-9690782b9ad6",
+			"id": "7081d7b2-0964-4a47-9f6c-8458bfdcb48d",
 			"key": "lastUpdateTs",
 			"value": 1591889289,
 			"type": "number"
 		},
 		{
-			"id": "6feebdd4-b217-492c-b378-68e0ec3b47ff",
+			"id": "7a9a1847-a49f-4da0-ba39-cd021353d61e",
 			"key": "appId",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "15b1371a-6e1b-40c3-a21e-fda1b42b0993",
+			"id": "be57ea32-6219-41bd-99c3-1c2dae134701",
 			"key": "taskId",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "660dd2aa-8404-4eb5-9e63-b5a548e548d7",
+			"id": "2eeda90c-d572-44cb-ad08-b342777c9246",
 			"key": "taskTypeId",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "a933354f-37a8-4d2f-8918-eeff113482ec",
+			"id": "5319f1c4-f2fd-4d92-9fe0-da67e60d6e04",
 			"key": "communityId",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "d11e8c8b-2016-4a52-8050-28ff099770b6",
+			"id": "e5ee6322-4504-4248-8094-f473d257b235",
 			"key": "sourceId",
 			"value": "1",
 			"type": "string"
 		},
 		{
-			"id": "b69d1bc7-8933-49c3-8841-4e15aae94235",
+			"id": "a7c7d74b-9361-43bb-86b2-fafc83dd3ff3",
 			"key": "targetId",
 			"value": "2",
 			"type": "string"
 		},
 		{
-			"id": "69b44bbe-9e53-424f-92db-a24db3fea906",
+			"id": "32fa42cb-4d1d-446f-b016-cb4552505d3e",
 			"key": "relationship",
 			"value": "",
 			"type": "string"

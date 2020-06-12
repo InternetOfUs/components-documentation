@@ -142,6 +142,202 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /tasks:
+    get:
+      tags:
+      - Tasks
+      summary: Search for some tasks
+      description: Allow to get a page of task with the specified query parameters.
+      operationId: retrieveTasksPage
+      parameters:
+      - name: appId
+        in: query
+        description: An application identifier to be equals on the tasks to return.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the application identifier of the tasks to return if you write between '/'.
+          For example to get the tasks for the aplications '1' and '2' you must pass
+          as 'appId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1
+      - name: requesterId
+        in: query
+        description: An user identifier to be equals on the tasks to return. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the requester
+          identifier of the tasks to return if you write between '/'. For example
+          to get the tasks for the requesters '1' and '2' you must pass as 'requesterId'
+          '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: taskTypeId
+        in: query
+        description: A task type identifier to be equals on the tasks to return. You
+          can use a Perl compatible regular expressions (PCRE) that has to match the
+          task type identifier of the tasks to return if you write between '/'. For
+          example to get the tasks for the types '1' and '2' you must pass as 'taskTypeId'
+          '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: goalName
+        in: query
+        description: A goal name to be equals on the tasks to return. You can use
+          a Perl compatible regular expressions (PCRE) that has to match the goal
+          name of the tasks to return if you write between '/'. For example to get
+          the tasks with a goal name with the word 'eat' you must pass as 'goalName'
+          '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: goalDescription
+        in: query
+        description: A goal description to be equals on the tasks to return. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the goal
+          description of the tasks to return if you write between '/'. For example
+          to get the tasks with a goal description with the word 'eat' you must pass
+          as 'goalDescription' '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: startFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum start
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: startTo
+        in: query
+        description: The difference, measured in seconds, between the maximum start
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: endFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum end
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: endTo
+        in: query
+        description: The difference, measured in seconds, between the maximum end
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: deadlineFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum deadline
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: deadlineTo
+        in: query
+        description: The difference, measured in seconds, between the maximum deadline
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: hasCloseTs
+        in: query
+        description: This is 'true' if the task to return has defined a 'closeTs',
+          or 'false' if this fiels is not defined. In other words, get the closed
+          or open tasks.
+        schema:
+          type: boolean
+        example: false
+      - name: closeFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum close
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: closeTo
+        in: query
+        description: The difference, measured in seconds, between the maximum close
+          time stamp of the task and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: order
+        in: query
+        description: The order in witch the task has to be returned. For each filed
+          it has be separated by a ',' and each field can start with '+' (or without
+          it) to order on ascending order, or with the prefix '-' to do on descendant
+          order.
+        schema:
+          type: array
+          items:
+            type: string
+        example: goal.name,-goal.description,+appId
+      - name: offset
+        in: query
+        description: The index of the first task to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of tasks to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The task associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskPage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Tasks
+      summary: Create a task
+      description: Create a new task
+      operationId: createTask
+      requestBody:
+        description: The new task to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The created task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks/types:
     get:
       tags:
@@ -341,201 +537,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /tasks:
-    get:
-      tags:
-      - Tasks
-      summary: Search for some tasks
-      description: Allow to get a page of task with the specified query parameters.
-      operationId: retrieveTasksPage
-      parameters:
-      - name: appId
-        in: query
-        description: An application identifier to be equals on the tasks to return.
-          You can use a Perl compatible regular expressions (PCRE) that has to match
-          the application identifier of the tasks to return if you write between '/'.
-          For example to get the tasks for the aplications '1' and '2' you must pass
-          as 'appId' '/^[1|2]$/'.
-        schema:
-          type: string
-        example: 1
-      - name: requesterId
-        in: query
-        description: An user identifier to be equals on the tasks to return. You can
-          use a Perl compatible regular expressions (PCRE) that has to match the requester
-          identifier of the tasks to return if you write between '/'. For example
-          to get the tasks for the requesters '1' and '2' you must pass as 'requesterId'
-          '/^[1|2]$/'.
-        schema:
-          type: string
-        example: 1e346fd440
-      - name: taskTypeId
-        in: query
-        description: A task type identifier to be equals on the tasks to return. You
-          can use a Perl compatible regular expressions (PCRE) that has to match the
-          task type identifier of the tasks to return if you write between '/'. For
-          example to get the tasks for the types '1' and '2' you must pass as 'taskTypeId'
-          '/^[1|2]$/'.
-        schema:
-          type: string
-        example: 1e346fd440
-      - name: goalName
-        in: query
-        description: A goal name to be equals on the tasks to return.or You can use
-          a Perl compatible regular expressions (PCRE) that has to match the goal
-          name of the tasks to return if you write between '/'. For example to get
-          the tasks with a nmae with the word 'eat' you must pass as 'goalName' '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: goalDescription
-        in: query
-        description: A goal description to be equals on the tasks to return.or You
-          can use a Perl compatible regular expressions (PCRE) that has to match the
-          goal description of the tasks to return if you write between '/'. For example
-          to get the tasks with a nmae with the word 'eat' you must pass as 'goalDescription'
-          '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: startFrom
-        in: query
-        description: The difference, measured in seconds, between the minimum start
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: startTo
-        in: query
-        description: The difference, measured in seconds, between the maximum start
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: endFrom
-        in: query
-        description: The difference, measured in seconds, between the minimum end
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: endTo
-        in: query
-        description: The difference, measured in seconds, between the maximum end
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: deadlineFrom
-        in: query
-        description: The difference, measured in seconds, between the minimum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: deadlineTo
-        in: query
-        description: The difference, measured in seconds, between the maximum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: hasCloseTs
-        in: query
-        description: This is 'true' if the task to return has defined a 'closeTs',
-          or 'false' if this fiels is not defined. In other words, get the closed
-          or open tasks.
-        schema:
-          type: boolean
-        example: false
-      - name: closeFrom
-        in: query
-        description: The difference, measured in seconds, between the minimum close
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: closeTo
-        in: query
-        description: The difference, measured in seconds, between the maximum close
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: order
-        in: query
-        description: The order in witch the task has to be returned. For each filed
-          it has be separated by a ',' and each field can start with '+' (or without
-          it) to order on ascending order, or with the prefix '-' to do on descendant
-          order.
-        schema:
-          type: array
-          items:
-            type: string
-        example: goal.name,-goal.description,+appId
-      - name: offset
-        in: query
-        description: The index of the first task type to return.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-        example: 4
-      - name: limit
-        in: query
-        description: The number maximum of task types to return
-        schema:
-          type: integer
-          format: int32
-          default: 10
-        example: 100
-      responses:
-        "200":
-          description: The task associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaskPage'
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Tasks
-      summary: Create a task
-      description: Create a new task
-      operationId: createTask
-      requestBody:
-        description: The new task to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        required: true
-      responses:
-        "200":
-          description: The created task
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        "400":
-          description: Bad task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /versions:
     get:
       tags:
@@ -564,25 +565,6 @@ components:
           description: Contain a brief description of the error to be read by a human
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
-    TaskTypePage:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The index of the first task type returned.
-          format: int32
-          example: 0
-        total:
-          type: integer
-          description: The number total of task types that satisfies the search.
-          format: int64
-          example: 100
-        taskTypes:
-          type: array
-          description: The set of task types found
-          items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-      description: Contains a set of task types
     TaskPage:
       type: object
       properties:
@@ -602,6 +584,25 @@ components:
           items:
             $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
       description: Contains a set of tasks
+    TaskTypePage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first task type returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of task types that satisfies the search.
+          format: int64
+          example: 100
+        taskTypes:
+          type: array
+          description: The set of task types found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+      description: Contains a set of task types
     version:
       type: object
       properties:
