@@ -474,7 +474,7 @@
                 "type": "string",
                 "example": "The user will get this badge for 50 relations in tweeter."
               },
-              "messege": {
+              "message": {
                 "type": "string",
                 "example": "congratulations! you just earned a new badge for your relations on tweeter."
               }
