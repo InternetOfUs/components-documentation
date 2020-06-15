@@ -428,29 +428,29 @@
       "Incentive": {
         "type": "object",
         "required": [
-          "app_id",
-          "user_id",
-          "incentive_type",
-          "issuer"
+          "AppID",
+          "UserId",
+          "IncentiveType",
+          "Issuer"
         ],
         "properties": {
-          "app_id": {
+          "AppID": {
             "type": "string",
             "example": 1
           },
-          "user_id": {
+          "UserId": {
             "type": "string",
             "example": 6
           },
-          "incentive_type": {
+          "IncentiveType": {
             "type": "string",
-            "example": "message/badge (only one)"
+            "example": "Message/Badge (only one)"
           },
-          "issuer": {
+          "Issuer": {
             "type": "string",
-            "example": "WeNet_issuer"
+            "example": "WeNet issuer"
           },
-          "message": {
+          "Message": {
             "type": "object",
             "properties": {
               "content": {
@@ -459,22 +459,22 @@
               }
             }
           },
-          "badge": {
+          "Badge": {
             "type": "object",
             "properties": {
-              "badge_class": {
+              "BadgeClass": {
                 "type": "string",
                 "example": "hpqAdI7hQf2maQ13AW1jXA"
               },
-              "img_url": {
+              "ImgUrl": {
                 "type": "string",
                 "example": "http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png"
               },
-              "criteria": {
+              "Criteria": {
                 "type": "string",
                 "example": "The user will get this badge for 50 relations in tweeter."
               },
-              "message": {
+              "Message": {
                 "type": "string",
                 "example": "congratulations! you just earned a new badge for your relations on tweeter."
               }
