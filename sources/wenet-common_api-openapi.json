@@ -19,6 +19,36 @@
     }
   ],
   "paths": {
+    "/incentive": {
+      "post": {
+        "tags": [
+          "incentive"
+        ],
+        "summary": "Post an Incentive",
+        "description": "Post an Incentive - badge or message",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Incentive"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stream successfully initialized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/i-log/streams": {
       "post": {
         "tags": [
@@ -359,6 +389,99 @@
       }
     },
     "schemas": {
+      "Incentive_message": {
+        "type": "object",
+        "required": [
+          "app_id",
+          "user_id",
+          "incentive_type",
+          "issuer"
+        ],
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "example": 1
+          },
+          "user_id": {
+            "type": "string",
+            "example": 6
+          },
+          "incentive_type": {
+            "type": "string",
+            "example": "message/badge (only one)"
+          },
+          "issuer": {
+            "type": "string",
+            "example": "WeNet_issuer"
+          },
+          "message": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "example": "we are happy to see your participation in the I-log app you are doing a great job!"
+              }
+            }
+          }
+        }
+      },
+      "Incentive": {
+        "type": "object",
+        "required": [
+          "app_id",
+          "user_id",
+          "incentive_type",
+          "issuer"
+        ],
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "example": 1
+          },
+          "user_id": {
+            "type": "string",
+            "example": 6
+          },
+          "incentive_type": {
+            "type": "string",
+            "example": "message/badge (only one)"
+          },
+          "issuer": {
+            "type": "string",
+            "example": "WeNet_issuer"
+          },
+          "message": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string",
+                "example": "we are happy to see your participation in the I-log app you are doing a great job!"
+              }
+            }
+          },
+          "badge": {
+            "type": "object",
+            "properties": {
+              "badge_class": {
+                "type": "string",
+                "example": "hpqAdI7hQf2maQ13AW1jXA"
+              },
+              "img_url": {
+                "type": "string",
+                "example": "http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png"
+              },
+              "criteria": {
+                "type": "string",
+                "example": "The user will get this badge for 50 relations in tweeter."
+              },
+              "messege": {
+                "type": "string",
+                "example": "congratulations! you just earned a new badge for your relations on tweeter."
+              }
+            }
+          }
+        }
+      },
       "Id": {
         "type": "object",
         "properties": {
