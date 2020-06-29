@@ -34,7 +34,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.3.1
+  version: 0.3.2
 servers:
 - url: https://wenet.u-hopper.com/prod/task_manager
   description: WeNet production server
@@ -52,96 +52,6 @@ tags:
 - name: Task Transactions
   description: The functionality provided allows to modify a task by a transaction.
 paths:
-  /tasks/{taskId}:
-    get:
-      tags:
-      - Tasks
-      summary: Return a task
-      description: Allow to get a task with an specific identifier
-      operationId: retrieveTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The task associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Tasks
-      summary: Modify a task
-      description: Change the attributes of a task
-      operationId: updateTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the task
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        required: true
-      responses:
-        "200":
-          description: The updated task
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
-        "400":
-          description: Bad task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Tasks
-      summary: Delete the task associated to the identifier
-      description: Allow to delete a task associated to an identifier
-      operationId: deleteTask
-      parameters:
-      - name: taskId
-        in: path
-        description: The identifier of the task to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: The task was deleted successfully
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /tasks:
     get:
       tags:
@@ -338,6 +248,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}:
+    get:
+      tags:
+      - Tasks
+      summary: Return a task
+      description: Allow to get a task with an specific identifier
+      operationId: retrieveTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Tasks
+      summary: Modify a task
+      description: Change the attributes of a task
+      operationId: updateTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The updated task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete the task associated to the identifier
+      description: Allow to delete a task associated to an identifier
+      operationId: deleteTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task was deleted successfully
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks/types:
     get:
       tags:
@@ -345,25 +345,50 @@ paths:
       - Tasks
       summary: Return a task type associated to the identifier
       description: Allow to get a task type associated to an identifier
-      operationId: retrieveTaskTypePage
+      operationId: retrieveTaskTypesPage
       parameters:
       - name: name
         in: query
-        description: The pattern to match the name of task types to return
+        description: A name to be equals on the task types to return. You can use
+          a Perl compatible regular expressions (PCRE) that has to match the name
+          of the task types to return if you write between '/'. For example to get
+          the task types with a name with the word 'eat' you must pass as 'goalName'
+          '/.*eat.*/'
         schema:
           type: string
+        example: /.*eat.*/
       - name: description
         in: query
-        description: The pattern to match the description of task types to return
+        description: A description to be equals on the task types to return. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the description
+          of the task types to return if you write between '/'. For example to get
+          the task types with a description with the word 'eat' you must pass as 'goalDescription'
+          '/.*eat.*/'
         schema:
           type: string
+        example: /.*eat.*/
       - name: keywords
         in: query
-        description: The pattern to match the keywords of task types to return
+        description: A set of keywords to be defined on the task types to be returned.
+          For each keyword is separated by a ',' and each field keyword can be between
+          '/' to use a Perl compatible regular expressions (PCRE) instead the exact
+          value.
         schema:
           type: array
           items:
             type: string
+        example: key1,/.*eat.*/,key3
+      - name: order
+        in: query
+        description: The order in witch the task types has to be returned. For each
+          filed it has be separated by a ',' and each field can start with '+' (or
+          without it) to order on ascending order, or with the prefix '-' to do on
+          descendant order.
+        schema:
+          type: array
+          items:
+            type: string
+        example: name,-description
       - name: offset
         in: query
         description: The index of the first task type to return
