@@ -70,6 +70,52 @@
 			"response": []
 		},
 		{
+			"name": "Send an incentive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4daa7429-330c-4e91-891d-3e057f7f6e99",
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"AppID\":\"1\",\n    \"UserId\":\"1\",\n    \"IncentiveType\":\"Message\",\n    \"Issuer\":\"1\",\n    \"Message\":{\n        \"content\":\"we are happy to see your participation in the I-log app you are doing a great job!\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/incentives",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"incentives"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Publih a norm",
 			"event": [
 				{
@@ -182,7 +228,7 @@
 			"response": []
 		},
 		{
-			"name": "Delete task",
+			"name": "Delete published norm",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -224,16 +270,14 @@
 	],
 	"variable": [
 		{
-			"id": "92fd30e9-0fce-423f-a388-06771a83c1de",
+			"id": "e877c39d-2499-4875-9617-edaec1edd8ce",
 			"key": "server",
-			"value": "https://wenet.u-hopper.com/dev/interaction_protocol_engine",
-			"type": "string"
+			"value": "https://wenet.u-hopper.com/dev/interaction_protocol_engine"
 		},
 		{
-			"id": "a981d0f0-6947-4919-ba77-7e81979ba88d",
+			"id": "d6d13bca-af82-4a3c-94ff-32c5ea8d549f",
 			"key": "normId",
-			"value": "0",
-			"type": "string"
+			"value": "0"
 		}
 	],
 	"protocolProfileBehavior": {}

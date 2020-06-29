@@ -15,13 +15,13 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.9.0
+  version: 0.10.0
 servers:
 - url: https://wenet.u-hopper.com/prod/interaction_protocol_engine
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/interaction_protocol_engine
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/0.9.0/
+- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/0.10/
   description: IIIA development server
 tags:
 - name: Other
@@ -32,6 +32,29 @@ tags:
   description: The functionality provided allows to publish norms, and manage the
     user and community norms.
 paths:
+  /incentives:
+    post:
+      tags:
+      - Incentives
+      summary: Send a incentive to an user that is involved in a protocol.
+      description: Publish a incentive to encourage an user to participate on a protocol.
+      operationId: sendIncentive
+      requestBody:
+        description: The incentive to send to the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Incentive'
+        required: true
+      responses:
+        "202":
+          description: If the accepted to be processed
+        "400":
+          description: Bad incentive
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /messages:
     post:
       tags:
@@ -48,8 +71,8 @@ paths:
               $ref: '#/components/schemas/message'
         required: true
       responses:
-        "200":
-          description: The published message
+        "202":
+          description: If the message is accepted to be processed
           content:
             application/json:
               schema:
@@ -68,22 +91,6 @@ paths:
       description: Allow to search for a published norms that match some patterns
       operationId: retrievePublishedNormsPage
       parameters:
-      - name: name
-        in: query
-        description: The name of the published norms to return or a Perl compatible
-          regular expressions (PCRE) that has to match the name of the published norms
-          to return.
-        schema:
-          type: string
-          example: (?i)na(?-i)me
-      - name: description
-        in: query
-        description: The description of the published norms to return or a Perl compatible
-          regular expressions (PCRE) that has to match the description of the published
-          norms to return.
-        schema:
-          type: string
-          example: (?i)descripti(?-i)on
       - name: keyword
         in: query
         description: The keyword of the published norms to return or a Perl compatible
@@ -94,51 +101,89 @@ paths:
           items:
             type: string
             example: (?i)key(?-i)word
-      - name: publisherId
+      - name: name
         in: query
-        description: The identifier of the user that has publish the nrom or a Perl
-          compatible regular expressions (PCRE) that has to match the published identifier
-          of the norms to return.
+        description: A name to be equals on the published norms to return. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the name
+          of the norms to return if you write between '/'. For example to get the
+          norms with a name with the word 'eat' you must pass as 'name' '/.*eat.*/'
         schema:
           type: string
-          example: (?i)a(?-i)vatar
+        example: /.*eat.*/
+      - name: description
+        in: query
+        description: A description to be equals on the tasks to return.or You can
+          use a Perl compatible regular expressions (PCRE) that has to match the description
+          of the tasks to return if you write between '/'. For example to get the
+          norms with a description with the word 'eat' you must pass as 'description'
+          '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: keywords
+        in: query
+        description: A set of keywords to be defined on the norms to be returned.
+          For each keyword is separated by a ',' and each field keyword can be between
+          '/' to use a Perl compatible regular expressions (PCRE) instead the exact
+          value.
+        schema:
+          type: array
+          items:
+            type: string
+        example: key1,/.*eat.*/,key3
+      - name: publisherId
+        in: query
+        description: An user identifier to be equals on the publisher of the norm
+          to return. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the publisher identifier of the norms to return if you write
+          between '/'. For example to get the norms published by '1' and '2' you must
+          pass as 'publisherId' '/^[1|2]$/'.
+        schema:
+          type: string
+        example: 1e346fd440
       - name: publishFrom
         in: query
-        description: The time stamp inclusive that mark the older limit in witch the
-          norm has been published. It is the difference, measured in seconds, between
-          the time when the norm was published and midnight, January 1, 1970 UTC.
+        description: The difference, measured in seconds, between the minimum publish
+          time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
-          example: 1457166440
-          default: 0
+        example: 1457166440
       - name: publishTo
         in: query
-        description: The time stamp inclusive that mark the newest limit in witch
-          the norm has been published. It is the difference, measured in seconds,
-          between the time when the norm was published and midnight, January 1, 1970
-          UTC.
+        description: The difference, measured in seconds, between the maximum publish
+          time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
-          example: 1571664406
-          default: 92233720368547757
+        example: 1571664406
+      - name: order
+        in: query
+        description: The order in witch the norms has to be returned. For each filed
+          it has be separated by a ',' and each field can start with '+' (or without
+          it) to order on ascending order, or with the prefix '-' to do on descendant
+          order.
+        schema:
+          type: array
+          items:
+            type: string
+        example: name,-description,+publisherId
       - name: offset
         in: query
-        description: Index of the first published norm to return.
+        description: The index of the first norm to return.
         schema:
           type: integer
-          format: int64
-          example: 10
+          format: int32
           default: 0
+        example: 4
       - name: limit
         in: query
-        description: Number maximum of published norms to return.
+        description: The number maximum of norms to return
         schema:
           type: integer
-          format: int64
-          example: 100
+          format: int32
           default: 10
+        example: 100
       responses:
         "200":
           description: The published norms that match the patterns
@@ -166,7 +211,7 @@ paths:
               $ref: '#/components/schemas/PublishedNorm'
         required: true
       responses:
-        "200":
+        "201":
           description: The published norm
           content:
             application/json:
@@ -209,8 +254,8 @@ paths:
     put:
       tags:
       - Norms
-      summary: Modify a publishedNorm
-      description: Change the attributes of a published norm
+      summary: Modify all the fields of a published norm
+      description: Change all the attributes of a published norm
       operationId: updatePublishedNorm
       parameters:
       - name: publishedNormId
@@ -268,6 +313,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Norms
+      summary: Modify partially a published norm
+      description: Change some of the attributes of a published norm
+      operationId: mergePublishedNorm
+      parameters:
+      - name: publishedNormId
+        in: path
+        description: The identifier of the published norm to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the published norm
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishedNorm'
+        required: true
+      responses:
+        "200":
+          description: The merged published norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishedNorm'
+        "400":
+          description: Bad published norm to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found published norm to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /versions:
     get:
       tags:
@@ -284,6 +369,63 @@ paths:
                 $ref: '#/components/schemas/version'
 components:
   schemas:
+    Badge:
+      type: object
+      properties:
+        BadgeClass:
+          type: string
+          example: hpqAdI7hQf2maQ13AW1jXA
+        ImgUrl:
+          type: string
+          example: http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
+        Criteria:
+          type: string
+          example: The user will get this badge for 50 relations in tweeter.
+        Message:
+          type: string
+          example: congratulations! you just earned a new badge for your relations
+            on tweeter.
+      description: The badge on an incentive.
+    Incentive:
+      type: object
+      properties:
+        AppID:
+          type: string
+          example: "1"
+        UserId:
+          type: string
+          example: "6"
+        IncentiveType:
+          type: string
+          example: Message/Badge (only one)
+        Issuer:
+          type: string
+          example: WeNet issuer
+        Message:
+          $ref: '#/components/schemas/Message'
+        Badge:
+          $ref: '#/components/schemas/Badge'
+      description: An user incentive.
+    Message:
+      type: object
+      properties:
+        content:
+          type: string
+          example: we are happy to see your participation in the I-log app you are
+            doing a great job!
+      description: The message on an incentive.
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
     message:
       type: object
       properties:
@@ -315,19 +457,15 @@ components:
           description: The norms to apply over the message
           items:
             $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        type:
+          type: string
+          description: The type of message.
+          example: TASK_TRANSACTION
+          enum:
+          - TASK_CREATED
+          - TASK_TRANSACTION
+          - INCENTIVE
       description: A message that can be interchange in an interaction protocol.
-    ErrorMessage:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Contain code that identifies the error
-          example: error_code
-        message:
-          type: string
-          description: Contain a brief description of the error to be read by a human
-          example: Error readable by a human
-      description: Inform of an error that happens when interacts with the API
     Norm:
       $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
     PublishedNorm:
