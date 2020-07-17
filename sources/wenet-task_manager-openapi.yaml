@@ -34,24 +34,48 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.3.2
+  version: 0.4.0
 servers:
 - url: https://wenet.u-hopper.com/prod/task_manager
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/task_manager
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/task-manager/0.3/
+- url: http://ardid.iiia.csic.es/wenet/task-manager/0.4/
   description: IIIA development server
 tags:
-- name: Other
-  description: Other services provided by the API.
 - name: Tasks
   description: The functionality provided allows to manage the tasks.
 - name: Task Types
   description: The functionality provided allows to manage the task types.
 - name: Task Transactions
   description: The functionality provided allows to modify a task by a transaction.
+- name: Other
+  description: Other services provided by the API.
 paths:
+  /help/info:
+    get:
+      tags:
+      - Other
+      summary: Get the information about the API
+      description: Return the relevant information of the API implementation
+      operationId: getInfo
+      responses:
+        "200":
+          description: The API information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+  /help/openapi.yaml:
+    get:
+      tags:
+      - Other
+      summary: Get the Open API description
+      description: Return the Open API description of this API
+      operationId: getOpenApi
+      responses:
+        "200":
+          description: The API description
   /tasks:
     get:
       tags:
@@ -280,7 +304,7 @@ paths:
       tags:
       - Tasks
       summary: Modify a task
-      description: Change the attributes of a task
+      description: Change a task
       operationId: updateTask
       parameters:
       - name: taskId
@@ -332,6 +356,46 @@ paths:
       responses:
         "204":
           description: The task was deleted successfully
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Tasks
+      summary: Modify partially a task
+      description: Change some attributes of a task
+      operationId: mergeTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "200":
+          description: The merged task
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Bad task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found task
           content:
@@ -534,6 +598,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Task Types
+      - Tasks
+      summary: Modify a task type
+      description: Change the attributes of a task type
+      operationId: mergeTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task type
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The merged task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks/transactions:
     post:
       tags:
@@ -562,22 +667,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /versions:
-    get:
-      tags:
-      - Other
-      summary: Get the version of the API
-      description: Return the current API version
-      operationId: getVersion
-      responses:
-        "200":
-          description: The API version
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/version'
 components:
   schemas:
+    Info:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Contain the name of the API
+          example: wenet/task-manager
+        apiVersion:
+          type: string
+          description: Contain the implementation version number of the API
+          example: 1.0.0
+        softwareVersion:
+          type: string
+          description: Contain the implementation version number of the software
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+        license:
+          type: string
+          description: Contain information of the license of the API
+          example: MIT
+      description: Provide the version information of the API
     ErrorMessage:
       type: object
       properties:
@@ -628,20 +744,3 @@ components:
           items:
             $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
       description: Contains a set of task types
-    version:
-      type: object
-      properties:
-        api:
-          type: string
-          description: Contain the implementation version number of the API
-          example: 1.0.0
-        software:
-          type: string
-          description: Contain the implementation version number of the software
-          example: 1.0.0
-        vendor:
-          type: string
-          description: Contain information of the organization that has implemented
-            the API
-          example: UDT-IA, IIIA-CSIC
-      description: Provide the version information of the API

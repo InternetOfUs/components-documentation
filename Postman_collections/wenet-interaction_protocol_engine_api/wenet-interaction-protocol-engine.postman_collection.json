@@ -7,17 +7,36 @@
 	},
 	"item": [
 		{
-			"name": "Get the API version",
+			"name": "Get the API information",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/versions",
+					"raw": "{{server}}/help/info",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"versions"
+						"help",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the API description",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/help/openapi.yaml",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"help",
+						"openapi.yaml"
 					]
 				}
 			},
@@ -50,7 +69,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"content\":{}\n}",
+					"raw": "{\n    \"type\":\"INCENTIVE\",\n    \"content\": {\n        \"AppID\": \"1\",\n        \"UserId\": \"6\",\n        \"IncentiveType\": \"Message\",\n        \"Issuer\": \"1\",\n        \"Message\": {\n            \"content\": \"we are happy to see your participation in the I-log app you are doing a great job!\"\n        }\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -181,6 +200,24 @@
 			"response": []
 		},
 		{
+			"name": "Retrieve published norms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/norms/",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update published norm",
 			"event": [
 				{
@@ -207,7 +244,54 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"state\": \"PendingAssignment\"\n}",
+					"raw": "{\n    \"norm\":{},\n    \"name\":\"New norm\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge published norm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec938017-8b5d-4734-9eaa-bb64d2066155",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"keywords\": [\n        \"keyword1\",\n        \"keyword2\"\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -270,14 +354,19 @@
 	],
 	"variable": [
 		{
-			"id": "e877c39d-2499-4875-9617-edaec1edd8ce",
+			"id": "3eca8186-8d70-47da-9a05-9392b3fc9c13",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/interaction_protocol_engine"
 		},
 		{
-			"id": "d6d13bca-af82-4a3c-94ff-32c5ea8d549f",
+			"id": "6c9bc43d-dd4b-4982-9134-ecf1d25b607b",
 			"key": "normId",
-			"value": "0"
+			"value": "5f11bcd15fa5c2183064debb"
+		},
+		{
+			"id": "c9bccac0-4d88-4ac1-87a3-e910ff07386b",
+			"key": "lastUpdateTs",
+			"value": 1594998058
 		}
 	],
 	"protocolProfileBehavior": {}

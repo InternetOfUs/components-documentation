@@ -7,17 +7,36 @@
 	},
 	"item": [
 		{
-			"name": "Get the API version",
+			"name": "Get the API information",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/versions",
+					"raw": "{{server}}/help/info",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"versions"
+						"help",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the API description",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/help/openapi.yaml",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"help",
+						"openapi.yaml"
 					]
 				}
 			},
@@ -32,7 +51,7 @@
 						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
 						"exec": [
 							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"profileId\", jsonData.id);",
+							"pm.collectionVariables.set(\"userId\", jsonData.id);",
 							"pm.collectionVariables.set(\"creationTs\", jsonData._creationTs);",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
 						],
@@ -77,13 +96,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/profiles/{{profileId}}",
+					"raw": "{{server}}/profiles/{{userId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"profiles",
-						"{{profileId}}"
+						"{{userId}}"
 					]
 				}
 			},
@@ -124,13 +143,60 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/profiles/{{profileId}}",
+					"raw": "{{server}}/profiles/{{userId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"profiles",
-						"{{profileId}}"
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "17326412-a841-4a56-9e9b-e93ef8bd6930",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": {\n        \"prefix\": \"\",\n        \"first\": \"Jane\",\n        \"last\": \"Doe\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}"
 					]
 				}
 			},
@@ -142,13 +208,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/profiles/{{profileId}}",
+					"raw": "{{server}}/profiles/{{userId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"profiles",
-						"{{profileId}}"
+						"{{userId}}"
 					]
 				}
 			},
@@ -160,40 +226,45 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/profiles/{{profileId}}/historic?from={{creationTs}}&to={{lastUpdateTs}}&order=-&offset=0&limit=10",
+					"raw": "{{server}}/profiles/{{userId}}/historic",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"profiles",
-						"{{profileId}}",
+						"{{userId}}",
 						"historic"
 					],
 					"query": [
 						{
 							"key": "from",
 							"value": "{{creationTs}}",
-							"description": "The difference, measured in seconds, between the minimum time stamp when the profile was enabled and midnight, January 1, 1970 UTC"
+							"description": "The difference, measured in seconds, between the minimum time stamp when the profile was enabled and midnight, January 1, 1970 UTC",
+							"disabled": true
 						},
 						{
 							"key": "to",
 							"value": "{{lastUpdateTs}}",
-							"description": "The difference, measured in seconds, between the maximum time stamp when the profile was enabled and midnight, January 1, 1970 UTC"
+							"description": "The difference, measured in seconds, between the maximum time stamp when the profile was enabled and midnight, January 1, 1970 UTC",
+							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "-",
-							"description": "The order in witch has to return the profiles. From the newest to the oldest (descendant '-') or from the oldest to the newest (ascendant '+')."
+							"description": "The order in witch has to return the profiles. From the newest to the oldest (descendant '-') or from the oldest to the newest (ascendant '+').",
+							"disabled": true
 						},
 						{
 							"key": "offset",
 							"value": "0",
-							"description": "Index of the first profile to return."
+							"description": "Index of the first profile to return.",
+							"disabled": true
 						},
 						{
 							"key": "limit",
 							"value": "10",
-							"description": "Number maximum of profiles to return."
+							"description": "Number maximum of profiles to return.",
+							"disabled": true
 						}
 					]
 				},
@@ -430,6 +501,1669 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Add a norm into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7a591b1f-748e-41d7-bf0c-1859c5b397b7",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"normId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get norms from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f11df72d-83e5-41f0-8765-9264c11e5c2a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a norm from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "377ea4b2-7969-4e56-bd9d-bd06b0594526",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a norm from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "92ae3220-d256-4baa-acc7-105e4a919da9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"negation\":true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a norm from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e362b530-1444-409d-9e87-c0d479b07a48",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"negation\":false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a norm from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "474618a5-fd8a-4733-9b6f-941ca563b45d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms/{{normId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms",
+						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add planned activity into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5b436541-6c44-4de3-ba77-0feb19fcc906",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"plannedActivityId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\":\"tentative\",\n    \"startTime\":\"2027-07-21T17:32:00Z\",\n    \"endTime\":\"2027-07-21T17:32:00Z\",\n    \"description\":\"A few beers for relaxing\",\n    \"attendees\":[\"{{userId}}\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get planed activities from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "266da88c-8e74-47fc-91ff-5b5ef58a8d68",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get planed activitiy from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b59bb7b5-6bb9-41b6-8b7e-c088ce058ba8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities/{{plannedActivityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities",
+						"{{plannedActivityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update planed activitiy from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a98fc9f-ec45-4f04-9d46-0aed64d59e49",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\":\"tentative\",\n    \"startTime\":\"2022-07-21T17:32:00Z\",\n    \"endTime\":\"2023-07-21T17:32:00Z\",\n    \"description\":\"Play football for relaxing\",\n    \"attendees\":[\"{{userId}}\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities/{{plannedActivityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities",
+						"{{plannedActivityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge planed activitiy from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a2cb028-aaa4-4f83-bb8b-6ec1e9d5a633",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\":\"cancelled\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities/{{plannedActivityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities",
+						"{{plannedActivityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a planed activitiy from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5e550cc-4a01-4795-ad6f-594c2c56c219",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\":\"cancelled\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/plannedActivities/{{plannedActivityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"plannedActivities",
+						"{{plannedActivityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add relevant location into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "88cd5d2b-4c5f-43a9-848d-1717c11ced65",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"relevantLocationId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"label\": \"Home\",\n  \"latitude\": 40.388756,\n  \"longitude\": -3.588622\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get relevant locations from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af3a5108-0569-428a-a897-25a301bd1d54",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a relevant location from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d4ca4c98-9992-4d28-b3b9-2241fbe19943",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations/{{relevantLocationId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations",
+						"{{relevantLocationId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a relevant location from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19516586-2088-419d-967b-a6113b7f9173",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"label\": \"New Home\",\n  \"latitude\": 4.388756,\n  \"longitude\": -30.588622\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations/{{relevantLocationId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations",
+						"{{relevantLocationId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a relevant location from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4c805da6-124a-4703-91bb-027e7394a203",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"label\": \"Label for the new Home\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations/{{relevantLocationId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations",
+						"{{relevantLocationId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a relevant location from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0394cdc7-2066-44bc-911b-7f9eb8f9a3c1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relevantLocations/{{relevantLocationId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relevantLocations",
+						"{{relevantLocationId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add relationship into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a101a4b3-1536-4942-860a-dd7f88b2b2ce",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"friend\",\n  \"weight\": 0.9\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get relationships from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cb469ab4-0be8-49a1-ae3f-c9b4b456acbe",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a relationship from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf89e11d-f250-4d4d-9810-245d333e9dee",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a relationship from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6fd1fa70-7723-4291-8bf0-02711f66fa67",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"colleague\",\n  \"weight\": 0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a relationship from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4fe3550-5a15-4968-8f75-42a9be2ccdd0",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"weight\": 0.39\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a relationship from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "82497e9b-cd39-489a-921c-b80aad127b22",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add social practice into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "716b1b86-e306-4554-9f2b-cd4dc5522c56",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"socialPracticeId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get social practices from a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74d2aeef-22f4-4b56-87fe-7e6d639496f8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get social practice from a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19d08e24-89c5-47f8-b37c-5db2927b907a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update social practice from a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4b8b6876-551f-4252-afed-e660d39b0474",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge social practice from a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bc57894-56a5-4032-b137-d9b41efa6a1d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete social practice from a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3ba39c8-bf23-4362-b1c6-8ca35e3f1cc4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add personal behaviour into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd0cbbd2-cbcd-4d30-a7ee-18436a4d3e9e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": \"{{userId}}\",\n  \"weekday\": \"friday\",\n  \"label_distribution\": {},\n  \"confidende\":0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get personal behaviours from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f6af885b-4c0a-46d5-bf71-0ffacea6c7b6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get personal behaviour from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d388b493-c916-46c7-b94c-bf83969dbd37",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update personal behaviour from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bdca2e75-4113-48bf-aeb1-86d9b7ba6c76",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":\"{{userId}}\",\n    \"weekday\":\"Saturday\",\n    \"label_distribution\":{},\n    \"confidence\":0.02\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge personal behaviour from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fc21015d-0102-47c5-979e-16e7d7a41b6b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"confidence\":0.45\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete personal behaviour from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3f66b54d-b450-4634-bbe2-6239eefc3835",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/personalBehaviors/{{index}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"personalBehaviors",
+						"{{index}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -456,70 +2190,89 @@
 	],
 	"variable": [
 		{
-			"id": "4774bb2a-0bd1-4e37-9d5d-61af65befe91",
+			"id": "89f6a382-b6bb-438e-ba1e-782234a41007",
 			"key": "server",
-			"value": "https://wenet.u-hopper.com/dev/profile_manager",
-			"type": "string"
+			"value": "https://wenet.u-hopper.com/dev/profile_manager"
 		},
 		{
-			"id": "64196d71-4a9d-4205-9115-32ff143109bd",
-			"key": "profileId",
-			"value": "5ee24d887639bb23c1e3ec20",
-			"type": "string"
-		},
-		{
-			"id": "a70b90d7-d675-41ab-a96b-331c9784c474",
+			"id": "65c64a89-9ea0-43e6-b396-f24b58a9c34d",
 			"key": "creationTs",
-			"value": 1591889289,
-			"type": "number"
+			"value": 1594996428
 		},
 		{
-			"id": "7081d7b2-0964-4a47-9f6c-8458bfdcb48d",
+			"id": "a2a6afce-4624-46e2-a46b-547ea2fba2aa",
 			"key": "lastUpdateTs",
-			"value": 1591889289,
-			"type": "number"
+			"value": 1594996435
 		},
 		{
-			"id": "7a9a1847-a49f-4da0-ba39-cd021353d61e",
+			"id": "8aee4451-e1cd-487f-80b2-4a9ce180c038",
 			"key": "appId",
-			"value": "1",
-			"type": "string"
+			"value": "1"
 		},
 		{
-			"id": "be57ea32-6219-41bd-99c3-1c2dae134701",
+			"id": "52a5abb4-cbe6-4709-9606-504bd632cc2e",
 			"key": "taskId",
-			"value": "1",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "2eeda90c-d572-44cb-ad08-b342777c9246",
+			"id": "4382e1d4-6559-452d-acde-d4de62d1ebba",
 			"key": "taskTypeId",
-			"value": "1",
-			"type": "string"
+			"value": ""
 		},
 		{
-			"id": "5319f1c4-f2fd-4d92-9fe0-da67e60d6e04",
+			"id": "45232d14-3727-4711-afea-ca64fa304457",
 			"key": "communityId",
-			"value": "1",
-			"type": "string"
+			"value": "1"
 		},
 		{
-			"id": "e5ee6322-4504-4248-8094-f473d257b235",
+			"id": "0427d8bf-01de-4c39-9fc1-4876e3d3613e",
 			"key": "sourceId",
-			"value": "1",
-			"type": "string"
+			"value": "1"
 		},
 		{
-			"id": "a7c7d74b-9361-43bb-86b2-fafc83dd3ff3",
+			"id": "9dda9955-b2a7-4c5c-b539-dade4173fbfc",
 			"key": "targetId",
-			"value": "2",
-			"type": "string"
+			"value": "2"
 		},
 		{
-			"id": "32fa42cb-4d1d-446f-b016-cb4552505d3e",
+			"id": "e2a3b31b-8abc-4b93-b613-1a1b3d0a45a6",
 			"key": "relationship",
-			"value": "",
-			"type": "string"
+			"value": ""
+		},
+		{
+			"id": "dfc657f6-2978-4ae1-9066-a2d587fcfaa4",
+			"key": "userId",
+			"value": "5f11b6cbd5da4f34b61830a0"
+		},
+		{
+			"id": "9649a50e-8b55-4dd5-ac15-41491fe75867",
+			"key": "normId",
+			"value": "fcf5a311-4aa8-44fa-8fd9-9d3b81bfcc33"
+		},
+		{
+			"id": "39c95616-7bae-468e-a7b6-27079b93d3c0",
+			"key": "plannedActivityId",
+			"value": "e2e78b38-1845-4a76-9ee6-27a012f1137b"
+		},
+		{
+			"id": "2839c98d-5bb2-45af-9344-bb90e23c9e42",
+			"key": "relevantLocationId",
+			"value": "09bffccb-e459-49e2-902c-99d462a7b83b"
+		},
+		{
+			"id": "2f6467f6-f610-4b72-8c30-490a42bc6ee9",
+			"key": "index",
+			"value": "0"
+		},
+		{
+			"id": "2e1eef35-88eb-4b26-b3ea-483c9539ccc3",
+			"key": "socialPracticeId",
+			"value": "92cc161b-5a04-4b3b-a085-0703c9d438aa"
+		},
+		{
+			"id": "58c6f85c-9c70-4be8-bace-f4edeefa05d2",
+			"key": "friendId",
+			"value": "5f087d5da57c4c1142ba1f3f"
 		}
 	],
 	"protocolProfileBehavior": {}

@@ -17,17 +17,19 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.11.0
+  version: 0.12.0
 servers:
 - url: https://wenet.u-hopper.com/prod/profile_manager
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/profile_manager
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/profile-manager/0.3.0/
+- url: http://ardid.iiia.csic.es/wenet/profile-manager/0.4/
   description: IIIA development server
 tags:
-- name: Other
-  description: Other services provided by the API.
+- name: Profiles
+  description: The functionality provided allows to access current and previous values
+    of user attributes that define the user profile.  It also allows you to modify
+    the current values.
 - name: Intelligences
   description: Provide the functionality to evaluate the intelligences of a person
 - name: Personalities
@@ -35,13 +37,53 @@ tags:
 - name: Historic
   description: The functionality provided allows to access to the values of the models
     in a previous dates.
-- name: Profiles
-  description: The functionality provided allows to access current and previous values
-    of user attributes that define the user profile.  It also allows you to modify
-    the current values.
 - name: Trusts
   description: The functionality provided allows to manage the trust over other users.
+- name: Norms
+  description: The functionality provided allows to manage the norms defined into
+    an user profile.
+- name: Planned activities
+  description: The functionality provided allows to manage the planned activities
+    defined into an user profile.
+- name: Relevant locations
+  description: The functionality provided allows to manage the relevant locations
+    defined into an user profile.
+- name: Relationships
+  description: The functionality provided allows to manage the relationships defined
+    into an user profile.
+- name: Social practices
+  description: The functionality provided allows to manage the social practices defined
+    into an user profile.
+- name: Personal behaviors
+  description: The functionality provided allows to manage the personal behaviors
+    defined into an user profile.
+- name: Other
+  description: Other services provided by the API.
 paths:
+  /help/info:
+    get:
+      tags:
+      - Other
+      summary: Get the information about the API
+      description: Return the relevant information of the API implementation
+      operationId: getInfo
+      responses:
+        "200":
+          description: The API information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+  /help/openapi.yaml:
+    get:
+      tags:
+      - Other
+      summary: Get the Open API description
+      description: Return the Open API description of this API
+      operationId: getOpenApi
+      responses:
+        "200":
+          description: The API description
   /intelligences:
     get:
       tags:
@@ -145,116 +187,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Personality'
-  /profiles:
-    post:
-      tags:
-      - Profiles
-      summary: Create a profile
-      description: Create a new WeNet user profile
-      operationId: createProfile
-      requestBody:
-        description: The new profile to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-            example:
-              name:
-                prefix: Dr.
-                first: John
-                middle: Fidgerald
-                last: Kenedy
-                suffix: Jr
-              dateOfBirth:
-                year: 1973
-                month: 2
-                day: 24
-              gender: M
-              email: jfk@president.gov
-              phoneNumber: +1202-456-1111
-              locale: en_US
-              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-              nationality: American
-              languages:
-              - name: English
-                code: en
-                level: C2
-              occupation: President
-              norms: []
-              plannedActivities:
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Visit Marilyn
-                status: cancelled
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Go to Dallas
-                status: confirmed
-              relevantLocations:
-              - label: White house
-                latitude: 38.897957
-                longitude: -77.03656
-              relationships: []
-              socialPractices: []
-              personalBehaviors: []
-        required: true
-      responses:
-        "200":
-          description: The created profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-              examples:
-                CreatedProfile:
-                  description: CreatedProfile
-                  value:
-                    id: 5e4ced814e1dc208a5f7bd25
-                    name:
-                      prefix: Dr.
-                      first: John
-                      middle: Fidgerald
-                      last: Kenedy
-                      suffix: Jr
-                    dateOfBirth:
-                      year: 1973
-                      month: 2
-                      day: 24
-                    gender: M
-                    email: jfk@president.gov
-                    phoneNumber: +1 202-456-1111
-                    locale: en_US
-                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-                    nationality: American
-                    languages:
-                    - name: English
-                      code: en
-                      level: C2
-                    occupation: President
-                    plannedActivities:
-                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Visit Marilyn
-                      status: cancelled
-                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Go to Dallas
-                      status: confirmed
-                    relevantLocations:
-                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
-                      label: White house
-                      latitude: 38.897957
-                      longitude: -77.03656
-                    _creationTs: 1582099841815
-                    _lastUpdateTs: 1582099841815
-        "400":
-          description: Bad profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{userId}:
     get:
       tags:
@@ -331,7 +263,7 @@ paths:
       tags:
       - Profiles
       summary: Modify a profile
-      description: Change the attributes of a profile
+      description: Change a profile
       operationId: updateProfile
       parameters:
       - name: userId
@@ -342,7 +274,7 @@ paths:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
       requestBody:
-        description: The new values for the profile
+        description: The new profile
         content:
           application/json:
             schema:
@@ -453,6 +385,220 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Profiles
+      summary: Modify partially a profile
+      description: Change some attributes of a profile
+      operationId: mergeProfile
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the profile
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: ""
+                first: null
+                middle: null
+                last: null
+                suffix: III
+              dateOfBirth:
+                year: 1979
+                month: 6
+                day: 4
+              email: jfk3@ex.president.gov
+              languages:
+              - name: English
+                code: en
+                level: C2
+              - name: French
+                code: fr
+                level: B2
+              occupation: Conferenciant
+        required: true
+      responses:
+        "200":
+          description: The merged profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                UpdatedProfile:
+                  description: UpdatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles:
+    post:
+      tags:
+      - Profiles
+      summary: Create a profile
+      description: Create a new WeNet user profile
+      operationId: createProfile
+      requestBody:
+        description: The new profile to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: Dr.
+                first: John
+                middle: Fidgerald
+                last: Kenedy
+                suffix: Jr
+              dateOfBirth:
+                year: 1973
+                month: 2
+                day: 24
+              gender: M
+              email: jfk@president.gov
+              phoneNumber: +1202-456-1111
+              locale: en_US
+              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+              nationality: American
+              languages:
+              - name: English
+                code: en
+                level: C2
+              occupation: President
+              norms: []
+              plannedActivities:
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Visit Marilyn
+                status: cancelled
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Go to Dallas
+                status: confirmed
+              relevantLocations:
+              - label: White house
+                latitude: 38.897957
+                longitude: -77.03656
+              relationships: []
+              socialPractices: []
+              personalBehaviors: []
+        required: true
+      responses:
+        "200":
+          description: The created profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                CreatedProfile:
+                  description: CreatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{userId}/historic:
     get:
       tags:
@@ -521,6 +667,1461 @@ paths:
                 $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
         "404":
           description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/norms:
+    get:
+      tags:
+      - Norms
+      - Profiles
+      summary: Return the norms from a profile
+      description: Allow to get all the norms defined into a profile
+      operationId: retrieveNorms
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The norms defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Norms
+      - Profiles
+      summary: Add a norm into a profile
+      description: Insert a new norm into a profile
+      operationId: addNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the norm
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "201":
+          description: The added norm into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: Bad norm to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/norms/{normId}:
+    get:
+      tags:
+      - Norms
+      - Profiles
+      summary: Return a norm from a profile
+      description: Allow to get a norm defined into a profile
+      operationId: retrieveNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The norm defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "404":
+          description: Not found profile or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Norms
+      - Profiles
+      summary: Update a norm from a profile
+      description: Allow to modify a norm defined into a profile
+      operationId: updateNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to update the norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "200":
+          description: The updated norm
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: Bad norm to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Norms
+      - Profiles
+      summary: Delete a norm from a profile
+      description: Allow to delete a defined norm from a profile
+      operationId: deleteNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to delete
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The norm defined into the profile
+        "404":
+          description: Not found profile or norm
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Norms
+      - Profiles
+      summary: Change a norm from a profile
+      description: Allow to modify parts of a norm defined into a profile
+      operationId: mergeNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to merge the norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "200":
+          description: The current values of the norm after it has been merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: Bad norm to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/plannedActivities:
+    get:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Return the planned activities from a profile
+      description: Allow to get all the planned activities defined into a profile
+      operationId: retrievePlannedActivities
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the planned
+          activity is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The planned activities defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Add a planned activity into a profile
+      description: Insert a new planned activity into a profile
+      operationId: addPlannedActivity
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the planned
+          activity
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new planned activity
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        required: true
+      responses:
+        "201":
+          description: The added planned activity into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        "400":
+          description: Bad planned activity to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/plannedActivities/{plannedActivityId}:
+    get:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Return a planned activity from a profile
+      description: Allow to get a planned activity defined into a profile
+      operationId: retrievePlannedActivity
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the planned
+          activity is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: plannedActivityId
+        in: path
+        description: The identifier of the planned activity to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The planned activity defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        "404":
+          description: Not found profile or planned activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Update a planned activity from a profile
+      description: Allow to modify a planned activity defined into a profile
+      operationId: updatePlannedActivity
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the planned
+          activity is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: plannedActivityId
+        in: path
+        description: The identifier of the planned activity to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to update the planned activity
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        required: true
+      responses:
+        "200":
+          description: The updated planned activity
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        "400":
+          description: Bad planned activity to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or planned activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Delete a planned activity from a profile
+      description: Allow to delete a defined planned activity from a profile
+      operationId: deletePlannedActivity
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the planned
+          activity is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: plannedActivityId
+        in: path
+        description: The identifier of the planned activity to delete
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The planned activity defined into the profile
+        "404":
+          description: Not found profile or planned activity
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Planned activities
+      - Profiles
+      summary: Change a planned activity from a profile
+      description: Allow to modify parts of a planned activity defined into a profile
+      operationId: mergePlannedActivity
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the planned
+          activity is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: plannedActivityId
+        in: path
+        description: The identifier of the planned activity to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to merge the planned activity
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        required: true
+      responses:
+        "200":
+          description: The current values of the planned activity after it has been
+            merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+        "400":
+          description: Bad planned activity to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or planned activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/relevantLocations:
+    get:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Return the relevant locations from a profile
+      description: Allow to get all the relevant locations defined into a profile
+      operationId: retrieveRelevantLocations
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relevant
+          location is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The relevant locations defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Add a relevant location into a profile
+      description: Insert a new relevant location into a profile
+      operationId: addRelevantLocation
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the relevant
+          location
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new relevant location
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        required: true
+      responses:
+        "201":
+          description: The added relevant location into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        "400":
+          description: Bad relevant location to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/relevantLocations/{relevantLocationId}:
+    get:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Return a relevant location from a profile
+      description: Allow to get a relevant location defined into a profile
+      operationId: retrieveRelevantLocation
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relevant
+          location is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: relevantLocationId
+        in: path
+        description: The identifier of the relevant location to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The relevant location defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        "404":
+          description: Not found profile or relevant location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Update a relevant location from a profile
+      description: Allow to modify a relevant location defined into a profile
+      operationId: updateRelevantLocation
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relevant
+          location is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: relevantLocationId
+        in: path
+        description: The identifier of the relevant location to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to update the relevant location
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        required: true
+      responses:
+        "200":
+          description: The updated relevant location
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        "400":
+          description: Bad relevant location to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or relevant location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Delete a relevant location from a profile
+      description: Allow to delete a defined relevant location from a profile
+      operationId: deleteRelevantLocation
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relevant
+          location is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: relevantLocationId
+        in: path
+        description: The identifier of the relevant location to delete
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The relevant location defined into the profile
+        "404":
+          description: Not found profile or relevant location
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Relevant locations
+      - Profiles
+      summary: Change a relevant location from a profile
+      description: Allow to modify parts of a relevant location defined into a profile
+      operationId: mergeRelevantLocation
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relevant
+          location is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: relevantLocationId
+        in: path
+        description: The identifier of the relevant location to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to merge the relevant location
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        required: true
+      responses:
+        "200":
+          description: The current values of the relevant location after it has been
+            merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+        "400":
+          description: Bad relevant location to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or relevant location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/relationships:
+    get:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Return the relationships from a profile
+      description: Allow to get all the relationships defined into a profile
+      operationId: retrieveRelationships
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The relationships defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Add a relationship into a profile
+      description: Insert a new relationship into a profile
+      operationId: addRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the relationship
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new relationship
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "201":
+          description: The added relationship into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/relationships/{index}:
+    get:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Return a relationship from a profile
+      description: Allow to get a relationship defined into a profile
+      operationId: retrieveRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the relationship to get
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      responses:
+        "200":
+          description: The relationship defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "404":
+          description: Not found profile or relationship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Update a relationship from a profile
+      description: Allow to modify a relationship defined into a profile
+      operationId: updateRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the relationship to update
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      requestBody:
+        description: The new values to update the relationship
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "200":
+          description: The updated relationship
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or relationship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Delete a relationship from a profile
+      description: Allow to delete a defined relationship from a profile
+      operationId: deleteRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the relationship to delete
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      responses:
+        "204":
+          description: The relationship defined into the profile
+        "404":
+          description: Not found profile or relationship
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Change a relationship from a profile
+      description: Allow to modify parts of a relationship defined into a profile
+      operationId: mergeRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The identifier of the relationship to merge
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      requestBody:
+        description: The new values to merge the relationship
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "200":
+          description: The current values of the relationship after it has been merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or relationship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/socialPractices:
+    get:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Return the social practices from a profile
+      description: Allow to get all the social practices defined into a profile
+      operationId: retrieveSocialPractices
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the social practice
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The social practices defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Add a social practice into a profile
+      description: Insert a new social practice into a profile
+      operationId: addSocialPractice
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the social practice
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new social practice
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        required: true
+      responses:
+        "201":
+          description: The added social practice into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        "400":
+          description: Bad social practice to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/socialPractices/{socialPracticeId}:
+    get:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Return a social practice from a profile
+      description: Allow to get a social practice defined into a profile
+      operationId: retrieveSocialPractice
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the social practice
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: socialPracticeId
+        in: path
+        description: The identifier of the social practice to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The social practice defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        "404":
+          description: Not found profile or social practice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Update a social practice from a profile
+      description: Allow to modify a social practice defined into a profile
+      operationId: updateSocialPractice
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the social practice
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: socialPracticeId
+        in: path
+        description: The identifier of the social practice to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to update the social practice
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        required: true
+      responses:
+        "200":
+          description: The updated social practice
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        "400":
+          description: Bad social practice to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or social practice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Delete a social practice from a profile
+      description: Allow to delete a defined social practice from a profile
+      operationId: deleteSocialPractice
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the social practice
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: socialPracticeId
+        in: path
+        description: The identifier of the social practice to delete
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The social practice defined into the profile
+        "404":
+          description: Not found profile or social practice
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Social practices
+      - Profiles
+      summary: Change a social practice from a profile
+      description: Allow to modify parts of a social practice defined into a profile
+      operationId: mergeSocialPractice
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the social practice
+          is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: socialPracticeId
+        in: path
+        description: The identifier of the social practice to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values to merge the social practice
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        required: true
+      responses:
+        "200":
+          description: The current values of the social practice after it has been
+            merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+        "400":
+          description: Bad social practice to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or social practice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/personalBehaviors:
+    get:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Return the personal behaviors from a profile
+      description: Allow to get all the personal behaviors defined into a profile
+      operationId: retrievePersonalBehaviors
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the personal
+          behavior is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The personal behaviors defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Add a personal behavior into a profile
+      description: Insert a new personal behavior into a profile
+      operationId: addPersonalBehavior
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the personal
+          behavior
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new personal behavior
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        required: true
+      responses:
+        "201":
+          description: The added personal behavior into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        "400":
+          description: Bad personal behavior to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/personalBehaviors/{index}:
+    get:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Return a personal behavior from a profile
+      description: Allow to get a personal behavior defined into a profile
+      operationId: retrievePersonalBehavior
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the personal
+          behavior is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the personal behavior to get
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      responses:
+        "200":
+          description: The personal behavior defined into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        "404":
+          description: Not found profile or personal behavior
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Update a personal behavior from a profile
+      description: Allow to modify a personal behavior defined into a profile
+      operationId: updatePersonalBehavior
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the personal
+          behavior is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the personal behavior to update
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      requestBody:
+        description: The new values to update the personal behavior
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        required: true
+      responses:
+        "200":
+          description: The updated personal behavior
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        "400":
+          description: Bad personal behavior to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or personal behavior
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Delete a personal behavior from a profile
+      description: Allow to delete a defined personal behavior from a profile
+      operationId: deletePersonalBehavior
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the personal
+          behavior is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the personal behavior on the profile to delete
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      responses:
+        "204":
+          description: The personal behavior defined into the profile
+        "404":
+          description: Not found profile or personal behavior
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Personal behaviors
+      - Profiles
+      summary: Change a personal behavior from a profile
+      description: Allow to modify parts of a personal behavior defined into a profile
+      operationId: mergePersonalBehavior
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the personal
+          behavior is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: index
+        in: path
+        description: The index of the personal behavior on the profile to merge
+        required: true
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      requestBody:
+        description: The new values to merge the personal behavior
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        required: true
+      responses:
+        "200":
+          description: The current values of the personal behavior after it has been
+            merged
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+        "400":
+          description: Bad personal behavior to merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile or personal behavior
           content:
             application/json:
               schema:
@@ -668,22 +2269,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /versions:
-    get:
-      tags:
-      - Other
-      summary: Get the version of the API
-      description: Return the current API version
-      operationId: getVersion
-      responses:
-        "200":
-          description: The API version
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/version'
 components:
   schemas:
+    Info:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Contain the name of the API
+          example: wenet/profile-manager
+        apiVersion:
+          type: string
+          description: Contain the implementation version number of the API
+          example: 1.0.0
+        softwareVersion:
+          type: string
+          description: Contain the implementation version number of the software
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+        license:
+          type: string
+          description: Contain information of the license of the API
+          example: MIT
+      description: Provide the version information of the API
     Answer:
       type: object
       properties:
@@ -975,20 +2587,3 @@ components:
           format: int64
           example: 1571412479710
       description: The calculated trust between two users.
-    version:
-      type: object
-      properties:
-        api:
-          type: string
-          description: Contain the implementation version number of the API
-          example: 1.0.0
-        software:
-          type: string
-          description: Contain the implementation version number of the software
-          example: 1.0.0
-        vendor:
-          type: string
-          description: Contain information of the organization that has implemented
-            the API
-          example: UDT-IA, IIIA-CSIC
-      description: Provide the version information of the API

@@ -7,17 +7,36 @@
 	},
 	"item": [
 		{
-			"name": "Get the API version",
+			"name": "Get the API information",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/versions",
+					"raw": "{{server}}/help/info",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"versions"
+						"help",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the API description",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/help/openapi.yaml",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"help",
+						"openapi.yaml"
 					]
 				}
 			},
@@ -117,7 +136,55 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"state\": \"PendingAssignment\"\n}",
+					"raw": "{\n    \"name\":\"Dinner together\",\n    \"transactions\":[\n    \t{\n    \t\t\"label\":\"acceptToAttend\"\n    \t}\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"types",
+						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge task type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d480d916-794a-4191-b9a2-2ebde442f553",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Eat together\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -185,7 +252,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"After covid Party\",\n    \t\"description\":\"Celebrate a big party after we have won teh COVID deseaze.\"\n    },\n    \"deadlineTs\":1606935600,\n    \"startTs\":1609356600,\n\t\"endTs\":1609360200\n}",
+					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"Meeting dinner\",\n    \t\"description\":\"A dinner after the meeting.\"\n    },\n    \"deadlineTs\":1606935600,\n    \"startTs\":1609356600,\n\t\"endTs\":1609360200\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -228,7 +295,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/tasks?appId=1&hasCloseTs=true",
+					"raw": "{{server}}/tasks?appId=1&hasCloseTs=false",
 					"host": [
 						"{{server}}"
 					],
@@ -242,7 +309,7 @@
 						},
 						{
 							"key": "requesterId",
-							"value": "1",
+							"value": "4",
 							"disabled": true
 						},
 						{
@@ -252,7 +319,7 @@
 						},
 						{
 							"key": "goalName",
-							"value": ".*",
+							"value": "/(?i)party/",
 							"disabled": true
 						},
 						{
@@ -292,7 +359,7 @@
 						},
 						{
 							"key": "hasCloseTs",
-							"value": "true"
+							"value": "false"
 						},
 						{
 							"key": "closeFrom",
@@ -336,7 +403,54 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"state\": \"PendingAssignment\"\n}",
+					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"Social dinner\",\n    \t\"description\":\"A dinner after the social event.\"\n    },\n    \"deadlineTs\":1706935600,\n    \"startTs\":1709356600,\n\t\"endTs\":1709360200\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/{{taskId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7ed6146f-148e-4a60-b956-cbb8b84db5bd",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"goal\":{\n    \t\"name\":\"WeNet Meeting dinner\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -401,7 +515,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"selectionVolunteer\",\n    \"attributes\":{\"volunteerId\":\"2\"}\n}",
+					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"volunteerForTask\",\n    \"attributes\":{\"volunteerId\":\"6\"}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -446,40 +560,34 @@
 	],
 	"variable": [
 		{
-			"id": "ba028aa5-a54d-4414-9881-605f7104587a",
+			"id": "8888d2d3-e5fc-4092-b9bc-c2ecbfae193a",
 			"key": "server",
-			"value": "https://wenet.u-hopper.com/dev/task_manager",
-			"type": "string"
+			"value": "https://wenet.u-hopper.com/dev/task_manager"
 		},
 		{
-			"id": "361b3a57-7bc3-4d7c-8374-9a1aafac0e45",
+			"id": "0aff3647-11c9-42bb-a818-a3c0464d9360",
 			"key": "taskId",
-			"value": "5ecff4702078fb229cddda0c",
-			"type": "string"
+			"value": "5f11b7f59dd4122022424a27"
 		},
 		{
-			"id": "c3528976-5545-4251-ba3d-95217a50e01a",
+			"id": "bcecc53c-6aa3-4011-a0d1-7cc8b17ee9b3",
 			"key": "lastUpdateTs",
-			"value": null,
-			"type": "any"
+			"value": 1594996778
 		},
 		{
-			"id": "da946f84-c7bd-4669-b54d-e1db0648565e",
+			"id": "852cfb4a-f4d6-4751-8843-159dd8810b76",
 			"key": "taskTypeId",
-			"value": "5ecff45b2078fb229cddda0b",
-			"type": "string"
+			"value": "5f11b79d9dd4122022424a26"
 		},
 		{
-			"id": "b4fe34b7-5acf-457b-a163-d324971a3538",
+			"id": "754ececc-764d-498f-9c29-a86808bb5059",
 			"key": "requesterId",
-			"value": "5ebd80ef829c2405a3064fbe",
-			"type": "string"
+			"value": "4"
 		},
 		{
-			"id": "7e18a9f7-8604-4d26-ae38-671f9260deda",
+			"id": "836ed2ba-d749-4d83-98ab-1dfdaf17c65f",
 			"key": "appId",
-			"value": "1",
-			"type": "string"
+			"value": "1"
 		}
 	],
 	"protocolProfileBehavior": {}

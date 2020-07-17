@@ -15,13 +15,13 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.10.0
+  version: 0.11.0
 servers:
 - url: https://wenet.u-hopper.com/prod/interaction_protocol_engine
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/interaction_protocol_engine
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/0.10/
+- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/0.11/
   description: IIIA development server
 tags:
 - name: Other
@@ -32,6 +32,30 @@ tags:
   description: The functionality provided allows to publish norms, and manage the
     user and community norms.
 paths:
+  /help/info:
+    get:
+      tags:
+      - Other
+      summary: Get the information about the API
+      description: Return the relevant information of the API implementation
+      operationId: getInfo
+      responses:
+        "200":
+          description: The API information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+  /help/openapi.yaml:
+    get:
+      tags:
+      - Other
+      summary: Get the Open API description
+      description: Return the Open API description of this API
+      operationId: getOpenApi
+      responses:
+        "200":
+          description: The API description
   /incentives:
     post:
       tags:
@@ -353,22 +377,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /versions:
-    get:
-      tags:
-      - Other
-      summary: Get the version of the API
-      description: Return the current API version
-      operationId: getVersion
-      responses:
-        "200":
-          description: The API version
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/version'
 components:
   schemas:
+    Info:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Contain the name of the API
+          example: wenet/interaction-protocol-engine
+        apiVersion:
+          type: string
+          description: Contain the implementation version number of the API
+          example: 1.0.0
+        softwareVersion:
+          type: string
+          description: Contain the implementation version number of the software
+          example: 1.0.0
+        vendor:
+          type: string
+          description: Contain information of the organization that has implemented
+            the API
+          example: UDT-IA, IIIA-CSIC
+        license:
+          type: string
+          description: Contain information of the license of the API
+          example: MIT
+      description: Provide the version information of the API
     Badge:
       type: object
       properties:
@@ -528,20 +563,3 @@ components:
           items:
             $ref: '#/components/schemas/PublishedNorm'
       description: Contains a set of published norms found
-    version:
-      type: object
-      properties:
-        api:
-          type: string
-          description: Contain the implementation version number of the API
-          example: 1.0.0
-        software:
-          type: string
-          description: Contain the implementation version number of the software
-          example: 1.0.0
-        vendor:
-          type: string
-          description: Contain information of the organization that has implemented
-            the API
-          example: UDT-IA, IIIA-CSIC
-      description: Provide the version information of the API
