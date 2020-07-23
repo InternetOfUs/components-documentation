@@ -160,10 +160,11 @@ components:
         volunteerId:
           type: string
           description: The wenet id of the user who is volunteering for the task
-        title:
-          example: A new volunteer for your task
-        text:
-          example: A user volunteer to participate in your task, check him out!
+        explanation:
+          nullable: true
+          type: string
+          description: The wenet id of the user who is volunteering for the task
+          example: It is your friend
 
     TaskSelectionNotification:
       description: This notification is used in order to notify the user who volunteered about the decision of the task creator
