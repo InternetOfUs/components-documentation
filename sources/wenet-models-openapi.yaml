@@ -329,31 +329,6 @@ components:
           description: The nationality of the user
           example: Spanish
           nullable: true
-        languages:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The language spoken by the user
-                example: Spanish
-              level:
-                type: string
-                description: The level
-                example: C2
-                enum:
-                    - A0
-                    - A1
-                    - A2
-                    - B1
-                    - B2
-                    - C1
-                    - C2
-              code:
-                type: string
-                description: The ISO 639-1 code that identify the language
-                example: es
         occupation:
           type: string
           description: The occupation of the user
@@ -423,6 +398,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Routine'
+        materials:
+          type: array
+          items:
+            - $ref: '#/components/schemas/Material'
+        competences:
+          type: array
+          items:
+            - $ref: '#/components/schemas/Competence'
+        meanings:
+          type: array
+          items:
+            - $ref: '#/components/schemas/Meaning'
 
     # Tasks
 
