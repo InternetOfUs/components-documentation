@@ -191,11 +191,13 @@ components:
           description: The descriptor of the social practice
           example: commuter
         materials:
-          anyOf:
-            - $ref: '#/components/schemas/Car'
+          type: array
+          items:
+            $ref: '#/components/schemas/Material'
         competences:
-          anyOf:
-            - $ref: '#/components/schemas/DrivingLicense'
+          type: array
+          items:
+            $ref: '#/components/schemas/Competence'        
         norms:
           type: array
           description: The norms of the social practice
@@ -401,15 +403,15 @@ components:
         materials:
           type: array
           items:
-            - $ref: '#/components/schemas/Material'
+            $ref: '#/components/schemas/Material'
         competences:
           type: array
           items:
-            - $ref: '#/components/schemas/Competence'
+            $ref: '#/components/schemas/Competence'
         meanings:
           type: array
           items:
-            - $ref: '#/components/schemas/Meaning'
+            $ref: '#/components/schemas/Meaning'
 
     # Tasks
 
