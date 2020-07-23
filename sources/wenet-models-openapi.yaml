@@ -121,41 +121,62 @@ components:
 
     Material:
       type: object
+      description: It describes an object that is available to a user
       properties:
-        id:
+        name:
           type: string
-          description: The identifier of the material
-          example: aisufh9sdokjnd
+          description: The name of the object
+          example: car
+        description:
+          type: string
+          description: A description of the object
+          example: Fiat 500
+        quantity:
+          type: integer
+          description: The amount of units available
+          example: 1
+        classification:
+          type: string
+          description: The classification used for representing the object
 
-    Car:
-      allOf:
-        - $ref: '#/components/schemas/Material'
-      properties:
-        carPlate:
-          type: string
-          description: The plate of the car
-          example: UH765TG
-        carType:
-          type: string
-          example: Sport car - 2 seats
+            - Global Product Classification (https://www.gs1.org/standards/gpc)
+
+            - NICE classification (Classification of Goods and Services)
+          example: nice
 
     Competence:
       type: object
+      description: It describe a competence of a user
       properties:
-        id:
+        name:
+          type: string
+          description: The name of the competence
+          example: language_Italian_C1
+        ontology:
           type: string
           description: The identifier of the competence
-          example: aisufh9sdokjnd
+          example: esco
+        level:
+          type: number
+          description: The identifier of the competence (value in between 0 and 1, both included)
+          example: 0.8
 
-    DrivingLicense:
-      allOf:
-        - $ref: '#/components/schemas/Competence'
+    Meaning:
+      type: object
+      description: For defining more general purpose concepts
       properties:
-        drivingLicenseId:
+        name:
           type: string
-          description: The driving license if
-          example: ESdfg09dofgk
-
+          description: The name of the concept represented by the meaning
+          example: extraversion
+        category:
+          type: string
+          description: The category associated to the menaing
+          example: big_five
+        level:
+          type: number
+          description: The level associated to the concept
+          example: 0.8
 
     SocialPractice:
       type: object
