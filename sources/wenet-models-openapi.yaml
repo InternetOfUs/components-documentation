@@ -392,10 +392,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SocialNetworkRelationship'
-        socialPractices:
-          type: array
-          items:
-            $ref: '#/components/schemas/SocialPractice'
         personalBehaviors:
           type: array
           items:
@@ -580,3 +576,58 @@ components:
         attributes:
           type: object
           description: The attributes that are set in the associated transaction type
+          
+    CommunityProfile:
+      allOf:
+        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+      properties:
+        id:
+          type: string
+          description: The identifier of the community.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+        appId:
+          type: string
+          description: The identifier of the application where the community is defined.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+        name:
+          type: string
+          description: The name of the community.
+        description:
+          type: string
+          description: The description of the community.
+        keywords:
+          type: array
+          description: The keywords that describe the community.
+          items:
+            type: string
+        members:
+          type: array
+          description: The members of the community.
+          items:
+            $ref: '#/components/schemas/CommunityMember'
+        socialPractices:
+          type: array
+          description: The social practice that are done into the community
+          items:
+            $ref: '#/components/schemas/SocialPractice'
+        norms:
+          type: array
+          description: The norms that regulates the community.
+          items:
+            $ref: '#/components/schemas/Norm'
+      description: A community of WeNet users.
+      
+    CommunityMember:
+      allOf:
+        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+      properties:
+        userId:
+          type: string
+          description: The identifier of the user that is on the community.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+        privileges:
+          type: array
+          description: The keywords that describe the community.
+          items:
+            type: string
+      description: A member of a community.
