@@ -1,12 +1,11 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "description": "This is a simple description of the Streambase Common APIs",
+    "description": "This is a description of the Streambase Common APIs",
     "version": "1.0.0",
     "title": "Streambase Commons",
-    "termsOfService": "http://unitn/terms/",
     "contact": {
-      "email": "s.decristofaro@unitn.it"
+      "email": "marcelo.rodasbritez@unitn.it"
     },
     "license": {
       "name": "Apache 2.0",
@@ -15,225 +14,14 @@
   },
   "servers": [
     {
-      "url": "/"
+      "url": "https://wenet.u-hopper.com/dev/commons"
     }
   ],
   "paths": {
-    "/incentive": {
+    "/data": {
       "post": {
         "tags": [
-          "incentive"
-        ],
-        "summary": "Post an Incentive",
-        "description": "Post an Incentive - badge or message",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Incentive"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Stream successfully initialized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Id"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/i-log/streams": {
-      "post": {
-        "tags": [
-          "i-Log Streams"
-        ],
-        "summary": "Send a subscription request to receive data",
-        "description": "Make a subscription to receive info on properties every time some of the condition.properties change",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Subscription"
-              }
-            }
-          }
-        },
-        "callbacks": {
-          "propertyChanged": {
-            "notificationCallbackUrl/": {
-              "post": {
-                "requestBody": {
-                  "required": true,
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/DataRequestArray"
-                      }
-                    }
-                  }
-                },
-                "responses": {
-                  "200": {
-                    "description": "Stream successfully initialized",
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "$ref": "#/components/schemas/EmptyResponse"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Stream successfully initialized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Id"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "i-Log Streams"
-        ],
-        "summary": "Get a list of active subscriptions",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "name": "appId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "ai30384odg"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Stream successfully initialized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Subscription"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/i-log/streams/{streamId}": {
-      "get": {
-        "tags": [
-          "i-Log Streams"
-        ],
-        "summary": "Get the details of an existing subscription",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "name": "streamId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Stream found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Subscription"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No such streamId exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "i-Log Streams"
-        ],
-        "summary": "Delete subscription",
-        "description": "Stop receiving notification",
-        "parameters": [
-          {
-            "name": "streamId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Stream correctly deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "No such streamId exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/i-log/data": {
-      "post": {
-        "tags": [
-          "i-Log Batch Data"
+          "batch data"
         ],
         "summary": "Upload a new entity's data",
         "parameters": [
@@ -245,7 +33,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataRequestArray"
+                "$ref": "#/components/schemas/DataRequest"
               }
             }
           }
@@ -257,108 +45,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "i-Log Batch Data"
-        ],
-        "summary": "Update entity's data",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "a34for230po"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DataRequestArray"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "data correctly updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmptyResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/i-log/data/{userId}": {
-      "get": {
-        "tags": [
-          "i-Log Batch Data"
-        ],
-        "summary": "retrieve data you want to receive",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/Authorization"
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "a34for230po"
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "20190825"
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": false,
-            "description": "20190901"
-          },
-          {
-            "name": "properties",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "locationeventpertime"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "data correctly retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataRequest"
                 }
               }
             }
@@ -389,99 +75,6 @@
       }
     },
     "schemas": {
-      "Incentive_message": {
-        "type": "object",
-        "required": [
-          "app_id",
-          "user_id",
-          "incentive_type",
-          "issuer"
-        ],
-        "properties": {
-          "app_id": {
-            "type": "string",
-            "example": 1
-          },
-          "user_id": {
-            "type": "string",
-            "example": 6
-          },
-          "incentive_type": {
-            "type": "string",
-            "example": "message/badge (only one)"
-          },
-          "issuer": {
-            "type": "string",
-            "example": "WeNet_issuer"
-          },
-          "message": {
-            "type": "object",
-            "properties": {
-              "content": {
-                "type": "string",
-                "example": "we are happy to see your participation in the I-log app you are doing a great job!"
-              }
-            }
-          }
-        }
-      },
-      "Incentive": {
-        "type": "object",
-        "required": [
-          "AppID",
-          "UserId",
-          "IncentiveType",
-          "Issuer"
-        ],
-        "properties": {
-          "AppID": {
-            "type": "string",
-            "example": 1
-          },
-          "UserId": {
-            "type": "string",
-            "example": 6
-          },
-          "IncentiveType": {
-            "type": "string",
-            "example": "Message/Badge (only one)"
-          },
-          "Issuer": {
-            "type": "string",
-            "example": "WeNet issuer"
-          },
-          "Message": {
-            "type": "object",
-            "properties": {
-              "content": {
-                "type": "string",
-                "example": "we are happy to see your participation in the I-log app you are doing a great job!"
-              }
-            }
-          },
-          "Badge": {
-            "type": "object",
-            "properties": {
-              "BadgeClass": {
-                "type": "string",
-                "example": "hpqAdI7hQf2maQ13AW1jXA"
-              },
-              "ImgUrl": {
-                "type": "string",
-                "example": "http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png"
-              },
-              "Criteria": {
-                "type": "string",
-                "example": "The user will get this badge for 50 relations in tweeter."
-              },
-              "Message": {
-                "type": "string",
-                "example": "congratulations! you just earned a new badge for your relations on tweeter."
-              }
-            }
-          }
-        }
-      },
       "Id": {
         "type": "object",
         "properties": {
@@ -512,49 +105,114 @@
               "type": "object",
               "properties": {
                 "q": {
-                  "$ref": "#/components/schemas/Question"
+                  "$ref": "#/components/schemas/QuestionView"
                 },
                 "a": {
-                  "$ref": "#/components/schemas/Answer"
+                  "$ref": "#/components/schemas/AnswerOptionsView"
                 }
               }
             }
           }
         }
       },
-      "ConditionObject": {
-        "description": "used to show a new question only if a specific answer on a previous question has been chose",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "a": {
-              "type": "integer",
-              "format": "integer",
-              "description": "condition answer id",
-              "example": 1
-            },
-            "q": {
-              "type": "integer",
-              "format": "integer",
-              "description": "condition question id",
-              "example": 1
-            }
+      "ConditionView": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "integer",
+            "format": "integer",
+            "description": "condition answer id",
+            "example": 1
+          },
+          "q": {
+            "type": "integer",
+            "format": "integer",
+            "description": "condition question id",
+            "example": 1
+          }
+        },
+        "description": "used to show a new question only if a specific answer on a previous question has been chose"
+      },
+      "DataObjView": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "example": 42.23432
+          },
+          "long": {
+            "type": "number",
+            "example": 11.13242
           }
         }
       },
-      "Question": {
+      "MetaDataObjView": {
+        "type": "object",
+        "properties": {
+          "lat": {
+            "type": "number",
+            "example": 42.23432
+          },
+          "long": {
+            "type": "number",
+            "example": 11.13242
+          },
+          "timestamp": {
+            "type": "string",
+            "example": 20200131235959124
+          }
+        }
+      },
+      "Payload": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DataObjView"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/MetaDataObjView"
+          },
+          "picture": {
+            "type": "string",
+            "example": "/9j/4AAQSkZJRgABAQEASABIAAD",
+            "description": "Picture in base64"
+          }
+        }
+      },
+      "PayloadView": {
+        "type": "object",
+        "properties": {
+          "payload": {
+            "$ref": "#/components/schemas/Payload"
+          },
+          "qid": {
+            "type": "string",
+            "example": 2,
+            "description": "Question id"
+          }
+        }
+      },
+      "Paragraph": {
+        "type": "object",
+        "properties": {
+          "l": {
+            "type": "string",
+            "example": "en_US",
+            "description": "Language identifier"
+          },
+          "t": {
+            "type": "string",
+            "example": "Some text",
+            "description": "The text the user will see"
+          }
+        }
+      },
+      "QuestionView": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "integer"
-          },
-          "l": {
-            "type": "string",
-            "format": "string",
-            "description": "language",
-            "example": "en_US"
           },
           "t": {
             "type": "string",
@@ -574,21 +232,7 @@
           "p": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "l": {
-                  "type": "string",
-                  "format": "string",
-                  "description": "language",
-                  "example": "en_US"
-                },
-                "t": {
-                  "type": "string",
-                  "format": "string",
-                  "description": "question's text",
-                  "example": "What are you doing?"
-                }
-              }
+              "$ref": "#/components/schemas/Paragraph"
             }
           }
         },
@@ -609,86 +253,140 @@
           ]
         }
       },
-      "Answer": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer",
-              "format": "integer"
-            },
-            "c": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ConditionObject"
-              }
-            },
-            "c_id": {
-              "type": "integer",
-              "format": "integer",
-              "description": "concept id",
-              "example": -1
-            },
-            "p": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "l": {
-                    "type": "string",
-                    "format": "string",
-                    "description": "language",
-                    "example": "en_US"
-                  },
-                  "t": {
-                    "type": "string",
-                    "format": "string",
-                    "description": "text",
-                    "example": "This is my answer"
-                  }
-                }
-              }
-            }
+      "AnswerContentView": {
+        "type": "object",
+        "properties": {
+          "cnt": {
+            "type": "string",
+            "example": "I am at home",
+            "description": "The answer chosen by the user among one of the option "
           },
-          "example": [
-            {
-              "id": 1,
-              "c": [],
-              "c_id": -1,
-              "p": [
-                {
-                  "l": "en_US",
-                  "t": "I am working"
-                },
-                {
-                  "l": "it_IT",
-                  "t": "Sto lavorando"
-                }
-              ]
-            },
-            {
-              "id": 2,
-              "c": [],
-              "c_id": -1,
-              "p": [
-                {
-                  "l": "en_US",
-                  "t": "I am studying"
-                },
-                {
-                  "l": "it_IT",
-                  "t": "Sto studiando"
-                }
-              ]
-            }
-          ]
+          "qid": {
+            "type": "integer",
+            "example": 2,
+            "description": "Question id"
+          },
+          "aid": {
+            "type": "integer",
+            "example": 3,
+            "description": "Answer id"
+          },
+          "cid": {
+            "type": "integer",
+            "example": -1,
+            "description": "Condition id"
+          }
         }
       },
-      "DataRequestArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/DataRequest"
+      "AnswerOptionsView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "integer"
+          },
+          "c": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConditionView"
+            }
+          },
+          "c_id": {
+            "type": "integer",
+            "format": "integer",
+            "description": "concept id",
+            "example": -1
+          },
+          "p": {
+            "$ref": "#/components/schemas/Paragraph"
+          }
+        },
+        "example": [
+          {
+            "id": 1,
+            "c": [],
+            "c_id": -1,
+            "p": [
+              {
+                "l": "en_US",
+                "t": "I am working"
+              },
+              {
+                "l": "it_IT",
+                "t": "Sto lavorando"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "c": [],
+            "c_id": -1,
+            "p": [
+              {
+                "l": "en_US",
+                "t": "I am studying"
+              },
+              {
+                "l": "it_IT",
+                "t": "Sto studiando"
+              }
+            ]
+          }
+        ]
+      },
+      "QuestionAnswerView": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "$ref": "#/components/schemas/QuestionView"
+          },
+          "a": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerOptionsView"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "user"
+          },
+          "id": {
+            "type": "string",
+            "example": "a102lomnstesa2"
+          },
+          "appid": {
+            "type": "string",
+            "example": "Twitter"
+          },
+          "locationeventpertime": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationObject"
+            }
+          },
+          "accelerometerevent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccelerometerEventObject"
+            }
+          },
+          "gyroscopeevent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GyroscopeEventObject"
+            }
+          },
+          "tasksquestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskQuestion"
+            }
+          }
         }
       },
       "DataRequest": {
@@ -697,6 +395,10 @@
           "userId": {
             "type": "string",
             "example": "a34for230po"
+          },
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
           },
           "properties": {
             "type": "array",
@@ -765,6 +467,14 @@
       "AccelerometerEventObject": {
         "type": "object",
         "properties": {
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
+          },
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -786,6 +496,14 @@
       "GyroscopeEventObject": {
         "type": "object",
         "properties": {
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
+          },
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -807,6 +525,14 @@
       "LocationObject": {
         "type": "object",
         "properties": {
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
+          },
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "timestamp": {
             "type": "string",
             "example": 201908252359000
@@ -833,12 +559,26 @@
       "TaskAnswer": {
         "type": "object",
         "properties": {
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
+          },
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "instanceid": {
             "type": "string",
             "example": "f161dee2a122af926a9c4285275800942d128c34"
           },
           "answer": {
-            "$ref": "#/components/schemas/Answer"
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/AnswerContentView"
+              }
+            }
           },
           "answerduration": {
             "type": "string",
@@ -881,12 +621,20 @@
       "TaskQuestion": {
         "type": "object",
         "properties": {
+          "experimentId": {
+            "type": "string",
+            "example": "Wenet01"
+          },
+          "userId": {
+            "type": "string",
+            "example": "a34for230po"
+          },
           "instanceid": {
             "type": "string",
             "example": "f161dee2a122af926a9c4285275800942d128c34"
           },
           "question": {
-            "$ref": "#/components/schemas/Question"
+            "$ref": "#/components/schemas/QuestionAnswerView"
           },
           "day": {
             "type": "string",
@@ -906,65 +654,60 @@
           }
         }
       },
-      "Subscription": {
+
+      "SensorId": {
         "type": "object",
         "properties": {
-          "description": {
+          "id": {
             "type": "string",
-            "example": "description of the notification"
+            "example": 1
+          }
+        }
+      },
+      "Experiment": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 101010
           },
-          "entities": {
-            "type": "object",
-            "properties": {
-              "userIds": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "description": "userIds you want to track"
-                },
-                "example": [
-                  "aoqi3481pal13l3qvrfh"
-                ]
-              }
-            }
+          "id": {
+            "type": "string",
+            "example": "Wenet01"
           },
-          "notification": {
-            "description": "an URL where to receive POST requests",
-            "type": "object",
-            "properties": {
-              "url": {
-                "type": "string",
-                "example": "https://www.myservice.com/receivePOSTrequest"
-              }
-            }
+          "title": {
+            "$ref": "#/components/schemas/MultilanguageText"
           },
-          "condition": {
-            "type": "object",
-            "properties": {
-              "onchange": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "description": "list of properties that will trigger the notification on change"
-                },
-                "example": [
-                  "locationeventpertime",
-                  "accelerometerevents"
-                ]
-              }
-            }
+          "configuration": {
+            "$ref": "#/components/schemas/Configuration"
           },
-          "properties": {
-            "description": "the parameters in this section specify the content of the notification.",
+          "description": {
+            "$ref": "#/components/schemas/MultilanguageText"
+          },
+          "logo": {
+            "type": "string",
+            "example": "http://www.example.com/logo.png"
+          },
+          "informedConsent": {
+            "$ref": "#/components/schemas/MultilanguageText"
+          },
+          "profile": {
             "type": "array",
             "items": {
-              "type": "object",
-              "description": "list of properties"
-            },
-            "example": [
-              "locationeventpertime,",
-              "gyroscopeevent"
-            ]
+              "$ref": "#/components/schemas/QuestionAnswerView"
+            }
+          },
+          "sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorId"
+            }
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Permission"
+            }
           }
         }
       },
