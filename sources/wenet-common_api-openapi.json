@@ -470,6 +470,28 @@
                       }
                     }
                   }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "socialrelations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/socialrelationsObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "touchevent": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/touchevent"
+                      }
+                    }
+                  }
                 }
               ]
             }
