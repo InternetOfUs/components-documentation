@@ -85,36 +85,6 @@
           }
         }
       },
-      "UserContribution": {
-        "type": "object",
-        "properties": {
-          "t_tile": {
-            "type": "string",
-            "description": "Question title",
-            "example": "Test Title"
-          },
-          "t_until": {
-            "type": "string",
-            "format": "integer",
-            "description": "Time to Live",
-            "example": 86400
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "q": {
-                  "$ref": "#/components/schemas/QuestionView"
-                },
-                "a": {
-                  "$ref": "#/components/schemas/AnswerOptionsView"
-                }
-              }
-            }
-          }
-        }
-      },
       "ConditionView": {
         "type": "object",
         "properties": {
@@ -396,7 +366,7 @@
           "touchevent": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/touchevent"
+              "$ref": "#/components/schemas/toucheventObject"
             }
           }
         }
@@ -488,7 +458,7 @@
                     "touchevent": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/touchevent"
+                        "$ref": "#/components/schemas/toucheventObject"
                       }
                     }
                   }
@@ -501,7 +471,7 @@
       "socialrelationsObject": {
         "type": "object",
         "properties": {
-          "socialrelationsObject": {
+          "socialrelations": {
             "type": "object",
             "properties": {
               "experimentid": {
@@ -545,7 +515,7 @@
           }
         }
       },
-      "touchevent": {
+      "toucheventObject": {
         "type": "object",
         "properties": {
           "touchevent": {
