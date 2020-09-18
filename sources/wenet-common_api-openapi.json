@@ -366,7 +366,7 @@
           "locationeventpertime": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LocationObject"
+              "$ref": "#/components/schemas/locationeventObject"
             }
           },
           "accelerometerevent": {
@@ -385,6 +385,18 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TaskQuestion"
+            }
+          },
+          "socialrelations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/socialrelationsObject"
+            }
+          },
+          "touchevent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/touchevent"
             }
           }
         }
@@ -410,7 +422,7 @@
                     "locationeventpertime": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/LocationObject"
+                        "$ref": "#/components/schemas/locationeventObject"
                       }
                     }
                   }
@@ -460,6 +472,79 @@
                   }
                 }
               ]
+            }
+          }
+        }
+      },
+      "socialrelationsObject": {
+        "type": "object",
+        "properties": {
+          "socialrelationsObject": {
+            "type": "object",
+            "properties": {
+              "experimentid": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 202004212357000
+              },
+              "source": {
+                "type": "string",
+                "example": "twitter"
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "eventtype": {
+                    "type": "string",
+                    "example": "follows"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "userdestinationid": {
+                    "type": "string",
+                    "example": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "touchevent": {
+        "type": "object",
+        "properties": {
+          "touchevent": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 2020052105142943
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              }
             }
           }
         }
@@ -522,35 +607,60 @@
           }
         }
       },
-      "LocationObject": {
+      "locationeventObject": {
         "type": "object",
         "properties": {
-          "experimentId": {
-            "type": "string",
-            "example": "Wenet01"
-          },
-          "userId": {
-            "type": "string",
-            "example": "a34for230po"
-          },
-          "timestamp": {
-            "type": "string",
-            "example": 201908252359000
-          },
-          "point": {
+          "locationeventpertime": {
             "type": "object",
             "properties": {
-              "latitude": {
+              "experimentId": {
                 "type": "string",
-                "example": 22.1492
+                "example": "wenetTest"
               },
-              "longitude": {
+              "userid": {
                 "type": "string",
-                "example": -101.03609
+                "example": 1
               },
-              "altitude": {
+              "timestamp": {
                 "type": "string",
-                "example": 1845.29208
+                "example": 201908252357000
+              },
+              "day": {
+                "type": "string",
+                "example": 20190825
+              },
+              "accuracy": {
+                "type": "number",
+                "example": 23.2
+              },
+              "lucene": {
+                "type": "string",
+                "example": "lucene"
+              },
+              "provider": {
+                "type": "string",
+                "example": "gps"
+              },
+              "speed": {
+                "type": "number",
+                "example": 2.3
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number",
+                    "example": 22.1492
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "example": -101.03609
+                  },
+                  "altitude": {
+                    "type": "number",
+                    "example": 1845.29208
+                  }
+                }
               }
             }
           }
@@ -654,60 +764,12 @@
           }
         }
       },
-
       "SensorId": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "example": 1
-          }
-        }
-      },
-      "Experiment": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 101010
-          },
-          "id": {
-            "type": "string",
-            "example": "Wenet01"
-          },
-          "title": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "configuration": {
-            "$ref": "#/components/schemas/Configuration"
-          },
-          "description": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "logo": {
-            "type": "string",
-            "example": "http://www.example.com/logo.png"
-          },
-          "informedConsent": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "profile": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/QuestionAnswerView"
-            }
-          },
-          "sensors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SensorId"
-            }
-          },
-          "permissions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Permission"
-            }
           }
         }
       },
