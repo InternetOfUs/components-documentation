@@ -903,6 +903,18 @@
             "items": {
               "$ref": "#/components/schemas/TaskQuestion"
             }
+          },
+          "socialrelations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/socialrelationsObject"
+            }
+          },
+          "touchevent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/toucheventObject"
+            }
           }
         }
       },
@@ -975,8 +987,103 @@
                       }
                     }
                   }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "socialrelations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/socialrelationsObject"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "touchevent": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/toucheventObject"
+                      }
+                    }
+                  }
                 }
               ]
+            }
+          }
+        }
+      },
+      "socialrelationsObject": {
+        "type": "object",
+        "properties": {
+          "socialrelations": {
+            "type": "object",
+            "properties": {
+              "experimentid": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 202004212357000
+              },
+              "source": {
+                "type": "string",
+                "example": "twitter"
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "eventtype": {
+                    "type": "string",
+                    "example": "follows"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "userdestinationid": {
+                    "type": "string",
+                    "example": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "toucheventObject": {
+        "type": "object",
+        "properties": {
+          "touchevent": {
+            "type": "object",
+            "properties": {
+              "experimentId": {
+                "type": "string",
+                "example": "wenetTest"
+              },
+              "userid": {
+                "type": "string",
+                "example": 1
+              },
+              "timestamp": {
+                "type": "string",
+                "example": 2020052105142943
+              },
+              "day": {
+                "type": "string",
+                "example": 20200521
+              }
             }
           }
         }
@@ -1171,258 +1278,12 @@
           }
         }
       },
-      "Configuration": {
-        "type": "object",
-        "properties": {
-          "portSeparator": {
-            "type": "string",
-            "example": ":"
-          },
-          "separator": {
-            "type": "string",
-            "example": "/"
-          },
-          "snoozeNotifications": {
-            "type": "boolean",
-            "example": true
-          },
-          "breakNotifications": {
-            "type": "boolean",
-            "example": true
-          },
-          "serverBaseUrl": {
-            "type": "string",
-            "example": "http://example.com"
-          },
-          "loggingRestartInterval": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "bluetoothScanDuration": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "bluetoothLEScanDuration": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "sensorCollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "bluetoothCollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "bluetoothLECollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "wifiCollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "applicationCollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "locationCollectionFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "cellInfoFrequency": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "updateNotificationId": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "mainNotificationId": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "questionnaireNotificationInterval": {
-            "type": "integer",
-            "example": 1000,
-            "description": "time in microseconds"
-          },
-          "minimumBatteryLevel": {
-            "type": "integer",
-            "example": 10,
-            "description": "battery percentage"
-          },
-          "endpointUpload": {
-            "type": "string",
-            "example": "upload",
-            "description": "The endpoint i-log uses to upload the users sensors data "
-          },
-          "endpointUploadAnswers": {
-            "type": "string",
-            "example": "contributionanswers",
-            "description": "The endpoint i-log uses to upload the contributions answers "
-          },
-          "endpointGetAvailableChallenges": {
-            "type": "string",
-            "example": "getchallengeinstance",
-            "description": "The endpoint i-log uses to get new challenges"
-          },
-          "endpointUploadReceptionConfirmation": {
-            "type": "string",
-            "example": "receptionconfirmation",
-            "description": "The endpoint i-log uses to upload the contributions reception confirmation "
-          },
-          "endpointUploadChallengesSynchronizationInfo": {
-            "type": "string",
-            "example": "challengesynchronization",
-            "description": "The endpoint i-log uses to get synchronization info on challenges "
-          },
-          "endpointResultChallenges": {
-            "type": "string",
-            "example": "getchallengeresult",
-            "description": "The endpoint where the i-log gets the information about challenges results"
-          },
-          "endpointSignup": {
-            "type": "string",
-            "example": "signup",
-            "description": "The endpoint where the i-log signs up new users "
-          },
-          "endpointLogin": {
-            "type": "string",
-            "example": "login",
-            "description": "The endpoint where the i-log uploads the login information "
-          },
-          "endpointUploadProfile": {
-            "type": "string",
-            "example": "profile",
-            "description": "The endpoint where the i-log uploads the user profile information "
-          },
-          "endpointProjects": {
-            "type": "string",
-            "example": "projects",
-            "description": "The endpoint where the i-log app looks for experiments"
-          },
-          "portGetAvailableChallenges": {
-            "type": "integer",
-            "example": 8095
-          },
-          "serverPort": {
-            "type": "integer",
-            "example": 8090
-          },
-          "logDir": {
-            "type": "string",
-            "example": "/logs"
-          },
-          "compressedLogExtension": {
-            "type": "string",
-            "example": "bz2"
-          },
-          "logFileSizeLimitSize": {
-            "type": "integer",
-            "example": 3000000
-          },
-          "questionnaireNotificationId": {
-            "type": "integer",
-            "example": 404
-          },
-          "questionnaireNumberOfQuestions": {
-            "type": "integer",
-            "example": 5
-          },
-          "witmeeDataPath": {
-            "type": "string",
-            "example": "/witmee/data"
-          },
-          "startDate": {
-            "type": "string",
-            "example": "20200530"
-          },
-          "endDate": {
-            "type": "string",
-            "example": "20200531"
-          },
-          "isTest": {
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "MultilanguageText": {
-        "type": "object",
-        "properties": {
-          "en_US": {
-            "type": "string",
-            "example": "Some text in English"
-          },
-          "it_IT": {
-            "type": "string",
-            "example": "Testo in italiano"
-          },
-          "es_ES": {
-            "type": "string",
-            "example": "Algo de texto en espanol"
-          }
-        }
-      },
       "SensorId": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "example": 1
-          }
-        }
-      },
-      "Permission": {
-        "type": "object",
-        "properties": {
-          "singleSensor": {
-            "type": "boolean",
-            "example": true
-          },
-          "background": {
-            "type": "string",
-            "example": "ic_battery",
-            "description": "The icon to show while asking for the current permission"
-          },
-          "permission": {
-            "type": "string",
-            "example": "battery_permission"
-          },
-          "skip": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the permission can be skipped"
-          },
-          "title": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "message": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "messageLow": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "messageHigh": {
-            "$ref": "#/components/schemas/MultilanguageText"
-          },
-          "order": {
-            "type": "integer",
-            "example": 1,
-            "description": "The position in which to display the permission on the user's phone"
           }
         }
       },
