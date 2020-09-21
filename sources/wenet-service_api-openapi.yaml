@@ -50,6 +50,23 @@ paths:
   #           application/json:
   #             schema:
   #               $ref: '#/components/schemas/App'
+  
+  /token:
+    get:
+      summary: Get the details of a given Oauth2 token
+      tags: 
+        - Token Details
+      security: 
+        - Oauth2: []
+      responses:
+        200:
+          description: The detail of the token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenDetails'
+                
+      
 
   /app/{appId}:
     get:
@@ -244,6 +261,24 @@ paths:
   #           application/json:
   #             schema:
   #               $ref: '#/components/schemas/WeNetUser'
+  
+  
+  /user/profile:
+    get:
+      summary: Get the profile of the specified wenet user
+      tags:
+        - WeNet user profile
+      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy.
+      security:
+        - Oauth2: []
+      responses:
+        200:
+          description: WeNetUser profile
+          content:
+            application/json:
+              schema:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
+
 
   /user/profile/{wenetUserId}:
     post:
@@ -654,6 +689,11 @@ components:
       type: apiKey
       in: header
       name: apikey
+      
+    Oauth2:
+      type: http
+      scheme: bearer
+      bearerFormat: oauth2  
 
 
   schemas:
@@ -993,6 +1033,23 @@ components:
           format: url
           description: The url of the webhook that is going to receive the message responsens. The specified endpoint must be configured in order to be able to receive a list of `ResponseMessage`.
           example: "https://www.app1.wenet.com/webhook"
+          
+    TokenDetails:
+      type: object
+      properties:
+        profileId:
+          type: string
+          readOnly: true
+          description: the id of the profile
+        appId:
+          type: string
+          readOnly: true
+          description: The id of the app that has requested the token
+        scopes:
+          type: array
+          description: The list of scopes
+          items:
+            type: string
 
     EmptyResponse:
       type: object
