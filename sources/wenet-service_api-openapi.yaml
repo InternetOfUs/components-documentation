@@ -27,7 +27,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://wenet.u-hopper.com/dev/service
+  - url: https://wenet.u-hopper.com/dev/api/service
     description: Testing instance
 
 paths:
