@@ -680,29 +680,29 @@ components:
         Issuer:
           type: string
           example: WeNet issuer
+    Message:
+      type: object
+      properties:
+        content:
+          type: string
+          example: >-
+            we are happy to see your participation in the I-log app you are
+            doing a great job!
+    Badge:
+      type: object
+      properties:
+        BadgeClass:
+          type: string
+          example: hpqAdI7hQf2maQ13AW1jXA
+        ImgUrl:
+          type: string
+          example: >-
+            http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
+        Criteria:
+          type: string
+          example: The user will get this badge for 50 relations in tweeter.
         Message:
-          type: object
-          properties:
-            content:
-              type: string
-              example: >-
-                we are happy to see your participation in the I-log app you are
-                doing a great job!
-        Badge:
-          type: object
-          properties:
-            BadgeClass:
-              type: string
-              example: hpqAdI7hQf2maQ13AW1jXA
-            ImgUrl:
-              type: string
-              example: >-
-                http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
-            Criteria:
-              type: string
-              example: The user will get this badge for 50 relations in tweeter.
-            Message:
-              type: string
-              example: >-
-                congratulations! you just earned a new badge for your relations
-                on tweeter.
+          type: string
+          example: >-
+            congratulations! you just earned a new badge for your relations
+            on tweeter.
