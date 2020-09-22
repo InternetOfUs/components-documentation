@@ -632,34 +632,6 @@ components:
             type: string
       description: A member of a community.
       
-    Incentive_message:
-      type: object
-      required:
-        - app_id
-        - user_id
-        - incentive_type
-        - issuer
-      properties:
-        app_id:
-          type: string
-          example: 1
-        user_id:
-          type: string
-          example: 6
-        incentive_type:
-          type: string
-          example: message/badge (only one)
-        issuer:
-          type: string
-          example: WeNet_issuer
-        message:
-          type: object
-          properties:
-            content:
-              type: string
-              example: >-
-                we are happy to see your participation in the I-log app you are
-                doing a great job!
     Incentive:
       type: object
       required:
@@ -680,29 +652,29 @@ components:
         Issuer:
           type: string
           example: WeNet issuer
-    Message:
-      type: object
-      properties:
-        content:
-          type: string
-          example: >-
-            we are happy to see your participation in the I-log app you are
-            doing a great job!
-    Badge:
-      type: object
-      properties:
-        BadgeClass:
-          type: string
-          example: hpqAdI7hQf2maQ13AW1jXA
-        ImgUrl:
-          type: string
-          example: >-
-            http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
-        Criteria:
-          type: string
-          example: The user will get this badge for 50 relations in tweeter.
         Message:
-          type: string
-          example: >-
-            congratulations! you just earned a new badge for your relations
-            on tweeter.
+          type: object
+          properties:
+            content:
+              type: string
+              example: >-
+                we are happy to see your participation in the I-log app you are
+                doing a great job!
+        Badge:
+          type: object
+          properties:
+            BadgeClass:
+              type: string
+              example: hpqAdI7hQf2maQ13AW1jXA
+            ImgUrl:
+              type: string
+              example: >-
+                http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
+            Criteria:
+              type: string
+              example: The user will get this badge for 50 relations in tweeter.
+            Message:
+              type: string
+              example: >-
+                congratulations! you just earned a new badge for your relations
+                on tweeter.
