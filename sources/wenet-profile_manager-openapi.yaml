@@ -17,13 +17,13 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.12.0
+  version: 0.13.0
 servers:
 - url: https://wenet.u-hopper.com/prod/profile_manager
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/profile_manager
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/profile-manager/0.4/
+- url: http://ardid.iiia.csic.es/wenet/profile-manager/latest/
   description: IIIA development server
 tags:
 - name: Profiles
@@ -76,6 +76,475 @@ tags:
 - name: Other
   description: Other services provided by the API.
 paths:
+  /communities/{id}/norms:
+    get:
+      tags:
+      - Norms
+      - Communities
+      description: Allow to get all the norms defined into a community
+      operationId: retrieveCommunityNorms
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of community where the norm is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The norms defined into the community
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "404":
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Norms
+      - Communities
+      description: Insert a new norm into a community
+      operationId: addCommunityNorm
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community to add the norm
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "201":
+          description: The added norm into the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: Bad norm to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /communities/{id}/members:
+    get:
+      tags:
+      - Community members
+      - Communities
+      summary: Return the community members from a community
+      description: Allow to get all the community members defined into a community
+      operationId: retrieveCommunityMembers
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of community where the community member is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The community members defined into the community
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        "404":
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Community members
+      - Communities
+      summary: Add a community member into a community
+      description: Insert a new community member into a community
+      operationId: addCommunityMember
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community to add the community member
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new community member
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        required: true
+      responses:
+        "201":
+          description: The added community member into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        "400":
+          description: Bad community member to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /communities/{id}/members/{userId}:
+    get:
+      tags:
+      - Community members
+      - Communities
+      summary: Return a community member from a community
+      description: Allow to get a community member defined into a community
+      operationId: retrieveCommunityMember
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the community member is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: userId
+        in: path
+        description: The identifier of the community member to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The community member defined into the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        "404":
+          description: Not found community or community member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Community members
+      - Communities
+      summary: Update a community member from a community
+      description: Allow to update a community member defined into a community
+      operationId: updateCommunityMember
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the community member is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: userId
+        in: path
+        description: The identifier of the community member to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The update values for the community member
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        required: true
+      responses:
+        "200":
+          description: The community member that has been updated on the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        "400":
+          description: The community member to update is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community or community member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Community members
+      - Communities
+      summary: Remove a community member from a community
+      description: Allow to remove a community member defined into a community
+      operationId: deleteCommunityMember
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the community member is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: userId
+        in: path
+        description: The identifier of the community member to remove
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The community member has removed successfully from the community
+        "404":
+          description: Not found community or community member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Community members
+      - Communities
+      summary: Merge a community member from a community
+      description: Allow to merge a community member defined into a community
+      operationId: mergeCommunityMember
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the community member is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: userId
+        in: path
+        description: The identifier of the community member to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The merge values for the community member
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        required: true
+      responses:
+        "200":
+          description: The community member that has been merged on the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+        "400":
+          description: The community member to merge is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community or community member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /communities/{id}/norms/{normId}:
+    get:
+      tags:
+      - Norms
+      - Communities
+      description: Allow to get a norm defined into a community
+      operationId: retrieveCommunityNorm
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the norm is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The norm defined into the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "404":
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Norms
+      - Communities
+      description: Allow to update a norm defined into a community
+      operationId: updateCommunityNorm
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the norm is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The update values for the norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "200":
+          description: The norm that has been updated on the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: The norm to update is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Norms
+      - Communities
+      description: Allow to remove a norm defined into a community
+      operationId: deleteCommunityNorm
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the norm is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to remove
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The norm has removed successfully from the community
+        "404":
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Norms
+      - Communities
+      summary: Merge a norm from a community
+      description: Allow to merge a norm defined into a community
+      operationId: mergeCommunityNorm
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the community where the norm is defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: normId
+        in: path
+        description: The identifier of the norm to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The merge values for the norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "200":
+          description: The norm that has been merged on the community
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: The norm to merge is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found community or norm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /communities/{id}:
     get:
       tags:
@@ -332,76 +801,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /communities/{id}/socialPractices:
-    get:
-      tags:
-      - Social practices
-      - Communities
-      description: Allow to get all the social practices defined into a community
-      operationId: retrieveCommunitySocialPractices
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of community where the social practice is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The social practices defined into the community
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
-        "404":
-          description: Not found community
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Social practices
-      - Communities
-      description: Insert a new social practice into a community
-      operationId: addCommunitySocialPractice
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community to add the social practice
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new social practice
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
-        required: true
-      responses:
-        "201":
-          description: The added social practice into the profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
-        "400":
-          description: Bad social practice to add
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /communities/{id}/socialPractices/{socialPracticeId}:
     get:
       tags:
@@ -565,30 +964,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /communities/{id}/norms:
+  /communities/{id}/socialPractices:
     get:
       tags:
-      - Norms
+      - Social practices
       - Communities
-      description: Allow to get all the norms defined into a community
-      operationId: retrieveCommunityNorms
+      description: Allow to get all the social practices defined into a community
+      operationId: retrieveCommunitySocialPractices
       parameters:
       - name: id
         in: path
-        description: The identifier of community where the norm is defined
+        description: The identifier of community where the social practice is defined
         required: true
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
       responses:
         "200":
-          description: The norms defined into the community
+          description: The social practices defined into the community
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "404":
           description: Not found community
           content:
@@ -597,439 +996,40 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
     post:
       tags:
-      - Norms
+      - Social practices
       - Communities
-      description: Insert a new norm into a community
-      operationId: addCommunityNorm
+      description: Insert a new social practice into a community
+      operationId: addCommunitySocialPractice
       parameters:
       - name: id
         in: path
-        description: The identifier of the community to add the norm
+        description: The identifier of the community to add the social practice
         required: true
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
       requestBody:
-        description: The new norm
+        description: The new social practice
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "201":
-          description: The added norm into the community
+          description: The added social practice into the profile
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
-          description: Bad norm to add
+          description: Bad social practice to add
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found community
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /communities/{id}/norms/{normId}:
-    get:
-      tags:
-      - Norms
-      - Communities
-      description: Allow to get a norm defined into a community
-      operationId: retrieveCommunityNorm
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the norm is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
-        in: path
-        description: The identifier of the norm to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The norm defined into the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        "404":
-          description: Not found community or norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Norms
-      - Communities
-      description: Allow to update a norm defined into a community
-      operationId: updateCommunityNorm
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the norm is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
-        in: path
-        description: The identifier of the norm to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The update values for the norm
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        required: true
-      responses:
-        "200":
-          description: The norm that has been updated on the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        "400":
-          description: The norm to update is not valid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community or norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Norms
-      - Communities
-      description: Allow to remove a norm defined into a community
-      operationId: deleteCommunityNorm
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the norm is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
-        in: path
-        description: The identifier of the norm to remove
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "204":
-          description: The norm has removed successfully from the community
-        "404":
-          description: Not found community or norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    patch:
-      tags:
-      - Norms
-      - Communities
-      summary: Merge a norm from a community
-      description: Allow to merge a norm defined into a community
-      operationId: mergeCommunityNorm
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the norm is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
-        in: path
-        description: The identifier of the norm to merge
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The merge values for the norm
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        required: true
-      responses:
-        "200":
-          description: The norm that has been merged on the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        "400":
-          description: The norm to merge is not valid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community or norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /communities/{id}/members:
-    get:
-      tags:
-      - Community members
-      - Communities
-      summary: Return the community members from a community
-      description: Allow to get all the community members defined into a community
-      operationId: retrieveCommunityMembers
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of community where the community member is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The community members defined into the community
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        "404":
-          description: Not found community
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Community members
-      - Communities
-      summary: Add a community member into a community
-      description: Insert a new community member into a community
-      operationId: addCommunityMember
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community to add the community member
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new community member
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        required: true
-      responses:
-        "201":
-          description: The added community member into the profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        "400":
-          description: Bad community member to add
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /communities/{id}/members/{userId}:
-    get:
-      tags:
-      - Community members
-      - Communities
-      summary: Return a community member from a community
-      description: Allow to get a community member defined into a community
-      operationId: retrieveCommunityMember
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the community member is
-          defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: userId
-        in: path
-        description: The identifier of the community member to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The community member defined into the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        "404":
-          description: Not found community or community member
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Community members
-      - Communities
-      summary: Update a community member from a community
-      description: Allow to update a community member defined into a community
-      operationId: updateCommunityMember
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the community member is
-          defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: userId
-        in: path
-        description: The identifier of the community member to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The update values for the community member
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        required: true
-      responses:
-        "200":
-          description: The community member that has been updated on the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        "400":
-          description: The community member to update is not valid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community or community member
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Community members
-      - Communities
-      summary: Remove a community member from a community
-      description: Allow to remove a community member defined into a community
-      operationId: deleteCommunityMember
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the community member is
-          defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: userId
-        in: path
-        description: The identifier of the community member to remove
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "204":
-          description: The community member has removed successfully from the community
-        "404":
-          description: Not found community or community member
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    patch:
-      tags:
-      - Community members
-      - Communities
-      summary: Merge a community member from a community
-      description: Allow to merge a community member defined into a community
-      operationId: mergeCommunityMember
-      parameters:
-      - name: id
-        in: path
-        description: The identifier of the community where the community member is
-          defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: userId
-        in: path
-        description: The identifier of the community member to merge
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The merge values for the community member
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        required: true
-      responses:
-        "200":
-          description: The community member that has been merged on the community
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
-        "400":
-          description: The community member to merge is not valid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found community or community member
           content:
             application/json:
               schema:
@@ -2191,296 +2191,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/historic:
-    get:
-      tags:
-      - Historic
-      - Profiles
-      summary: Get the status of the profile in specific time period
-      description: Allow to obtain the historic of profile changes
-      operationId: retrieveProfileHistoricPage
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user to get the historic profiles
-        required: true
-        schema:
-          type: string
-      - name: from
-        in: query
-        description: The difference, measured in seconds, between the minimum time
-          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: to
-        in: query
-        description: The difference, measured in seconds, between the maximum time
-          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: order
-        in: query
-        description: The order in witch has to return the profiles. From the newest
-          to the oldest (descendant '-') or from the oldest to the newest (ascendant
-          '+').
-        schema:
-          type: string
-          example: '-'
-          default: +
-          enum:
-          - '-'
-          - +
-      - name: offset
-        in: query
-        description: The index of the first task type to return.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-        example: 4
-      - name: limit
-        in: query
-        description: The number maximum of task types to return
-        schema:
-          type: integer
-          format: int32
-          default: 10
-        example: 100
-      responses:
-        "200":
-          description: The found profiles
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/norms:
-    get:
-      tags:
-      - Norms
-      - Profiles
-      summary: Return the norms from a profile
-      description: Allow to get all the norms defined into a profile
-      operationId: retrieveProfileNorms
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the norm is
-          defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The norms defined into the profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Norms
-      - Profiles
-      summary: Add a norm into an user profile
-      description: Insert a new norm into an user profile
-      operationId: addProfileNorm
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user profile to add the norm
-        required: true
-        schema:
-          type: string
-        example: ceb846439eba-645a-4a55-9aaf-15837028
-      requestBody:
-        description: The new norm
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        required: true
-      responses:
-        "201":
-          description: The added norm into the user profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        "400":
-          description: Bad norm to add
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found user profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /profiles:
-    get:
-      tags:
-      - Profiles
-      summary: Return some profiles
-      description: Allow to get some user profiles
-      operationId: retrieveProfilesPage
-      parameters:
-      - name: offset
-        in: query
-        description: The index of the first user profile to return.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-        example: 4
-      - name: limit
-        in: query
-        description: The number maximum of user profiles to return
-        schema:
-          type: integer
-          format: int32
-          default: 10000
-        example: 100
-      responses:
-        "200":
-          description: The page with the user profiles
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WeNetUserProfilesPage'
-        "400":
-          description: If any of the search pattern is not valid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Profiles
-      summary: Create a profile
-      description: Create a new WeNet user profile
-      operationId: createProfile
-      requestBody:
-        description: The new profile to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-            example:
-              name:
-                prefix: Dr.
-                first: John
-                middle: Fidgerald
-                last: Kenedy
-                suffix: Jr
-              dateOfBirth:
-                year: 1973
-                month: 2
-                day: 24
-              gender: M
-              email: jfk@president.gov
-              phoneNumber: +1202-456-1111
-              locale: en_US
-              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-              nationality: American
-              languages:
-              - name: English
-                code: en
-                level: C2
-              occupation: President
-              norms: []
-              plannedActivities:
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Visit Marilyn
-                status: cancelled
-              - startTime: 2017-07-21T17:32:03Z
-                endTime: 2019-07-21T17:32:23Z
-                description: Go to Dallas
-                status: confirmed
-              relevantLocations:
-              - label: White house
-                latitude: 38.897957
-                longitude: -77.03656
-              relationships: []
-              personalBehaviors: []
-        required: true
-      responses:
-        "201":
-          description: The created profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-              examples:
-                CreatedProfile:
-                  description: CreatedProfile
-                  value:
-                    id: 5e4ced814e1dc208a5f7bd25
-                    name:
-                      prefix: Dr.
-                      first: John
-                      middle: Fidgerald
-                      last: Kenedy
-                      suffix: Jr
-                    dateOfBirth:
-                      year: 1973
-                      month: 2
-                      day: 24
-                    gender: M
-                    email: jfk@president.gov
-                    phoneNumber: +1 202-456-1111
-                    locale: en_US
-                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
-                    nationality: American
-                    languages:
-                    - name: English
-                      code: en
-                      level: C2
-                    occupation: President
-                    plannedActivities:
-                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Visit Marilyn
-                      status: cancelled
-                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
-                      startTime: 2017-07-21T17:32:03Z
-                      endTime: 2019-07-21T17:32:23Z
-                      description: Go to Dallas
-                      status: confirmed
-                    relevantLocations:
-                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
-                      label: White house
-                      latitude: 38.897957
-                      longitude: -77.03656
-                    _creationTs: 1582099841815
-                    _lastUpdateTs: 1582099841815
-        "400":
-          description: Bad profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{userId}/relationships/{index}:
     get:
       tags:
@@ -2648,6 +2358,151 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found profile or relationship
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles:
+    get:
+      tags:
+      - Profiles
+      summary: Return some profiles
+      description: Allow to get some user profiles
+      operationId: retrieveProfilesPage
+      parameters:
+      - name: offset
+        in: query
+        description: The index of the first user profile to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of user profiles to return
+        schema:
+          type: integer
+          format: int32
+          default: 10000
+        example: 100
+      responses:
+        "200":
+          description: The page with the user profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeNetUserProfilesPage'
+        "400":
+          description: If any of the search pattern is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Profiles
+      summary: Create a profile
+      description: Create a new WeNet user profile
+      operationId: createProfile
+      requestBody:
+        description: The new profile to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+            example:
+              name:
+                prefix: Dr.
+                first: John
+                middle: Fidgerald
+                last: Kenedy
+                suffix: Jr
+              dateOfBirth:
+                year: 1973
+                month: 2
+                day: 24
+              gender: M
+              email: jfk@president.gov
+              phoneNumber: +1202-456-1111
+              locale: en_US
+              avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+              nationality: American
+              languages:
+              - name: English
+                code: en
+                level: C2
+              occupation: President
+              norms: []
+              plannedActivities:
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Visit Marilyn
+                status: cancelled
+              - startTime: 2017-07-21T17:32:03Z
+                endTime: 2019-07-21T17:32:23Z
+                description: Go to Dallas
+                status: confirmed
+              relevantLocations:
+              - label: White house
+                latitude: 38.897957
+                longitude: -77.03656
+              relationships: []
+              personalBehaviors: []
+        required: true
+      responses:
+        "201":
+          description: The created profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              examples:
+                CreatedProfile:
+                  description: CreatedProfile
+                  value:
+                    id: 5e4ced814e1dc208a5f7bd25
+                    name:
+                      prefix: Dr.
+                      first: John
+                      middle: Fidgerald
+                      last: Kenedy
+                      suffix: Jr
+                    dateOfBirth:
+                      year: 1973
+                      month: 2
+                      day: 24
+                    gender: M
+                    email: jfk@president.gov
+                    phoneNumber: +1 202-456-1111
+                    locale: en_US
+                    avatar: https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg
+                    nationality: American
+                    languages:
+                    - name: English
+                      code: en
+                      level: C2
+                    occupation: President
+                    plannedActivities:
+                    - id: ef06fe75-e8bd-41ca-9624-f60289c11de4
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Visit Marilyn
+                      status: cancelled
+                    - id: b6c9a9da-1832-45ba-9580-a6fef6daa62a
+                      startTime: 2017-07-21T17:32:03Z
+                      endTime: 2019-07-21T17:32:23Z
+                      description: Go to Dallas
+                      status: confirmed
+                    relevantLocations:
+                    - id: f7c4eccc-a654-4b6f-ab82-fd01cd2d47e3
+                      label: White house
+                      latitude: 38.897957
+                      longitude: -77.03656
+                    _creationTs: 1582099841815
+                    _lastUpdateTs: 1582099841815
+        "400":
+          description: Bad profile
           content:
             application/json:
               schema:
@@ -3630,6 +3485,151 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/historic:
+    get:
+      tags:
+      - Historic
+      - Profiles
+      summary: Get the status of the profile in specific time period
+      description: Allow to obtain the historic of profile changes
+      operationId: retrieveProfileHistoricPage
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to get the historic profiles
+        required: true
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: The difference, measured in seconds, between the minimum time
+          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: to
+        in: query
+        description: The difference, measured in seconds, between the maximum time
+          stamp when the profile was enabled and midnight, January 1, 1970 UTC.
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: order
+        in: query
+        description: The order in witch has to return the profiles. From the newest
+          to the oldest (descendant '-') or from the oldest to the newest (ascendant
+          '+').
+        schema:
+          type: string
+          example: '-'
+          default: +
+          enum:
+          - '-'
+          - +
+      - name: offset
+        in: query
+        description: The index of the first task type to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of task types to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The found profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{userId}/norms:
+    get:
+      tags:
+      - Norms
+      - Profiles
+      summary: Return the norms from a profile
+      description: Allow to get all the norms defined into a profile
+      operationId: retrieveProfileNorms
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the norm is
+          defined
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The norms defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Norms
+      - Profiles
+      summary: Add a norm into an user profile
+      description: Insert a new norm into an user profile
+      operationId: addProfileNorm
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user profile to add the norm
+        required: true
+        schema:
+          type: string
+        example: ceb846439eba-645a-4a55-9aaf-15837028
+      requestBody:
+        description: The new norm
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        required: true
+      responses:
+        "201":
+          description: The added norm into the user profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+        "400":
+          description: Bad norm to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /trusts/rating:
     post:
       tags:
@@ -3866,34 +3866,6 @@ components:
           description: Contain information of the license of the API
           example: MIT
       description: Provide the version information of the API
-    QuestionnaireAnswers:
-      type: object
-      properties:
-        answerValues:
-          type: array
-          description: The selected values for the questions on the questionnaire.
-            The answer values are on the same order of the question that refers to
-            the questionnaire.
-          example:
-          - 1
-          - -1
-          - 0
-          - 1
-          - 1
-          - -1
-          - 1
-          - 0
-          - 0
-          - 0
-          - 1
-          - -1
-          - -1
-          - -1
-          - 1
-          items:
-            type: number
-            format: double
-      description: Contains the selected answers of a questionnaire
     Answer:
       type: object
       properties:
@@ -3940,6 +3912,53 @@ components:
           description: The set of questions used to evaluate the person.
           items:
             $ref: '#/components/schemas/Question'
+    QuestionnaireAnswers:
+      type: object
+      properties:
+        answerValues:
+          type: array
+          description: The selected values for the questions on the questionnaire.
+            The answer values are on the same order of the question that refers to
+            the questionnaire.
+          example:
+          - 1
+          - -1
+          - 0
+          - 1
+          - 1
+          - -1
+          - 1
+          - 0
+          - 0
+          - 0
+          - 1
+          - -1
+          - -1
+          - -1
+          - 1
+          items:
+            type: number
+            format: double
+      description: Contains the selected answers of a questionnaire
+    WeNetUserProfilesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first profile returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of profiles that satisfies the search.
+          format: int64
+          example: 100
+        profiles:
+          type: array
+          description: The set of profiles found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+      description: Contains a set of profiles found
     HistoricWeNetUserProfile:
       type: object
       properties:
@@ -3980,25 +3999,6 @@ components:
       description: Contains a set of profiles found
     WeNetUserProfile:
       $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-    WeNetUserProfilesPage:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The index of the first profile returned.
-          format: int32
-          example: 0
-        total:
-          type: integer
-          description: The number total of profiles that satisfies the search.
-          format: int64
-          example: 100
-        profiles:
-          type: array
-          description: The set of profiles found
-          items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
-      description: Contains a set of profiles found
     UserPerformanceRatingEvent:
       type: object
       properties:
