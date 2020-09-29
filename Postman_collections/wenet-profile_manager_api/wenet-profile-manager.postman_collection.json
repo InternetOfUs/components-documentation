@@ -71,7 +71,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": {\n        \"prefix\": \"Dr.\",\n        \"first\": \"John\",\n        \"middle\": \"Fidgerald\",\n        \"last\": \"Kenedy\",\n        \"suffix\": \"Jr\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1973,\n        \"month\": 2,\n        \"day\": 24\n    },\n    \"gender\": \"M\",\n    \"email\": \"jfk@president.gov\",\n    \"phoneNumber\": \"+1202-456-1111\",\n    \"locale\": \"en_US\",\n    \"avatar\": \"https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg\",\n    \"nationality\": \"American\",\n    \"languages\": [\n        {\n            \"name\": \"English\",\n            \"code\": \"en\",\n            \"level\": \"C2\"\n        }\n    ],\n    \"occupation\": \"President\",\n    \"norms\": [],\n    \"plannedActivities\": [\n        {\n            \"startTime\": \"2017-07-21T17:32:03Z\",\n            \"endTime\": \"2019-07-21T17:32:23Z\",\n            \"description\": \"Visit Marilyn\",\n            \"status\": \"cancelled\"\n        },\n        {\n            \"startTime\": \"2017-07-21T17:32:03Z\",\n            \"endTime\": \"2019-07-21T17:32:23Z\",\n            \"description\": \"Go to Dallas\",\n            \"status\": \"confirmed\"\n        }\n    ],\n    \"relevantLocations\": [\n        {\n            \"label\": \"White house\",\n            \"latitude\": 38.897957,\n            \"longitude\": -77.03656\n        }\n    ],\n    \"relationships\": [],\n    \"socialPractices\": [],\n    \"personalBehaviors\": []\n}",
+					"raw": "{\n    \"name\": {\n        \"prefix\": \"Dr.\",\n        \"first\": \"John\",\n        \"middle\": \"Fidgerald\",\n        \"last\": \"Kenedy\",\n        \"suffix\": \"Jr\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1973,\n        \"month\": 2,\n        \"day\": 24\n    },\n    \"gender\": \"M\",\n    \"email\": \"jfk@president.gov\",\n    \"phoneNumber\": \"+1202-456-1111\",\n    \"locale\": \"en_US\",\n    \"avatar\": \"https://upload.wikimedia.org/wikipedia/commons/1/1e/JFK_White_House_portrait_looking_up_lighting_corrected.jpg\",\n    \"nationality\": \"American\",\n    \"occupation\": \"President\",\n    \"norms\": [],\n    \"plannedActivities\": [],\n    \"relevantLocations\": [],\n    \"relationships\": [],\n    \"personalBehaviors\": [],\n    \"materials\": [],\n    \"competences\": [],\n    \"meanings\": []\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,6 +109,33 @@
 			"response": []
 		},
 		{
+			"name": "Retrieve profiles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/profiles?offset=0&limit=20",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update profile",
 			"event": [
 				{
@@ -135,7 +162,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": {\n        \"prefix\": \"\",\n        \"first\": null,\n        \"middle\": null,\n        \"last\": null,\n        \"suffix\": \"III\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1979,\n        \"month\": 6,\n        \"day\": 4\n    },\n    \"email\": \"jfk3@ex.president.gov\",\n    \"languages\": [\n        {\n            \"name\": \"English\",\n            \"code\": \"en\",\n            \"level\": \"C2\"\n        },\n        {\n            \"name\": \"French\",\n            \"code\": \"fr\",\n            \"level\": \"B2\"\n        }\n    ],\n    \"occupation\": \"Conferenciant\"\n}",
+					"raw": "{\n    \"name\": {\n        \"prefix\": \"\",\n        \"first\": null,\n        \"middle\": null,\n        \"last\": null,\n        \"suffix\": \"III\"\n    },\n    \"dateOfBirth\": {\n        \"year\": 1979,\n        \"month\": 6,\n        \"day\": 4\n    },\n    \"email\": \"jfk3@ex.president.gov\",\n    \"occupation\": \"Conferenciant\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -331,31 +358,6 @@
 			"response": []
 		},
 		{
-			"name": "Retrive Personality questionnaire Copy",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "en",
-						"description": "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{server}}/intelligences",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"intelligences"
-					]
-				},
-				"description": "Obtain all the changes that has bene done over a profile."
-			},
-			"response": []
-		},
-		{
 			"name": "Calculate Gardner intelligences",
 			"request": {
 				"method": "POST",
@@ -383,40 +385,6 @@
 					],
 					"path": [
 						"intelligences"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Rate user performance",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"sourceId\": \"{{sourceId}}\",\n    \"targetId\": \"{{targetId}}\",\n    \"appId\": \"{{appId}}\",\n    \"rating\": 0.5\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/trusts/rating",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"trusts",
-						"rating"
 					]
 				}
 			},
@@ -503,6 +471,40 @@
 			"response": []
 		},
 		{
+			"name": "Rate user performance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sourceId\": \"{{sourceId}}\",\n    \"targetId\": \"{{targetId}}\",\n    \"appId\": \"{{appId}}\",\n    \"rating\": 0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/trusts/rating",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"trusts",
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Add a norm into a profile",
 			"event": [
 				{
@@ -551,56 +553,6 @@
 			"response": []
 		},
 		{
-			"name": "Get norms from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "f11df72d-83e5-41f0-8765-9264c11e5c2a",
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/norms",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"norms"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get a norm from profile",
 			"event": [
 				{
@@ -614,9 +566,6 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [
@@ -627,15 +576,6 @@
 						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "{{server}}/profiles/{{userId}}/norms/{{normId}}",
 					"host": [
@@ -646,6 +586,44 @@
 						"{{userId}}",
 						"norms",
 						"{{normId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get norms from profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f11df72d-83e5-41f0-8765-9264c11e5c2a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"norms"
 					]
 				}
 			},
@@ -2164,6 +2142,1042 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create Community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9b6d17c-1e56-40df-8987-2715cf348dc5",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"communityId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appId\":\"{{appId}}\",\n    \"name\": \"Community name\",\n    \"description\": \"Community description\",\n    \"keywords\":[\"keyword 1\",\"keyword 2\",\"keyword 3\"],\n    \"members\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve community",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve communities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/communities?offest=0&limit =100",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities"
+					],
+					"query": [
+						{
+							"key": "offest",
+							"value": "0",
+							"description": "The indes of the fisrt community to return."
+						},
+						{
+							"key": "limit ",
+							"value": "100",
+							"description": "Maximum number of communities to return."
+						},
+						{
+							"key": "name",
+							"value": "WeNet",
+							"description": "The name to match to the communities to return.",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "/.*together.*/",
+							"description": "The description to match to the communities to return.",
+							"disabled": true
+						},
+						{
+							"key": "keywords",
+							"value": "keyword1,keyword2,keyword3",
+							"description": "List of keywords that has to be defined on the community.",
+							"disabled": true
+						},
+						{
+							"key": "members",
+							"value": "userId1,userId2,userId3",
+							"description": "List of users identifier taht has to be memvers of the community",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b31996d6-a061-409e-b89a-416cac299f1e",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appId\":\"{{appId}}\",\n    \"name\": \"New community name\",\n    \"description\": \"New community description\",\n    \"keywords\":[\"keyword 1\",\"keyword 2\",\"keyword 3\"],\n    \"members\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6230f0f2-3f2b-4b2f-b96c-1d17107e4b51",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"New Community name\",\n    \"description\": \"New Community description\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete community",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a norm into a community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9baf71c-6b99-4d06-a943-cb827562658a",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"communityNormId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a norm from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ce26c36d-28d8-4f66-80f7-06a06eeabbab",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms",
+						"{{communityNormId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get norms from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a15b1ee-2454-41c8-9822-af423a084a93",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a norm from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bab3cd11-00c5-4592-8a43-b5870b2228d8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"negation\":true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms",
+						"{{communityNormId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a norm from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b7524295-0d9a-45e8-8d76-e2b241902110",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"negation\":false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms",
+						"{{communityNormId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a norm from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "298cbbbf-672a-4f6f-a7a8-5f937ff79177",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"norms",
+						"{{communityNormId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a social practice into a community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "18daa5f0-33de-422a-9d25-41699111e9b9",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"socialPracticeId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"label\":\"Launch together\",\n    \"materials\":[],\n    \"competences\":[],\n    \"norms\":[]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a social practices from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96172399-4c11-4197-8564-7fc04e32c175",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get social practices from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "28a267dc-d4a0-471f-8fd6-b49bd37589cb",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a social practice from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b4301ae6-839c-451d-a38d-93f854953e3d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"label\":\"Dinner together\",\n    \"materials\":[],\n    \"competences\":[],\n    \"norms\":[]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a social practice from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "846367e1-b11e-46a8-9b5e-1337ba5ef61e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"label\":\"Eat together\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a social practice from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5a0d613-b733-4a87-875c-dd88461d31b1",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/socialPractices/{{socialPracticeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"socialPractices",
+						"{{socialPracticeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a member into a community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3522face-b044-447d-8a1a-99691bcb73dd",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a member from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "75c5b692-0fe9-4c91-b8df-28bf5dda693a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get members from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "098efc06-f967-471c-948b-05dbe9388ca7",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a member from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8d30561f-1f7c-4b47-98ff-46e033a5e633",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\":\"{{userId}}\",\n    \"privileges\":[\"Ask for help\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge a member from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "26d87fa6-55b3-4f4a-9311-0c712d52f5c2",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\":\"{{userId}}\",\n    \"privileges\":[\"Ask for help\",\"Provide help\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a member from community",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4956fe73-411f-40d2-bcb7-08687dc1736d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}/members/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}",
+						"members",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve user identifiers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/userIdentifiers?offset=0&limit=20",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"userIdentifiers"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -2190,89 +3204,94 @@
 	],
 	"variable": [
 		{
-			"id": "89f6a382-b6bb-438e-ba1e-782234a41007",
+			"id": "f0376b18-5620-4d4a-b73d-4f43bfdb9f33",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/profile_manager"
 		},
 		{
-			"id": "65c64a89-9ea0-43e6-b396-f24b58a9c34d",
+			"id": "5cc8f349-f37b-4c45-9f96-d7b509e1e959",
 			"key": "creationTs",
-			"value": 1594996428
+			"value": 1601397003
 		},
 		{
-			"id": "a2a6afce-4624-46e2-a46b-547ea2fba2aa",
+			"id": "cf7591f0-1a7a-4cb7-9136-d7f4e00204db",
 			"key": "lastUpdateTs",
-			"value": 1594996435
+			"value": 1601397025
 		},
 		{
-			"id": "8aee4451-e1cd-487f-80b2-4a9ce180c038",
+			"id": "5dd04bda-91f5-469d-8c9f-15d3c3615df1",
 			"key": "appId",
 			"value": "1"
 		},
 		{
-			"id": "52a5abb4-cbe6-4709-9606-504bd632cc2e",
+			"id": "4ed5b4f0-ecbb-4516-9074-b136ed446cab",
 			"key": "taskId",
 			"value": ""
 		},
 		{
-			"id": "4382e1d4-6559-452d-acde-d4de62d1ebba",
+			"id": "31316c3c-9e0b-4d64-a4f0-60b602c12856",
 			"key": "taskTypeId",
 			"value": ""
 		},
 		{
-			"id": "45232d14-3727-4711-afea-ca64fa304457",
+			"id": "d45e52a7-fdf5-4620-a084-5b6ff5d417a2",
 			"key": "communityId",
 			"value": "1"
 		},
 		{
-			"id": "0427d8bf-01de-4c39-9fc1-4876e3d3613e",
+			"id": "24b98231-ba38-4c01-8fff-9ff706aeb17a",
 			"key": "sourceId",
 			"value": "1"
 		},
 		{
-			"id": "9dda9955-b2a7-4c5c-b539-dade4173fbfc",
+			"id": "b1e2fe70-9911-4103-bfbf-f7375be33114",
 			"key": "targetId",
 			"value": "2"
 		},
 		{
-			"id": "e2a3b31b-8abc-4b93-b613-1a1b3d0a45a6",
+			"id": "f030bb39-dc79-46dc-89de-bba37fb923c1",
 			"key": "relationship",
 			"value": ""
 		},
 		{
-			"id": "dfc657f6-2978-4ae1-9066-a2d587fcfaa4",
+			"id": "61d3879b-c8cd-484b-bdce-0427a58685e8",
 			"key": "userId",
-			"value": "5f11b6cbd5da4f34b61830a0"
+			"value": "5f73610b22decb484642bb70"
 		},
 		{
-			"id": "9649a50e-8b55-4dd5-ac15-41491fe75867",
+			"id": "05c5c1eb-fa76-4c9c-b478-bbd5f5a3ef90",
 			"key": "normId",
 			"value": "fcf5a311-4aa8-44fa-8fd9-9d3b81bfcc33"
 		},
 		{
-			"id": "39c95616-7bae-468e-a7b6-27079b93d3c0",
+			"id": "08768d9f-7af1-4218-957c-a183c81eae06",
 			"key": "plannedActivityId",
 			"value": "e2e78b38-1845-4a76-9ee6-27a012f1137b"
 		},
 		{
-			"id": "2839c98d-5bb2-45af-9344-bb90e23c9e42",
+			"id": "3cd5b670-2fdf-40c1-8f04-f43c128b1eab",
 			"key": "relevantLocationId",
 			"value": "09bffccb-e459-49e2-902c-99d462a7b83b"
 		},
 		{
-			"id": "2f6467f6-f610-4b72-8c30-490a42bc6ee9",
+			"id": "bec1db70-c4b9-4135-a669-a1138e9b6286",
 			"key": "index",
 			"value": "0"
 		},
 		{
-			"id": "2e1eef35-88eb-4b26-b3ea-483c9539ccc3",
+			"id": "eaf699d2-ae8d-4002-bfea-88d0b1d9cc8f",
 			"key": "socialPracticeId",
 			"value": "92cc161b-5a04-4b3b-a085-0703c9d438aa"
 		},
 		{
-			"id": "58c6f85c-9c70-4be8-bace-f4edeefa05d2",
+			"id": "de28b5be-4ae6-4cb2-9515-5fe19f9125a1",
 			"key": "friendId",
 			"value": "5f087d5da57c4c1142ba1f3f"
+		},
+		{
+			"id": "d0318761-3210-400f-bc23-2353a1788514",
+			"key": "communityNormId",
+			"value": "1"
 		}
 	],
 	"protocolProfileBehavior": {}
