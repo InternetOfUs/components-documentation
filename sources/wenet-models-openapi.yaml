@@ -576,6 +576,119 @@ components:
         attributes:
           type: object
           description: The attributes that are set in the associated transaction type
+
+    VolunteerForTaskTransaction:
+      type: object
+      description: Task transaction that says that a new volunteer has applied to a task
+      properties:
+        taskId:
+          description: The unique identifier of the task this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        label:
+          type: string
+          enum:
+          - volunteerForTask
+          description: The label associated to the transaction type
+        attributes:
+          type: object
+          description: The attributes that are set in the associated transaction type
+          properties:
+            volunteerId:
+              description: The ID of the volunteer that applied to the task
+              type: string
+              example: d353Sdt3E
+    
+    RefuseTaskTransaction:
+      type: object
+      description: Task transaction that says that a volunteer has refused to apply to a task
+      properties:
+        taskId:
+          description: The unique identifier of the task this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        label:
+          type: string
+          enum:
+          - refuseTask
+          description: The label associated to the transaction type
+        attributes:
+          type: object
+          description: The attributes that are set in the associated transaction type
+          properties:
+            volunteerId:
+              description: The ID of the volunteer that applied to the task
+              type: string
+              example: d353Sdt3E
+    
+    AcceptedVolunteerTransaction:
+      type: object
+      description: Task transaction that says that a volunteer has been accepted to participate to the task
+      properties:
+        taskId:
+          description: The unique identifier of the task this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        label:
+          type: string
+          enum:
+          - acceptVolunteer
+          description: The label associated to the transaction type
+        attributes:
+          type: object
+          description: The attributes that are set in the associated transaction type
+          properties:
+            volunteerId:
+              description: The ID of the volunteer that is being accepted to the task
+              type: string
+              example: d353Sdt3E
+              
+    RefusedVolunteerTransaction:
+      type: object
+      description: Task transaction that says that a volunteer has been refused to participate to the task
+      properties:
+        taskId:
+          description: The unique identifier of the task this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        label:
+          type: string
+          enum:
+          - refuseVolunteer
+          description: The label associated to the transaction type
+        attributes:
+          type: object
+          description: The attributes that are set in the associated transaction type
+          properties:
+            volunteerId:
+              description: The ID of the volunteer that is being refused to the task
+              type: string
+              example: d353Sdt3E
+              
+    TaskCompletedTransaction:
+      type: object
+      description: Task transaction that says that the task is completed
+      properties:
+        taskId:
+          description: The unique identifier of the task this transaction is associated to
+          example: b129e5509c9bb79
+          type: string
+        label:
+          type: string
+          enum:
+          - taskCompleted
+          description: The label associated to the transaction type
+        attributes:
+          type: object
+          description: The attributes that are set in the associated transaction type
+          properties:
+            outcome:
+              description: A description of the outcome of the task
+              type: string
+              enum:
+              - completed
+              - cancelled
+              - failed
           
     CommunityProfile:
       allOf:
