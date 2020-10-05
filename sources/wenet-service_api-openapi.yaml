@@ -50,23 +50,23 @@ paths:
   #           application/json:
   #             schema:
   #               $ref: '#/components/schemas/App'
-  
+
   /token:
     get:
       summary: Get the details of a given Oauth2 token
-      tags: 
+      tags:
         - Token Details
-      security: 
+      security:
         - Oauth2: []
       responses:
-        200:
+        '200':
           description: The detail of the token
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenDetails'
-                
-      
+
+
 
   /app/{appId}:
     get:
@@ -84,7 +84,7 @@ paths:
           required: true
           description: The Id of the wenet app
       responses:
-        200:
+        '200':
           description: The details of the requested app
           content:
             application/json:
@@ -107,7 +107,7 @@ paths:
           required: true
           description: The Id of the wenet app
       responses:
-        200:
+        '200':
           description: The details of the requested app
           content:
             application/json:
@@ -118,174 +118,45 @@ paths:
                   type: string
                   example: 123
 
-    # put:
-    #   summary: Update the details of an app
-    #   tags:
-    #     - App
-    #   description: This endpoint allows to create a new wenet app.
-    #   parameters:
-    #     - in: path
-    #       name: appId
-    #       schema:
-    #         type: string
-    #       required: true
-    #       description: The Id of the wenet app
-    #   requestBody:
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: '#/components/schemas/App'
-    #   responses:
-    #     200:
-    #       description: The details of the requested app
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/App'
-
-  /user/authenticate:
-    post:
-      summary: Authenticate WeNet user
-      tags:
-        - WeNet user
-      description: This endpoint allows to authenticate a WeNet user by taking advantage of one of the available authentication strategies. The response includes the Id of the associated wenet user.
-      security:
-        - AppIdAuth: []
-          AppTokenAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TelegramAuthenticationAccount'
-      responses:
-        200:
-          description: Correct authentication
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WeNetUser'
-        401:
-          description: No WeNet user associated to authentication credentials provided
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-
-  /user/accounts:
-    get:
-      summary: Get the accounts associated to a WeNet user
-      tags:
-        - WeNet user
-      description: This endpoint allows to authenticate a WeNet user by taking advantage of one of the available authentication strategies. The response includes the Id of the associated wenet user.
-      security:
-        - AppIdAuth: []
-          AppTokenAuth: []
-      parameters:
-        - in: query
-          name: appId
-          schema:
-            type: string
-          required: true
-          description: The Id of the wenet app
-        - in: query
-          name: userId
-          schema:
-            type: string
-          required: true
-          description: The Id of the wenet user
-      responses:
-        200:
-          description: The (active) accounts associated to the user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WeNetUserWithAccounts'
-        401:
-          description: No WeNet user associated to authentication credentials provided
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-
-  /user/account/metadata:
-    post:
-      summary: Update user account metadata
-      tags:
-        - WeNet user
-      description: This endpoint allows to override the existing account metadata with the new provided ones.
-      security:
-        - AppIdAuth: []
-          AppTokenAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/TelegramAuthenticationAccount'
-              properties:
-                userId:
-                  type: string
-                  example: 15837028-645a-4a55-9aaf-ceb846439eba
-                metadata:
-                  readOnly: false
-      responses:
-        200:
-          description: Correct authentication
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-        401:
-          description: No WeNet user associated to authentication credentials provided
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-
-  # /user:
-  #   summary: Create new WeNet user with the specified authentication credentials
-  #   post:
-  #     summary: Create new WeNet user
-  #     tags:
-  #       - WeNet user
-  #     description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy. The response includes the Id of the newly created wenet user.
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/FacebookAuthentication'
-  #     responses:
-  #       201:
-  #         description: WeNet user correctly created
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/WeNetUser'
-  
-  
-  /user/profile:
+  /user/profile/{wenetUserId}:
     get:
       summary: Get the profile of the specified wenet user
       tags:
         - WeNet user profile
-      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy.
+      description: This entpoint allows to get the profile of a  WeNet user.
+        It requires a valid user OAuth2 token. It allows to access
+
+        * all the profile entries allowed of the user the token is associated to
+
+        * only the public profile (no matter the allowed scope) of a user who is not the one the token was granted for but who is using the same application
       security:
         - Oauth2: []
+      parameters:
+        - in: path
+          name: wenetUserId
+          schema:
+            type: integer
+          required: true
+          description: The Id of the wenet user
       responses:
-        200:
-          description: WeNetUser profile
+        '200':
+          description: WeNet user correctly created
           content:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
+        '401':
+          description: Unauthorised request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
-
-  /user/profile/{wenetUserId}:
     post:
       summary: Create an empty user profile
       tags:
         - WeNet user profile
-      description: This entpoint allows to initialize an empty WeNet user profile. It is expected to be used upon the creation of a new user.
+      description: This entpoint allows to initialize an empty WeNet user profile. It is expected to be used upon the creation of a new user in the WeNet HUB.
       security:
         - ApikeyAuth: []
       parameters:
@@ -296,44 +167,14 @@ paths:
           required: true
           description: The Id of the wenet user
       responses:
-        200:
+        '200':
           description: WeNet user correctly created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
-        404:
+        '404':
           description: The profile for the user already exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
-
-    get:
-      summary: Get the profile of the specified wenet user
-      tags:
-        - WeNet user profile
-      description: This entpoint allows to create a new WeNet user associated to the specified authentication strategy.
-      security:
-        - AppIdAuth: []
-          AppTokenAuth: []
-        - ApikeyAuth: []
-      parameters:
-        - in: path
-          name: wenetUserId
-          schema:
-            type: integer
-          required: true
-          description: The Id of the wenet user
-      responses:
-        200:
-          description: WeNet user correctly created
-          content:
-            application/json:
-              schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
-        404:
-          description: No such wenet user exists
           content:
             application/json:
               schema:
@@ -359,98 +200,98 @@ paths:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
       responses:
-        200:
+        '200':
           description: WeNet user correctly created
           content:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
-        404:
+        '404':
           description: No such wenet user exists
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-  /messages:
-    post:
-      summary: Submit a list of new incoming messages
-      tags:
-        - Message
-      description: This entpoint allows to submit a list of new incoming messages
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RequestMessage'
-      responses:
-        201:
-          description: Messages correctly submitted
+#   /messages:
+#     post:
+#       summary: Submit a list of new incoming messages
+#       tags:
+#         - Message
+#       description: This entpoint allows to submit a list of new incoming messages
+#       requestBody:
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/RequestMessage'
+#       responses:
+#         201:
+#           description: Messages correctly submitted
 
-  /messages/subscription:
-    post:
-      summary: Create a new message response subscription
-      tags:
-        - Message subscrption
-      description: This entpoint allows to createa new message response subscription
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MessageSubscription'
-      responses:
-        201:
-          description: Message subscription correctly created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
+#   /messages/subscription:
+#     post:
+#       summary: Create a new message response subscription
+#       tags:
+#         - Message subscrption
+#       description: This entpoint allows to createa new message response subscription
+#       requestBody:
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/MessageSubscription'
+#       responses:
+#         201:
+#           description: Message subscription correctly created
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: '#/components/schemas/EmptyResponse'
 
-  /messages/subscription/{subscriptionId}:
-    put:
-      summary: Update existing message response subscription
-      tags:
-        - Message subscrption
-      description: This entpoint allows to edit an existing message response subscription
-      parameters:
-        - in: path
-          name: subscriptionId
-          schema:
-            type: string
-          required: true
-          description: The Id of the subscription
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MessageSubscription'
-      responses:
-        201:
-          description: Message subscription correctly created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
+#   /messages/subscription/{subscriptionId}:
+#     put:
+#       summary: Update existing message response subscription
+#       tags:
+#         - Message subscrption
+#       description: This entpoint allows to edit an existing message response subscription
+#       parameters:
+#         - in: path
+#           name: subscriptionId
+#           schema:
+#             type: string
+#           required: true
+#           description: The Id of the subscription
+#       requestBody:
+#         content:
+#           application/json:
+#             schema:
+#               $ref: '#/components/schemas/MessageSubscription'
+#       responses:
+#         201:
+#           description: Message subscription correctly created
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: '#/components/schemas/EmptyResponse'
 
-    delete:
-      summary: Delete existing message response subscription
-      tags:
-        - Message subscrption
-      description: This entpoint allows to delete an existing message response subscription
-      parameters:
-        - in: path
-          name: subscriptionId
-          schema:
-            type: string
-          required: true
-          description: The Id of the subscription
-      responses:
-        201:
-          description: Message subscription correctly created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
+#     delete:
+#       summary: Delete existing message response subscription
+#       tags:
+#         - Message subscrption
+#       description: This entpoint allows to delete an existing message response subscription
+#       parameters:
+#         - in: path
+#           name: subscriptionId
+#           schema:
+#             type: string
+#           required: true
+#           description: The Id of the subscription
+#       responses:
+#         201:
+#           description: Message subscription correctly created
+#           content:
+#             application/json:
+#               schema:
+#                 $ref: '#/components/schemas/EmptyResponse'
 
   /task:
     post:
@@ -459,8 +300,8 @@ paths:
         - Task
       description: This entpoint allows to create a new task
       security:
-        - AppIdAuth: []
-          AppTokenAuth: []
+        - ApikeyAuth: []
+        - Oauth2: []
       parameters:
         - in: path
           name: taskId
@@ -474,7 +315,7 @@ paths:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
       responses:
-        201:
+        '201':
           description: Task correctly created
 
 
@@ -485,8 +326,8 @@ paths:
         - Task
       description: This entpoint allows to get the details of an existing task
       security:
-        - AppIdAuth: []
-          AppTokenAuth: []
+        - ApikeyAuth: []
+        - Oauth2: []
       parameters:
         - in: path
           name: taskId
@@ -495,13 +336,13 @@ paths:
           required: true
           description: The Id of the task
       responses:
-        200:
+        '200':
           description: The details of the requested task
           content:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
-        404:
+        '404':
           description: No such wenet user exists
           content:
             application/json:
@@ -514,21 +355,21 @@ paths:
       tags:
         - Task
       security:
-        - AppIdAuth: []
-          AppTokenAuth: []
+        - ApikeyAuth: []
+        - Oauth2: []
       requestBody:
         content:
           application/json:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
       responses:
-        200:
+        '200':
           description: Transaction correctly submitted
           content:
             application/json:
              schema:
                $ref: '#/components/schemas/EmptyResponse'
-               
+
   /tasks:
     get:
       tags:
@@ -536,6 +377,9 @@ paths:
       summary: Return a page of task that match the query parameters
       description: Allow to get a page of task with the specified query parameters
       operationId: retrieveTasksPage
+      security:
+        - ApikeyAuth: []
+        - Oauth2: []
       parameters:
       - name: appId
         in: query
@@ -643,7 +487,7 @@ paths:
           example: 5
           default: 10
       responses:
-        "200":
+        '200':
           description: The task associated to the identifier
           content:
             application/json:
@@ -675,25 +519,15 @@ components:
 
   securitySchemes:
 
-    AppIdAuth:
-      type: apiKey
-      in: header
-      name: appId
-
-    AppTokenAuth:
-      type: apiKey
-      in: header
-      name: appToken
-
     ApikeyAuth:
       type: apiKey
       in: header
       name: apikey
-      
+
     Oauth2:
       type: http
       scheme: bearer
-      bearerFormat: oauth2  
+      bearerFormat: oauth2
 
 
   schemas:
@@ -1033,7 +867,7 @@ components:
           format: url
           description: The url of the webhook that is going to receive the message responsens. The specified endpoint must be configured in order to be able to receive a list of `ResponseMessage`.
           example: "https://www.app1.wenet.com/webhook"
-          
+
     TokenDetails:
       type: object
       properties:
