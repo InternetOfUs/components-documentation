@@ -12,7 +12,7 @@ servers:
   - url: 'https://wenet.u-hopper.com/dev/streambase'
   
 security:
-  #- apikey: []
+  - apikey: []
   - kongOAuth: []
   
 paths:

@@ -10,27 +10,44 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   - url: 'https://wenet.u-hopper.com/dev/api/common'
+security:
+  - apikey: []
+  - kongOAuth: []
 paths:
   /data:
     post:
       tags:
         - batch data
       summary: Upload a new entity's data
-      parameters:
-        - $ref: '#/components/parameters/Authorization'
+      parameters: []
+        #- $ref: '#/components/parameters/Authorization'
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/DataRequest'
       responses:
-        '200':
+        '201':
           description: data correctly uploaded
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 components:
+  securitySchemes:
+    apikey:
+      type: apiKey
+      in: query
+      name: Authorization
+    kongOAuth:
+      type: oauth2
+      description: "Authentication using oauth2 backed from Kong proxy"
+      flows:
+        authorizationCode:
+          # might add client_id
+          authorizationUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          tokenUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          scopes: {}
   parameters:
     Authorization:
       in: header
