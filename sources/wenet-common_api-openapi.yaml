@@ -9,7 +9,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: 'https://wenet.u-hopper.com/dev/commons'
+  - url: 'https://wenet.u-hopper.com/dev/api/common'
 paths:
   /data:
     post:
@@ -187,10 +187,6 @@ components:
             payload:
               type: object
               properties:
-                ts:
-                  type: string
-                  example: 12312131231321
-                  description: "epoch"
                 accuracy:
                   type: number
                   example: 23.2
