@@ -21,6 +21,7 @@ info:
 
     - [Stream Base APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-streambase-openapi.json)
 
+    - [Common APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-scommon_api-openapi.yaml)
 
     The structures of the messages created by WeNet for the applications as responses to the users' messages are described [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-messages_for_apps-openapi.yaml).
 
