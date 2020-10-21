@@ -346,7 +346,7 @@ paths:
   #           application/json:
   #             schema:
   #               $ref: '#/components/schemas/DataRequest'
-  /batch:
+  /data:
     get:
       tags:
         - v2 Batch
