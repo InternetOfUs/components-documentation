@@ -16,12 +16,12 @@ components:
         _creationTs:
           type: integer
           readOnly: true
-          description: The timestamp representing the account creation instant
+          description: The UTC epoch timestamp representing the creation instant.
           example: 1563871899
         _lastUpdateTs:
           type: integer
           readOnly: true
-          description: The timestamp representing the last update instant
+          description: The UTC epoch timestamp representing the last update instant.
           example: 1563898764
 
     NormOperator:
@@ -197,7 +197,7 @@ components:
         competences:
           type: array
           items:
-            $ref: '#/components/schemas/Competence'        
+            $ref: '#/components/schemas/Competence'
         norms:
           type: array
           description: The norms of the social practice
@@ -499,6 +499,29 @@ components:
           description: This is 'true' if teh attribute is an array of values of the specified type.
           default: false
 
+    HumanDescription:
+      description:                           The attributes used to identify and describe a model for an human.
+      properties:
+        name:
+          type:                              string
+          description:                       A name that identify the model.
+          example:                           Eat together task
+          nullable:                          false
+        description:
+          type:                              string
+          description:                       A human readable description of the model.
+          example:                           A task for organizing social dinners
+          nullable:                          true
+        keywords:
+          type:                              array
+          description:                       The keywords that describe the model.
+          nullable:                          true
+          example:
+            - social interaction
+            - eat
+          items:
+            type:                            string
+
     Task:
       allOf:
         - $ref: '#/components/schemas/CreateUpdateTsDetails'
@@ -513,43 +536,32 @@ components:
           type: string
           description: The identifier of the task type associated to the task
           example: b129e5509c9bb79
+          nullable: false
+        appId:
+          type: string
+          description: The identifier of the aplication where the task is done
+          nullable: false
+          example: b129e5509c9bb79
+        communityId:
+          type: string
+          description: The identifier of the community in which the task is going to be shared
+          readOnly: false
+          nullable: true
+          example: b129e5509c9bb79
         requesterId:
           type: string
           description: The identifier of the WeNet user who created the task
           example: 15837028-645a-4a55-9aaf-ceb846439eba
           nullable: false
-        appId:
-          type: string
-          description: The identifier of the application the task is associated to
-          example: yub129e5509bb79
         goal:
           type: object
           description: The explanation of the task objective.
           nullable: false
-          properties:
-            name:
-              type: string
-              description: A short description of the task goal.
-              example: Go to dinner together
-            description:
-              type: string
-              description: A human readable description of the objective of the task.
-              example: It is my aniversary and I want to celebrate together.
-        startTs:
-          type: integer
-          description: The UTC epoch timestamp representing the time the task should be started
-          example: 1563900000
-        endTs:
-          type: integer
-          description: The UTC epoch timestamp representing the time the task should be completed by
-          example: 1563930000
-        deadlineTs:
-          type: integer
-          description: The UTC epoch timestamp representing the deadline time for offering help
-          example: 1563920000
+          allOf:
+            - $ref: '#/components/schemas/HumanDescription'
         closeTs:
           type: integer
-          description: The UTC epoch timestamp representing the time the task is closed. It its not defined the task still open.
+          description: The UTC epoch timestamp representing the time the task is closed. It is `null` as long as the task is not closed.
           nullable: true
           example: 1563930000
         norms:
@@ -560,22 +572,32 @@ components:
         attributes:
           type: object
           description: The set of attributes that define the task
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskTransaction'
 
     TaskTransaction:
       type: object
-      description: Describe a transition to do over a task
+      description: A task transition
       properties:
         taskId:
           description: The unique identifier this transaction is associated to
           example: b129e5509c9bb79
           type: string
+          nullable: false
         label:
           type: string
           description: The label associated to the transaction type
-          example: acceptVolunteer
+          nullable: false
         attributes:
           type: object
           description: The attributes that are set in the associated transaction type
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     VolunteerForTaskTransaction:
       type: object
@@ -598,7 +620,7 @@ components:
               description: The ID of the volunteer that applied to the task
               type: string
               example: d353Sdt3E
-    
+
     RefuseTaskTransaction:
       type: object
       description: Task transaction that says that a volunteer has refused to apply to a task
@@ -620,7 +642,7 @@ components:
               description: The ID of the volunteer that applied to the task
               type: string
               example: d353Sdt3E
-    
+
     AcceptedVolunteerTransaction:
       type: object
       description: Task transaction that says that a volunteer has been accepted to participate to the task
@@ -642,7 +664,7 @@ components:
               description: The ID of the volunteer that is being accepted to the task
               type: string
               example: d353Sdt3E
-              
+
     RefusedVolunteerTransaction:
       type: object
       description: Task transaction that says that a volunteer has been refused to participate to the task
@@ -664,7 +686,7 @@ components:
               description: The ID of the volunteer that is being refused to the task
               type: string
               example: d353Sdt3E
-              
+
     TaskCompletedTransaction:
       type: object
       description: Task transaction that says that the task is completed
@@ -689,7 +711,7 @@ components:
               - completed
               - cancelled
               - failed
-          
+
     CommunityProfile:
       allOf:
         - $ref: '#/components/schemas/CreateUpdateTsDetails'
@@ -729,7 +751,7 @@ components:
           items:
             $ref: '#/components/schemas/Norm'
       description: A community of WeNet users.
-      
+
     CommunityMember:
       allOf:
         - $ref: '#/components/schemas/CreateUpdateTsDetails'
@@ -744,7 +766,7 @@ components:
           items:
             type: string
       description: A member of a community.
-      
+
     Incentive:
       type: object
       required:
