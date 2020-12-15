@@ -508,6 +508,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ToucheventObject'
+            socialprofile:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialProfileObject'
+            socialevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialEventObject'
+            socialpost:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialPostObject'
 
     Subscription:
       type: object
@@ -606,6 +618,109 @@ components:
                     userdestinationid:
                       type: string
                       example: 8
+    SocialProfileObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                gender:
+                  type: string
+                  example: "female"
+                hometown:
+                  type: string
+                  example: "Trento, Italy"
+    SocialEventObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                name:
+                  type: string
+                  example: "Polenta all-you-can-eat"
+                description:
+                  type: string
+                  example: "You can have all the polenta you can eat for just € 9,99"
+                start_time:
+                  type: string
+                  example: "Random date format?"
+                end_time:
+                  type: string
+                  example: "Random date format?"
+                place:
+                  type: string
+                  example: "Casa Mia Restaurant, Shanghai, China"
+    SocialPostObject:
+      type: object
+      allOf: 
+      - $ref: '#/components/schemas/BasicSensor'
+      - type: object
+        properties:
+          payload:
+            type: object
+            properties:
+              source:
+                type: string
+                example: "twitter"
+              sourceId:
+                type: string
+                example: "123123"
+              message:
+                type: string
+                example: "你好，你在干嘛？"
+              reactions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "supermario85"
+                    type:
+                      type: string
+                      example: "like"
+              comments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "luca_tony"
+                    message:
+                      type: string
+                      example: "Numero 1!"
+                    created_time:
+                      type: string
+                      example: "Random date format"
+                          
+                  
+              
                   
     ToucheventObject:
       type: object
@@ -892,3 +1007,4 @@ components:
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
+
