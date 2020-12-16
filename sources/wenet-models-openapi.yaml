@@ -620,6 +620,11 @@ components:
               description: The ID of the volunteer that applied to the task
               type: string
               example: d353Sdt3E
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     RefuseTaskTransaction:
       type: object
@@ -642,6 +647,11 @@ components:
               description: The ID of the volunteer that applied to the task
               type: string
               example: d353Sdt3E
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     AcceptedVolunteerTransaction:
       type: object
@@ -664,6 +674,11 @@ components:
               description: The ID of the volunteer that is being accepted to the task
               type: string
               example: d353Sdt3E
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     RefusedVolunteerTransaction:
       type: object
@@ -686,6 +701,11 @@ components:
               description: The ID of the volunteer that is being refused to the task
               type: string
               example: d353Sdt3E
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     TaskCompletedTransaction:
       type: object
@@ -711,6 +731,11 @@ components:
               - completed
               - cancelled
               - failed
+        actioneerId:
+          description: The identifier of the user that want to change the task
+          example: b129e5509c9bb79
+          nullable: false
+          type: string
 
     CommunityProfile:
       allOf:
