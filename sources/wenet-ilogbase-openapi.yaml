@@ -11,9 +11,9 @@ info:
 servers:
   - url: 'https://wenet.u-hopper.com/dev/streambase'
   
-security:
-  - apikey: []
-  - kongOAuth: []
+# security:
+#   - apikey: []
+#   - kongOAuth: []
   
 paths:
   /experimentSubscription:
@@ -34,14 +34,14 @@ paths:
               $ref: '#/components/schemas/Subscription'
       callbacks:
         propertyChanged:
-          notificationCallbackUrl/:
+          '{$request.body#/notification.url}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/DataRequest'
+                      $ref: '#/components/schemas/SubscriptionData'
               responses:
                 '200':
                   description: Stream successfully initialized
@@ -70,14 +70,14 @@ paths:
               $ref: '#/components/schemas/Subscription'
       callbacks:
         propertyChanged:
-          notificationCallbackUrl/:
+          '{$request.body#/notification.url}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/DataRequest'
+                      $ref: '#/components/schemas/SubscriptionData'
               responses:
                 '200':
                   description: Stream successfully initialized
@@ -160,14 +160,14 @@ paths:
               $ref: '#/components/schemas/Subscription'
       callbacks:
         propertyChanged:
-          notificationCallbackUrl/:
+          '{$request.body#/notification.url}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/DataRequest'
+                      $ref: '#/components/schemas/SubscriptionData'
               responses:
                 '200':
                   description: Stream successfully initialized
@@ -196,14 +196,14 @@ paths:
               $ref: '#/components/schemas/Subscription'
       callbacks:
         propertyChanged:
-          notificationCallbackUrl/:
+          '{$request.body#/notification.url}':
             post:
               requestBody:
                 required: true
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/DataRequest'
+                      $ref: '#/components/schemas/SubscriptionData'
               responses:
                 '200':
                   description: Subscription successfully updated
@@ -520,6 +520,30 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/SocialPostObject'
+    
+    SubscriptionData:
+      type: object
+      properties:
+        locationeventpertime:
+          $ref: '#/components/schemas/LocationeventObject'
+        accelerometerevent:
+          $ref: '#/components/schemas/AccelerometerEventObject'
+        gyroscopeevent:
+          $ref: '#/components/schemas/GyroscopeEventObject'
+        tasksanswers:
+          $ref: '#/components/schemas/TaskAnswer'
+        tasksquestions:
+          $ref: '#/components/schemas/TaskQuestion'
+        socialrelations:
+          $ref: '#/components/schemas/SocialrelationsObject'
+        touchevent:
+          $ref: '#/components/schemas/ToucheventObject'
+        socialprofile:
+          $ref: '#/components/schemas/SocialProfileObject'
+        socialevent:
+          $ref: '#/components/schemas/SocialEventObject'
+        socialpost:
+          $ref: '#/components/schemas/SocialPostObject'
 
     Subscription:
       type: object
@@ -1007,4 +1031,5 @@ components:
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
+
 
