@@ -411,7 +411,7 @@ components:
 
     # Tasks
     
-        TaskType:
+    TaskType:
       type:                                  object
       description:                           The component that describe a possible task
       allOf:
@@ -478,29 +478,6 @@ components:
           type:                              string
           description:                       The ontology used on the norms.
           nullable:                          true
-
-    HumanDescription:
-      description:                           The attributes used to identify and describe a model for an human.
-      properties:
-        name:
-          type:                              string
-          description:                       A name that identify the model.
-          example:                           Eat together task
-          nullable:                          false
-        description:
-          type:                              string
-          description:                       A human readable description of the model.
-          example:                           A task for organizing social dinners
-          nullable:                          true
-        keywords:
-          type:                              array
-          description:                       The keywords that describe the model.
-          nullable:                          true
-          example:
-            - social interaction
-            - eat
-          items:
-            type:                            string
 
     Task:
       allOf:
@@ -595,7 +572,7 @@ components:
           example: 9dihugkdjfgndfg
           type: string
           nullable: false
-          readonly: true
+          readOnly: true
         taskId:
           description: The unique identifier this transaction is associated to
           example: b129e5509c9bb79
@@ -618,13 +595,16 @@ components:
           items:
             $ref: '#/components/schemas/Message'
 
-
     VolunteerForTaskTransaction:
       type: object
       description: Task transaction that says that a new volunteer has applied to a task
       properties:
         id:
-          desc
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readOnly: true
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
@@ -652,6 +632,12 @@ components:
       type: object
       description: Task transaction that says that a volunteer has refused to apply to a task
       properties:
+        id:
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readOnly: true
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
@@ -679,6 +665,12 @@ components:
       type: object
       description: Task transaction that says that a volunteer has been accepted to participate to the task
       properties:
+        id:
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readOnly: true
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
@@ -706,6 +698,12 @@ components:
       type: object
       description: Task transaction that says that a volunteer has been refused to participate to the task
       properties:
+        id:
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readOnly: true
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
@@ -733,6 +731,12 @@ components:
       type: object
       description: Task transaction that says that the task is completed
       properties:
+        id:
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readOnly: true
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
@@ -859,4 +863,4 @@ components:
               type: string
               example: >-
                 congratulations! you just earned a new badge for your relations
-                on tweeter.
+                on Twitter.
