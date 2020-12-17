@@ -410,94 +410,74 @@ components:
             $ref: '#/components/schemas/Meaning'
 
     # Tasks
-
-    TaskTransactionType:
-      type: object
-      properties:
-        label:
-          type: string
-          example: acceptVolunteer
-        description:
-          type: string
-          description: A human readable description of the task objective.
-          example: A task for organizing social dinners
-        attributes:
-          type: array
-          description: The attribute that has to be instantiated when create the task of this type.
-          items:
-            $ref: '#/components/schemas/TaskAttributeType'
-
-    TaskType:
-      type: object
-      description: Describe a type of task that can be done by the users.
+    
+        TaskType:
+      type:                                  object
+      description:                           The component that describe a possible task
+      allOf:
+        - $ref:                              '#/components/schemas/CreateUpdateTsDetails'
+        - $ref:                              '#/components/schemas/HumanDescription'
       properties:
         id:
-          type: string
-          description: Identifier of the type
-          readOnly: true
-          example: 4a559aafceb8464
+          type:                              string
+          description:                       The unique identifier of the task type
+          readOnly:                          true
+          example:                           b129e5509c9bb79
+        attributes:
+            type:                            object
+            description:                     OpenAPI description of the attributes that can have a task.
+        transactions:
+            type:                            object
+            description:                     OpenAPI description of the transaction actions that can be done on the task.
+        callbacks:
+            type:                            object
+            description:                     OpenAPI description of the callbacks messages that can be send to the participants of the task.
+        norms:
+          type:                              array
+          description:                       The norms that describe the protocol to follow the task of this type.
+          nullable:                          true
+          items:
+            $ref:                            '#/components/schemas/ProtocolNorm'
+
+    HumanDescription:
+      description:                           The attributes used to identify and describe a model for an human.
+      properties:
         name:
-          type: string
-          description: A name that identify the type.
-          example: Eat together task
+          type:                              string
+          description:                       A name that identify the model.
+          example:                           Eat together task
+          nullable:                          false
         description:
-          type: string
-          description: A human readable description of the task objective.
-          example: A task for organizing social dinners
+          type:                              string
+          description:                       A human readable description of the model.
+          example:                           A task for organizing social dinners
+          nullable:                          true
         keywords:
-          type: array
-          description: The keywords that describe the task type.
+          type:                              array
+          description:                       The keywords that describe the model.
+          nullable:                          true
           example:
             - social interaction
             - eat
           items:
-            type: string
-        # norms:
-        #   type: array
-        #   description: The norms that describe the interaction of the users to do the tasks of this type.
-        #   items:
-        #     $ref: '#/components/schemas/Norm'
-        attributes:
-          type: array
-          description: The attribute that has to be instantiated when create the task of this type.
-          items:
-            $ref: '#/components/schemas/TaskAttributeType'
-        transactions:
-          type: array
-          description: The supported transaction types for the task
-          items:
-            $ref: '#/components/schemas/TaskTransactionType'
-        # constants:
-        #   type: array
-        #   description: The attribute with a fixed value.
-        #   items:
-        #     $ref: '#/components/schemas/TaskAttribute'
+            type:                            string
 
-    TaskAttributeType:
-      type: object
-      description: Describe an attribute that has to be initialized whne start a task of an specific type.
+    ProtocolNorm:
+      type:                                  object
+      description:                           The description of a rule that has to follow by the wenet users
       properties:
-        name:
-          type: string
-          description: The name of the attribute.
-          example: communityId
-        description:
-          type: string
-          description: A human readable description of the attribute.
-          example: The identifier of the community.
-        type:
-          type: string
-          enum: [string, number, boolean, profileId]
-          description: >
-             The type of the attribute values. It can be:
-             * 'string' - If it is a string value.
-             * 'number' - If it is a number value.
-             * 'boolean' - If it is a boolean value.
-             * 'profileId' - If it represent the identifier of a WeNet user.
-        isArray:
-          type: boolean
-          description: This is 'true' if teh attribute is an array of values of the specified type.
-          default: false
+        whenever:
+          type:                              string
+          description:                       The conditions that fires this norm.
+          nullable:                          false
+        thenceforth:
+          type:                              string
+          description:                       The action to do if the conditions are satisfied.
+          nullable:                          false
+        ontology:
+          type:                              string
+          description:                       The ontology used on the norms.
+          nullable:                          true
 
     HumanDescription:
       description:                           The attributes used to identify and describe a model for an human.
@@ -816,7 +796,7 @@ components:
           type: array
           description: The norms that regulates the community.
           items:
-            $ref: '#/components/schemas/Norm'
+            $ref: '#/components/schemas/ProtocolNorm'
       description: A community of WeNet users.
 
     CommunityMember:
