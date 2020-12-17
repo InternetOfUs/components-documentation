@@ -574,6 +574,7 @@ components:
           description: The set of attributes that define the task
         transactions:
           type: array
+          readOnly: true
           items:
             $ref: '#/components/schemas/TaskTransaction'
 
@@ -636,6 +637,7 @@ components:
           type: string
         messages:
           type: array
+          readOnly: true
           items:
             $ref: '#/components/schemas/Message'
 
