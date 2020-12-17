@@ -577,10 +577,46 @@ components:
           items:
             $ref: '#/components/schemas/TaskTransaction'
 
-    TaskTransaction:
+    Message:
       type: object
+      properties:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
+          description: The type of the message
+          example: TaskVolunteerNotification
+        attributes:
+          type: object
+          description: the attributes of the message, as key-value pairs.
+
+    TaskTransaction:
+      allOf:
+        - $ref: '#/components/schemas/CreateUpdateTsDetails'
       description: A task transition
       properties:
+        id:
+          description: The unique identified of the transaction
+          example: 9dihugkdjfgndfg
+          type: string
+          nullable: false
+          readonly: true
         taskId:
           description: The unique identifier this transaction is associated to
           example: b129e5509c9bb79
@@ -598,11 +634,18 @@ components:
           example: b129e5509c9bb79
           nullable: false
           type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+
 
     VolunteerForTaskTransaction:
       type: object
       description: Task transaction that says that a new volunteer has applied to a task
       properties:
+        id:
+          desc
         taskId:
           description: The unique identifier of the task this transaction is associated to
           example: b129e5509c9bb79
