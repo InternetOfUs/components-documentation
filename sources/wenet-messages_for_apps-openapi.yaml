@@ -36,9 +36,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           description: The type of the message
@@ -65,9 +62,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           enum: 
@@ -83,38 +77,6 @@ components:
             text:
               type: string
               description: The text of the message
-
-    TaskNotification:
-      description: A message regarding a task, it could be about
-
-        * a task proposal to a possible volunteer
-
-        * a volunteer proposal to the task creator
-
-        * a message about an activa task exchanged between two task participants
-
-        * the conclusion of a task
-      allOf:
-        - $ref: '#/components/schemas/Message'
-      properties:
-        type:
-          example: taskNotification
-          description: The task notification type
-          enum:
-            - taskNotification
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
-        # task:
-        notificationType:
-          type: string
-          enum:
-            - taskProposal
-            - taskVolunteer
-            - messageFromUser
-            - taskConcluded
-          example: taskProposal
 
     TaskProposalNotification:
       description: This notification is used in order to propose a user to volunteer to a newly created task
@@ -134,9 +96,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           enum:
@@ -162,9 +121,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           enum:
@@ -196,9 +152,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           enum:
@@ -214,46 +167,6 @@ components:
                 - accepted
                 - refused
               example: accepted
-
-    MessageFromUserNotification:
-      description: This notification is used in order to send a message exchanged between two participants to the same task
-      properties:
-        appId:
-          type: string
-          description: ID of the Wenet application related to the message
-          example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
-        receiverId:
-          type: string
-          description: The Wenet user ID of the recipient of the message
-          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
-        label:
-          type: string
-          enum:
-          - MessageFromUserNotification
-          description: The type of the message
-          example: MessageFromUserNotification
-        attributes:
-          type: object
-          properties:
-            senderId:
-              type: string
-              description: The wenet ID of the user who wrote the message for the recipient user
-              example: ef3990b4-d75e-4339-b78a-125c23ab4614
-            title:
-              example: Message from Paperino
-            text:
-              description: The text written by the sender user
-              example: Cool, loking forward to participate to your task!
 
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
@@ -279,9 +192,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           enum:
