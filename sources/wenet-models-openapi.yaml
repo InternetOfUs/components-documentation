@@ -563,9 +563,11 @@ components:
           type: integer
           description: The UTC epoch timestamp representing the time the task is closed. It is `null` as long as the task is not closed.
           nullable: true
+          readOnly: true
           example: 1563930000
         norms:
           type: array
+          readOnly: false
           description: The set of norms that define the interaction of the user when do the task
           items:
             $ref: '#/components/schemas/Norm'
@@ -574,7 +576,6 @@ components:
           description: The set of attributes that define the task
         transactions:
           type: array
-          readOnly: true
           items:
             $ref: '#/components/schemas/TaskTransaction'
 
@@ -596,9 +597,6 @@ components:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        contentType:
-          type: string
-          example: task
         label:
           type: string
           description: The type of the message
@@ -637,7 +635,6 @@ components:
           type: string
         messages:
           type: array
-          readOnly: true
           items:
             $ref: '#/components/schemas/Message'
 
