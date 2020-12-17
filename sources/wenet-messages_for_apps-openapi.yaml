@@ -17,7 +17,36 @@ info:
 
 components:
   schemas:
-
+    
+    Message:
+      type: object
+      properties:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
+          description: The type of the message
+          example: TaskVolunteerNotification
+        attributes:
+          type: object
+          description: the attributes of the message, as key-value pairs.
+          
     TextualMessage:
       description: A simple textual message from WeNet to the user
       properties:
@@ -41,7 +70,7 @@ components:
           example: task
         label:
           type: string
-          enum:
+          enum: 
           - TextualMessage
           description: The type of the message
           example: TextualMessage
