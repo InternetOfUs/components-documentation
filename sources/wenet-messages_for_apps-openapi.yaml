@@ -12,95 +12,77 @@ info:
     Such endpoint is going to be specified in the application configuration.
 
   contact:
-    email: carlo.caprini@u-hopper.com
-  version: 1.0.0
+    email: nicolo.pomini@u-hopper.com
+  version: 2.0.0
 
 components:
   schemas:
-
-    BaseMessage:
+    
+    Message:
       type: object
       properties:
-        type:
+        appId:
           type: string
-          description: The type of the message (either message or taskNotification)
-          enum:
-            - textualMessage
-            - taskNotification
-            - event
-
-    Event:
-      description: An event about something that happened in WeNet
-      allOf:
-        - $ref: '#/components/schemas/BaseMessage'
-      properties:
-        type:
-          example: event
-          description: The event message type
-          enum:
-            - event
-        eventType:
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
           type: string
-          enum:
-            - newUserForPlatform
-          description: The event type
-
-    NewUserForPlatform:
-      description: A new user activated an app platform
-      allOf:
-        - $ref: '#/components/schemas/Event'
-      properties:
-        eventType:
-          example: newUserForPlatform
-        app:
+          description: ID of the community related to the message
+        taskId:
           type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-          description: The associated app id
-        userId:
-          description: Wenet user id
+        contentType:
           type: string
-          example:
-        platform:
+          example: task
+        label:
           type: string
-          example: telegram
-          enum:
-            - telegram
-
-    Message:
-      allOf:
-        - $ref: '#/components/schemas/BaseMessage'
-      properties:
-        type:
-          type: string
-          description: The type of the message (either message or taskNotification)
-          enum:
-            - textualMessage
-            - taskNotification
-        recipientId:
-          type: string
-          description: The WeNet identifier of the user the message is meant for
-          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
-        title:
-          type: string
-          description: The title of the message
-        text:
-          type: string
-          description: The message for the user
-
+          description: The type of the message
+          example: TaskVolunteerNotification
+        attributes:
+          type: object
+          description: the attributes of the message, as key-value pairs.
+          
     TextualMessage:
       description: A simple textual message from WeNet to the user
-      allOf:
-        - $ref: '#/components/schemas/Message'
       properties:
-        type:
-          example: textualMessage
-          description: The textual message type
-          enum:
-            - textualMessage
-        title:
-          example: Task created
-        text:
-          example: Congrats, your new task has been correcly created!
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
+          enum: 
+          - TextualMessage
+          description: The type of the message
+          example: TextualMessage
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              description: The title of the message
+            text:
+              type: string
+              description: The text of the message
 
     TaskNotification:
       description: A message regarding a task, it could be about
@@ -136,74 +118,142 @@ components:
 
     TaskProposalNotification:
       description: This notification is used in order to propose a user to volunteer to a newly created task
-      allOf:
-        - $ref: '#/components/schemas/TaskNotification'
       properties:
-        notificationType:
-            type: string
-            enum:
-              - taskProposal
-        title:
-          example: A new task for you
-        text:
-          example: A new task you may be interested in has just been created, check it out!
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
+          enum:
+          - TaskProposalNotification
+          description: The type of the message
+          example: TaskProposalNotification
 
     TaskVolunteerNotification:
       description: This notification is used in order to notify the task creator that a new volunteer is proposing to participate to the task
-      allOf:
-        - $ref: '#/components/schemas/TaskNotification'
       properties:
-        notificationType:
-          example: taskVolunteer
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
           enum:
-            - taskVolunteer
-        volunteerId:
-          type: string
-          description: The wenet id of the user who is volunteering for the task
-        explanation:
-          nullable: true
-          type: string
-          description: The wenet id of the user who is volunteering for the task
-          example: It is your friend
+          - TaskVolunteerNotification
+          description: The type of the message
+          example: TaskVolunteerNotification
+        attributes:
+          type: object
+          properties:
+            volunteerId:
+              type: string
+              description: The Wenet ID of the volunteer that is applying to the task
 
     TaskSelectionNotification:
       description: This notification is used in order to notify the user who volunteered about the decision of the task creator
-      allOf:
-        - $ref: '#/components/schemas/TaskNotification'
       properties:
-        notificationType:
-          example: selectionVolunteer
-          enum:
-            - selectionVolunteer
-        title:
-          example: You have been accepted as volunteer
-        text:
-          example: Cool! You will be participating to the task!
-        outcome:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
           type: string
           enum:
-            - accepted
-            - refused
-          example: accepted
+          - TaskSelectionNotification
+          description: The type of the message
+          example: TaskSelectionNotification
+        attributes:
+          type: object
+          properties:
+            outcome:
+              type: string
+              enum:
+                - accepted
+                - refused
+              example: accepted
 
     MessageFromUserNotification:
       description: This notification is used in order to send a message exchanged between two participants to the same task
-      allOf:
-        - $ref: '#/components/schemas/TaskNotification'
       properties:
-        notificationType:
-          example: messageFromUser
-          enum:
-            - messageFromUser
-        senderId:
+        appId:
           type: string
-          description: The wenet id of the user who wrote the message for the recipient user
-          example: ef3990b4-d75e-4339-b78a-125c23ab4614
-        title:
-          example: Message from Paperino
-        text:
-          description: The text written by the sender user
-          example: Cool, loking forward to participate to your task!
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
+          type: string
+          enum:
+          - MessageFromUserNotification
+          description: The type of the message
+          example: MessageFromUserNotification
+        attributes:
+          type: object
+          properties:
+            senderId:
+              type: string
+              description: The wenet ID of the user who wrote the message for the recipient user
+              example: ef3990b4-d75e-4339-b78a-125c23ab4614
+            title:
+              example: Message from Paperino
+            text:
+              description: The text written by the sender user
+              example: Cool, loking forward to participate to your task!
 
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
@@ -213,22 +263,39 @@ components:
         * failed (if something went wrong)
 
         * cancelled (the creator cancelled the task)
-      allOf:
-        - $ref: '#/components/schemas/TaskNotification'
       properties:
-        notificationType:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        communityId:
+          type: string
+          description: ID of the community related to the message
+        taskId:
+          type: string
+          description: The identifier of the target task
+          example: 28961582-84d2-41d1-b555-c09dce046831
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        contentType:
+          type: string
+          example: task
+        label:
           type: string
           enum:
-            - taskConcluded
-        outcome:
-          type: string
-          description: The outcome of the task (has it been completed with success or not)
-          enum:
-            - cancelled
-            - completed
-            - failed
-          example: completed
-        title:
-          example: Task concluded
-        text:
-          example: The task was successfully completed, grat job!
+          - TaskConcludedNotification
+          description: The type of the message
+          example: TaskConcludedNotification
+        attributes:
+          type: object
+          properties:
+            outcome:
+              type: string
+              description: The outcome of the task (has it been completed with success or not)
+              enum:
+                - cancelled
+                - completed
+                - failed
+              example: completed
