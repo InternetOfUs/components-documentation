@@ -25,13 +25,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -43,6 +36,16 @@ components:
         attributes:
           type: object
           description: the attributes of the message, as key-value pairs.
+          properties:
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
           
     TextualMessage:
       description: A simple textual message from WeNet to the user
@@ -51,13 +54,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -77,6 +73,15 @@ components:
             text:
               type: string
               description: The text of the message
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
 
     TaskProposalNotification:
       description: This notification is used in order to propose a user to volunteer to a newly created task
@@ -85,13 +90,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -102,6 +100,19 @@ components:
           - TaskProposalNotification
           description: The type of the message
           example: TaskProposalNotification
+        attributes:
+          type: object
+          description: the attributes of the message, as key-value pairs.
+          properties:
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
 
     TaskVolunteerNotification:
       description: This notification is used in order to notify the task creator that a new volunteer is proposing to participate to the task
@@ -110,13 +121,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -133,6 +137,15 @@ components:
             volunteerId:
               type: string
               description: The Wenet ID of the volunteer that is applying to the task
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
 
     TaskSelectionNotification:
       description: This notification is used in order to notify the user who volunteered about the decision of the task creator
@@ -141,13 +154,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -167,6 +173,15 @@ components:
                 - accepted
                 - refused
               example: accepted
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
 
     TaskConcludedNotification:
       description: This notification is used in order to notify task participants that a task has been completed, the outcome could be
@@ -181,13 +196,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
@@ -209,3 +217,98 @@ components:
                 - completed
                 - failed
               example: completed
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              nullable: true
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              
+    IncentiveMessage:
+      description: This message contains an incentive for an user
+      properties:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        label:
+          type: string
+          enum:
+          - IncentiveMessage
+          description: The type of the message
+          example: IncentiveMessage
+        attributes:
+          type: object
+          properties:
+            issuer:
+              type: string
+              description: The issuer of the incentive
+            content:
+              type: string
+              description: The content of the incentive
+              example: we are happy to see your participation in the I-log app, you are doing a great job!
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
+              
+    IncentiveBadge:
+      description: This is a badge of an incentive
+      properties:
+        appId:
+          type: string
+          description: ID of the Wenet application related to the message
+          example: 822jhluNZP
+        receiverId:
+          type: string
+          description: The Wenet user ID of the recipient of the message
+          example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+        label:
+          type: string
+          enum:
+          - IncentiveBadge
+          description: The type of the message
+          example: IncentiveBadge
+        attributes:
+          type: object
+          properties:
+            issuer:
+              type: string
+              description: The issuer of the incentive
+            badgeClass:
+              type: string
+              description: the class of the badge
+              example: hpqAdI7hQf2maQ13AW1jXA
+            imageUrl:
+              type: string
+              description: the URL of the image of the badge
+              example: https://wenet.server/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
+            criteria:
+              type: string
+              description: the criteria with which the badge was assigned
+              example: The user will get this badge for 50 relations in Twitter
+            message:
+              type: string
+              description: a human-readable text to be shown to the user when she receives the badge
+              example: Congratulations! you just earned a new badge for your relations on Twitter
+            communityId:
+              type: string
+              description: ID of the community related to the message
+              nullable: true
+            taskId:
+              type: string
+              description: The identifier of the target task
+              example: 28961582-84d2-41d1-b555-c09dce046831
+              nullable: true
