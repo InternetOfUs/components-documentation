@@ -5,7 +5,7 @@ info:
 
   contact:
     email: carlo.caprini@u-hopper.com
-  version: 1.0.0
+  version: 2.0.0
 
 components:
   schemas:
@@ -617,13 +617,8 @@ components:
         attributes:
           type: object
           description: The attributes that are set in the associated transaction type
-          properties:
-            volunteerId:
-              description: The ID of the volunteer that applied to the task
-              type: string
-              example: d353Sdt3E
         actioneerId:
-          description: The identifier of the user that want to change the task
+          description: The identifier of the user that applied to the task
           example: b129e5509c9bb79
           nullable: false
           type: string
@@ -650,13 +645,8 @@ components:
         attributes:
           type: object
           description: The attributes that are set in the associated transaction type
-          properties:
-            volunteerId:
-              description: The ID of the volunteer that applied to the task
-              type: string
-              example: d353Sdt3E
         actioneerId:
-          description: The identifier of the user that want to change the task
+          description: The identifier of the user that refused to apply for the task
           example: b129e5509c9bb79
           nullable: false
           type: string
