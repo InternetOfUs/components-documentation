@@ -567,17 +567,17 @@ components:
           nullable: false
           readOnly: true
         taskId:
-          description: The unique identifier this transaction is associated to
+          description: The identifier of the WeNet task where the transaction is done
           example: b129e5509c9bb79
           type: string
           nullable: false
         label:
           type: string
-          description: The label associated to the transaction type
+          description: The label that identify the transaction to do
           nullable: false
         attributes:
           type: object
-          description: The attributes that are set in the associated transaction type
+          description: The attributes that parameterize the transaction
         actioneerId:
           description: The identifier of the user that want to change the task
           example: b129e5509c9bb79
@@ -585,6 +585,7 @@ components:
           type: string
         messages:
           type: array
+          description: The list of messages that has provokes the execution of this task transaction
           items:
             $ref: '#/components/schemas/Message'
 
