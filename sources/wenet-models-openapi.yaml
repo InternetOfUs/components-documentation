@@ -410,7 +410,7 @@ components:
             $ref: '#/components/schemas/Meaning'
 
     # Tasks
-    
+
     TaskType:
       type:                                  object
       description:                           The component that describe a possible task
@@ -543,13 +543,6 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
-        communityId:
-          type: string
-          description: ID of the community related to the message
-        taskId:
-          type: string
-          description: The identifier of the target task
-          example: 28961582-84d2-41d1-b555-c09dce046831
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
