@@ -514,6 +514,30 @@ paths:
     #   responses:
     #     201:
     #       description: Task correctly created
+    
+  /log/messages:
+    post:
+      summary: Post a log messages
+      tags:
+        - Logging
+      security:
+        - ApikeyAuth: []
+        - Oauth2: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Transaction correctly submitted
+          content:
+            application/json:
+             schema:
+               $ref: '#/components/schemas/EmptyResponse'
 
 components:
 
@@ -707,6 +731,53 @@ components:
     #               - read
 
     # Messages
+    
+    BaseContent:
+      type: object
+      properties: 
+        type: 
+          type: string
+          description: the type of the content
+          
+    ActionContent:
+      allOf:
+          - $ref: '#/components/schemas/Message'
+      type: object
+      properties:
+        buttonId:
+          type: string
+        buttonText: 
+          type: string
+        
+          
+    ContentWithButtons:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseContent'
+      properties:
+        buttons:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ActionContent'
+            
+            
+    TextualContent:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseContent'
+      properties:
+        value:
+          type: string
+          
+    AttachmentContent:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseContent'
+      properties:
+        value:
+          type: string
+        
 
     TextualMessage:
       type: object
@@ -734,119 +805,78 @@ components:
     Entity:
       type: object
       properties:
-        name:
+        type:
           type: string
-          example: "location"
+          example: "@city"
         value:
           type: string
-          example: "school"
+          example: "Boston"
         confidence:
           type: number
           format: float
           example: 0.94
-          nullable: true
 
     Message:
       type: object
       properties:
         messageId:
           type: string
-          example: 2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
         channel:
           type: string
-          enum:
-            - facebook
-          example: facebook
+          example: "FACEBOOK"
         userId:
           type: string
-          example: USR-JDKHEIU2-31NJDTE94
-        appId:
+          example: "USR-JDKHEIU2-31NJDTE94"
+        conversationId:
           type: string
-          readOnly: true
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
+          example: "CONV-DAJKWPENVOA-314CAD"
+        timestamp:
+          type: string
+          description: Timestamp expressed in ISO format
+          example: "2021-01-25T14:18:36.141378"
+        content:
+          oneOf:
+            # - $ref: '#/components/schemas/TextualRequest'
+            - $ref: '#/components/schemas/ActionRequest'
+          example: {"type": "text", "value": "where can I eat a pizza?"}
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        project:
+          type: string
+          example: "MyApp"
         type:
           type: string
-          enum:
-            - request
-            - response
-          example:  request
+          example: "REQUEST"
       required:
         - messageId
         - channel
         - userId
-        - appId
+        - timestamp
+        - project
         - type
 
     RequestMessage:
       allOf:
         - $ref: '#/components/schemas/Message'
       properties:
-        timestamp:
-          type: string
-          format: datetime
-          example: "2019-04-04:23.11.58"
-        content:
-          oneOf:
-            - $ref: '#/components/schemas/TextualMessage'
-            - $ref: '#/components/schemas/ActionRequest'
-        domain:
-          type: string
-          example: "help"
-        intent:
-          type: object
-          properties:
-            name:
-              type: string
-              example: "help"
-            confidence:
-              type: number
-              format: float
-              example: 0.87,
-              nullable: true
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Entity'
-        language:
-          type: string
-          example: it
-        metadata:
-          type: object
         type:
           type: string
           enum:
             - request
           example: request
-      required:
-        - timestamp
-        - content
 
     ResponseMessage:
       allOf:
         - $ref: '#/components/schemas/Message'
       properties:
-        responseTo:
-          type: string
-          example: 1FKNSM-GEKRO2-DANK2-FJ33-DASDJOW
-        timestamp:
-          type: string
-          format: datetime
-          example: 2019-04-04:23.11.58
-        content:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/TextualMessage'
-        metadata:
-          type: object
         type:
           type: string
           enum:
             - response
           example: response
-      required:
-        - responseTo
-        - content
 
     MessageSubscription:
       type: object
@@ -884,6 +914,27 @@ components:
           description: The list of scopes
           items:
             type: string
+            
+    # BaseMessage:
+    #   type: object
+    #   description: Base model for log message
+    #   properties:
+    #     type: 
+    #       type: string
+    #     messageId:
+    #       type: string
+    #     channel:
+    #       type: string
+    #     userId: 
+    #       type: string
+    #     # content:
+    #     #   type: string
+    #     timestap:
+    #       type: string
+    #       format: datetime
+          
+    # RequestMessage:
+    #   type: object
 
     EmptyResponse:
       type: object
