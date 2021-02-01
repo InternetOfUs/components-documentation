@@ -1,16 +1,42 @@
 openapi: 3.0.1
 info:
   title: WeNet - Interaciton protocol engine API
-  description: |-
-    The interaction protocol engine component is the one responsible for guaranteeing that interactions between WeNet users follow the norms.
-    ## Message
-    The interaction between users is modeled as an exchange of messages. When a user sends a message through the API, the message is sent to the norm interpreter of the user. This interpreter needs to first verify that the message does not violate any of the norms, this includes the community norms, the task norms, the sender’s individual norms, as well as the context-dependent norms that are attached to this message. If the message violates any of those norms, an error message is sent back to the user. However, if the message obeys the norms, then the norm interpreter needs to decide what to do next, usually translated into sending messages to other peers. This decision follows from the community, individual and context-dependent norms, and takes the user’s profile (both public and private) into account as needed. If the message is sent to the interpreter of another user. As in the previous case, the norm interpreter of this new user needs to first verify that the message does not violate any of the community norms. This re-checking upon receipt ensures that the sender’s norm engine has not been manipulated to cheat. If the message violates any of the community norms, then it may either be discarded, or if the community norms require sanctioning, then the appropriate sanctions should be executed. However, if the action obeys the community norms, then the norm interpreter needs to decide what to do next, which is usually translated into sending messages to other peers and/or sending messages to its user. This decision takes into consideration the community norms, the context-dependent norms that are attached to the message, the individual private norms of the human whose interpreter has received this message, as well as their local profile (both private and public). This ensures that the interpreter abides by human’s private norms without leaking any of their private norms and profile.
-
-    ## Norm
-    The functionality provided allows to publish norms, and manage the user and community norms.
-    There are norms on the individual (user level), the task level, and the community level. An individual’s norm might be “Suppress incoming messages at night” (and this will be applied for the user who sets this norm only). A task norm might be “Don’t ask my ex” (so that would be applied for a specific task only). A community norm might be “If you don’t volunteer, you cannot ask for help” and it would be enforced on everyone. Given the above, this means that norms will be attached to users, tasks and communities.
+  description: "The interaction protocol engine component is the one responsible for\
+    \ guaranteeing that interactions between WeNet users follow the norms.\n## Message\n\
+    The interaction between users is modeled as an exchange of messages. When a user\
+    \ sends a message through the API, the message is sent to the norm interpreter\
+    \ of the user. This interpreter needs to first verify that the message does not\
+    \ violate any of the norms, this includes the community norms, the task norms,\
+    \ the sender’s individual norms, as well as the context-dependent norms that are\
+    \ attached to this message. If the message violates any of those norms, an error\
+    \ message is sent back to the user. However, if the message obeys the norms, then\
+    \ the norm interpreter needs to decide what to do next, usually translated into\
+    \ sending messages to other peers. This decision follows from the community, individual\
+    \ and context-dependent norms, and takes the user’s profile (both public and private)\
+    \ into account as needed. If the message is sent to the interpreter of another\
+    \ user. As in the previous case, the norm interpreter of this new user needs to\
+    \ first verify that the message does not violate any of the community norms. This\
+    \ re-checking upon receipt ensures that the sender’s norm engine has not been\
+    \ manipulated to cheat. If the message violates any of the community norms, then\
+    \ it may either be discarded, or if the community norms require sanctioning, then\
+    \ the appropriate sanctions should be executed. However, if the action obeys the\
+    \ community norms, then the norm interpreter needs to decide what to do next,\
+    \ which is usually translated into sending messages to other peers and/or sending\
+    \ messages to its user. This decision takes into consideration the community norms,\
+    \ the context-dependent norms that are attached to the message, the individual\
+    \ private norms of the human whose interpreter has received this message, as well\
+    \ as their local profile (both private and public). This ensures that the interpreter\
+    \ abides by human’s private norms without leaking any of their private norms and\
+    \ profile.\n\n## Norm\nThe functionality provided allows to publish norms, and\
+    \ manage the user and community norms.\nThere are norms on the individual (user\
+    \ level), the task level, and the community level. An individual’s norm might\
+    \ be “Suppress incoming messages at night” (and this will be applied for the user\
+    \ who sets this norm only). A task norm might be “Don’t ask my ex” (so that would\
+    \ be applied for a specific task only). A community norm might be “If you don’\
+    t volunteer, you cannot ask for help” and it would be enforced on everyone. Given\
+    \ the above, this means that norms will be attached to users, tasks and communities."
   contact:
-    name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
+    name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
     name: MIT
@@ -21,16 +47,20 @@ servers:
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/interaction_protocol_engine
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/0.11/
+- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/prod/
+  description: IIIA production server
+- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/dev/
   description: IIIA development server
 tags:
 - name: Other
   description: Other services provided by the API.
 - name: Messages
   description: The functionality provided allows to send messages.
+- name: States
+  description: The functionality to manage the states necessaries on the norm engine.
 - name: Norms
-  description: The functionality provided allows to publish norms, and manage the
-    user and community norms.
+  description: "The functionality provided allows to publish norms, and manage the\
+    \ user and community norms."
 paths:
   /help/info:
     get:
@@ -68,7 +98,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-common_api-openapi.json#/components/schemas/Incentive
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
         required: true
       responses:
         "202":
@@ -92,7 +122,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/message'
+              $ref: '#/components/schemas/ProtocolMessage'
         required: true
       responses:
         "202":
@@ -100,7 +130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/message'
+                $ref: '#/components/schemas/ProtocolMessage'
         "400":
           description: Bad message
           content:
@@ -259,69 +289,68 @@ paths:
         in: query
         description: A name to be equals on the published norms to return. You can
           use a Perl compatible regular expressions (PCRE) that has to match the name
-          of the norms to return if you write between '/'. For example to get the
-          norms with a name with the word 'eat' you must pass as 'name' '/.*eat.*/'
+          of the published norms to return if you write between '/'. For example to
+          get the published norms with a name with the word 'eat' you must pass as
+          'name' '/.*eat.*/'
         schema:
           type: string
         example: /.*eat.*/
       - name: description
         in: query
-        description: A description to be equals on the tasks to return.or You can
-          use a Perl compatible regular expressions (PCRE) that has to match the description
-          of the tasks to return if you write between '/'. For example to get the
-          norms with a description with the word 'eat' you must pass as 'description'
-          '/.*eat.*/'
+        description: A description to be equals on the published norms to return.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the description of the published norms to return if you write between '/'.
+          For example to get the published norms with a description with the word
+          'eat' you must pass as 'description' '/.*eat.*/'
         schema:
           type: string
         example: /.*eat.*/
       - name: keywords
         in: query
-        description: A set of keywords to be defined on the norms to be returned.
-          For each keyword is separated by a ',' and each field keyword can be between
-          '/' to use a Perl compatible regular expressions (PCRE) instead the exact
-          value.
+        description: "A set of keywords to be defined on the published norms to be\
+          \ returned. For each keyword is separated by a ',' and each field keyword\
+          \ can be between '/' to use a Perl compatible regular expressions (PCRE)\
+          \ instead the exact value."
+        style: form
         schema:
-          type: array
-          items:
-            type: string
-        example: key1,/.*eat.*/,key3
+          type: string
+        example: "key1,/.*eat.*/,key3"
       - name: publisherId
         in: query
-        description: An user identifier to be equals on the publisher of the norm
-          to return. You can use a Perl compatible regular expressions (PCRE) that
-          has to match the publisher identifier of the norms to return if you write
-          between '/'. For example to get the norms published by '1' and '2' you must
-          pass as 'publisherId' '/^[1|2]$/'.
+        description: "An user identifier to be equals on the publisher of the norm\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the publisher identifier of the norms to return if you write\
+          \ between '/'. For example to get the norms published by '1' and '2' you\
+          \ must pass as 'publisherId' '/^[1|2]$/'."
         schema:
           type: string
         example: 1e346fd440
       - name: publishFrom
         in: query
-        description: The difference, measured in seconds, between the minimum publish
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the minimum publish\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1457166440
       - name: publishTo
         in: query
-        description: The difference, measured in seconds, between the maximum publish
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the maximum publish\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1571664406
       - name: order
         in: query
-        description: The order in witch the norms has to be returned. For each filed
-          it has be separated by a ',' and each field can start with '+' (or without
-          it) to order on ascending order, or with the prefix '-' to do on descendant
-          order.
+        description: "The order in witch the norms has to be returned. For each field\
+          \ it has be separated by a ',' and each field can start with '+' (or without\
+          \ it) to order on ascending order, or with the prefix '-' to do on descendant\
+          \ order."
+        style: form
         schema:
-          type: array
-          items:
-            type: string
-        example: name,-description,+publisherId
+          type: string
+        example: "name,-description,+publisherId"
       - name: offset
         in: query
         description: The index of the first norm to return.
@@ -377,6 +406,177 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /states/communities/{communityId}/users/{userId}:
+    get:
+      tags:
+      - States
+      summary: Return the state
+      description: Retrieve the state that satisfy the query parameters.
+      operationId: retrieveCommunityUserState
+      parameters:
+      - name: communityId
+        in: path
+        description: The identifier of the community where is the state
+        required: true
+        schema:
+          type: string
+        example: 1
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      responses:
+        "200":
+          description: The state associated to the community user
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/State'
+    patch:
+      tags:
+      - States
+      summary: Merge the state
+      description: Merge the current community user with a new one.
+      operationId: mergeCommunityUserState
+      parameters:
+      - name: communityId
+        in: path
+        description: The identifier of the community where is the state
+        required: true
+        schema:
+          type: string
+        example: 1
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      requestBody:
+        description: The new community user state
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/State'
+        required: true
+      responses:
+        "200":
+          description: The merged community user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+        "400":
+          description: If the state is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /states:
+    get:
+      tags:
+      - States
+      summary: Return the state
+      description: Retrieve the state that satisfy the query parameters.
+      operationId: retrieveStates
+      parameters:
+      - name: communityId
+        in: query
+        description: "A community identifier to be equals on the state to return.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the community identifier of the state if you write between '/'. For example\
+          \ to get the state for communities '1' and '2' you must pass as 'communityId'\
+          \ '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: taskId
+        in: query
+        description: "An task identifier to be equals on the state to return. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task of the state if you write between '/'. For example to get the\
+          \ state for tasks '1' and '2' you must pass as 'taskId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: userId
+        in: query
+        description: "An user identifier to be equals on the state to return. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the user of the state if you write between '/'. For example to get the\
+          \ state for users '1' and '2' you must pass as 'userId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      responses:
+        "200":
+          description: The state associated to the query
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StatesPage'
+  /tasks/transactions:
+    post:
+      tags:
+      - Tasks
+      summary: Do a transaction over a task
+      description: "Start the process to do a task transaction. Thus, verify that\
+        \ it fulfill the norms, change the task state and notify the necessary WeNet\
+        \ users."
+      operationId: doTransaction
+      requestBody:
+        description: The norm to publish
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        required: true
+      responses:
+        "202":
+          description: The transaction is accepted to be processed
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        "400":
+          description: Cannot process the task transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/created:
+    post:
+      tags:
+      - Tasks
+      summary: Initialize a created task
+      description: "Start the process to initialize the task execution. Thus, this\
+        \ verify the norms that will be used for example to initialize the task state\
+        \ or decide witch of the WeNet users will participate on the task."
+      operationId: taskCreated
+      requestBody:
+        description: The norm to publish
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        required: true
+      responses:
+        "202":
+          description: The creation task has accepted to be processed
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Task
+        "400":
+          description: Cannot process the created task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
     Info:
@@ -398,7 +598,7 @@ components:
           type: string
           description: Contain information of the organization that has implemented
             the API
-          example: UDT-IA, IIIA-CSIC
+          example: "UDT-IA, IIIA-CSIC"
         license:
           type: string
           description: Contain information of the license of the API
@@ -416,49 +616,57 @@ components:
           description: Contain a brief description of the error to be read by a human
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
-    message:
+    ProtocolAddress:
       type: object
       properties:
-        senderId:
+        component:
           type: string
-          description: The identifier of the user that send the message
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
+          description: The component that interact on the protocol.
+          enum:
+          - USER_APP
+          - INTERACTION_PROTOCOL_ENGINE
+          - SOCIAL_CONTEXT_BUILDER
+          - INCENTIVE_SERVER
+          - TASK_MANAGER
+          - PROFILE_MANAGER
+        userId:
+          type: string
+          description: The user associated the component that interact.
+      description: The component that send/receive a message.
+    ProtocolMessage:
+      type: object
+      properties:
         appId:
           type: string
-          description: The identifier of the application that has used the sender
-            to send this message.
+          description: The identifier of the application associated to the message.
           example: E34jhg78tbgh
         communityId:
           type: string
-          description: The identifier of the application that has used the sender
-            to send this message.
+          description: The identifier of the community associated to the message.
           example: ceb846439eba-645a-9aaf-4a55-15837028
         taskId:
           type: string
-          description: The identifier of the application that has used the sender
-            to send this message.
+          description: The identifier of the task associated to the message.
+          example: b129e5509c9bb79
+        transactionId:
+          type: string
+          description: The identifier of the transaction associated to the message.
+          example: b129e5509c9bb79
+        sender:
+          $ref: '#/components/schemas/ProtocolAddress'
+        receiver:
+          $ref: '#/components/schemas/ProtocolAddress'
+        particle:
+          type: string
+          description: The particle that define the motive of the message.
           example: b129e5509c9bb79
         content:
           type: object
           description: The content of the message.
           example: Hi!
-        norms:
-          type: array
-          description: The norms to apply over the message
-          items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
-        type:
-          type: string
-          description: The type of message.
-          example: TASK_TRANSACTION
-          enum:
-          - TASK_CREATED
-          - TASK_TRANSACTION
-          - INCENTIVE
-          - SWI_PROLOG
       description: A message that can be interchange in an interaction protocol.
     Norm:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Norm
     PublishedNorm:
       type: object
       properties:
@@ -498,7 +706,7 @@ components:
           description: The identifier of the user that has published the norm.
           example: bf274393-1e7b-4d40-a897-88cb96277edd
         norm:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Norm
       description: A norm that is published to share with all the WeNet users.
     PublishedNormsPage:
       type: object
@@ -519,3 +727,55 @@ components:
           items:
             $ref: '#/components/schemas/PublishedNorm'
       description: Contains a set of published norms found
+    State:
+      type: object
+      properties:
+        _creationTs:
+          type: integer
+          description: The time stamp representing the account creation instant.
+          format: int64
+          example: 1563871899
+        _lastUpdateTs:
+          type: integer
+          description: The time stamp representing the last update instant.
+          format: int64
+          example: 1563898764
+        communityId:
+          type: string
+          description: The identifier of the community associated to the state.
+          nullable: true
+          example: "1"
+        taskId:
+          type: string
+          description: The identifier of the task associated to the state.
+          nullable: true
+          example: "1"
+        userId:
+          type: string
+          description: The identifier of the user associated to the state.
+          nullable: true
+          example: "1"
+        attributes:
+          type: object
+          description: The attributes that define the state.
+          nullable: true
+      description: Model that describe a state.
+    StatesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first state returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of states that satisfies the search.
+          format: int64
+          example: 100
+        states:
+          type: array
+          description: The set of states found
+          items:
+            $ref: '#/components/schemas/State'
+      description: Contains a set of states
