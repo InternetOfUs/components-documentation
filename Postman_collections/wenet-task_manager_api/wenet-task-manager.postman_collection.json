@@ -10,7 +10,13 @@
 			"name": "Get the API information",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/info",
 					"host": [
@@ -28,7 +34,13 @@
 			"name": "Get the API description",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/openapi.yaml",
 					"host": [
@@ -48,7 +60,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "34d5897d-0146-492b-83d4-79ce1ed25176",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"taskTypeId\", jsonData.id);",
@@ -66,11 +77,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"Eat together\",\n    \"transactions\":[\n    \t{\n    \t\t\"label\":\"acceptToAttend\"\n    \t}\n    ]\n}",
+					"raw": "{\n    \"id\": \"wenet-echo-1.0.0\",\n    \"name\": \"Echo\",\n    \"description\": \"This tasks echo the transaction messages\",\n    \"keywords\": [\n        \"example\",\n        \"test\"\n    ],\n    \"transactions\": {\n        \"echo\": {\n            \"type\": \"object\",\n            \"description\": \"Send the echo message\",\n            \"properties\": {\n                \"message\": {\n                    \"type\": \"string\",\n                    \"description\": \"The message to echo\"\n                }\n            }\n        }\n    },\n    \"callbacks\": {\n        \"echo\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"taskId\": {\n                    \"type\": \"string\",\n                    \"description\": \"The identifier of the task\"\n                },\n                \"communityId\": {\n                    \"type\": \"string\",\n                    \"description\": \"The identifier of the community\"\n                },\n                \"message\": {\n                    \"type\": \"string\",\n                    \"description\": \"The echo message\"\n                }\n            }\n        }\n    },\n    \"norms\": [\n        {\n            \"whenever\": \"get_transaction(Transaction) & Transaction.label = \\\"echo\\\"\",\n            \"thenceforth\": \"pull_callback({\\\"label\\\":\\\"echo\\\",\\\"attributes\\\":{\\\"message\\\":Transaction.message}},_)\"\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,13 +94,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/tasks/types",
+					"raw": "{{server}}/taskTypes",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"tasks",
-						"types"
+						"taskTypes"
 					]
 				}
 			},
@@ -94,16 +109,66 @@
 			"name": "Retrieve task type",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"raw": "{{server}}/taskTypes/{{taskTypeId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"tasks",
-						"types",
+						"taskTypes",
 						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task types",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/taskTypes",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"taskTypes"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "/.*eat.*/",
+							"disabled": true
+						},
+						{
+							"key": "description",
+							"value": "/.*eat.*/",
+							"disabled": true
+						},
+						{
+							"key": "keywords",
+							"value": "key1,/.*eat.*/,key3",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "name,-description",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -115,7 +180,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "760b6694-3a82-4c0b-b14c-0924a8f0119c",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -132,11 +196,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"Dinner together\",\n    \"transactions\":[\n    \t{\n    \t\t\"label\":\"acceptToAttend\"\n    \t}\n    ]\n}",
+					"raw": "{\n    \"name\":\"Dinner together\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,13 +213,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"raw": "{{server}}/taskTypes/{{taskTypeId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"tasks",
-						"types",
+						"taskTypes",
 						"{{taskTypeId}}"
 					]
 				}
@@ -163,7 +231,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d480d916-794a-4191-b9a2-2ebde442f553",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -180,6 +247,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -192,13 +264,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"raw": "{{server}}/taskTypes/{{taskTypeId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"tasks",
-						"types",
+						"taskTypes",
 						"{{taskTypeId}}"
 					]
 				}
@@ -209,15 +280,20 @@
 			"name": "Delete task type",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{server}}/tasks/types/{{taskTypeId}}",
+					"raw": "{{server}}/taskTypes/{{taskTypeId}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
-						"tasks",
-						"types",
+						"taskTypes",
 						"{{taskTypeId}}"
 					]
 				}
@@ -230,7 +306,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"taskId\", jsonData.id);",
@@ -248,11 +323,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"Meeting dinner\",\n    \t\"description\":\"A dinner after the meeting.\"\n    },\n    \"deadlineTs\":1606935600,\n    \"startTs\":1609356600,\n\t\"endTs\":1609360200\n}",
+					"raw": "{\n    \"requesterId\": \"{{requesterId}}\",\n    \"taskTypeId\": \"{{taskTypeId}}\",\n    \"appId\": \"{{appId}}\",\n    \"goal\": {\n        \"name\": \"Meeting dinner\",\n        \"description\": \"A dinner after the meeting.\"\n    },\n    \"attributes\": {\n        \"deadlineTs\": 1606935600,\n        \"startTs\": 1609356600,\n        \"endTs\": 1609360200\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -275,7 +355,13 @@
 			"name": "Retrieve task",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/tasks/{{taskId}}",
 					"host": [
@@ -293,9 +379,15 @@
 			"name": "Retrieve tasks",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{server}}/tasks?appId=1&hasCloseTs=false",
+					"raw": "{{server}}/tasks",
 					"host": [
 						"{{server}}"
 					],
@@ -305,11 +397,12 @@
 					"query": [
 						{
 							"key": "appId",
-							"value": "1"
+							"value": "1",
+							"disabled": true
 						},
 						{
 							"key": "requesterId",
-							"value": "4",
+							"value": "1e346fd440",
 							"disabled": true
 						},
 						{
@@ -328,47 +421,43 @@
 							"disabled": true
 						},
 						{
-							"key": "startFrom",
-							"value": null,
+							"key": "creationFrom",
+							"value": "",
 							"disabled": true
 						},
 						{
-							"key": "startTo",
-							"value": null,
+							"key": "creationTo",
+							"value": "",
 							"disabled": true
 						},
 						{
-							"key": "endFrom",
-							"value": null,
+							"key": "updateFrom",
+							"value": "",
 							"disabled": true
 						},
 						{
-							"key": "endTo",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "deadlineFrom",
-							"value": null,
-							"disabled": true
-						},
-						{
-							"key": "deadlineTo",
-							"value": null,
+							"key": "updateTo",
+							"value": "",
 							"disabled": true
 						},
 						{
 							"key": "hasCloseTs",
-							"value": "false"
+							"value": "false",
+							"disabled": true
 						},
 						{
 							"key": "closeFrom",
-							"value": null,
+							"value": "",
 							"disabled": true
 						},
 						{
 							"key": "closeTo",
-							"value": null,
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "goal.name,-goal.description,+appId",
 							"disabled": true
 						}
 					]
@@ -382,7 +471,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7b58986a-51d6-439e-8bc5-7e283a4d40db",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -399,11 +487,16 @@
 						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"requesterId\":\"{{requesterId}}\",\n    \"taskTypeId\":\"{{taskTypeId}}\",\n    \"appId\":\"{{appId}}\",\n    \"goal\":{\n    \t\"name\":\"Social dinner\",\n    \t\"description\":\"A dinner after the social event.\"\n    },\n    \"deadlineTs\":1706935600,\n    \"startTs\":1709356600,\n\t\"endTs\":1709360200\n}",
+					"raw": "{\n    \"requesterId\": \"{{requesterId}}\",\n    \"taskTypeId\": \"{{taskTypeId}}\",\n    \"appId\": \"{{appId}}\",\n    \"goal\": {\n        \"name\": \"Social dinner\",\n        \"description\": \"A dinner after the social event.\"\n    },\n    \"attributes\": {\n        \"deadlineTs\": 1706935600,\n        \"startTs\": 1709356600,\n        \"endTs\": 1709360200\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -429,7 +522,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7ed6146f-148e-4a60-b956-cbb8b84db5bd",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -445,6 +537,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -474,7 +571,13 @@
 			"name": "Delete task",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/tasks/{{taskId}}",
 					"host": [
@@ -489,12 +592,11 @@
 			"response": []
 		},
 		{
-			"name": "Create task transaction",
+			"name": "Do task transaction",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "60ad1c4c-eab1-441d-9fc5-2f0e9f2af766",
 						"exec": [
 							"",
 							""
@@ -511,11 +613,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"label\":\"volunteerForTask\",\n    \"attributes\":{\"volunteerId\":\"6\"}\n}",
+					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"actioneer\":\"2\",\n    \"label\":\"volunteerForTask\",\n    \"attributes\":{\"volunteerId\":\"6\"}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -534,13 +641,498 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Add transaction into task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"taskTransactionId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"actioneer\": \"3\",\n    \"label\": \"refuseTask\",\n    \"attributes\": {\n        \"volunteerId\": \"3\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/{{taskId}}/transactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"{{taskId}}",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add message into task transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"label\": \"QuestionToAnswerMessage\",\n    \"attributes\": {\n        \"taskId\": \"{{taskId}}\",\n        \"question\":\"Where to buy the best pizza?\",\n        \"userId\":\"3\"\n\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/{{taskId}}/transactions/{{taskTransactionId}}/messages",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"{{taskId}}",
+						"transactions",
+						"{{taskTransactionId}}",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/tasks/{{taskId}}/transactions/{{taskTransactionId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"{{taskId}}",
+						"transactions",
+						"{{taskTransactionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task transactions page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/taskTransactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"taskTransactions"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "requesterId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskTypeId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalName",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalDescription",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalKeywords",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskCreationFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskCreationTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskUpdateFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskUpdateTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "hasCloseTs",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "closeFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "closeTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "id",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "label",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "actioneerId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "creationFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "creationTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "updateFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "updateTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve task transaction messages page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/messages",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"messages"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "requesterId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskTypeId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalName",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalDescription",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "goalKeywords",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskCreationFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskCreationTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskUpdateFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskUpdateTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "hasCloseTs",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "closeFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "closeTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "taskId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionLabel",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionActioneerId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionCreationFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionCreationTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionUpdateFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "transactionUpdateTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "receiverId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "label",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "036772a0-8edd-43c2-a227-7c16a035ab05",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -550,7 +1142,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5377d156-0764-46d9-bc01-b9700a0dc864",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -560,35 +1151,36 @@
 	],
 	"variable": [
 		{
-			"id": "8888d2d3-e5fc-4092-b9bc-c2ecbfae193a",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/task_manager"
 		},
 		{
-			"id": "0aff3647-11c9-42bb-a818-a3c0464d9360",
 			"key": "taskId",
-			"value": "5f11b7f59dd4122022424a27"
+			"value": "5f7b0a5a99cece680c539cd5"
 		},
 		{
-			"id": "bcecc53c-6aa3-4011-a0d1-7cc8b17ee9b3",
 			"key": "lastUpdateTs",
 			"value": 1594996778
 		},
 		{
-			"id": "852cfb4a-f4d6-4751-8843-159dd8810b76",
 			"key": "taskTypeId",
-			"value": "5f11b79d9dd4122022424a26"
+			"value": "5f735e7edeefba1698f7626e"
 		},
 		{
-			"id": "754ececc-764d-498f-9c29-a86808bb5059",
 			"key": "requesterId",
 			"value": "4"
 		},
 		{
-			"id": "836ed2ba-d749-4d83-98ab-1dfdaf17c65f",
 			"key": "appId",
 			"value": "1"
+		},
+		{
+			"key": "WENET_COMPONENT_APIKEY",
+			"value": ""
+		},
+		{
+			"key": "taskTransactionId",
+			"value": "0"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

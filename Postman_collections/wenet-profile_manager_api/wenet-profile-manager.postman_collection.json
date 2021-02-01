@@ -10,7 +10,13 @@
 			"name": "Get the API information",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/info",
 					"host": [
@@ -28,7 +34,13 @@
 			"name": "Get the API description",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/openapi.yaml",
 					"host": [
@@ -37,6 +49,13 @@
 					"path": [
 						"help",
 						"openapi.yaml"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -48,7 +67,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"userId\", jsonData.id);",
@@ -66,6 +84,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -94,7 +117,13 @@
 			"name": "Retrieve profile",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/profiles/{{userId}}",
 					"host": [
@@ -112,7 +141,13 @@
 			"name": "Retrieve profiles",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/profiles?offset=0&limit=20",
 					"host": [
@@ -141,7 +176,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7b58986a-51d6-439e-8bc5-7e283a4d40db",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -157,6 +191,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -188,7 +227,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "17326412-a841-4a56-9e9b-e93ef8bd6930",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -205,6 +243,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -233,7 +276,13 @@
 			"name": "Delete profile",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/profiles/{{userId}}",
 					"host": [
@@ -251,7 +300,13 @@
 			"name": "Retrive profile historic",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/profiles/{{userId}}/historic",
 					"host": [
@@ -309,6 +364,11 @@
 						"value": "en",
 						"description": "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
 						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -333,6 +393,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -366,6 +431,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -402,6 +472,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -480,6 +555,11 @@
 						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -510,7 +590,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7a591b1f-748e-41d7-bf0c-1859c5b397b7",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"normId\", jsonData.id);"
@@ -527,6 +606,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -558,7 +642,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "377ea4b2-7969-4e56-bd9d-bd06b0594526",
 						"exec": [
 							""
 						],
@@ -574,6 +657,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -597,7 +685,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f11df72d-83e5-41f0-8765-9264c11e5c2a",
 						"exec": [
 							""
 						],
@@ -613,6 +700,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -635,7 +727,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "92ae3220-d256-4baa-acc7-105e4a919da9",
 						"exec": [
 							""
 						],
@@ -651,6 +742,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -683,7 +779,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e362b530-1444-409d-9e87-c0d479b07a48",
 						"exec": [
 							""
 						],
@@ -699,6 +794,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -731,7 +831,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "474618a5-fd8a-4733-9b6f-941ca563b45d",
 						"exec": [
 							""
 						],
@@ -747,6 +846,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -770,7 +874,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5b436541-6c44-4de3-ba77-0feb19fcc906",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"plannedActivityId\", jsonData.id);"
@@ -787,6 +890,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -818,7 +926,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "266da88c-8e74-47fc-91ff-5b5ef58a8d68",
 						"exec": [
 							""
 						],
@@ -837,6 +944,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -868,7 +980,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b59bb7b5-6bb9-41b6-8b7e-c088ce058ba8",
 						"exec": [
 							""
 						],
@@ -887,6 +998,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -919,7 +1035,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3a98fc9f-ec45-4f04-9d46-0aed64d59e49",
 						"exec": [
 							""
 						],
@@ -935,6 +1050,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -967,7 +1087,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "5a2cb028-aaa4-4f83-bb8b-6ec1e9d5a633",
 						"exec": [
 							""
 						],
@@ -983,6 +1102,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1015,7 +1139,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b5e550cc-4a01-4795-ad6f-594c2c56c219",
 						"exec": [
 							""
 						],
@@ -1031,6 +1154,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1063,7 +1191,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "88cd5d2b-4c5f-43a9-848d-1717c11ced65",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"relevantLocationId\", jsonData.id);"
@@ -1080,6 +1207,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1111,7 +1243,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "af3a5108-0569-428a-a897-25a301bd1d54",
 						"exec": [
 							""
 						],
@@ -1130,6 +1261,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1161,7 +1297,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d4ca4c98-9992-4d28-b3b9-2241fbe19943",
 						"exec": [
 							""
 						],
@@ -1180,6 +1315,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1212,7 +1352,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "19516586-2088-419d-967b-a6113b7f9173",
 						"exec": [
 							""
 						],
@@ -1228,6 +1367,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1260,7 +1404,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4c805da6-124a-4703-91bb-027e7394a203",
 						"exec": [
 							""
 						],
@@ -1276,6 +1419,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1308,7 +1456,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0394cdc7-2066-44bc-911b-7f9eb8f9a3c1",
 						"exec": [
 							""
 						],
@@ -1324,6 +1471,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1347,7 +1499,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a101a4b3-1536-4942-860a-dd7f88b2b2ce",
 						"exec": [
 							""
 						],
@@ -1363,6 +1514,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1394,7 +1550,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cb469ab4-0be8-49a1-ae3f-c9b4b456acbe",
 						"exec": [
 							""
 						],
@@ -1413,6 +1568,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1444,7 +1604,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bf89e11d-f250-4d4d-9810-245d333e9dee",
 						"exec": [
 							""
 						],
@@ -1463,6 +1622,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1495,7 +1659,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6fd1fa70-7723-4291-8bf0-02711f66fa67",
 						"exec": [
 							""
 						],
@@ -1511,6 +1674,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1543,7 +1711,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e4fe3550-5a15-4968-8f75-42a9be2ccdd0",
 						"exec": [
 							""
 						],
@@ -1559,6 +1726,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1591,7 +1763,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "82497e9b-cd39-489a-921c-b80aad127b22",
 						"exec": [
 							""
 						],
@@ -1607,6 +1778,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1630,7 +1806,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "716b1b86-e306-4554-9f2b-cd4dc5522c56",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"socialPracticeId\", jsonData.id);"
@@ -1647,6 +1822,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1678,7 +1858,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "74d2aeef-22f4-4b56-87fe-7e6d639496f8",
 						"exec": [
 							""
 						],
@@ -1694,6 +1873,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1716,7 +1900,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "19d08e24-89c5-47f8-b37c-5db2927b907a",
 						"exec": [
 							""
 						],
@@ -1732,6 +1915,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1755,7 +1943,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4b8b6876-551f-4252-afed-e660d39b0474",
 						"exec": [
 							""
 						],
@@ -1771,6 +1958,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1803,7 +1995,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0bc57894-56a5-4032-b137-d9b41efa6a1d",
 						"exec": [
 							""
 						],
@@ -1819,6 +2010,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1851,7 +2047,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f3ba39c8-bf23-4362-b1c6-8ca35e3f1cc4",
 						"exec": [
 							""
 						],
@@ -1867,6 +2062,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1890,7 +2090,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "cd0cbbd2-cbcd-4d30-a7ee-18436a4d3e9e",
 						"exec": [
 							""
 						],
@@ -1906,6 +2105,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1937,7 +2141,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f6af885b-4c0a-46d5-bf71-0ffacea6c7b6",
 						"exec": [
 							""
 						],
@@ -1953,6 +2156,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -1975,7 +2183,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d388b493-c916-46c7-b94c-bf83969dbd37",
 						"exec": [
 							""
 						],
@@ -1991,6 +2198,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2014,7 +2226,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bdca2e75-4113-48bf-aeb1-86d9b7ba6c76",
 						"exec": [
 							""
 						],
@@ -2030,6 +2241,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2062,7 +2278,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "fc21015d-0102-47c5-979e-16e7d7a41b6b",
 						"exec": [
 							""
 						],
@@ -2078,6 +2293,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2110,7 +2330,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3f66b54d-b450-4634-bbe2-6239eefc3835",
 						"exec": [
 							""
 						],
@@ -2126,6 +2345,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2149,7 +2373,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a9b6d17c-1e56-40df-8987-2715cf348dc5",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"communityId\", jsonData.id);",
@@ -2166,6 +2389,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -2194,7 +2422,13 @@
 			"name": "Retrieve community",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/communities/{{communityId}}",
 					"host": [
@@ -2212,7 +2446,13 @@
 			"name": "Retrieve communities",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/communities?offest=0&limit =100",
 					"host": [
@@ -2267,7 +2507,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b31996d6-a061-409e-b89a-416cac299f1e",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -2283,6 +2522,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
 						"type": "text"
 					}
 				],
@@ -2314,7 +2558,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "6230f0f2-3f2b-4b2f-b96c-1d17107e4b51",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -2331,6 +2574,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2359,7 +2607,13 @@
 			"name": "Delete community",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/communities/{{communityId}}",
 					"host": [
@@ -2379,10 +2633,8 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a9baf71c-6b99-4d06-a943-cb827562658a",
 						"exec": [
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"communityNormId\", jsonData.id);"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -2396,11 +2648,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n}",
+					"raw": "{\n    \"whenever\":\"\",\n    \"thenceforth\":\"\",\n    \"ontology\":\"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2427,7 +2684,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ce26c36d-28d8-4f66-80f7-06a06eeabbab",
 						"exec": [
 							""
 						],
@@ -2443,10 +2699,15 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"raw": "{{server}}/communities/{{communityId}}/norms/0",
 					"host": [
 						"{{server}}"
 					],
@@ -2454,7 +2715,7 @@
 						"communities",
 						"{{communityId}}",
 						"norms",
-						"{{communityNormId}}"
+						"0"
 					]
 				}
 			},
@@ -2466,7 +2727,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9a15b1ee-2454-41c8-9822-af423a084a93",
 						"exec": [
 							""
 						],
@@ -2482,6 +2742,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2504,7 +2769,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bab3cd11-00c5-4592-8a43-b5870b2228d8",
 						"exec": [
 							""
 						],
@@ -2520,11 +2784,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"negation\":true\n}",
+					"raw": "{\n    \"whenever\":\"\",\n    \"thenceforth\":\"\",\n    \"ontology\":\"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2532,7 +2801,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"raw": "{{server}}/communities/{{communityId}}/norms/0",
 					"host": [
 						"{{server}}"
 					],
@@ -2540,7 +2809,7 @@
 						"communities",
 						"{{communityId}}",
 						"norms",
-						"{{communityNormId}}"
+						"0"
 					]
 				}
 			},
@@ -2552,7 +2821,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b7524295-0d9a-45e8-8d76-e2b241902110",
 						"exec": [
 							""
 						],
@@ -2568,11 +2836,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"negation\":false\n}",
+					"raw": "{\n    \"whenever\":\"\",\n    \"thenceforth\":\"\",\n    \"ontology\":\"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -2600,7 +2873,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "298cbbbf-672a-4f6f-a7a8-5f937ff79177",
 						"exec": [
 							""
 						],
@@ -2616,10 +2888,15 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{server}}/communities/{{communityId}}/norms/{{communityNormId}}",
+					"raw": "{{server}}/communities/{{communityId}}/norms/0",
 					"host": [
 						"{{server}}"
 					],
@@ -2627,7 +2904,7 @@
 						"communities",
 						"{{communityId}}",
 						"norms",
-						"{{communityNormId}}"
+						"0"
 					]
 				}
 			},
@@ -2639,7 +2916,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "18daa5f0-33de-422a-9d25-41699111e9b9",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"socialPracticeId\", jsonData.id);"
@@ -2656,6 +2932,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2687,7 +2968,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "96172399-4c11-4197-8564-7fc04e32c175",
 						"exec": [
 							""
 						],
@@ -2703,6 +2983,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2726,7 +3011,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "28a267dc-d4a0-471f-8fd6-b49bd37589cb",
 						"exec": [
 							""
 						],
@@ -2742,6 +3026,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2764,7 +3053,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b4301ae6-839c-451d-a38d-93f854953e3d",
 						"exec": [
 							""
 						],
@@ -2780,6 +3068,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2812,7 +3105,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "846367e1-b11e-46a8-9b5e-1337ba5ef61e",
 						"exec": [
 							""
 						],
@@ -2828,6 +3120,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2860,7 +3157,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b5a0d613-b733-4a87-875c-dd88461d31b1",
 						"exec": [
 							""
 						],
@@ -2876,6 +3172,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2899,7 +3200,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "3522face-b044-447d-8a1a-99691bcb73dd",
 						"exec": [
 							""
 						],
@@ -2915,6 +3215,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -2946,7 +3251,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "75c5b692-0fe9-4c91-b8df-28bf5dda693a",
 						"exec": [
 							""
 						],
@@ -2962,6 +3266,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -2985,7 +3294,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "098efc06-f967-471c-948b-05dbe9388ca7",
 						"exec": [
 							""
 						],
@@ -3001,6 +3309,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -3023,7 +3336,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "8d30561f-1f7c-4b47-98ff-46e033a5e633",
 						"exec": [
 							""
 						],
@@ -3039,6 +3351,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -3071,7 +3388,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "26d87fa6-55b3-4f4a-9311-0c712d52f5c2",
 						"exec": [
 							""
 						],
@@ -3087,6 +3403,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -3119,7 +3440,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4956fe73-411f-40d2-bcb7-08687dc1736d",
 						"exec": [
 							""
 						],
@@ -3135,6 +3455,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -3156,7 +3481,13 @@
 			"name": "Retrieve user identifiers",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/userIdentifiers?offset=0&limit=20",
 					"host": [
@@ -3184,7 +3515,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "036772a0-8edd-43c2-a227-7c16a035ab05",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3194,7 +3524,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5377d156-0764-46d9-bc01-b9700a0dc864",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3204,95 +3533,80 @@
 	],
 	"variable": [
 		{
-			"id": "f0376b18-5620-4d4a-b73d-4f43bfdb9f33",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/profile_manager"
 		},
 		{
-			"id": "5cc8f349-f37b-4c45-9f96-d7b509e1e959",
 			"key": "creationTs",
-			"value": 1601397003
+			"value": 1603711313
 		},
 		{
-			"id": "cf7591f0-1a7a-4cb7-9136-d7f4e00204db",
 			"key": "lastUpdateTs",
-			"value": 1601397025
+			"value": 1603711313
 		},
 		{
-			"id": "5dd04bda-91f5-469d-8c9f-15d3c3615df1",
 			"key": "appId",
 			"value": "1"
 		},
 		{
-			"id": "4ed5b4f0-ecbb-4516-9074-b136ed446cab",
 			"key": "taskId",
 			"value": ""
 		},
 		{
-			"id": "31316c3c-9e0b-4d64-a4f0-60b602c12856",
 			"key": "taskTypeId",
 			"value": ""
 		},
 		{
-			"id": "d45e52a7-fdf5-4620-a084-5b6ff5d417a2",
 			"key": "communityId",
 			"value": "1"
 		},
 		{
-			"id": "24b98231-ba38-4c01-8fff-9ff706aeb17a",
 			"key": "sourceId",
 			"value": "1"
 		},
 		{
-			"id": "b1e2fe70-9911-4103-bfbf-f7375be33114",
 			"key": "targetId",
 			"value": "2"
 		},
 		{
-			"id": "f030bb39-dc79-46dc-89de-bba37fb923c1",
 			"key": "relationship",
 			"value": ""
 		},
 		{
-			"id": "61d3879b-c8cd-484b-bdce-0427a58685e8",
 			"key": "userId",
-			"value": "5f73610b22decb484642bb70"
+			"value": "5f96b1505735f4027e6e89e9"
 		},
 		{
-			"id": "05c5c1eb-fa76-4c9c-b478-bbd5f5a3ef90",
 			"key": "normId",
 			"value": "fcf5a311-4aa8-44fa-8fd9-9d3b81bfcc33"
 		},
 		{
-			"id": "08768d9f-7af1-4218-957c-a183c81eae06",
 			"key": "plannedActivityId",
 			"value": "e2e78b38-1845-4a76-9ee6-27a012f1137b"
 		},
 		{
-			"id": "3cd5b670-2fdf-40c1-8f04-f43c128b1eab",
 			"key": "relevantLocationId",
 			"value": "09bffccb-e459-49e2-902c-99d462a7b83b"
 		},
 		{
-			"id": "bec1db70-c4b9-4135-a669-a1138e9b6286",
 			"key": "index",
 			"value": "0"
 		},
 		{
-			"id": "eaf699d2-ae8d-4002-bfea-88d0b1d9cc8f",
 			"key": "socialPracticeId",
 			"value": "92cc161b-5a04-4b3b-a085-0703c9d438aa"
 		},
 		{
-			"id": "de28b5be-4ae6-4cb2-9515-5fe19f9125a1",
 			"key": "friendId",
 			"value": "5f087d5da57c4c1142ba1f3f"
 		},
 		{
-			"id": "d0318761-3210-400f-bc23-2353a1788514",
 			"key": "communityNormId",
 			"value": "1"
+		},
+		{
+			"key": "WENET_COMPONENT_APIKEY",
+			"value": ""
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

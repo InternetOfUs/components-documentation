@@ -10,7 +10,13 @@
 			"name": "Get the API information",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/info",
 					"host": [
@@ -28,7 +34,13 @@
 			"name": "Get the API description",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/help/openapi.yaml",
 					"host": [
@@ -48,7 +60,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "da5374c7-1e50-41b0-b101-d4a2d5b49c7f",
 						"exec": [
 							"",
 							""
@@ -65,11 +76,16 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"type\":\"INCENTIVE\",\n    \"content\": {\n        \"AppID\": \"1\",\n        \"UserId\": \"6\",\n        \"IncentiveType\": \"Message\",\n        \"Issuer\": \"1\",\n        \"Message\": {\n            \"content\": \"we are happy to see your participation in the I-log app you are doing a great job!\"\n        }\n    }\n}",
+					"raw": "{\n    \"appId\": \"1\",\n    \"communityId\": \"2\",\n    \"taskId\": \"3\",\n    \"transactionId\": \"4\",\n    \"sender\": {\n        \"component\": \"INTERACTION_PROTOCOL_ENGINE\",\n        \"userId\": \"1\"\n    },\n    \"receiver\": {\n        \"component\": \"USER_APP\",\n        \"userId\": \"2\"\n    },\n    \"particle\": \"inform\",\n    \"content\": {}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,7 +110,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4daa7429-330c-4e91-891d-3e057f7f6e99",
 						"exec": [
 							"",
 							""
@@ -111,6 +126,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -140,7 +160,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b62569c4-4339-4de6-a0b5-34d2a843bea4",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"normId\", jsonData.id);",
@@ -158,6 +177,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -185,7 +209,13 @@
 			"name": "Retrieve published norm",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/norms/{{normId}}",
 					"host": [
@@ -205,13 +235,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/norms/",
+					"raw": "{{server}}/norms/?x-wenet-component-apikey={{WENET_COMPONENT_APIKEY}}",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
 						"norms",
 						""
+					],
+					"query": [
+						{
+							"key": "x-wenet-component-apikey",
+							"value": "{{WENET_COMPONENT_APIKEY}}"
+						}
 					]
 				}
 			},
@@ -223,7 +259,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7b58986a-51d6-439e-8bc5-7e283a4d40db",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -240,6 +275,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -270,7 +310,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ec938017-8b5d-4734-9eaa-bb64d2066155",
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
@@ -287,6 +326,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -315,7 +359,13 @@
 			"name": "Delete published norm",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{server}}/norms/{{normId}}",
 					"host": [
@@ -328,13 +378,213 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Notify task created",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"requesterId\": \"{{requesterId}}\",\n    \"taskTypeId\": \"{{taskTypeId}}\",\n    \"appId\": \"{{appId}}\",\n    \"goal\": {\n        \"name\": \"Meeting dinner\",\n        \"description\": \"A dinner after the meeting.\"\n    },\n    \"attributes\": {\n        \"deadlineTs\": 1606935600,\n        \"startTs\": 1609356600,\n        \"endTs\": 1609360200\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/created",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"created"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Do  task transaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"taskId\":\"{{taskId}}\",\n    \"actioneer\":\"2\",\n    \"label\":\"volunteerForTask\",\n    \"attributes\":{\"volunteerId\":\"6\"}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/tasks/transactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve community user state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/states/communities/{{communityId}}/users/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"states",
+						"communities",
+						"{{communityId}}",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Merge community user state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"attributes\": {\n        \"incentives\": {\n            \"Questions\": 1,\n            \"Answers\": 5,\n            \"SelectedAnswers\": 1\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/states/communities/{{communityId}}/users/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"states",
+						"communities",
+						"{{communityId}}",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "036772a0-8edd-43c2-a227-7c16a035ab05",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -344,7 +594,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5377d156-0764-46d9-bc01-b9700a0dc864",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -354,20 +603,28 @@
 	],
 	"variable": [
 		{
-			"id": "3eca8186-8d70-47da-9a05-9392b3fc9c13",
 			"key": "server",
 			"value": "https://wenet.u-hopper.com/dev/interaction_protocol_engine"
 		},
 		{
-			"id": "6c9bc43d-dd4b-4982-9134-ecf1d25b607b",
 			"key": "normId",
-			"value": "5f11bcd15fa5c2183064debb"
+			"value": "5f735eb5f7722023609aee1c"
 		},
 		{
-			"id": "c9bccac0-4d88-4ac1-87a3-e910ff07386b",
 			"key": "lastUpdateTs",
 			"value": 1594998058
+		},
+		{
+			"key": "WENET_COMPONENT_APIKEY",
+			"value": ""
+		},
+		{
+			"key": "communityId",
+			"value": "0"
+		},
+		{
+			"key": "userId",
+			"value": "1"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
