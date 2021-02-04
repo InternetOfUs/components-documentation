@@ -1,0 +1,1035 @@
+openapi: 3.0.1
+info:
+  description: This is a description of the iLogBase APIs
+  version: 1.0.0
+  title: iLogBase
+  contact:
+    email: s.decristofaro@unitn.it
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://wenet.u-hopper.com/dev/streambase'
+  
+# security:
+#   - apikey: []
+#   - kongOAuth: []
+  
+paths:
+  /experimentSubscription:
+    post:
+      deprecated: true
+      tags:
+        - experiment subscriptions
+      summary: Send a subscription request to receive data
+      description: >-
+        Create a subscription to receive info on properties every time some of
+        the condition.properties change. The entity type in the subscription
+        must be of type 'experiment'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+      callbacks:
+        propertyChanged:
+          '{$request.body#/notification.url}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SubscriptionData'
+              responses:
+                '200':
+                  description: Stream successfully initialized
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/EmptyResponse'
+      responses:
+        '200':
+          description: Stream successfully initialized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+    put:
+      deprecated: true
+      tags:
+        - experiment subscriptions
+      summary: Updates a subscription request
+      description: Update an experiment subscription
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+      callbacks:
+        propertyChanged:
+          '{$request.body#/notification.url}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SubscriptionData'
+              responses:
+                '200':
+                  description: Stream successfully initialized
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/EmptyResponse'
+      responses:
+        '200':
+          description: Stream successfully initialized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+  '/experimentSubscription/{subscriptionId}':
+    get:
+      deprecated: true
+      tags:
+        - experiment subscriptions
+      summary: Get the details of an existing experiment subscription
+      parameters:
+        - name: subscriptionId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Stream found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '404':
+          description: No such streamId exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    delete:
+      deprecated: true
+      tags:
+        - experiment subscriptions
+      summary: Delete subscription
+      description: Stop receiving notification
+      parameters:
+        - name: subscriptionId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Stream correctly deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        '404':
+          description: No such streamId exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+  /userSubscription:
+    post:
+      deprecated: true
+      tags:
+        - user subscriptions
+      summary: Send a subscription request to receive data
+      description: >-
+        Make an subscription to receive info on properties every time some of
+        the condition.properties change. The entity type in the subscription
+        must be of type 'user'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+      callbacks:
+        propertyChanged:
+          '{$request.body#/notification.url}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SubscriptionData'
+              responses:
+                '200':
+                  description: Stream successfully initialized
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/EmptyResponse'
+      responses:
+        '200':
+          description: Subscription successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+    put:
+      deprecated: true
+      tags:
+        - user subscriptions
+      summary: Updates a subscription request
+      description: Update an user subscription
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Subscription'
+      callbacks:
+        propertyChanged:
+          '{$request.body#/notification.url}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/SubscriptionData'
+              responses:
+                '200':
+                  description: Subscription successfully updated
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/EmptyResponse'
+      responses:
+        '200':
+          description: Subscription successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+  '/userSubscription/{subscriptionId}':
+    get:
+      deprecated: true
+      tags:
+        - user subscriptions
+      summary: Get the details of an existing user subscription
+      parameters:
+        - name: subscriptionId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Subscription found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '404':
+          description: No such streamId exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    delete:
+      deprecated: true
+      tags:
+        - user subscriptions
+      summary: Delete subscription
+      description: Stop receiving notification
+      parameters:
+        - name: subscriptionId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Subscription correctly deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        '404':
+          description: No such subscriptionId exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+                
+  # /data:
+  #   post:
+  #     tags:
+  #       - batch data
+  #     summary: Upload a new entity's data
+  #     parameters: []
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/DataRequest'
+  #     responses:
+  #       '200':
+  #         description: data correctly uploaded
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/EmptyResponse'
+  #   put:
+  #     tags:
+  #       - batch data
+  #     summary: Update entity's data
+  #     parameters: []
+  #     #  - $ref: '#/components/parameters/Authorization'
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/DataRequest'
+  #     responses:
+  #       '200':
+  #         description: data correctly updated
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/EmptyResponse'
+  #   get:
+  #     tags:
+  #       - batch data
+  #     summary: retrieve data you want to receive
+  #     parameters:
+  #     #  - $ref: '#/components/parameters/Authorization'
+  #       - name: userId
+  #         in: query
+  #         schema:
+  #           type: string
+  #         required: true
+  #         description: Id of the user for which to request data
+  #         example: ai384hfb2l2o39
+  #       - name: from
+  #         in: query
+  #         schema:
+  #           type: string
+  #         required: true
+  #         description: retrieve data starting from date
+  #         example: '20190825'
+  #       - name: to
+  #         in: query
+  #         schema:
+  #           type: string
+  #         required: true
+  #         description: retrieve data up to date
+  #         example: '20190901'
+  #       - name: properties
+  #         in: query
+  #         schema:
+  #           type: string
+  #         required: true
+  #         description: propertie(s) for which to request data
+  #         example: locationeventpertime
+  #     responses:
+  #       '200':
+  #         description: data correctly retrieved
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/DataRequest'
+  /data:
+    get:
+      tags:
+        - v2 Batch
+      summary: retreive data in batch
+      description: |-
+        Queries
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+          description: Id of the user to filter for. *If is not set the query might be very slow*
+          example: ai123123
+        - name: from
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: retrieve data starting from date, in EPOCH
+          example: '123123123'
+        - name: to
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: retrieve data up to date in EPOCH
+          example: '123123123'
+        - name: properties
+          in: query
+          required: true
+          schema:
+            type: string
+          description: properti(es) for which to request data, comma separated.
+          example: "locationeventpertime,accelerometerevent"
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRequest'
+    post:
+      tags:
+        - v2 Batch
+      summary: Upload a new entity's data
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRequest'
+      responses:
+        '201':
+          description: data correctly uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    # delete:
+    #   tags:
+    #     - v2 Batch
+    #   summary: Upload a new entity's data
+    #   parameters: 
+    #     - name: userId
+    #       in: query
+    #       required: true
+    #       schema:
+    #         type: string
+    #       example: ai1412341234
+    #       description: ID of the user to delete
+    #   responses:
+    #     '204':
+    #       description: data correctly deleted
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/EmptyResponse'
+
+
+components:
+  securitySchemes:
+    apikey:
+      type: apiKey
+      in: query
+      name: Authorization
+    kongOAuth:
+      type: oauth2
+      description: "Authentication using oauth2 backed from Kong proxy"
+      flows:
+        authorizationCode:
+          # might add client_id
+          authorizationUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          tokenUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          scopes: {}
+  parameters: {}
+    #Authorization:
+    #  in: header
+    #  schema:
+    #    type: string
+    #  name: Authorization
+    #  required: true
+    #  description: Access Token
+    #UserId:
+    #  in: query
+    #  schema:
+    #    type: string
+    #  name: userId
+    #  required: true
+    #  description: >-
+    #    Target user or users that will receive the message. Can be either a
+    #    single user's salt or a topic (so it will be sent to all users
+    #    subscribed to that topic) using the format/topics/<sometopic>
+  schemas:
+    Id:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id automatically generated
+          example: ei39alwj901kde
+          
+    DataRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: a34for230po
+        appId:
+          type: string
+          example: Wenet01
+        data:
+          type: object
+          properties:
+            locationeventpertime:
+              type: array
+              items:
+                $ref: '#/components/schemas/LocationeventObject'
+            accelerometerevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/AccelerometerEventObject'
+            gyroscopeevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/GyroscopeEventObject'
+            tasksanswers:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskAnswer'
+            tasksquestions:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskQuestion'
+            socialrelations:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialrelationsObject'
+            touchevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToucheventObject'
+            socialprofile:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialProfileObject'
+            socialevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialEventObject'
+            socialpost:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialPostObject'
+    
+    SubscriptionData:
+      type: object
+      properties:
+        locationeventpertime:
+          $ref: '#/components/schemas/LocationeventObject'
+        accelerometerevent:
+          $ref: '#/components/schemas/AccelerometerEventObject'
+        gyroscopeevent:
+          $ref: '#/components/schemas/GyroscopeEventObject'
+        tasksanswers:
+          $ref: '#/components/schemas/TaskAnswer'
+        tasksquestions:
+          $ref: '#/components/schemas/TaskQuestion'
+        socialrelations:
+          $ref: '#/components/schemas/SocialrelationsObject'
+        touchevent:
+          $ref: '#/components/schemas/ToucheventObject'
+        socialprofile:
+          $ref: '#/components/schemas/SocialProfileObject'
+        socialevent:
+          $ref: '#/components/schemas/SocialEventObject'
+        socialpost:
+          $ref: '#/components/schemas/SocialPostObject'
+
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 01b695bd6c384175b40a5a11e1413bf7
+        description:
+          type: string
+          example: description of the notification
+        entity:
+          type: object
+          properties:
+            id:
+              type: string
+              description: >-
+                If specified returns info about every user partecipating in the
+                experiment
+              example: Wenet01
+            type:
+              type: string
+              description: >-
+                The type of the entity you want to be notified about. It can be
+                either 'user' or 'experiment'.
+              example: experiment
+        notification:
+          description: Details on the notification to be sent
+          type: object
+          properties:
+            url:
+              type: string
+              example: 'https://www.myservice.com/receivePOSTrequest'
+            properties:
+              description: >-
+                the parameters in this section specify the content of the
+                notification.
+              type: array
+              items:
+                type: string
+                description: list of properties that will be included in the notification
+              example:
+                - locationeventpertime
+                - gyroscopeevent
+        condition:
+          type: object
+          properties:
+            properties:
+              type: array
+              items:
+                type: string
+                description: >-
+                  list of properties that will trigger the notification on
+                  change
+              example:
+                - locationeventpertime
+                - accelerometerevents
+      
+    BasicSensor:
+      type: object
+      properties:
+        ts:
+          type: string
+          example: 12341234124
+          description: "epoch"
+        payload:
+          type: object
+        meta:
+          type: object
+          properties:
+            experimentId:
+              type: string
+              example: wenetTest
+    ################  Basic datatypes
+    SocialrelationsObject:
+      type: object
+      description: "TODO is it right?"
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                source:
+                  type: string
+                  example: twitter
+                content:
+                  type: object
+                  properties:
+                    eventtype:
+                      type: string
+                      example: follows
+                    value:
+                      type: string
+                      example: 1
+                    userdestinationid:
+                      type: string
+                      example: 8
+    SocialProfileObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                gender:
+                  type: string
+                  example: "female"
+                hometown:
+                  type: string
+                  example: "Trento, Italy"
+    SocialEventObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                name:
+                  type: string
+                  example: "Polenta all-you-can-eat"
+                description:
+                  type: string
+                  example: "You can have all the polenta you can eat for just € 9,99"
+                start_time:
+                  type: string
+                  example: "Random date format?"
+                end_time:
+                  type: string
+                  example: "Random date format?"
+                place:
+                  type: string
+                  example: "Casa Mia Restaurant, Shanghai, China"
+    SocialPostObject:
+      type: object
+      allOf: 
+      - $ref: '#/components/schemas/BasicSensor'
+      - type: object
+        properties:
+          payload:
+            type: object
+            properties:
+              source:
+                type: string
+                example: "twitter"
+              sourceId:
+                type: string
+                example: "123123"
+              message:
+                type: string
+                example: "你好，你在干嘛？"
+              reactions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "supermario85"
+                    type:
+                      type: string
+                      example: "like"
+              comments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "luca_tony"
+                    message:
+                      type: string
+                      example: "Numero 1!"
+                    created_time:
+                      type: string
+                      example: "Random date format"
+                          
+                  
+              
+                  
+    ToucheventObject:
+      type: object
+      allOf: 
+      - $ref: '#/components/schemas/BasicSensor'
+              
+    AccelerometerEventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                x:
+                  type: string
+                  example: 2.37
+                y:
+                  type: string
+                  example: 8.36
+                z:
+                  type: string
+                  example: 4.68
+                  
+    GyroscopeEventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                x:
+                  type: string
+                  example: 2.37
+                y:
+                  type: string
+                  example: 8.36
+                z:
+                  type: string
+                  example: 4.68
+                  
+    LocationeventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                accuracy:
+                  type: number
+                  example: 23.2
+                lucene:
+                  type: string
+                  example: lucene
+                provider:
+                  type: string
+                  example: gps
+                speed:
+                  type: number
+                  example: 2.3
+                point:
+                  type: object
+                  properties:
+                    latitude:
+                      type: number
+                      example: 22.1492
+                    longitude:
+                      type: number
+                      example: -101.03609
+                    altitude:
+                      type: number
+                      example: 1845.29208
+                      
+    TaskAnswer:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                instanceid:
+                  type: string
+                  example: f161dee2a122af926a9c4285275800942d128c34
+                answer:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AnswerContentView'
+                answerduration:
+                  type: string
+                  example: 20142
+                answertimestamp:
+                  type: string
+                  example: 20190909010129450
+                  description: "epoch"
+                instancetimestamp:
+                  type: string
+                  example: 20190911201814344
+                  description: "epoch"
+                notificationtimestamp:
+                  type: string
+                  example: 20190911201816910
+                  description: "epoch"
+                payload:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      payload:
+                        type: object
+                        example: {}
+                      qid:
+                        type: string
+                        example: 1
+    TaskQuestion:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                instanceid:
+                  type: string
+                  example: f161dee2a122af926a9c4285275800942d128c34
+                question:
+                  $ref: '#/components/schemas/QuestionAnswerView'
+                day:
+                  type: string
+                  example: 20190910
+                instancetimestamp:
+                  type: string
+                  example: 20190911201814344
+                status:
+                  type: string
+                  example: success
+                title:
+                  type: string
+                  example: Question Title
+    ############################# Sub Datatypes
+    ConditionView:
+      type: object
+      properties:
+        a:
+          type: integer
+          format: integer
+          description: condition answer id
+          example: 1
+        q:
+          type: integer
+          format: integer
+          description: condition question id
+          example: 1
+      description: >-
+        used to show a new question only if a specific answer on a previous
+        question has been chose
+    
+    Paragraph:
+      type: object
+      properties:
+        l:
+          type: string
+          example: en_US
+          description: Language identifier
+        t:
+          type: string
+          example: Some text
+          description: The text the user will see
+          
+    QuestionView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: integer
+        t:
+          type: string
+          format: string
+          description: text
+          example: What are you doing?
+        at:
+          type: string
+          format: string
+          description: can be single choice (s) or multiple (m)
+          enum:
+            - s
+            - m
+        p:
+          type: array
+          items:
+            $ref: '#/components/schemas/Paragraph'
+      example:
+        id: 1
+        c: []
+        t: t
+        at: s
+        p:
+          - l: en_US
+            t: What are you doing?
+          - l: it_IT
+            t: Cosa stai facendo?
+            
+    AnswerContentView:
+      type: object
+      properties:
+        cnt:
+          type: string
+          example: I am at home
+          description: 'The answer chosen by the user among one of the option '
+        qid:
+          type: integer
+          example: 2
+          description: Question id
+        aid:
+          type: integer
+          example: 3
+          description: Answer id
+        cid:
+          type: integer
+          example: -1
+          description: Condition id
+          
+    AnswerOptionsView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: integer
+        c:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionView'
+        c_id:
+          type: integer
+          format: integer
+          description: concept id
+          example: -1
+        p:
+          $ref: '#/components/schemas/Paragraph'
+      example:
+        - id: 1
+          c: []
+          c_id: -1
+          p:
+            - l: en_US
+              t: I am working
+            - l: it_IT
+              t: Sto lavorando
+        - id: 2
+          c: []
+          c_id: -1
+          p:
+            - l: en_US
+              t: I am studying
+            - l: it_IT
+              t: Sto studiando
+              
+    QuestionAnswerView:
+      type: object
+      properties:
+        q:
+          $ref: '#/components/schemas/QuestionView'
+        a:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionsView'
+ 
+      
+      
+      
+    
+    EmptyResponse:
+      description: Empty object
+      type: object
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+
+

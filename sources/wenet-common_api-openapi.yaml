@@ -1,0 +1,549 @@
+openapi: 3.0.1
+info:
+  description: This is a description of the Streambase Common APIs
+  version: 1.0.0
+  title: Common API
+  contact:
+    email: marcelo.rodasbritez@unitn.it
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://wenet.u-hopper.com/dev/api/common'
+security:
+  - apikey: []
+  - kongOAuth: []
+paths:
+  /data:
+    post:
+      tags:
+        - batch data
+      summary: Upload a new entity's data
+      parameters: []
+        #- $ref: '#/components/parameters/Authorization'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRequest'
+      responses:
+        '201':
+          description: data correctly uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+components:
+  securitySchemes:
+    apikey:
+      type: apiKey
+      in: query
+      name: Authorization
+    kongOAuth:
+      type: oauth2
+      description: "Authentication using oauth2 backed from Kong proxy"
+      flows:
+        authorizationCode:
+          # might add client_id
+          authorizationUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          tokenUrl: "https://wenet.u-hopper.com/dev/hub/frontend/oauth/login"
+          scopes: {}
+  parameters:
+    Authorization:
+      in: header
+      schema:
+        type: string
+      name: Authorization
+      required: true
+      description: Access Token
+    UserId:
+      in: query
+      schema:
+        type: string
+      name: userId
+      required: true
+      description: >-
+        Target user or users that will receive the message. Can be either a
+        single user's salt or a topic (so it will be sent to all users
+        subscribed to that topic) using the format/topics/<sometopic>
+  schemas:
+    DataRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: a34for230po
+        appId:
+          type: string
+          example: Wenet01
+        data:
+          type: object
+          properties:
+            locationeventpertime:
+              type: array
+              items:
+                $ref: '#/components/schemas/LocationeventObject'
+            accelerometerevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/AccelerometerEventObject'
+            gyroscopeevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/GyroscopeEventObject'
+            tasksanswers:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskAnswer'
+            tasksquestions:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaskQuestion'
+            socialrelations:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialrelationsObject'
+            touchevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToucheventObject'
+            socialprofile:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialProfileObject'
+            socialevent:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialEventObject'
+            socialpost:
+              type: array
+              items:
+                $ref: '#/components/schemas/SocialPostObject'
+
+                
+    BasicSensor:
+      type: object
+      properties:
+        ts:
+          type: string
+          example: 12341234124
+          description: "epoch"
+        payload:
+          type: object
+        meta:
+          type: object
+          properties:
+            experimentId:
+              type: string
+              example: wenetTest
+              
+################  Basic datatypes
+
+    SocialrelationsObject:
+      type: object
+      description: "TODO is it right?"
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                source:
+                  type: string
+                  example: twitter
+                content:
+                  type: object
+                  properties:
+                    eventtype:
+                      type: string
+                      example: follows
+                    value:
+                      type: string
+                      example: 1
+                    userdestinationid:
+                      type: string
+                      example: 8
+                  
+    SocialProfileObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                gender:
+                  type: string
+                  example: "female"
+                hometown:
+                  type: string
+                  example: "Trento, Italy"
+    SocialEventObject:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                source:
+                  type: string
+                  example: "twitter"
+                sourceId:
+                  type: string
+                  example: "123123"
+                name:
+                  type: string
+                  example: "Polenta all-you-can-eat"
+                description:
+                  type: string
+                  example: "You can have all the polenta you can eat for just € 9,99"
+                start_time:
+                  type: string
+                  example: "Random date format?"
+                end_time:
+                  type: string
+                  example: "Random date format?"
+                place:
+                  type: string
+                  example: "Casa Mia Restaurant, Shanghai, China"
+    SocialPostObject:
+      type: object
+      allOf: 
+      - $ref: '#/components/schemas/BasicSensor'
+      - type: object
+        properties:
+          payload:
+            type: object
+            properties:
+              source:
+                type: string
+                example: "twitter"
+              sourceId:
+                type: string
+                example: "123123"
+              message:
+                type: string
+                example: "你好，你在干嘛？"
+              reactions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "supermario85"
+                    type:
+                      type: string
+                      example: "like"
+              comments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: "id321321"
+                    username:
+                      type: string
+                      example: "luca_tony"
+                    message:
+                      type: string
+                      example: "Numero 1!"
+                    created_time:
+                      type: string
+                      example: "Random date format"
+
+    ToucheventObject:
+      type: object
+      allOf: 
+      - $ref: '#/components/schemas/BasicSensor'
+              
+    AccelerometerEventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                x:
+                  type: string
+                  example: 2.37
+                y:
+                  type: string
+                  example: 8.36
+                z:
+                  type: string
+                  example: 4.68
+                  
+    GyroscopeEventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                x:
+                  type: string
+                  example: 2.37
+                y:
+                  type: string
+                  example: 8.36
+                z:
+                  type: string
+                  example: 4.68
+                  
+    LocationeventObject:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                accuracy:
+                  type: number
+                  example: 23.2
+                lucene:
+                  type: string
+                  example: lucene
+                provider:
+                  type: string
+                  example: gps
+                speed:
+                  type: number
+                  example: 2.3
+                point:
+                  type: object
+                  properties:
+                    latitude:
+                      type: number
+                      example: 22.1492
+                    longitude:
+                      type: number
+                      example: -101.03609
+                    altitude:
+                      type: number
+                      example: 1845.29208
+                      
+    TaskAnswer:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                instanceid:
+                  type: string
+                  example: f161dee2a122af926a9c4285275800942d128c34
+                answer:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AnswerContentView'
+                answerduration:
+                  type: string
+                  example: 20142
+                answertimestamp:
+                  type: string
+                  example: 20190909010129450
+                  description: "epoch"
+                instancetimestamp:
+                  type: string
+                  example: 20190911201814344
+                  description: "epoch"
+                notificationtimestamp:
+                  type: string
+                  example: 20190911201816910
+                  description: "epoch"
+                payload:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      payload:
+                        type: object
+                        example: {}
+                      qid:
+                        type: string
+                        example: 1
+    TaskQuestion:
+      type: object
+      allOf: 
+        - $ref: '#/components/schemas/BasicSensor'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties: 
+                instanceid:
+                  type: string
+                  example: f161dee2a122af926a9c4285275800942d128c34
+                question:
+                  $ref: '#/components/schemas/QuestionAnswerView'
+                day:
+                  type: string
+                  example: 20190910
+                instancetimestamp:
+                  type: string
+                  example: 20190911201814344
+                status:
+                  type: string
+                  example: success
+                title:
+                  type: string
+                  example: Question Title
+    ############################# Sub Datatypes
+    ConditionView:
+      type: object
+      properties:
+        a:
+          type: integer
+          format: integer
+          description: condition answer id
+          example: 1
+        q:
+          type: integer
+          format: integer
+          description: condition question id
+          example: 1
+      description: >-
+        used to show a new question only if a specific answer on a previous
+        question has been chose
+    
+    Paragraph:
+      type: object
+      properties:
+        l:
+          type: string
+          example: en_US
+          description: Language identifier
+        t:
+          type: string
+          example: Some text
+          description: The text the user will see
+          
+    QuestionView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: integer
+        t:
+          type: string
+          format: string
+          description: text
+          example: What are you doing?
+        at:
+          type: string
+          format: string
+          description: can be single choice (s) or multiple (m)
+          enum:
+            - s
+            - m
+        p:
+          type: array
+          items:
+            $ref: '#/components/schemas/Paragraph'
+      example:
+        id: 1
+        c: []
+        t: t
+        at: s
+        p:
+          - l: en_US
+            t: What are you doing?
+          - l: it_IT
+            t: Cosa stai facendo?
+            
+    AnswerContentView:
+      type: object
+      properties:
+        cnt:
+          type: string
+          example: I am at home
+          description: 'The answer chosen by the user among one of the option '
+        qid:
+          type: integer
+          example: 2
+          description: Question id
+        aid:
+          type: integer
+          example: 3
+          description: Answer id
+        cid:
+          type: integer
+          example: -1
+          description: Condition id
+          
+    AnswerOptionsView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: integer
+        c:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionView'
+        c_id:
+          type: integer
+          format: integer
+          description: concept id
+          example: -1
+        p:
+          $ref: '#/components/schemas/Paragraph'
+      example:
+        - id: 1
+          c: []
+          c_id: -1
+          p:
+            - l: en_US
+              t: I am working
+            - l: it_IT
+              t: Sto lavorando
+        - id: 2
+          c: []
+          c_id: -1
+          p:
+            - l: en_US
+              t: I am studying
+            - l: it_IT
+              t: Sto studiando
+              
+    QuestionAnswerView:
+      type: object
+      properties:
+        q:
+          $ref: '#/components/schemas/QuestionView'
+        a:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOptionsView'
+                
+    EmptyResponse:
+      description: Empty object
+      type: object
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
