@@ -1,0 +1,104 @@
+_type: export
+__export_format: 4
+__export_date: 2021-02-15T11:25:00.075Z
+__export_source: insomnia.desktop.app:v2020.5.2
+resources:
+  - _id: req_c57acc6e6d4b4fc3aa6a4e68ae3824d4
+    parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
+    modified: 1613388282695
+    created: 1613387846926
+    url: "{{ _.host }}/incentive_server/badges/apps/{{ _.appId }}"
+    name: App Badges
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_d1e26b0e17d149eeaccffe14907a8db7
+    authentication: {}
+    metaSortKey: -1613387834720
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_e67bb122c2184fe39f0649ed6b1ec3d7
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613387834770
+    created: 1613387834770
+    name: Incentives & Badges
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1613387834770
+    _type: request_group
+  - _id: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    parentId: null
+    modified: 1613387423839
+    created: 1613387423839
+    name: WeNet
+    description: ""
+    scope: null
+    _type: workspace
+  - _id: req_b074e1279f9d483d95665289403392c3
+    parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
+    modified: 1613388266451
+    created: 1613388185707
+    url: "{{ _.host }}/incentive_server/incentive/apps/{{ _.appId }}/users/{{
+      _.userId }}"
+    name: User badges for App
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_8deee3ef4f564a37acbac34def11baef
+      - name: ""
+        value: ""
+        description: ""
+        id: pair_cae6797a267446fd82df9a4813804fc6
+    authentication: {}
+    metaSortKey: -1613388185707
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_d1bd1cd6c6bc06e55228aac6a34af4dc83820364
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613387424161
+    created: 1613387424161
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1613387424161
+    _type: environment
+  - _id: jar_d1bd1cd6c6bc06e55228aac6a34af4dc83820364
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613387424166
+    created: 1613387424166
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_889d9f218c044183a1e03d685680294a
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613387423845
+    created: 1613387423845
+    fileName: WeNet
+    contents: ""
+    contentType: yaml
+    _type: api_spec
