@@ -1,6 +1,6 @@
 _type: export
 __export_format: 4
-__export_date: 2021-02-15T11:25:00.075Z
+__export_date: 2021-02-16T11:23:57.711Z
 __export_source: insomnia.desktop.app:v2020.5.2
 resources:
   - _id: req_c57acc6e6d4b4fc3aa6a4e68ae3824d4
@@ -48,7 +48,7 @@ resources:
     _type: workspace
   - _id: req_b074e1279f9d483d95665289403392c3
     parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
-    modified: 1613388266451
+    modified: 1613395718718
     created: 1613388185707
     url: "{{ _.host }}/incentive_server/incentive/apps/{{ _.appId }}/users/{{
       _.userId }}"
@@ -62,10 +62,6 @@ resources:
         value: "{{ _.componentApikey }}"
         description: ""
         id: pair_8deee3ef4f564a37acbac34def11baef
-      - name: ""
-        value: ""
-        description: ""
-        id: pair_cae6797a267446fd82df9a4813804fc6
     authentication: {}
     metaSortKey: -1613388185707
     isPrivate: false
@@ -76,6 +72,110 @@ resources:
     settingRebuildPath: true
     settingFollowRedirects: global
     _type: request
+  - _id: req_9b225ce8686c44e4aaf0f7703d960202
+    parentId: fld_628d43f7ac1748d3838144320fd1f2b8
+    modified: 1613470327076
+    created: 1613470141501
+    url: "{{ _.host }}/hub/frontend/data/app/{{ _.appId }}"
+    name: App details
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1613470299822
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_628d43f7ac1748d3838144320fd1f2b8
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613470129998
+    created: 1613470129998
+    name: Apps
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1613470129998
+    _type: request_group
+  - _id: req_0666a1539ca54dd0887b818bc0136c6a
+    parentId: fld_628d43f7ac1748d3838144320fd1f2b8
+    modified: 1613470328567
+    created: 1613470299772
+    url: "{{ _.host }}/hub/frontend/data/app/{{ _.appId }}/developer"
+    name: App developers
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1613470220616.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b6c71fa4181b41c2897ddb084194badd
+    parentId: fld_628d43f7ac1748d3838144320fd1f2b8
+    modified: 1613470325336
+    created: 1613470315466
+    url: "{{ _.host }}/hub/frontend/data/app/{{ _.appId }}/user"
+    name: App users
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1613470220666.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_da47cc7f10d34d2b9ced4f8e7daecef0
+    parentId: fld_0c628fa43bdf4453b137a2be06ae87c8
+    modified: 1613470362968
+    created: 1613470351108
+    url: "{{ _.host }}/hub/frontend/data/user/{{ _.userId }}/apps"
+    name: User apps
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication: {}
+    metaSortKey: -1613470351108
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_0c628fa43bdf4453b137a2be06ae87c8
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613470341297
+    created: 1613470341297
+    name: User
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1613470341297
+    _type: request_group
   - _id: env_d1bd1cd6c6bc06e55228aac6a34af4dc83820364
     parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
     modified: 1613387424161
