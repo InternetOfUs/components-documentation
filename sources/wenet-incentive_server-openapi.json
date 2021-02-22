@@ -29,6 +29,9 @@
       "description": "post, update and  get norms."
     },
     {
+      "name": "badges"
+    },
+    {
       "name": "Badges_Issuers",
       "description": "An Issuer Profile describes a person that awards Open Badges"
     },
@@ -966,6 +969,40 @@
         }
       }
     },
+    "/badges/apps/{app_id}": {
+      "get": {
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "app_id",
+            "in": "path"
+          }
+        ],
+        "summary": "Get all badges for a specific app",
+        "tags": [
+          "badges"
+        ],
+        "description": "Get all avalable badges for a specific app.\n",
+        "responses": {
+          "200": {
+            "description": "successfuly",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/badges"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "App Id  not found"
+          }
+        }
+      }
+    },
     "/badges/issuers": {
       "post": {
         "security": [
@@ -1475,6 +1512,10 @@
             "type": "string",
             "example": "WeNet_community_5"
           },
+          "app_id": {
+            "type": "string",
+            "example": "xAcauSmrhd"
+          },
           "task_id": {
             "type": "string",
             "example": "WeNet_task"
@@ -1490,6 +1531,7 @@
         },
         "required": [
           "user_id",
+          "app_id",
           "task_id",
           "Action"
         ]
@@ -1659,14 +1701,6 @@
       },
       "incentive_info_user": {
         "properties": {
-          "app_id": {
-            "type": "string",
-            "example": "dsad"
-          },
-          "incentive_quantity": {
-            "type": "number",
-            "example": 0.89
-          },
           "incentives": {
             "type": "object",
             "properties": {
@@ -1684,84 +1718,30 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "issuedOn": {
+                    "app_id": {
                       "type": "string",
-                      "example": "2020-05-17T13:53:16.075Z"
+                      "example": "xAcauSmrhd"
                     },
                     "expires": {
                       "type": "string",
-                      "format": "nullable"
-                    },
-                    "revoked": {
-                      "type": "boolean"
-                    },
-                    "badgeclassOpenBadgeId": {
-                      "type": "string",
-                      "example": "http://45.83.41.233:8000/public/badges/DqQzjMKWQNipb1o9Fbaqjw"
-                    },
-                    "issuerOpenBadgeId": {
-                      "type": "string",
-                      "example": "http://45.83.41.233:8000/public/issuers/mT7hgXVkQMShRxRWIusVSg"
+                      "format": "nullable",
+                      "example": "2020-05-17T13:53:16.075Z"
                     },
                     "image": {
                       "type": "string",
-                      "example": "http://45.83.41.233:8000/media/uploads/badges/assertion-MoCTfswuQE2O0FYKzClCCA.png"
+                      "example": "https://wenetbadgesimages.s3.amazonaws.com/first_question.png"
                     },
-                    "entityType": {
+                    "id": {
                       "type": "string",
-                      "example": "Assertion"
+                      "example": "-LhU2Cf9QRSWuGsJF-kBEg"
                     },
-                    "badgeclass": {
+                    "criteriaNarrative": {
                       "type": "string",
-                      "example": "DqQzjMKWQNipb1o9Fbaqjw"
-                    },
-                    "createdBy": {
-                      "type": "string",
-                      "example": "R7Kk2wD3RJaNLVIjqckQWw"
-                    },
-                    "narrative": {
-                      "type": "string",
-                      "format": "nullable"
-                    },
-                    "revocationReason": {
-                      "type": "string",
-                      "format": "nullable"
-                    },
-                    "entityId": {
-                      "type": "string",
-                      "example": "MoCTfswuQE2O0FYKzClCCA"
-                    },
-                    "recipient": {
-                      "type": "object",
-                      "properties": {
-                        "salt": {
-                          "type": "string",
-                          "example": "4bafbe8b878e427aa26c4ad66949dd79"
-                        },
-                        "plaintextIdentity": {
-                          "type": "string",
-                          "example": "ahunter@cook.biz"
-                        },
-                        "type": {
-                          "type": "string",
-                          "example": "email"
-                        },
-                        "hashed": {
-                          "type": "boolean"
-                        },
-                        "identity": {
-                          "type": "string",
-                          "example": "sha256$48e716dc0a6e467ece2255a7110bb2d50172269e9125a5696952a31167093347"
-                        }
-                      }
+                      "example": "After first question asked"
                     },
                     "createdAt": {
                       "type": "string",
                       "example": "2020-05-17T13:53:16.078Z"
-                    },
-                    "issuer": {
-                      "type": "string",
-                      "example": "mT7hgXVkQMShRxRWIusVSg"
                     }
                   }
                 }

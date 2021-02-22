@@ -1,0 +1,43 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Issue an Incentive",
+		"_postman_id": "884819f0-58ca-85c0-9d72-13a67601e458",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Send an incentive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://wenet.u-hopper.com/dev/interaction_protocol_engine/incentives",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"AppID\":\"1\",\n    \"UserId\":\"6\",\n    \"IncentiveType\":\"Message\",\n    \"Issuer\":\"1\",\n    \"Message\":{\n        \"content\":\"we are happy to see your participation in the I-log app you are doing a great job!\"\n    }\n}"
+				},
+				"description": "dsa"
+			},
+			"response": []
+		}
+	]
+}
