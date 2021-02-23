@@ -127,7 +127,7 @@ components:
         ts:
           type: string
           example: 12341234124
-          description: "epoch"
+          description: "epoch in milliseconds"
         payload:
           type: object
         meta:
@@ -367,15 +367,15 @@ components:
                 answertimestamp:
                   type: string
                   example: 20190909010129450
-                  description: "epoch"
+                  description: "epoch in milliseconds"
                 instancetimestamp:
                   type: string
                   example: 20190911201814344
-                  description: "epoch"
+                  description: "epoch in milliseconds"
                 notificationtimestamp:
                   type: string
                   example: 20190911201816910
-                  description: "epoch"
+                  description: "epoch in milliseconds"
                 payload:
                   type: array
                   items:
