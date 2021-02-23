@@ -350,7 +350,7 @@ paths:
     get:
       tags:
         - v2 Batch
-      summary: retreive data in batch
+      summary: retrieve data in batch
       description: |-
         Queries
       parameters:
@@ -358,6 +358,7 @@ paths:
           in: query
           schema:
             type: string
+          required: false
           description: Id of the user to filter for. *If is not set the query might be very slow*
           example: ai123123
         - name: from
@@ -365,15 +366,15 @@ paths:
           schema:
             type: integer
           required: true
-          description: retrieve data starting from date, in EPOCH
-          example: '123123123'
+          description: retrieve data starting from date, in YYYYMMDD format.
+          example: '20200201'
         - name: to
           in: query
           schema:
             type: integer
           required: true
-          description: retrieve data up to date in EPOCH
-          example: '123123123'
+          description: retrieve data up to date in in YYYYMMDD format.
+          example: '20200202'
         - name: properties
           in: query
           required: true
@@ -405,25 +406,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
-    # delete:
-    #   tags:
-    #     - v2 Batch
-    #   summary: Upload a new entity's data
-    #   parameters: 
-    #     - name: userId
-    #       in: query
-    #       required: true
-    #       schema:
-    #         type: string
-    #       example: ai1412341234
-    #       description: ID of the user to delete
-    #   responses:
-    #     '204':
-    #       description: data correctly deleted
-    #       content:
-    #         application/json:
-    #           schema:
-    #             $ref: '#/components/schemas/EmptyResponse'
 
 
 components:
