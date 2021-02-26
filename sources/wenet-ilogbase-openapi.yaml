@@ -642,7 +642,7 @@ components:
       type: object
       properties:
         ts:
-          type: string
+          type: integer
           example: 12341234124
           description: "epoch in milliseconds"
         payload:
@@ -652,7 +652,7 @@ components:
           properties:
             experimentId:
               type: string
-              example: wenetTest
+              example: wenet
     ################  Basic datatypes
     SocialrelationsObject:
       type: object

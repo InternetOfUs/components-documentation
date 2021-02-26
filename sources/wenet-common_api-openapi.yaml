@@ -125,7 +125,7 @@ components:
       type: object
       properties:
         ts:
-          type: string
+          type: integer
           example: 12341234124
           description: "epoch in milliseconds"
         payload:
