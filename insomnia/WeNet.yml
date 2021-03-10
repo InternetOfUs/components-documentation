@@ -1,7 +1,7 @@
 _type: export
 __export_format: 4
-__export_date: 2021-02-16T11:23:57.711Z
-__export_source: insomnia.desktop.app:v2020.5.2
+__export_date: 2021-03-10T09:20:27.221Z
+__export_source: insomnia.desktop.app:v2021.1.0
 resources:
   - _id: req_c57acc6e6d4b4fc3aa6a4e68ae3824d4
     parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
@@ -44,7 +44,7 @@ resources:
     created: 1613387423839
     name: WeNet
     description: ""
-    scope: null
+    scope: collection
     _type: workspace
   - _id: req_b074e1279f9d483d95665289403392c3
     parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
@@ -64,6 +64,176 @@ resources:
         id: pair_8deee3ef4f564a37acbac34def11baef
     authentication: {}
     metaSortKey: -1613388185707
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_46836eb765724e5ab71754b85482a969
+    parentId: fld_e67bb122c2184fe39f0649ed6b1ec3d7
+    modified: 1615301676750
+    created: 1615300504174
+    url: "{{ _.host }}/incentive_server/api/UsersCohorts/"
+    name: Cohorts
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_dae3c3e77cab42248f0d40f035f4be82
+    authentication: {}
+    metaSortKey: -1615300504174
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9de289b0553b49a182bf862534c7c96d
+    parentId: fld_2fc94082369441e9b39dac0b7b391c59
+    modified: 1615303041404
+    created: 1614086618388
+    url: "{{ _.host }}/profile_manager/profiles/{{ _.userId }}"
+    name: Get profile - Profile Manager
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_36a52d4c69eb4182973ce216ded927e2
+      - name: ""
+        value: ""
+        description: ""
+        id: pair_4768b638a55a4fa29b31e065a069bf82
+    authentication: {}
+    metaSortKey: -1614086618388
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_2fc94082369441e9b39dac0b7b391c59
+    parentId: wrk_b4cff216418a4307a0d7530ef8c3d60b
+    modified: 1613395779659
+    created: 1613395779659
+    name: Profile
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1613395779660
+    _type: request_group
+  - _id: req_209f678630fc43468d9d78d24bd7b66e
+    parentId: fld_2fc94082369441e9b39dac0b7b391c59
+    modified: 1615302892924
+    created: 1615297343339
+    url: "{{ _.host }}/service/user/profile/{{ _.userId }}"
+    name: Get profile - Service APIs
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_0eefb72319194f6c96b09de3181539ad
+    authentication: {}
+    metaSortKey: -1614086618338
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_067f1c082dc84c3cb4fdaf8685291a1e
+    parentId: fld_2fc94082369441e9b39dac0b7b391c59
+    modified: 1615304021558
+    created: 1615297527173
+    url: "{{ _.host }}/service/user/profile/{{ _.userId }}"
+    name: Update profile - Service APIs
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "_creationTs": 1615303030,
+          "_lastUpdateTs": 1615303030,
+          "id": "{{ _.userId }}",
+          "name": null,
+          "dateOfBirth": {
+            "year": null,
+            "month": null,
+            "day": null
+          },
+          "gender": null,
+          "email": null,
+          "phoneNumber": null,
+          "locale": null,
+          "avatar": null,
+          "nationality": null,
+          "occupation": null,
+          "norms": null,
+          "plannedActivities": null,
+          "relevantLocations": null,
+          "relationships": null,
+          "personalBehaviors": null,
+          "materials": null,
+          "competences": null,
+          "meanings": null
+        }
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_21ecc8083e20485e9b6eddd40f2b9253
+      - name: Content-Type
+        value: application/json
+        id: pair_137f5930eaac4eb6acba46c6b41b0b91
+    authentication: {}
+    metaSortKey: -1613830788348.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d2a7cd00e88f4be094f33f7c947b068b
+    parentId: fld_2fc94082369441e9b39dac0b7b391c59
+    modified: 1615303002786
+    created: 1615297534041
+    url: "{{ _.host }}/service/user/profile/{{ _.userId }}"
+    name: Init profile - Service APIs
+    description: ""
+    method: POST
+    body: {}
+    parameters: []
+    headers:
+      - name: x-wenet-component-apikey
+        value: "{{ _.componentApikey }}"
+        description: ""
+        id: pair_328cdbfefc61405995061bf9802a4489
+    authentication: {}
+    metaSortKey: -1614086618438
     isPrivate: false
     settingStoreCookies: true
     settingSendCookies: true
