@@ -304,6 +304,8 @@ components:
             - M
             - F
             - O
+            - non-binary
+            - not-say
           example: F
           nullable: true
         email:
