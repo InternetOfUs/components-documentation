@@ -280,7 +280,8 @@ components:
       properties:
         name:
           nullable: true
-          $ref: '#/components/schemas/UserName'
+          allOf:
+            - $ref: '#/components/schemas/UserName'
         dateOfBirth:
           type: object
           nullable: true
