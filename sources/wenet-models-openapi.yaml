@@ -300,14 +300,15 @@ components:
               nullable: true
         gender:
           type: string
+          nullable: true
           enum:
             - M
             - F
             - O
             - non-binary
             - not-say
+            - null
           example: F
-          nullable: true
         email:
           type: string
           description: The user email
