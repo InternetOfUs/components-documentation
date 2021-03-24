@@ -1,46 +1,52 @@
 openapi: 3.0.1
 info:
   title: WeNet - Task manager API
-  description: |-
-    The task manager component is the one responsible for storing and maintaining the task and task types, and start the actions that can modify the task state.
-    A task is considered an instance of a task type. This task type contains the description of the attributes necessary to define the task, the list of possible transactions (actions) that can be done in the task,  and a set of norms that define how the task can change its state. For example a simplified task type to organize a dinner with friends, can be:
-     - **Attributes**
-        - **when**: the dinner will be
-        - **where**: the dinner will be.
-     - **Transactions**
-        - **accept**: when an user accepts to attend the dinner.
-        - **decline**:when an user declines to attend the dinner.
-        - **close**: when no more users can apply to be on the dinner.
-        - **cancel**:when the user that organizes the dinner cancels.
-     - **Norms**
-        - When task created therefore notify my friends to participate and mark as open and add friends to unanswered
-        - When user accept therefore inform task requester user accepts and add user to attenders and remove from unanswered
-        - When user declines therefore inform add user to declined and remove from unanswered
-        - When requester close therefore inform to accepted friends that the dinner is set and unanswered friend that the dinner is cancelled and mark it as closed
-        - When requester cancel therefore inform to accepted and unanswered friend that the dinner is cancelled and mark it as closed
-
-    So the attributes a task of this type when some users has accepted an others has declined, can be:
-     - **when**: Saturday night
-     - **where**: Giorgios restaurant on the main street
-     - **state**: Open
-     - **unanswered**: User2, User89, user78
-     - **declined**: User67
-     - **attenders**: User1, User34
-
-    The transactions can be considered as asynchronous actions that can be done to change the task state. When an user, an application or other WeNet component wants to change the state of a task, it has to post a transaction to the task manager. It checks that  the transaction is correct according to the task type, and after that the transaction is sent to the interaction protocol engine to verify the task, community and user norms. In other words, the changes of the state are done by the norms that are evaluated on the interaction protocol engine, and not by the task manager after receiving a transaction.
+  description: "The task manager component is the one responsible for storing and\
+    \ maintaining the task and task types, and start the actions that can modify the\
+    \ task state.\nA task is considered an instance of a task type. This task type\
+    \ contains the description of the attributes necessary to define the task, the\
+    \ list of possible transactions (actions) that can be done in the task, and a\
+    \ set of norms that define how the task can change its state. For example a simplified\
+    \ task type to organize a dinner with friends, can be:\n - **Attributes**\n  -\
+    \ **when**: the dinner will be\n  - **where**: the dinner will be.\n - **Transactions**\n\
+    \  - **accept**: when a user accepts to attend the dinner.\n  - **decline**: when\
+    \ a user declines to attend the dinner.\n  - **close**: when no more users can\
+    \ apply to be on the dinner.\n  - **cancel**: when the user that organizes the\
+    \ dinner cancels.\n - **Norms**\n  - When task created, therefore, notify my friends\
+    \ to participate and mark as open and add friends to unanswered\n  - When user\
+    \ accept therefore inform task requester user accepts and add a user to attenders\
+    \ and remove from unanswered\n  - When a user declines, therefore, inform add\
+    \ a user to declined and remove from unanswered\n  - When requester close therefore\
+    \ inform to accepted friends that the dinner is set and unanswered friend that\
+    \ the dinner is cancelled and mark it as closed\n  - When requester cancel therefore\
+    \ inform to an accepted and unanswered friend that the dinner is cancelled and\
+    \ mark it as closed\n\nSo the attributes a task of this type when some users has\
+    \ accepted an others has declined, can be:\n - **when**: Saturday night\n - **where**:\
+    \ Giorgios restaurant on the main street\n - **state**: Open\n - **unanswered**:\
+    \ User2, User89, user78\n - **declined**: User67\n - **attenders**: User1, User34\n\
+    \nThe transactions can be considered as asynchronous actions that can be done\
+    \ to change the task state. When a user, an application or other WeNet component\
+    \ wants to change the state of a task, it has to post a transaction to the task\
+    \ manager. It checks that the transaction is correct according to the task type,\
+    \ and after that, the transaction is sent to the interaction protocol engine to\
+    \ verify the task, community and user norms. In other words, the changes of the\
+    \ state are done by the norms that are evaluated on the interaction protocol engine,\
+    \ and not by the task manager after receiving a transaction."
   contact:
-    name: Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)
+    name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.4.0
+  version: 0.6.0
 servers:
 - url: https://wenet.u-hopper.com/prod/task_manager
   description: WeNet production server
 - url: https://wenet.u-hopper.com/dev/task_manager
   description: WeNet development server server
-- url: http://ardid.iiia.csic.es/wenet/task-manager/0.4/
+- url: http://ardid.iiia.csic.es/wenet/task-manager/prod/
+  description: IIIA production server
+- url: http://ardid.iiia.csic.es/wenet/task-manager/dev/
   description: IIIA development server
 tags:
 - name: Tasks
@@ -76,6 +82,838 @@ paths:
       responses:
         "200":
           description: The API description
+  /messages:
+    get:
+      tags:
+      - Tasks
+      - Messages
+      summary: Search for some messages
+      description: Allow to get a page of messages with the specified query parameters.
+      operationId: retrieveMessagesPage
+      parameters:
+      - name: appId
+        in: query
+        description: "An application identifier to be equals on the task where are\
+          \ the messages to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the application identifier of the tasks if you\
+          \ write between '/'. For example to get the messages on the tasks for the\
+          \ applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: requesterId
+        in: query
+        description: "An user identifier to be equals on the task where are the messages\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the requester identifier of the tasks if you write between\
+          \ '/'. For example to get the messages on the tasks for the requesters '1'\
+          \ and '2' you must pass as 'requesterId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: taskTypeId
+        in: query
+        description: "A task type identifier to be equals on the task where are the\
+          \ messages to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the task type identifier of the tasks if you\
+          \ write between '/'. For example to get the messages on the tasks for the\
+          \ types '1' and '2' you must pass as 'taskTypeId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: goalName
+        in: query
+        description: A goal name to be equals on the task where are the messages to
+          return. You can use a Perl compatible regular expressions (PCRE) that has
+          to match the goal name of the tasks if you write between '/'. For example
+          to get the messages on the tasks with a goal name with the word 'eat' you
+          must pass as 'goalName' '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: goalDescription
+        in: query
+        description: A goal description to be equals on the task where are the messages
+          to return. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the goal description of the tasks if you write between '/'.
+          For example to get the messages on the tasks with a goal description with
+          the word 'eat' you must pass as 'goalDescription' '/.*question.*/'
+        schema:
+          type: string
+        example: /.*question.*/
+      - name: goalKeywords
+        in: query
+        description: "A set of keywords to be defined on the task where are the messages\
+          \ to return. For each keyword is separated by a ',' and each field keyword\
+          \ can be between '/' to use a Perl compatible regular expressions (PCRE)\
+          \ instead the exact value."
+        style: form
+        schema:
+          type: string
+        example: "key1,/.*eat.*/,key3"
+      - name: taskCreationFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum creation\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1957166440
+      - name: taskCreationTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum creation\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1581664406
+      - name: taskUpdateFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum update\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1477166440
+      - name: taskUpdateTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum update\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1561664406
+      - name: hasCloseTs
+        in: query
+        description: "This is 'true' if the task where are the transaction to return\
+          \ has defined a 'closeTs', or 'false' if this fiels is not defined. In other\
+          \ words, get the transaction from closed or open tasks."
+        schema:
+          type: boolean
+        example: false
+      - name: closeFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum close\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1447166440
+      - name: closeTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum close\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 155664406
+      - name: taskId
+        in: query
+        description: "A task identifier to be equals on the task where are the messages\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the task identifier of the tasks if you write between '/'.\
+          \ For example to get the messages for the tasks '1' and '2' you must pass\
+          \ as 'taskId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: transactionId
+        in: query
+        description: "A identifier to be equals on the transaction where are the messages\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the id on the transactions where are the messages to return\
+          \ if you write between '/'. For example to get the messages of the transactions\
+          \ with the identifiers '1' and '2' you must pass as 'id' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: transactionLabel
+        in: query
+        description: "A label to be equals on the transaction where are the messages\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the label on the transactions where are the messages to return\
+          \ if you write between '/'. For example to get the messages of the transactions\
+          \ with the labels 'accept' and 'decline' you must pass as 'label' '/^[accept|decline]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: transactionActioneerId
+        in: query
+        description: "A user identifier that has done the transactions where are the\
+          \ messages to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the actioneer if you write between '/'. For example\
+          \ to get the messages of the transactions that has done the users '1' and\
+          \ '2' you must pass as 'actioneerId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: transactionCreationFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum creation\
+          \ time stamp of the transaction where are the messages to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: transactionCreationTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum creation\
+          \ time stamp of the transaction where are the messages to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: transactionUpdateFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum update\
+          \ time stamp of the transaction where are the messages to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: transactionUpdateTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum update\
+          \ time stamp of the transaction where are the messages to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: receiverId
+        in: query
+        description: "A user identifier that has received the messages to return.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the receiver if you write between '/'. For example to get the messages\
+          \ that has received the users '1' and '2' you must pass as 'receiverId'\
+          \ '/^[1|2]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: label
+        in: query
+        description: "A label to be equals on the messages to return. You can use\
+          \ a Perl compatible regular expressions (PCRE) that has to match the label\
+          \ on the messages to return if you write between '/'. For example to get\
+          \ the messages with the labels 'accept' and 'decline' you must pass as 'label'\
+          \ '/^[accept|decline]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: order
+        in: query
+        description: "The order in witch the messages have to be returned. For each\
+          \ field it has be separated by a ',' and each field can start with '+' (or\
+          \ without it) to order on ascending order, or with the prefix '-' to do\
+          \ on descendant order."
+        style: form
+        schema:
+          type: string
+        example: "goal.name,-goal.description,+appId"
+      - name: offset
+        in: query
+        description: The index of the first message to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of messages to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The page with the matching messages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagesPage'
+        "400":
+          description: If any of the search pattern is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /taskTransactions:
+    get:
+      tags:
+      - Tasks
+      - Task Transactions
+      summary: Search for some transactions
+      description: Allow to get a page of transactions with the specified query parameters.
+      operationId: retrieveTaskTransactionsPage
+      parameters:
+      - name: appId
+        in: query
+        description: "An application identifier to be equals on the task where are\
+          \ the transactions to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the application identifier of the tasks if you\
+          \ write between '/'. For example to get the transactions on the tasks for\
+          \ the applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: requesterId
+        in: query
+        description: "An user identifier to be equals on the task where are the transactions\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the requester identifier of the tasks if you write between\
+          \ '/'. For example to get the transactions on the tasks for the requesters\
+          \ '1' and '2' you must pass as 'requesterId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: taskTypeId
+        in: query
+        description: "A task type identifier to be equals on the task where are the\
+          \ transactions to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the task type identifier of the tasks if you\
+          \ write between '/'. For example to get the transactions on the tasks for\
+          \ the types '1' and '2' you must pass as 'taskTypeId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: goalName
+        in: query
+        description: A goal name to be equals on the task where are the transactions
+          to return. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the goal name of the tasks if you write between '/'. For example
+          to get the transactions on the tasks with a goal name with the word 'eat'
+          you must pass as 'goalName' '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: goalDescription
+        in: query
+        description: A goal description to be equals on the task where are the transactions
+          to return. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the goal description of the tasks if you write between '/'.
+          For example to get the transactions on the tasks with a goal description
+          with the word 'eat' you must pass as 'goalDescription' '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: goalKeywords
+        in: query
+        description: "A set of keywords to be defined on the task where are the transactions\
+          \ to return. For each keyword is separated by a ',' and each field keyword\
+          \ can be between '/' to use a Perl compatible regular expressions (PCRE)\
+          \ instead the exact value."
+        style: form
+        schema:
+          type: string
+        example: "key1,/.*eat.*/,key3"
+      - name: taskCreationFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum creation\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: taskCreationTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum creation\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: taskUpdateFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum update\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: taskUpdateTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum update\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: hasCloseTs
+        in: query
+        description: "This is 'true' if the task where are the transaction to return\
+          \ has defined a 'closeTs', or 'false' if this fiels is not defined. In other\
+          \ words, get the transaction from closed or open tasks."
+        schema:
+          type: boolean
+        example: false
+      - name: closeFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum close\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: closeTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum close\
+          \ time stamp of the task where are the transaction to return and midnight,\
+          \ January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: taskId
+        in: query
+        description: "A task identifier to be equals on the task where are the transactions\
+          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the task identifier of the tasks if you write between '/'.\
+          \ For example to get the transactions for the tasks '1' and '2' you must\
+          \ pass as 'taskId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: id
+        in: query
+        description: "A identifier to be equals on the transactions to return. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the identifier on the transactions to return if you write between '/'.\
+          \ For example to get the transactions with the identifiers '1' and '2' you\
+          \ must pass as 'id' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: label
+        in: query
+        description: "A label to be equals on the transactions to return. You can\
+          \ use a Perl compatible regular expressions (PCRE) that has to match the\
+          \ label on the transactions to return if you write between '/'. For example\
+          \ to get the transactions with the labels 'accept' and 'decline' you must\
+          \ pass as 'label' '/^[accept|decline]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: actioneerId
+        in: query
+        description: "A user identifier that has done the transactions to return.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the actioneer if you write between '/'. For example to get the transactions\
+          \ that has done the users '1' and '2' you must pass as 'actioneerId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: accept
+      - name: creationFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum creation\
+          \ time stamp of the transactions to return and midnight, January 1, 1970\
+          \ UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: creationTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum creation\
+          \ time stamp of the transactions to return and midnight, January 1, 1970\
+          \ UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: updateFrom
+        in: query
+        description: "The difference, measured in seconds, between the minimum update\
+          \ time stamp of the transactions to return and midnight, January 1, 1970\
+          \ UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: updateTo
+        in: query
+        description: "The difference, measured in seconds, between the maximum update\
+          \ time stamp of the transactions to return and midnight, January 1, 1970\
+          \ UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: order
+        in: query
+        description: "The order in witch the task transactions have to be returned.\
+          \ For each field it has be separated by a ',' and each field can start with\
+          \ '+' (or without it) to order on ascending order, or with the prefix '-'\
+          \ to do on descendant order."
+        style: form
+        schema:
+          type: string
+        example: "goal.name,-goal.description,+appId"
+      - name: offset
+        in: query
+        description: The index of the first transaction to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of transactions to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The page with the matching transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskTransactionsPage'
+        "400":
+          description: If any of the search pattern is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /taskTypes:
+    get:
+      tags:
+      - Task Types
+      summary: Search for some task types
+      description: Allow to get a task type with the specified query parameters
+      operationId: retrieveTaskTypesPage
+      parameters:
+      - name: name
+        in: query
+        description: A name to be equals on the task types to return. You can use
+          a Perl compatible regular expressions (PCRE) that has to match the name
+          of the task types to return if you write between '/'. For example to get
+          the task types with a name with the word 'eat' you must pass as 'goalName'
+          '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: description
+        in: query
+        description: A description to be equals on the task types to return. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the description
+          of the task types to return if you write between '/'. For example to get
+          the task types with a description with the word 'eat' you must pass as 'goalDescription'
+          '/.*eat.*/'
+        schema:
+          type: string
+        example: /.*eat.*/
+      - name: keywords
+        in: query
+        description: "A set of keywords to be defined on the task types to be returned.\
+          \ For each keyword is separated by a ',' and each field keyword can be between\
+          \ '/' to use a Perl compatible regular expressions (PCRE) instead the exact\
+          \ value."
+        style: form
+        schema:
+          type: string
+        example: "key1,/.*eat.*/,key3"
+      - name: order
+        in: query
+        description: "The order in witch the task types has to be returned. For each\
+          \ field it has be separated by a ',' and each field can start with '+' (or\
+          \ without it) to order on ascending order, or with the prefix '-' to do\
+          \ on descendant order."
+        style: form
+        schema:
+          type: string
+        example: "name,-description"
+      - name: offset
+        in: query
+        description: The index of the first task type to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of task types to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The page with the matching task types.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskTypePage'
+        "400":
+          description: If any of the search pattern is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Task Types
+      summary: Create a task type
+      description: Create a new task type
+      operationId: createTaskType
+      requestBody:
+        description: The new task type to create
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The created task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /taskTypes/{taskTypeId}:
+    get:
+      tags:
+      - Task Types
+      summary: Return a task type associated to the identifier
+      description: Allow to get a task type associated to an identifier
+      operationId: retrieveTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "200":
+          description: The task type associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    put:
+      tags:
+      - Task Types
+      summary: Modify a task type
+      description: Change the attributes of a task type
+      operationId: updateTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to update
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task type
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The updated task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Task Types
+      summary: Delete the task type associated to the identifier
+      description: Allow to delete a task type associated to an identifier
+      operationId: deleteTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The task type was deleted successfully
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    patch:
+      tags:
+      - Task Types
+      summary: Modify a task type
+      description: Change the attributes of a task type
+      operationId: mergeTaskType
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to merge
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new values for the task type
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        required: true
+      responses:
+        "200":
+          description: The merged task type
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+        "400":
+          description: Bad task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}/transactions/{taskTransactionId}/messages:
+    post:
+      tags:
+      - Task Transactions
+      - Tasks
+      summary: Add a message into a transaction
+      description: Called to add a message into a transaction
+      operationId: addMessageIntoTransaction
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task where is the transaction
+        required: true
+        schema:
+          type: string
+      - name: taskTransactionId
+        in: path
+        description: The identifier of the transaction to add the message
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The message to add
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Message
+        required: true
+      responses:
+        "201":
+          description: The added message
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Message
+        "400":
+          description: Bad message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task or transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}/transactions:
+    post:
+      tags:
+      - Task Transactions
+      - Tasks
+      summary: Add a transaction into a task
+      description: Called to add a transaction into a task
+      operationId: addTransactionIntoTask
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to add the transaction
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The task transaction to add
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        required: true
+      responses:
+        "201":
+          description: The added task transaction
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        "400":
+          description: Bad task transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found task to add the transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /tasks:
     get:
       tags:
@@ -86,31 +924,31 @@ paths:
       parameters:
       - name: appId
         in: query
-        description: An application identifier to be equals on the tasks to return.
-          You can use a Perl compatible regular expressions (PCRE) that has to match
-          the application identifier of the tasks to return if you write between '/'.
-          For example to get the tasks for the aplications '1' and '2' you must pass
-          as 'appId' '/^[1|2]$/'.
+        description: "An application identifier to be equals on the tasks to return.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the application identifier of the tasks to return if you write between\
+          \ '/'. For example to get the tasks for the applications '1' and '2' you\
+          \ must pass as 'appId' '/^[1|2]$/'."
         schema:
           type: string
         example: 1
       - name: requesterId
         in: query
-        description: An user identifier to be equals on the tasks to return. You can
-          use a Perl compatible regular expressions (PCRE) that has to match the requester
-          identifier of the tasks to return if you write between '/'. For example
-          to get the tasks for the requesters '1' and '2' you must pass as 'requesterId'
-          '/^[1|2]$/'.
+        description: "An user identifier to be equals on the tasks to return. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the requester identifier of the tasks to return if you write between '/'.\
+          \ For example to get the tasks for the requesters '1' and '2' you must pass\
+          \ as 'requesterId' '/^[1|2]$/'."
         schema:
           type: string
         example: 1e346fd440
       - name: taskTypeId
         in: query
-        description: A task type identifier to be equals on the tasks to return. You
-          can use a Perl compatible regular expressions (PCRE) that has to match the
-          task type identifier of the tasks to return if you write between '/'. For
-          example to get the tasks for the types '1' and '2' you must pass as 'taskTypeId'
-          '/^[1|2]$/'.
+        description: "A task type identifier to be equals on the tasks to return.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task type identifier of the tasks to return if you write between '/'.\
+          \ For example to get the tasks for the types '1' and '2' you must pass as\
+          \ 'taskTypeId' '/^[1|2]$/'."
         schema:
           type: string
         example: 1e346fd440
@@ -134,89 +972,72 @@ paths:
         schema:
           type: string
         example: /.*eat.*/
-      - name: startFrom
+      - name: creationFrom
         in: query
-        description: The difference, measured in seconds, between the minimum start
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the minimum creation\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1457166440
-      - name: startTo
+      - name: creationTo
         in: query
-        description: The difference, measured in seconds, between the maximum start
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the maximum creation\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1571664406
-      - name: endFrom
+      - name: updateFrom
         in: query
-        description: The difference, measured in seconds, between the minimum end
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the minimum update\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1457166440
-      - name: endTo
+      - name: updateTo
         in: query
-        description: The difference, measured in seconds, between the maximum end
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: deadlineFrom
-        in: query
-        description: The difference, measured in seconds, between the minimum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC.
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: deadlineTo
-        in: query
-        description: The difference, measured in seconds, between the maximum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the maximum update\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1571664406
       - name: hasCloseTs
         in: query
-        description: This is 'true' if the task to return has defined a 'closeTs',
-          or 'false' if this fiels is not defined. In other words, get the closed
-          or open tasks.
+        description: "This is 'true' if the task to return has defined a 'closeTs',\
+          \ or 'false' if this fiels is not defined. In other words, get the closed\
+          \ or open tasks."
         schema:
           type: boolean
         example: false
       - name: closeFrom
         in: query
-        description: The difference, measured in seconds, between the minimum close
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the minimum close\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1457166440
       - name: closeTo
         in: query
-        description: The difference, measured in seconds, between the maximum close
-          time stamp of the task and midnight, January 1, 1970 UTC.
+        description: "The difference, measured in seconds, between the maximum close\
+          \ time stamp of the task and midnight, January 1, 1970 UTC."
         schema:
           type: integer
           format: int64
         example: 1571664406
       - name: order
         in: query
-        description: The order in witch the task has to be returned. For each filed
-          it has be separated by a ',' and each field can start with '+' (or without
-          it) to order on ascending order, or with the prefix '-' to do on descendant
-          order.
+        description: "The order in witch the tasks have to be returned. For each field\
+          \ it has be separated by a ',' and each field can start with '+' (or without\
+          \ it) to order on ascending order, or with the prefix '-' to do on descendant\
+          \ order."
+        style: form
         schema:
-          type: array
-          items:
-            type: string
-        example: goal.name,-goal.description,+appId
+          type: string
+        example: "goal.name,-goal.description,+appId"
       - name: offset
         in: query
         description: The index of the first task to return.
@@ -235,13 +1056,13 @@ paths:
         example: 100
       responses:
         "200":
-          description: The task associated to the identifier
+          description: The page with the matching tasks
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskPage'
-        "404":
-          description: Not found task
+        "400":
+          description: If any of the search pattern is not valid
           content:
             application/json:
               schema:
@@ -257,7 +1078,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -265,7 +1086,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -293,7 +1114,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "404":
           description: Not found task
           content:
@@ -319,7 +1140,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -327,7 +1148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -381,7 +1202,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -389,7 +1210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -398,243 +1219,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /tasks/types:
-    get:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Return a task type associated to the identifier
-      description: Allow to get a task type associated to an identifier
-      operationId: retrieveTaskTypesPage
-      parameters:
-      - name: name
-        in: query
-        description: A name to be equals on the task types to return. You can use
-          a Perl compatible regular expressions (PCRE) that has to match the name
-          of the task types to return if you write between '/'. For example to get
-          the task types with a name with the word 'eat' you must pass as 'goalName'
-          '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: description
-        in: query
-        description: A description to be equals on the task types to return. You can
-          use a Perl compatible regular expressions (PCRE) that has to match the description
-          of the task types to return if you write between '/'. For example to get
-          the task types with a description with the word 'eat' you must pass as 'goalDescription'
-          '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: keywords
-        in: query
-        description: A set of keywords to be defined on the task types to be returned.
-          For each keyword is separated by a ',' and each field keyword can be between
-          '/' to use a Perl compatible regular expressions (PCRE) instead the exact
-          value.
-        schema:
-          type: array
-          items:
-            type: string
-        example: key1,/.*eat.*/,key3
-      - name: order
-        in: query
-        description: The order in witch the task types has to be returned. For each
-          filed it has be separated by a ',' and each field can start with '+' (or
-          without it) to order on ascending order, or with the prefix '-' to do on
-          descendant order.
-        schema:
-          type: array
-          items:
-            type: string
-        example: name,-description
-      - name: offset
-        in: query
-        description: The index of the first task type to return
-        schema:
-          type: integer
-          format: int32
-      - name: limit
-        in: query
-        description: The number maximum of task types to return
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: The task types that match the search.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaskTypePage'
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Create a task type
-      description: Create a new task type
-      operationId: createTaskType
-      requestBody:
-        description: The new task type to create
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        required: true
-      responses:
-        "200":
-          description: The created task type
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "400":
-          description: Bad task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /tasks/types/{taskTypeId}:
-    get:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Return a task type associated to the identifier
-      description: Allow to get a task type associated to an identifier
-      operationId: retrieveTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The task type associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "404":
-          description: Not found task
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Modify a task type
-      description: Change the attributes of a task type
-      operationId: updateTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the task type
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        required: true
-      responses:
-        "200":
-          description: The updated task type
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "400":
-          description: Bad task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Delete the task type associated to the identifier
-      description: Allow to delete a task type associated to an identifier
-      operationId: deleteTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: The task type was deleted successfully
-        "404":
-          description: Not found task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    patch:
-      tags:
-      - Task Types
-      - Tasks
-      summary: Modify a task type
-      description: Change the attributes of a task type
-      operationId: mergeTaskType
-      parameters:
-      - name: taskTypeId
-        in: path
-        description: The identifier of the task type to merge
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the task type
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        required: true
-      responses:
-        "200":
-          description: The merged task type
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
-        "400":
-          description: Bad task type
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found task type
           content:
             application/json:
               schema:
@@ -652,7 +1236,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "200":
@@ -660,9 +1244,45 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Bad task transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}/transactions/{transactionId}:
+    get:
+      tags:
+      - Task Transactions
+      - Tasks
+      summary: Return a task transaction
+      description: Allow to get a task transaction with an specific identifier
+      operationId: retrieveTaskTransaction
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task where is the transaction to get
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      - name: transactionId
+        in: path
+        description: The identifier of the transaction to get
+        required: true
+        schema:
+          type: string
+        example: 1
+      responses:
+        "200":
+          description: The task transaction associated to the identifier
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+        "404":
+          description: Not found task or transaction
           content:
             application/json:
               schema:
@@ -688,12 +1308,31 @@ components:
           type: string
           description: Contain information of the organization that has implemented
             the API
-          example: UDT-IA, IIIA-CSIC
+          example: "UDT-IA, IIIA-CSIC"
         license:
           type: string
           description: Contain information of the license of the API
           example: MIT
       description: Provide the version information of the API
+    MessagesPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first message returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of messages that satisfies the search.
+          format: int64
+          example: 100
+        messages:
+          type: array
+          description: The set of messages found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Message
+      description: Contains a set of messages
     ErrorMessage:
       type: object
       properties:
@@ -706,24 +1345,24 @@ components:
           description: Contain a brief description of the error to be read by a human
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
-    TaskPage:
+    TaskTransactionsPage:
       type: object
       properties:
         offset:
           type: integer
-          description: The index of the first task returned.
+          description: The index of the first transactions returned.
           format: int32
           example: 0
         total:
           type: integer
-          description: The number total of tasks that satisfies the search.
+          description: The number total of transactions that satisfies the search.
           format: int64
           example: 100
-        tasks:
+        transactions:
           type: array
-          description: The set of tasks found
+          description: The set of transactions found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
       description: Contains a set of tasks
     TaskTypePage:
       type: object
@@ -742,5 +1381,24 @@ components:
           type: array
           description: The set of task types found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
       description: Contains a set of task types
+    TaskPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first task returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of tasks that satisfies the search.
+          format: int64
+          example: 100
+        tasks:
+          type: array
+          description: The set of tasks found
+          items:
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
+      description: Contains a set of tasks
