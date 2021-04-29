@@ -41,7 +41,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  version: 0.11.0
+  version: 0.13.0
 servers:
 - url: https://wenet.u-hopper.com/prod/interaction_protocol_engine
   description: WeNet production server
@@ -62,6 +62,57 @@ tags:
   description: "The functionality provided allows to publish norms, and manage the\
     \ user and community norms."
 paths:
+  /events/{id}:
+    delete:
+      tags:
+      - Events
+      summary: Delete an event to not be fired on an interaction protocol
+      description: Remove an event to not be fired.
+      operationId: deleteEvent
+      parameters:
+      - name: id
+        in: path
+        description: The identifier of the event to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: If the event is deleted
+        "404":
+          description: Not found event
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /events:
+    post:
+      tags:
+      - Events
+      summary: Add an event to be fired in an interaction protocol
+      description: The event that has to be fired in the norm engine as a message.
+      operationId: sendEvent
+      requestBody:
+        description: The event to publish
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProtocolEvent'
+        required: true
+      responses:
+        "202":
+          description: If the event is accepted to be processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProtocolEvent'
+        "400":
+          description: Bad event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /help/info:
     get:
       tags:
@@ -98,7 +149,11 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+=======
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
         required: true
       responses:
         "202":
@@ -533,7 +588,11 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+=======
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
         required: true
       responses:
         "202":
@@ -541,7 +600,11 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+=======
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
         "400":
           description: Cannot process the task transaction
           content:
@@ -562,7 +625,11 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Task
+=======
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
         required: true
       responses:
         "202":
@@ -570,7 +637,11 @@ paths:
           content:
             application/json:
               schema:
+<<<<<<< HEAD
                 $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Task
+=======
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
         "400":
           description: Cannot process the created task
           content:
@@ -579,6 +650,65 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Contain code that identifies the error
+          example: error_code
+        message:
+          type: string
+          description: Contain a brief description of the error to be read by a human
+          example: Error readable by a human
+      description: Inform of an error that happens when interacts with the API
+    ProtocolEvent:
+      type: object
+      properties:
+        appId:
+          type: string
+          description: The identifier of the application associated to the protocol.
+          nullable: true
+          example: E34jhg78tbgh
+        communityId:
+          type: string
+          description: The identifier of the community associated to the protocol.
+          nullable: true
+          example: ceb846439eba-645a-9aaf-4a55-15837028
+        taskId:
+          type: string
+          description: The identifier of the task associated to the protocol.
+          nullable: true
+          example: b129e5509c9bb79
+        transactionId:
+          type: string
+          description: The identifier of the transaction associated to the protocol.
+          nullable: true
+          example: b129e5509c9bb79
+        particle:
+          type: string
+          description: The particle that define the motive of the action.
+          example: inform
+        content:
+          type: object
+          description: The content of the action.
+          nullable: true
+          example:
+            entered: true
+        id:
+          type: integer
+          description: The identifier of the event.
+          format: int64
+          readOnly: true
+        delay:
+          type: integer
+          description: The identifier of the event.
+          format: int64
+          example: 1
+        userId:
+          type: string
+          description: The agent that send the message
+      description: An event that will be fired on a protocol.
     Info:
       type: object
       properties:
@@ -604,15 +734,22 @@ components:
           description: Contain information of the license of the API
           example: MIT
       description: Provide the version information of the API
-    ErrorMessage:
+    ProtocolAddress:
       type: object
       properties:
-        code:
+        component:
           type: string
-          description: Contain code that identifies the error
-          example: error_code
-        message:
+          description: The component that interact on the protocol.
+          enum:
+          - USER_APP
+          - INTERACTION_PROTOCOL_ENGINE
+          - SOCIAL_CONTEXT_BUILDER
+          - INCENTIVE_SERVER
+          - TASK_MANAGER
+          - PROFILE_MANAGER
+        userId:
           type: string
+<<<<<<< HEAD
           description: Contain a brief description of the error to be read by a human
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
@@ -659,14 +796,58 @@ components:
         particle:
           type: string
           description: The particle that define the motive of the message.
+=======
+          description: The user associated the component that interact.
+      description: The component that send/receive a message.
+    ProtocolMessage:
+      type: object
+      properties:
+        appId:
+          type: string
+          description: The identifier of the application associated to the protocol.
+          nullable: true
+          example: E34jhg78tbgh
+        communityId:
+          type: string
+          description: The identifier of the community associated to the protocol.
+          nullable: true
+          example: ceb846439eba-645a-9aaf-4a55-15837028
+        taskId:
+          type: string
+          description: The identifier of the task associated to the protocol.
+          nullable: true
           example: b129e5509c9bb79
+        transactionId:
+          type: string
+          description: The identifier of the transaction associated to the protocol.
+          nullable: true
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
+          example: b129e5509c9bb79
+        particle:
+          type: string
+          description: The particle that define the motive of the action.
+          example: inform
         content:
           type: object
+<<<<<<< HEAD
           description: The content of the message.
           example: Hi!
       description: A message that can be interchange in an interaction protocol.
     Norm:
       $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+=======
+          description: The content of the action.
+          nullable: true
+          example:
+            entered: true
+        sender:
+          $ref: '#/components/schemas/ProtocolAddress'
+        receiver:
+          $ref: '#/components/schemas/ProtocolAddress'
+      description: A message that can be interchange in an interaction protocol.
+    Norm:
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
     PublishedNorm:
       type: object
       properties:
@@ -706,7 +887,11 @@ components:
           description: The identifier of the user that has published the norm.
           example: bf274393-1e7b-4d40-a897-88cb96277edd
         norm:
+<<<<<<< HEAD
           $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/5c28427ce0c05596ef9001ffa8a08f8eb125611f/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+=======
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
       description: A norm that is published to share with all the WeNet users.
     PublishedNormsPage:
       type: object

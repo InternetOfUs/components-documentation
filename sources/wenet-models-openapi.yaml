@@ -279,9 +279,37 @@ components:
       type: object
       properties:
         name:
-          $ref: '#/components/schemas/UserName'
+          type: object
+          nullable: true
+          properties:
+            first:
+              type: string
+              description: The first name of the user
+              example: John
+              nullable: true
+            middle:
+              type: string
+              description: The middle name of the user
+              example: Francis
+              nullable: true
+            last:
+              type: string
+              description: The last name of the user
+              example: Doe
+              nullable: true
+            prefix:
+              type: string
+              description: The name prefix
+              example: Dr.
+              nullable: true
+            suffix:
+              type: string
+              description: The suffix of the name
+              example: Jr.
+              nullable: true
         dateOfBirth:
           type: object
+          nullable: true
           properties:
             year:
               type: integer
@@ -300,12 +328,15 @@ components:
               nullable: true
         gender:
           type: string
+          nullable: true
           enum:
             - M
             - F
             - O
+            - non-binary
+            - not-say
+            - null
           example: F
-          nullable: true
         email:
           type: string
           description: The user email
@@ -337,35 +368,6 @@ components:
           example: nurse
           nullable: true
 
-    UserName:
-      type: object
-      properties:
-        first:
-          type: string
-          description: The first name of the user
-          example: John
-          nullable: true
-        middle:
-          type: string
-          description: The middle name of the user
-          example: Francis
-          nullable: true
-        last:
-          type: string
-          description: The last name of the user
-          example: Doe
-          nullable: true
-        prefix:
-          type: string
-          description: The name prefix
-          example: Dr.
-          nullable: true
-        suffix:
-          type: string
-          description: The suffix of the name
-          example: Jr.
-          nullable: true
-
     WeNetUserProfile:
       allOf:
         - $ref: '#/components/schemas/CoreWeNetUserProfile'
@@ -373,39 +375,48 @@ components:
       properties:
         id:
           type: string
+          nullable: true
           description: The identifier of the WeNet user
           example: 15837028-645a-4a55-9aaf-ceb846439eba
         norms:
           type: array
+          nullable: true
           description: The individual norms of the user
           items:
             $ref: '#/components/schemas/Norm'
         plannedActivities:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/PlannedActivity'
         relevantLocations:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/RelevantLocation'
         relationships:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/SocialNetworkRelationship'
         personalBehaviors:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/Routine'
         materials:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/Material'
         competences:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/Competence'
         meanings:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/Meaning'
 

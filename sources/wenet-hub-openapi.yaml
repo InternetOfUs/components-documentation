@@ -17,6 +17,25 @@ servers:
 
 paths:
 
+  /data/user:
+    get:
+      summary: Get the list of user ids registered to the platform
+      tags:
+        - User
+      security:
+        - ComponentApiKey: []
+      responses:
+        '200':
+          description: The list of user ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: 87diufghkdjf
+                  description: The id of the user
+
   /data/user/{userId}/apps:
     get:
       summary: Get the list of applications enabled by a user

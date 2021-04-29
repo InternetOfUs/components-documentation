@@ -579,6 +579,96 @@
 				}
 			},
 			"response": []
+<<<<<<< HEAD
+=======
+		},
+		{
+			"name": "Send event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"eventId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appId\": \"1\",\n    \"communityId\": \"2\",\n    \"taskId\": \"3\",\n    \"transactionId\": \"4\",\n    \"particle\": \"inform\",\n    \"content\": {},\n    \"delay\":10000,\n    \"userId\":\"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/events",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/events/{{eventId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"events",
+						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
 		}
 	],
 	"event": [
@@ -625,6 +715,13 @@
 		{
 			"key": "userId",
 			"value": "1"
+<<<<<<< HEAD
+=======
+		},
+		{
+			"key": "eventId",
+			"value": ""
+>>>>>>> 5978970c06da69ed2834e34226f4112ff7eb8895
 		}
 	]
 }
