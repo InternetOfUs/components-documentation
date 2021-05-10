@@ -27,8 +27,10 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://wenet.u-hopper.com/dev/api/service
-    description: Testing instance
+  - url: https://wenet.u-hopper.com/dev/service
+    description: Staging instance
+  - url: https://internetofus.u-hopper.com/prod/service
+    description: Production instance
 
 paths:
 
