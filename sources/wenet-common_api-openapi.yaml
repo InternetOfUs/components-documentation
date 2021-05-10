@@ -10,6 +10,7 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   - url: 'https://wenet.u-hopper.com/dev/api/common'
+    description: Staging instance
 security:
   - apikey: []
   - kongOAuth: []
