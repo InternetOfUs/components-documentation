@@ -2,8 +2,12 @@
   "openapi": "3.0.0",
   "servers": [
     {
+      "url": "https://wenet.u-hopper.com/dev/personal_context_builder",
+      "description": "Staging instance"
+    },
+    {
       "url": "https://lab.idiap.ch/devel/wenet/",
-      "description": "Idiap production server"
+      "description": "Idiap server"
     }
   ],
   "info": {
