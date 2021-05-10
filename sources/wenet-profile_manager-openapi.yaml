@@ -30,10 +30,10 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 0.15.1
 servers:
-- url: https://wenet.u-hopper.com/prod/profile_manager
-  description: WeNet production server
+- url: https://internetofus.u-hopper.com/prod/profile_manager
+  description: Production instance
 - url: https://wenet.u-hopper.com/dev/profile_manager
-  description: WeNet development server server
+  description: Staging instance
 - url: http://ardid.iiia.csic.es/wenet/profile-manager/prod/
   description: IIIA production server
 - url: http://ardid.iiia.csic.es/wenet/profile-manager/dev/
