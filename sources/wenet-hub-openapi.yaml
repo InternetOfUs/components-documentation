@@ -10,7 +10,7 @@ info:
 
 servers:
   - url: https://wenet.u-hopper.com/dev/hub/frontend
-    description: Testing instance
+    description: Staging instance
 
   - url: https://internetofus.u-hopper.com/prod/hub/frontend
     description: Production instance
