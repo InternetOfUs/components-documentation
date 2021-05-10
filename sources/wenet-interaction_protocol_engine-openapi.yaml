@@ -43,10 +43,10 @@ info:
     url: https://opensource.org/licenses/MIT
   version: 0.13.0
 servers:
-- url: https://wenet.u-hopper.com/prod/interaction_protocol_engine
-  description: WeNet production server
+- url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
+  description: Production instance
 - url: https://wenet.u-hopper.com/dev/interaction_protocol_engine
-  description: WeNet development server server
+  description: Staging instance
 - url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/prod/
   description: IIIA production server
 - url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/dev/
