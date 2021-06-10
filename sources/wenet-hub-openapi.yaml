@@ -118,6 +118,11 @@ paths:
                     type: string
                     nullable: true
                     example: https://app.domain/callback
+                  taskTypeId:
+                    type: string
+                    nullable: true
+                    example: 10823j9f8dhigkdhfgu
+                    description: The identifier of the associated task type 
                   metadata:
                     type: object
                     description: Meant for any app metadata details
