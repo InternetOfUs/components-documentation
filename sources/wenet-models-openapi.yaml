@@ -9,7 +9,6 @@ info:
 
 components:
   schemas:
-
     CreateUpdateTsDetails:
       type: object
       properties:
@@ -18,11 +17,13 @@ components:
           readOnly: true
           description: The UTC epoch timestamp representing the creation instant.
           example: 1563871899
+          minimum: 0
         _lastUpdateTs:
           type: integer
           readOnly: true
           description: The UTC epoch timestamp representing the last update instant.
           example: 1563898764
+          minimum: 0
 
     NormOperator:
       type: string
@@ -47,7 +48,7 @@ components:
           description: The name of the attribute whose value the norm should be compared to
           example: "has_car"
         operator:
-          $ref: '#/components/schemas/NormOperator'
+          $ref: "#/components/schemas/NormOperator"
         comparison:
           type: string
           description: The norm value for the comparison
@@ -73,28 +74,36 @@ components:
           format: date-time
           description: The starting time of the activity
           example: 2019-07-21T14:30:00Z
+          nullable: true
+          minimum: 0
         endTime:
           type: string
           format: date-time
           description: The ending time of the activity
           example: 2019-07-21T15:30:00Z
+          nullable: true
+          minimum: 0
         description:
           type: string
           description: The description of the activity
           example: A few beers for relaxing
+          nullable: true
         attendees:
           type: array
+          nullable: true
           items:
             type: string
             description: The identifier of other wenet user taking part to the activity
             example: 15d85f1d-b1ce-48de-b221-bec9ae954a88
         status:
           type: string
+          nullable: true
           description: The current status of the activity
           enum:
             - confirmed
             - tentative
             - cancelled
+            - null
           example: confirmed
 
     RelevantLocation:
@@ -110,14 +119,21 @@ components:
           type: string
           description: The descriptor of the location
           example: Home
+          nullable: true
         latitude:
           type: number
           description: The latitude of the location
           example: 40.388756
+          nullable: true
+          minimum: -90
+          maximum: 90
         longitude:
           type: number
           description: The latitude of the location
           example: -3.588622
+          nullable: true
+          minimum: -180
+          maximum: 180
 
     Material:
       type: object
@@ -127,16 +143,21 @@ components:
           type: string
           description: The name of the object
           example: car
+          nullable: true
         description:
           type: string
           description: A description of the object
           example: Fiat 500
+          nullable: true
         quantity:
           type: integer
           description: The amount of units available
           example: 1
+          nullable: true
+          minimum: 1
         classification:
           type: string
+          nullable: true
           description: The classification used for representing the object
 
             - Global Product Classification (https://www.gs1.org/standards/gpc)
@@ -152,14 +173,19 @@ components:
           type: string
           description: The name of the competence
           example: language_Italian_C1
+          nullable: true
         ontology:
           type: string
           description: The identifier of the competence
           example: esco
+          nullable: true
         level:
           type: number
           description: The identifier of the competence (value in between 0 and 1, both included)
           example: 0.8
+          nullable: true
+          minimum: 0
+          maximum: 1
 
     Meaning:
       type: object
@@ -169,14 +195,17 @@ components:
           type: string
           description: The name of the concept represented by the meaning
           example: extraversion
+          nullable: true
         category:
           type: string
           description: The category associated to the menaing
           example: big_five
+          nullable: true
         level:
           type: number
           description: The level associated to the concept
           example: 0.8
+          nullable: true
 
     SocialPractice:
       type: object
@@ -190,19 +219,23 @@ components:
           type: string
           description: The descriptor of the social practice
           example: commuter
+          nullable: true
         materials:
           type: array
+          nullable: true
           items:
-            $ref: '#/components/schemas/Material'
+            $ref: "#/components/schemas/Material"
         competences:
           type: array
+          nullable: true
           items:
-            $ref: '#/components/schemas/Competence'
+            $ref: "#/components/schemas/Competence"
         norms:
           type: array
+          nullable: true
           description: The norms of the social practice
           items:
-            $ref: '#/components/schemas/Norm'
+            $ref: "#/components/schemas/ProtocolNorm"
 
     SocialNetworkRelationship:
       type: object
@@ -211,8 +244,10 @@ components:
           type: string
           description: The identifier of the wenet user the relationship is related to
           example: 4c51ee0b-b7ec-4577-9b21-ae6832656e33
+          nullable: true
         type:
           type: string
+          nullable: true
           description: The relationship type
           enum:
             - friend
@@ -220,12 +255,15 @@ components:
             - follower
             - family
             - acquaintance
+            - null
           example: friend
         weight:
           type: number
           nullable: true
           description: A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation.
           example: 0.2
+          minimum: 0
+          maximum: 1
 
     Label:
       type: object
@@ -234,46 +272,61 @@ components:
         name:
           type: string
           description: name of the label
+          nullable: true
         semantic_class:
           type: number
           description: number that represent the category of the label
+          nullable: true
         latitude:
           type: number
           description: latitude of the label for the user
+          nullable: true
+          minimum: -90
+          maximum: 90
         longitude:
           type: number
           description: longitude of the label for the user
+          nullable: true
+          minimum: -180
+          maximum: 180
 
     ScoredLabel:
       type: object
       description: Label with score
       properties:
         label:
-          $ref: '#/components/schemas/Label'
+          nullable: true
+          $ref: "#/components/schemas/Label"
         score:
           type: number
+          nullable: true
           description: score of the label
     Routine:
       type: object
-      description: 'Labels distribution for a given user, time and weekday'
+      description: "Labels distribution for a given user, time and weekday"
       properties:
         user_id:
           type: string
           description: id of the user
+          nullable: true
         weekday:
           type: string
           description: day of the week
+          nullable: true
         label_distribution:
-          description: 'Time slots'
+          description: "Time slots"
           type: object
+          nullable: true
           additionalProperties:
-            description: 'Distribution of the labels'
+            description: "Distribution of the labels"
+            nullable: true
             type: array
             items:
-              $ref: '#/components/schemas/ScoredLabel'
+              $ref: "#/components/schemas/ScoredLabel"
         confidence:
           type: number
           description: confidence of the result
+          nullable: true
 
     CoreWeNetUserProfile:
       type: object
@@ -316,16 +369,21 @@ components:
               example: 1976
               description: The year of birth
               nullable: true
+              minimum: 1903
             month:
               type: integer
               example: 4
               description: "The month of birth, from 1 to 12 (1: Jan and 12: Dec)"
               nullable: true
+              minimum: 1
+              maximum: 12
             day:
               type: integer
               example: 23
               description: The day of the month
               nullable: true
+              minimum: 1
+              maximum: 31
         gender:
           type: string
           nullable: true
@@ -370,8 +428,8 @@ components:
 
     WeNetUserProfile:
       allOf:
-        - $ref: '#/components/schemas/CoreWeNetUserProfile'
-        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+        - $ref: "#/components/schemas/CoreWeNetUserProfile"
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
       properties:
         id:
           type: string
@@ -383,116 +441,127 @@ components:
           nullable: true
           description: The individual norms of the user
           items:
-            $ref: '#/components/schemas/Norm'
+            $ref: "#/components/schemas/ProtocolNorm"
         plannedActivities:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/PlannedActivity'
+            $ref: "#/components/schemas/PlannedActivity"
         relevantLocations:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/RelevantLocation'
+            $ref: "#/components/schemas/RelevantLocation"
         relationships:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/SocialNetworkRelationship'
+            $ref: "#/components/schemas/SocialNetworkRelationship"
         personalBehaviors:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/Routine'
+            $ref: "#/components/schemas/Routine"
         materials:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/Material'
+            $ref: "#/components/schemas/Material"
         competences:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/Competence'
+            $ref: "#/components/schemas/Competence"
         meanings:
           type: array
           nullable: true
           items:
-            $ref: '#/components/schemas/Meaning'
+            $ref: "#/components/schemas/Meaning"
 
     # Tasks
 
     TaskType:
-      type:                                  object
-      description:                           The component that describe a possible task
+      type: object
+      description: The component that describe a possible task
       allOf:
-        - $ref:                              '#/components/schemas/CreateUpdateTsDetails'
-        - $ref:                              '#/components/schemas/HumanDescription'
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
+        - $ref: "#/components/schemas/HumanDescription"
       properties:
         id:
-          type:                              string
-          description:                       The unique identifier of the task type
-          readOnly:                          true
-          example:                           b129e5509c9bb79
+          type: string
+          description: The unique identifier of the task type
+          nullable: true
+          example: b129e5509c9bb79
         attributes:
-            type:                            object
-            description:                     OpenAPI description of the attributes that can have a task.
+          type: object
+          nullable: true
+          description: OpenAPI description of the attributes that can have a task.
         transactions:
-            type:                            object
-            description:                     OpenAPI description of the transaction actions that can be done on the task.
+          type: object
+          nullable: true
+          description: OpenAPI description of the transaction actions that can be done on the task.
         callbacks:
-            type:                            object
-            description:                     OpenAPI description of the callbacks messages that can be send to the participants of the task.
+          type: object
+          nullable: true
+          description: OpenAPI description of the callbacks messages that can be send to the participants of the task.
         norms:
-          type:                              array
-          description:                       The norms that describe the protocol to follow the task of this type.
-          nullable:                          true
+          type: array
+          description: The norms that describe the protocol to follow the task of this type.
+          nullable: true
           items:
-            $ref:                            '#/components/schemas/ProtocolNorm'
+            $ref: "#/components/schemas/ProtocolNorm"
 
     HumanDescription:
-      description:                           The attributes used to identify and describe a model for an human.
+      description: The attributes used to identify and describe a model for an human.
       properties:
         name:
-          type:                              string
-          description:                       A name that identify the model.
-          example:                           Eat together task
-          nullable:                          false
+          type: string
+          description: A name that identify the model.
+          example: Eat together task
+          nullable: true
         description:
-          type:                              string
-          description:                       A human readable description of the model.
-          example:                           A task for organizing social dinners
-          nullable:                          true
+          type: string
+          description: A human readable description of the model.
+          example: A task for organizing social dinners
+          nullable: true
         keywords:
-          type:                              array
-          description:                       The keywords that describe the model.
-          nullable:                          true
+          type: array
+          description: The keywords that describe the model.
+          nullable: true
           example:
             - social interaction
             - eat
           items:
-            type:                            string
+            type: string
 
     ProtocolNorm:
-      type:                                  object
-      description:                           The description of a rule that has to follow by the wenet users
+      type: object
+      description: The description of a rule that has to follow by the wenet users
       properties:
+        description:
+          type: string
+          description: A human readable description of the norm.
+          example: Notify to all the participants that the task is closed.
+          nullable: true
         whenever:
-          type:                              string
-          description:                       The conditions that fires this norm.
-          nullable:                          false
+          type: string
+          description: The conditions that fires this norm.
+          example: is_received_do_transaction('close',Reason) and not(is_task_closed()) and get_profile_id(Me) and get_task_requester_id(RequesterId) and =(Me,RequesterId) and get_participants(Participants)
+          nullable: true
         thenceforth:
-          type:                              string
-          description:                       The action to do if the conditions are satisfied.
-          nullable:                          false
+          type: string
+          description: The action to do if the conditions are satisfied.
+          example: add_message_transaction() and close_task() and send_messages(Participants,'close',Reason)
+          nullable: true
         ontology:
-          type:                              string
-          description:                       The ontology used on the norms.
-          nullable:                          true
+          type: string
+          description: The ontology used on the norms.
+          example: get_participants(P) :- get_task_state_attribute(UserIds,'participants',[]), get_profile_id(Me), wenet_remove(P,Me,UserIds).
+          nullable: true
 
     Task:
       allOf:
-        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
       description: A wenet task
       properties:
         id:
@@ -504,48 +573,49 @@ components:
           type: string
           description: The identifier of the task type associated to the task
           example: b129e5509c9bb79
-          nullable: false
+          nullable: true
         appId:
           type: string
           description: The identifier of the aplication where the task is done
-          nullable: false
+          nullable: true
           example: b129e5509c9bb79
         communityId:
           type: string
           description: The identifier of the community in which the task is going to be shared
-          readOnly: false
           nullable: true
           example: b129e5509c9bb79
         requesterId:
           type: string
           description: The identifier of the WeNet user who created the task
           example: 15837028-645a-4a55-9aaf-ceb846439eba
-          nullable: false
+          nullable: true
         goal:
           type: object
           description: The explanation of the task objective.
-          nullable: false
+          nullable: true
           allOf:
-            - $ref: '#/components/schemas/HumanDescription'
+            - $ref: "#/components/schemas/HumanDescription"
         closeTs:
           type: integer
           description: The UTC epoch timestamp representing the time the task is closed. It is `null` as long as the task is not closed.
           nullable: true
-          readOnly: true
           example: 1563930000
+          minimum: 0
         norms:
           type: array
-          readOnly: false
+          nullable: true
           description: The set of norms that define the interaction of the user when do the task
           items:
-            $ref: '#/components/schemas/Norm'
+            $ref: "#/components/schemas/ProtocolNorm"
         attributes:
+          nullable: true
           type: object
           description: The set of attributes that define the task
         transactions:
+          nullable: true
           type: array
           items:
-            $ref: '#/components/schemas/TaskTransaction'
+            $ref: "#/components/schemas/TaskTransaction"
 
     Message:
       type: object
@@ -554,28 +624,31 @@ components:
           type: string
           description: ID of the Wenet application related to the message
           example: 822jhluNZP
+          nullable: true
         receiverId:
           type: string
           description: The Wenet user ID of the recipient of the message
           example: a6822c47-f1b8-4c21-80bd-1d025266c3c7
+          nullable: true
         label:
           type: string
           description: The type of the message
           example: TaskVolunteerNotification
+          nullable: true
         attributes:
           type: object
           description: the attributes of the message, as key-value pairs.
+          nullable: true
 
     TaskTransaction:
       allOf:
-        - $ref: '#/components/schemas/CreateUpdateTsDetails'
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
       description: A task transition
       properties:
         id:
           description: The unique identified of the transaction
           example: 9dihugkdjfgndfg
           type: string
-          nullable: false
           readOnly: true
         taskId:
           description: The identifier of the WeNet task where the transaction is done
@@ -589,16 +662,125 @@ components:
         attributes:
           type: object
           description: The attributes that parameterize the transaction
+          nullable: true
         actioneerId:
           description: The identifier of the user that want to change the task
           example: b129e5509c9bb79
-          nullable: false
+          nullable: true
           type: string
         messages:
           type: array
           description: The list of messages that has provokes the execution of this task transaction
+          nullable: true
           items:
-            $ref: '#/components/schemas/Message'
+            $ref: "#/components/schemas/Message"
+
+    CommunityProfile:
+      allOf:
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
+        - $ref: "#/components/schemas/HumanDescription"
+      properties:
+        id:
+          type: string
+          description: The identifier of the community.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+          nullable: true
+        appId:
+          type: string
+          description: The identifier of the application where the community is defined.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+          nullable: true
+        members:
+          nullable: true
+          type: array
+          description: The members of the community.
+          items:
+            $ref: "#/components/schemas/CommunityMember"
+        socialPractices:
+          nullable: true
+          type: array
+          description: The social practice that are done into the community
+          items:
+            $ref: "#/components/schemas/SocialPractice"
+        taskTypeIds:
+          nullable: true
+          type: array
+          description: The identifiers of the allowed task types to do on the community
+          items:
+            type: string
+        norms:
+          nullable: true
+          type: array
+          description: The norms that regulates the community.
+          items:
+            $ref: "#/components/schemas/ProtocolNorm"
+      description: A community of WeNet users.
+
+    CommunityMember:
+      allOf:
+        - $ref: "#/components/schemas/CreateUpdateTsDetails"
+      properties:
+        userId:
+          type: string
+          description: The identifier of the user that is on the community.
+          example: 15837028-645a-4a55-9aaf-ceb846439eba
+          nullable: true
+        privileges:
+          type: array
+          description: The keywords that describe the community.
+          nullable: true
+          items:
+            type: string
+      description: A member of a community.
+
+    Incentive:
+      type: object
+      required:
+        - AppID
+        - UserId
+        - IncentiveType
+        - Issuer
+      properties:
+        AppID:
+          type: string
+          example: 1
+        UserId:
+          type: string
+          example: 6
+        IncentiveType:
+          type: string
+          example: Message/Badge (only one)
+        Issuer:
+          type: string
+          example: WeNet issuer
+        Message:
+          type: object
+          nullable: true
+          properties:
+            content:
+              type: string
+              example: >-
+                we are happy to see your participation in the I-log app you are
+                doing a great job!
+        Badge:
+          type: object
+          nullable: true
+          properties:
+            BadgeClass:
+              type: string
+              example: hpqAdI7hQf2maQ13AW1jXA
+            ImgUrl:
+              type: string
+              example: >-
+                http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
+            Criteria:
+              type: string
+              example: The user will get this badge for 50 relations in tweeter.
+            Message:
+              type: string
+              example: >-
+                congratulations! you just earned a new badge for your relations
+                on Twitter.
 
     VolunteerForTaskTransaction:
       type: object
@@ -617,7 +799,7 @@ components:
         label:
           type: string
           enum:
-          - volunteerForTask
+            - volunteerForTask
           description: The label associated to the transaction type
         attributes:
           type: object
@@ -645,7 +827,7 @@ components:
         label:
           type: string
           enum:
-          - refuseTask
+            - refuseTask
           description: The label associated to the transaction type
         attributes:
           type: object
@@ -673,7 +855,7 @@ components:
         label:
           type: string
           enum:
-          - acceptVolunteer
+            - acceptVolunteer
           description: The label associated to the transaction type
         attributes:
           type: object
@@ -706,7 +888,7 @@ components:
         label:
           type: string
           enum:
-          - refuseVolunteer
+            - refuseVolunteer
           description: The label associated to the transaction type
         attributes:
           type: object
@@ -739,7 +921,7 @@ components:
         label:
           type: string
           enum:
-          - taskCompleted
+            - taskCompleted
           description: The label associated to the transaction type
         attributes:
           type: object
@@ -749,113 +931,11 @@ components:
               description: A description of the outcome of the task
               type: string
               enum:
-              - completed
-              - cancelled
-              - failed
+                - completed
+                - cancelled
+                - failed
         actioneerId:
           description: The identifier of the user that want to change the task
           example: b129e5509c9bb79
           nullable: false
           type: string
-
-    CommunityProfile:
-      allOf:
-        - $ref: '#/components/schemas/CreateUpdateTsDetails'
-      properties:
-        id:
-          type: string
-          description: The identifier of the community.
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
-        appId:
-          type: string
-          description: The identifier of the application where the community is defined.
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
-        name:
-          type: string
-          description: The name of the community.
-        description:
-          type: string
-          description: The description of the community.
-        keywords:
-          type: array
-          description: The keywords that describe the community.
-          items:
-            type: string
-        members:
-          type: array
-          description: The members of the community.
-          items:
-            $ref: '#/components/schemas/CommunityMember'
-        socialPractices:
-          type: array
-          description: The social practice that are done into the community
-          items:
-            $ref: '#/components/schemas/SocialPractice'
-        norms:
-          type: array
-          description: The norms that regulates the community.
-          items:
-            $ref: '#/components/schemas/ProtocolNorm'
-      description: A community of WeNet users.
-
-    CommunityMember:
-      allOf:
-        - $ref: '#/components/schemas/CreateUpdateTsDetails'
-      properties:
-        userId:
-          type: string
-          description: The identifier of the user that is on the community.
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
-        privileges:
-          type: array
-          description: The keywords that describe the community.
-          items:
-            type: string
-      description: A member of a community.
-
-    Incentive:
-      type: object
-      required:
-        - AppID
-        - UserId
-        - IncentiveType
-        - Issuer
-      properties:
-        AppID:
-          type: string
-          example: 1
-        UserId:
-          type: string
-          example: 6
-        IncentiveType:
-          type: string
-          example: Message/Badge (only one)
-        Issuer:
-          type: string
-          example: WeNet issuer
-        Message:
-          type: object
-          properties:
-            content:
-              type: string
-              example: >-
-                we are happy to see your participation in the I-log app you are
-                doing a great job!
-        Badge:
-          type: object
-          properties:
-            BadgeClass:
-              type: string
-              example: hpqAdI7hQf2maQ13AW1jXA
-            ImgUrl:
-              type: string
-              example: >-
-                http://3.126.161.118:8000/media/uploads/badges/assertion-OYmfmtDFSIKG-qeZfXz4QQ.png
-            Criteria:
-              type: string
-              example: The user will get this badge for 50 relations in tweeter.
-            Message:
-              type: string
-              example: >-
-                congratulations! you just earned a new badge for your relations
-                on Twitter.
