@@ -535,13 +535,15 @@ components:
     QuestionAnswerView:
       type: array
       items:
-        q:
-          $ref: '#/components/schemas/QuestionView'
-        a:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnswerOptionsView'
-                
+        type: object
+        properties:
+          q:
+            $ref: '#/components/schemas/QuestionView'
+          a:
+            type: array
+            items:
+              $ref: '#/components/schemas/AnswerOptionsView'
+                  
     EmptyResponse:
       description: Empty object
       type: object
