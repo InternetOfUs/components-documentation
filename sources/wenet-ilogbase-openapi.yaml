@@ -1049,7 +1049,7 @@ components:
               t: Sto studiando
               
     QuestionAnswerView:
-      type: object
+      type: array
       properties:
         q:
           $ref: '#/components/schemas/QuestionView'
