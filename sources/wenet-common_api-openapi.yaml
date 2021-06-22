@@ -534,7 +534,7 @@ components:
               
     QuestionAnswerView:
       type: array
-      properties:
+      items:
         q:
           $ref: '#/components/schemas/QuestionView'
         a:
