@@ -743,10 +743,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/incentive_info_user"
-                  }
+                  "$ref": "#/components/schemas/incentive_info_user"
                 }
               }
             }
@@ -808,10 +805,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/incentive_info_user"
-                  }
+                  "$ref": "#/components/schemas/incentive_info_user"
                 }
               }
             }
@@ -985,10 +979,10 @@
         "tags": [
           "badges"
         ],
-        "description": "Get all avalable badges for a specific app.\n",
+        "description": "Get all available badges for a specific app.\n",
         "responses": {
           "200": {
-            "description": "successfuly",
+            "description": "success",
             "content": {
               "application/json": {
                 "schema": {
@@ -996,9 +990,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "App Id  not found"
           }
         }
       }
@@ -1253,6 +1244,55 @@
   },
   "components": {
     "schemas": {
+      "badges": {
+        "properties": {
+          "badges": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "1Wr05MLcT82mD_jkEelH3w"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "First question"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "You broke the ice, and asked your first question!"
+                },
+                "criteriaNarrative": {
+                  "type": "string",
+                  "example": "after first question asked"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2021-02-15T14:57:37.696791Z"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://wenetbadgesimages.s3.amazonaws.com/first_question.png"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "Questions (Action Item)",
+                    "1 (Threshold)"
+                  ]
+                }
+              }
+            }
+          },
+          "status_code": {
+            "type": "integer",
+            "example": 200
+          }
+        }
+      },
       "successful_operation": {
         "type": "object",
         "properties": {
@@ -1701,47 +1741,62 @@
       },
       "incentive_info_user": {
         "properties": {
+          "app_id": {
+            "type": "string",
+            "example": "GnYi1gZEcv"
+          },
           "incentives": {
-            "type": "object",
             "properties": {
-              "messages": {
-                "type": "object",
-                "properties": {
-                  "message_content": {
-                    "type": "string",
-                    "example": "greatjob"
-                  }
-                }
-              },
               "badges": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "app_id": {
+                    "id": {
                       "type": "string",
-                      "example": "xAcauSmrhd"
+                      "example": "1Wr05MLcT82mD_jkEelH3w"
                     },
-                    "expires": {
+                    "name": {
                       "type": "string",
-                      "format": "nullable",
-                      "example": "2020-05-17T13:53:16.075Z"
+                      "example": "First question"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "You broke the ice, and asked your first question!"
+                    },
+                    "criteriaNarrative": {
+                      "type": "string",
+                      "example": "after first question asked"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-02-15T14:57:37.696791Z"
                     },
                     "image": {
                       "type": "string",
                       "example": "https://wenetbadgesimages.s3.amazonaws.com/first_question.png"
                     },
-                    "id": {
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "Questions (Action Item)",
+                        "1 (Threshold)"
+                      ]
+                    }
+                  }
+                }
+              },
+              "messages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "message_content": {
                       "type": "string",
-                      "example": "-LhU2Cf9QRSWuGsJF-kBEg"
-                    },
-                    "criteriaNarrative": {
-                      "type": "string",
-                      "example": "After first question asked"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "example": "2020-05-17T13:53:16.078Z"
+                      "example": "greatjob"
                     }
                   }
                 }
