@@ -1033,7 +1033,7 @@
         ]
       }
     },
-    "/badges/issuers/{entity_id}/BadgeClasses": {
+    "/badges/BadgeClasses": {
       "post": {
         "security": [
           {
@@ -1049,13 +1049,76 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/definitions/BadgeClass"
+                  "type": "object",
+                  "properties": {
+                    "entityId": {
+                      "type": "string",
+                      "example": "ONeLMeSsTXae-x9RIfJbmA"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 201
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Validation error"
+          "403": {
+            "description": "Invalid URL - broken link or not HTTPS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "An invalid URL was posted"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "Only HTTPS URLs are allowed"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 403
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing Field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "app and task are required and must be strings"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "threshold is required and must to be a positive integer"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -1067,22 +1130,77 @@
             }
           }
         },
+        "tags": [
+          "Badges_BadgeClass"
+        ]
+      }
+    },
+    "/badges/BadgeClasses/{entityId}": {
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Get a BadgeClass",
         "parameters": [
           {
             "required": true,
             "schema": {
               "type": "string"
             },
-            "name": "entity_id",
+            "name": "entityId",
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "badge": {
+                      "$ref": "#/definitions/BadgeClass"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadgeClass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "BadgeClass not found - Invalid entityId"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "Badges_BadgeClass"
         ]
-      }
-    },
-    "/badges/BadgeClasses/{entity_id}": {
+      },
       "put": {
         "security": [
           {
@@ -1099,16 +1217,59 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/definitions/BadgeClass"
+                  "type": "object",
+                  "properties": {
+                    "updatedFields": {
+                      "$ref": "#/definitions/BadgeClass_put"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Validation error"
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Validation Error - Invalid field in body request"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "BadgeClass not found"
+            "description": "BadgeClass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "BadgeClass not found - Invalid entityId"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -1117,7 +1278,7 @@
             "schema": {
               "type": "string"
             },
-            "name": "entity_id",
+            "name": "entityId",
             "in": "path"
           }
         ],
@@ -1133,9 +1294,74 @@
         "tags": [
           "Badges_BadgeClass"
         ]
+      },
+      "delete": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Delete a BadgeClass",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entityId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "badge": {
+                      "$ref": "#/definitions/BadgeClass"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 204
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadgeClass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "BadgeClass not found - Invalid entityId"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeClass"
+        ]
       }
     },
-    "/badges/BadgeClasses/{entity_id}/assertions": {
+    "/badges/BadgeClasses/{entityId}/assertions": {
       "post": {
         "security": [
           {
@@ -1167,8 +1393,8 @@
             "schema": {
               "type": "string"
             },
-            "name": "entity_id",
-            "description": "BadgeClass entity_id",
+            "name": "entityId",
+            "description": "BadgeClass entityId",
             "in": "path"
           }
         ],
@@ -1216,7 +1442,7 @@
             "schema": {
               "type": "string"
             },
-            "name": "entity_id",
+            "name": "entityId",
             "in": "path"
           },
           {
@@ -1256,15 +1482,19 @@
                 },
                 "name": {
                   "type": "string",
-                  "example": "First question"
+                  "example": "Twelve Answers"
                 },
                 "description": {
                   "type": "string",
-                  "example": "You broke the ice, and asked your first question!"
+                  "example": "Way to go! You have answered 12 questions!"
                 },
-                "criteriaNarrative": {
+                "task": {
                   "type": "string",
-                  "example": "after first question asked"
+                  "example": "answerTransaction"
+                },
+                "threshold": {
+                  "type": "integer",
+                  "example": 12
                 },
                 "createdAt": {
                   "type": "string",
@@ -1273,16 +1503,6 @@
                 "image": {
                   "type": "string",
                   "example": "https://wenetbadgesimages.s3.amazonaws.com/first_question.png"
-                },
-                "tags": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "example": [
-                    "Questions (Action Item)",
-                    "1 (Threshold)"
-                  ]
                 }
               }
             }
@@ -1750,43 +1970,7 @@
               "badges": {
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "1Wr05MLcT82mD_jkEelH3w"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "First question"
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "You broke the ice, and asked your first question!"
-                    },
-                    "criteriaNarrative": {
-                      "type": "string",
-                      "example": "after first question asked"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "example": "2021-02-15T14:57:37.696791Z"
-                    },
-                    "image": {
-                      "type": "string",
-                      "example": "https://wenetbadgesimages.s3.amazonaws.com/first_question.png"
-                    },
-                    "tags": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "example": [
-                        "Questions (Action Item)",
-                        "1 (Threshold)"
-                      ]
-                    }
-                  }
+                  "$ref": "#/components/schemas/badges"
                 }
               },
               "messages": {
@@ -1992,184 +2176,68 @@
       }
     },
     "BadgeClass_put": {
-      "required": [
-        "name",
-        "description"
-      ],
       "properties": {
-        "entityType": {
+        "app": {
           "type": "string",
-          "description": "\"BadgeClass\"",
-          "format": "string"
+          "example": "I2AFRCOXx3"
         },
-        "entityId": {
+        "badgeName": {
           "type": "string",
-          "description": "Unique identifier for this BadgeClass",
-          "format": "string"
-        },
-        "openBadgeId": {
-          "type": "string",
-          "description": "URL of the OpenBadge compliant json",
-          "format": "url"
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp when the BadgeClass was created",
-          "format": "ISO8601 timestamp"
-        },
-        "createdBy": {
-          "type": "string",
-          "description": "BadgeUser who created this BadgeClass",
-          "format": "entityId"
-        },
-        "issuer": {
-          "type": "string",
-          "description": "entityId of the Issuer who owns the BadgeClass",
-          "format": "entityId"
-        },
-        "issuerOpenBadgeId": {
-          "type": "string",
-          "format": "URLField"
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the BadgeClass",
-          "format": "string"
-        },
-        "image": {
-          "type": "string",
-          "description": "Base64 encoded string of an image that represents the BadgeClass.",
-          "format": "data:image/png;base64"
+          "example": "Twelve Answers"
         },
         "description": {
           "type": "string",
-          "description": "Short description of the BadgeClass",
-          "format": "string"
+          "example": "Way to go! You have answered 12 questions!"
         },
-        "criteriaUrl": {
+        "task": {
           "type": "string",
-          "description": "External URL that describes in a human-readable format the criteria for the BadgeClass",
+          "example": "answerTransactions"
+        },
+        "threshold": {
+          "type": "integer",
+          "example": 12
+        },
+        "image": {
+          "type": "string",
+          "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
           "format": "url"
-        },
-        "criteriaNarrative": {
-          "type": "string",
-          "description": "Markdown formatted description of the criteria.note, criteriaNarrative or criteriaUrl is required.",
-          "format": "markdown"
-        },
-        "alignments": {
-          "items": {
-            "$ref": "#/definitions/BadgeClassAlignment"
-          },
-          "type": "array",
-          "description": "List of objects describing objectives or educational standards"
-        },
-        "tags": {
-          "description": "List of tags that describe the BadgeClass,one or more strings.",
-          "items": {
-            "type": "string",
-            "format": "string"
-          },
-          "type": "array"
-        },
-        "expires": {
-          "description": "Expiration period for Assertions awarded from this BadgeClass",
-          "$ref": "#/definitions/BadgeClassExpiration"
-        },
-        "extensions": {
-          "type": "string",
-          "format": "DictField"
         }
       }
     },
     "BadgeClass": {
       "required": [
-        "name",
+        "app",
+        "badgeName",
         "description",
-        "image",
-        "criteriaNarrative"
+        "task",
+        "threshold",
+        "image"
       ],
       "properties": {
-        "entityType": {
+        "app": {
           "type": "string",
-          "description": "\"BadgeClass\"",
-          "format": "string"
+          "example": "I2AFRCOXx3"
         },
-        "entityId": {
+        "badgeName": {
           "type": "string",
-          "description": "Unique identifier for this BadgeClass",
-          "format": "string"
-        },
-        "openBadgeId": {
-          "type": "string",
-          "description": "URL of the OpenBadge compliant json",
-          "format": "url"
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp when the BadgeClass was created",
-          "format": "ISO8601 timestamp"
-        },
-        "createdBy": {
-          "type": "string",
-          "description": "BadgeUser who created this BadgeClass",
-          "format": "entityId"
-        },
-        "issuer": {
-          "type": "string",
-          "description": "entityId of the Issuer who owns the BadgeClass",
-          "format": "entityId"
-        },
-        "issuerOpenBadgeId": {
-          "type": "string",
-          "format": "URLField"
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the BadgeClass",
-          "format": "string"
-        },
-        "image": {
-          "type": "string",
-          "description": "Base64 encoded string of an image that represents the BadgeClass.",
-          "format": "data:image/png;base64"
+          "example": "Twelve Answers"
         },
         "description": {
           "type": "string",
-          "description": "Short description of the BadgeClass",
-          "format": "string"
+          "example": "Way to go! You have answered 12 questions!"
         },
-        "criteriaUrl": {
+        "task": {
           "type": "string",
-          "description": "External URL that describes in a human-readable format the criteria for the BadgeClass",
+          "example": "answerTransactions"
+        },
+        "threshold": {
+          "type": "integer",
+          "example": 12
+        },
+        "image": {
+          "type": "string",
+          "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
           "format": "url"
-        },
-        "criteriaNarrative": {
-          "type": "string",
-          "description": "Markdown formatted description of the criteria.note, criteriaNarrative or criteriaUrl is required.",
-          "format": "markdown"
-        },
-        "alignments": {
-          "items": {
-            "$ref": "#/definitions/BadgeClassAlignment"
-          },
-          "type": "array",
-          "description": "List of objects describing objectives or educational standards"
-        },
-        "tags": {
-          "description": "List of tags that describe the BadgeClass,one or more strings.",
-          "items": {
-            "type": "string",
-            "format": "string"
-          },
-          "type": "array"
-        },
-        "expires": {
-          "description": "Expiration period for Assertions awarded from this BadgeClass",
-          "$ref": "#/definitions/BadgeClassExpiration"
-        },
-        "extensions": {
-          "type": "string",
-          "format": "DictField"
         }
       }
     },
