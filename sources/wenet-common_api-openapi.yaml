@@ -533,15 +533,17 @@ components:
               t: Sto studiando
               
     QuestionAnswerView:
-      type: object
-      properties:
-        q:
-          $ref: '#/components/schemas/QuestionView'
-        a:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnswerOptionsView'
-                
+      type: array
+      items:
+        type: object
+        properties:
+          q:
+            $ref: '#/components/schemas/QuestionView'
+          a:
+            type: array
+            items:
+              $ref: '#/components/schemas/AnswerOptionsView'
+                  
     EmptyResponse:
       description: Empty object
       type: object
