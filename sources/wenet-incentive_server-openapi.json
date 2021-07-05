@@ -1101,7 +1101,7 @@
                   "properties": {
                     "message_1": {
                       "type": "string",
-                      "example": "app and task are required and must be strings"
+                      "example": "app and criteria are required and must be strings"
                     },
                     "status_code_1": {
                       "type": "integer",
@@ -1125,7 +1125,34 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/BadgeClass"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Twelve Answers"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Way to go! You have answered 12 questions!"
+                  },
+                  "criteria": {
+                    "type": "string",
+                    "example": "answerTransactions"
+                  },
+                  "threshold": {
+                    "type": "integer",
+                    "example": 12
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
+                    "format": "url"
+                  },
+                  "app": {
+                    "type": "string",
+                    "example": "I2AFRCOXx3"
+                  }
+                }
               }
             }
           }
@@ -1211,6 +1238,7 @@
           }
         ],
         "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
+        "description": "Fill only the fields you wish to update, delete the rest or set them as None",
         "responses": {
           "200": {
             "description": "Successfully updated",
@@ -1220,7 +1248,24 @@
                   "type": "object",
                   "properties": {
                     "updatedFields": {
-                      "$ref": "#/definitions/BadgeClass_put"
+                      "properties": {
+                        "app": {
+                          "type": "string",
+                          "example": "I2AFRCOXx4"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Thirteen Answers"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Way to go! You have answered 13 questions!"
+                        },
+                        "threshold": {
+                          "type": "integer",
+                          "example": 13
+                        }
+                      }
                     },
                     "status_code": {
                       "type": "integer",
@@ -1488,7 +1533,7 @@
                   "type": "string",
                   "example": "Way to go! You have answered 12 questions!"
                 },
-                "task": {
+                "criteria": {
                   "type": "string",
                   "example": "answerTransaction"
                 },
@@ -2179,27 +2224,27 @@
       "properties": {
         "app": {
           "type": "string",
-          "example": "I2AFRCOXx3"
+          "example": "I2AFRCOXx4"
         },
-        "badgeName": {
+        "name": {
           "type": "string",
-          "example": "Twelve Answers"
+          "example": "Thirteen Answers"
         },
         "description": {
           "type": "string",
-          "example": "Way to go! You have answered 12 questions!"
+          "example": "Way to go! You have answered 13 questions!"
         },
-        "task": {
+        "criteria": {
           "type": "string",
-          "example": "answerTransactions"
+          "example": null
         },
         "threshold": {
           "type": "integer",
-          "example": 12
+          "example": 13
         },
         "image": {
           "type": "string",
-          "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
+          "example": null,
           "format": "url"
         }
       }
@@ -2207,18 +2252,18 @@
     "BadgeClass": {
       "required": [
         "app",
-        "badgeName",
+        "name",
         "description",
-        "task",
+        "criteria",
         "threshold",
         "image"
       ],
       "properties": {
-        "app": {
+        "id": {
           "type": "string",
-          "example": "I2AFRCOXx3"
+          "example": "3tWqCjUNTEqs2jldvjM7Lg"
         },
-        "badgeName": {
+        "name": {
           "type": "string",
           "example": "Twelve Answers"
         },
@@ -2226,7 +2271,7 @@
           "type": "string",
           "example": "Way to go! You have answered 12 questions!"
         },
-        "task": {
+        "criteria": {
           "type": "string",
           "example": "answerTransactions"
         },
@@ -2234,10 +2279,18 @@
           "type": "integer",
           "example": 12
         },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-02-15T14:57:37.696791Z"
+        },
         "image": {
           "type": "string",
           "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
           "format": "url"
+        },
+        "app": {
+          "type": "string",
+          "example": "I2AFRCOXx3"
         }
       }
     },
