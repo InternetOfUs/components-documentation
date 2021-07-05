@@ -39,9 +39,9 @@ info:
     name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
-  version: 0.13.0
+    name: Apache V2
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 0.15.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
   description: Production instance
@@ -149,7 +149,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
         required: true
       responses:
         "202":
@@ -516,7 +516,133 @@ paths:
         required: true
       responses:
         "200":
-          description: The merged community user
+          description: The merged community user state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+        "400":
+          description: If the state is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /states/tasks/{taskId}/users/{userId}:
+    get:
+      tags:
+      - States
+      summary: Return the state
+      description: Retrieve the state that satisfy the query parameters.
+      operationId: retrieveTaskUserState
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task where is the state
+        required: true
+        schema:
+          type: string
+        example: 1
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      responses:
+        "200":
+          description: The state associated to the task user
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/State'
+    patch:
+      tags:
+      - States
+      summary: Merge the state
+      description: Merge the current task user with a new one.
+      operationId: mergeTaskUserState
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task where is the state
+        required: true
+        schema:
+          type: string
+        example: 1
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      requestBody:
+        description: The new task user state
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/State'
+        required: true
+      responses:
+        "200":
+          description: The merged task user state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+        "400":
+          description: If the state is not valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /states/users/{userId}:
+    get:
+      tags:
+      - States
+      summary: Return the state
+      description: Retrieve the state that satisfy the query parameters.
+      operationId: retrieveUserState
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      responses:
+        "200":
+          description: The state associated to the user
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/State'
+    patch:
+      tags:
+      - States
+      summary: Merge the state
+      description: Merge the current community user with a new one.
+      operationId: mergeUserState
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the related state
+        required: true
+        schema:
+          type: string
+        example: 2
+      requestBody:
+        description: The new community user state
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/State'
+        required: true
+      responses:
+        "200":
+          description: The merged user state
           content:
             application/json:
               schema:
@@ -556,10 +682,10 @@ paths:
         example: 1
       - name: userId
         in: query
-        description: "An user identifier to be equals on the state to return. You\
-          \ can use a Perl compatible regular expressions (PCRE) that has to match\
-          \ the user of the state if you write between '/'. For example to get the\
-          \ state for users '1' and '2' you must pass as 'userId' '/^[1|2]$/'."
+        description: "a user identifier to be equals on the state to return. You can\
+          \ use a Perl compatible regular expressions (PCRE) that has to match the\
+          \ user of the state if you write between '/'. For example to get the state\
+          \ for users '1' and '2' you must pass as 'userId' '/^[1|2]$/'."
         schema:
           type: string
         example: 1
@@ -584,7 +710,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "202":
@@ -592,7 +718,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Cannot process the task transaction
           content:
@@ -613,7 +739,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "202":
@@ -621,7 +747,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Cannot process the created task
           content:
@@ -769,8 +895,8 @@ components:
         receiver:
           $ref: '#/components/schemas/ProtocolAddress'
       description: A message that can be interchange in an interaction protocol.
-    Norm:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+    ProtocolNorm:
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
     PublishedNorm:
       type: object
       properties:
@@ -778,11 +904,13 @@ components:
           type: integer
           description: The time stamp representing the account creation instant.
           format: int64
+          readOnly: true
           example: 1563871899
         _lastUpdateTs:
           type: integer
           description: The time stamp representing the last update instant.
           format: int64
+          readOnly: true
           example: 1563898764
         id:
           type: string
@@ -810,7 +938,7 @@ components:
           description: The identifier of the user that has published the norm.
           example: bf274393-1e7b-4d40-a897-88cb96277edd
         norm:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
       description: A norm that is published to share with all the WeNet users.
     PublishedNormsPage:
       type: object
@@ -838,11 +966,13 @@ components:
           type: integer
           description: The time stamp representing the account creation instant.
           format: int64
+          readOnly: true
           example: 1563871899
         _lastUpdateTs:
           type: integer
           description: The time stamp representing the last update instant.
           format: int64
+          readOnly: true
           example: 1563898764
         communityId:
           type: string
