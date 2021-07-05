@@ -1064,6 +1064,34 @@
               }
             }
           },
+          "400": {
+            "description": "Validation Error / Missing Field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "app and criteria are required and must be strings"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "threshold is required and must to be a positive integer"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
           "403": {
             "description": "Invalid URL - broken link or not HTTPS",
             "content": {
@@ -1086,34 +1114,6 @@
                     "status_code_2": {
                       "type": "integer",
                       "example": 403
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Missing Field",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message_1": {
-                      "type": "string",
-                      "example": "app and criteria are required and must be strings"
-                    },
-                    "status_code_1": {
-                      "type": "integer",
-                      "example": 404
-                    },
-                    "message_2": {
-                      "type": "string",
-                      "example": "threshold is required and must to be a positive integer"
-                    },
-                    "status_code_2": {
-                      "type": "integer",
-                      "example": 404
                     }
                   }
                 }
@@ -1285,7 +1285,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Validation Error - Invalid field in body request"
+                      "example": "Validation Error - Invalid field in body request: {field}"
                     },
                     "status_code": {
                       "type": "integer",
