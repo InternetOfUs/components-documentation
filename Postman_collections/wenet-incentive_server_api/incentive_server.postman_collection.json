@@ -1,124 +1,201 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "8361ef98-933f-4478-8bbd-1a485ee28a82",
 		"name": "incentive_server",
-		"_postman_id": "c055fcd3-f948-f0d7-1f36-8fa1422256d9",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "searches for all incentive infos of a community of users",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/Stream/TouchEvent",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"touchevent\": {\n\n\t\t\"timestamp\": \"202005271sdaads1150800\",\n\t\t\"userid\": \"1\",\n\t\t\"experimentid\": \"wenetTest\",\n\t\t\"type\": \"None\"\n\t}\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/Stream/Stream/TouchEvent",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"Stream",
+						"Stream",
+						"TouchEvent"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "searches for user incentive info",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/apps/1/users/46654",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
-				"body": {},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/incentive/apps/1/users/46654",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"incentive",
+						"apps",
+						"1",
+						"users",
+						"46654"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Enable incentive",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/enable_incentive",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \n  \"reason\": \"enable incentive server for testing \"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/incentive/enable_incentive",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"incentive",
+						"enable_incentive"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Disable incentive",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/incentive/disable_incentive",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \n  \"reason\": \"enable incentive server for testing \"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/incentive/disable_incentive",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"incentive",
+						"disable_incentive"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Emquiry incentives",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/enquiry_incentives/apps/1/users/46654",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"content\": \"the incentive was inappropriate\",\n\t\"incentive\":\"String\"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/enquiry_incentives/apps/1/users/46654",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"enquiry_incentives",
+						"apps",
+						"1",
+						"users",
+						"46654"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create a new badge issuer",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"name\": \"New Postman Issuer 4\",\n  \"email\": \"wenet.badges@gmail.com\",\n  \"description\": \"Here's an issuer I'm creating from Postman\",\n  \"url\": \"http://example.com\"\n}"
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"issuers"
+					]
 				},
 				"description": "you have to supply an authorized email - \"wenet.badges@gmail.com\""
 			},
@@ -130,7 +207,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"response is ok\", function () {",
 							"    pm.response.to.have.status(201);",
@@ -143,165 +219,407 @@
 							"});",
 							"",
 							""
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/issuers/TAgRa3NxT0yme-iYBrtyeQ/BadgeClasses",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					},
 					{
-						"key": "",
-						"value": "",
-						"description": "",
+						"key": "Authorization",
+						"value": "Token 379e2625cb642327d62f1cf9bbc6cc53c9a421a8",
 						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"My Newest Tiny BadgeClass 4\",\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\",\n  \"description\": \"This is a tiny badge with a tiny little image. People who earn it might have done something tiny to deserve it.\",\n  \"criteriaUrl\": \"https://tinybuddha.com/blog/30-accomplishments-to-be-proud-of/\",\n  \"criteriaNarrative\": \"Do something both small and meaningful\"\n}"
+					"raw": "{\n\"name\": \"Helper level 2\",\n\"image\": \"https://wenetbadgesimages.s3.amazonaws.com/helper_level_2.png\",\n\"description\": \"You answered 10 questions, helping others with your knowledge!\",\n\"app\": \"I2AFRCOXx3\",\n\"criteria\": \"Questions\",\n\"threshold\": 10\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Update an existing BadgeClass",
+			"name": "Update BadgeClass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"BadgeClass entityID obtained\", function () {",
+							"    var result = pm.response.json().result[0]",
+							"    pm.environment.set(\"latest_badgeclass_entity_id\", result.entityId);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/kFV-IDMRSmyHeW4CBab3dg",
 				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					},
 					{
-						"key": "",
-						"value": "",
-						"description": "",
+						"key": "Authorization",
+						"value": "Token 379e2625cb642327d62f1cf9bbc6cc53c9a421a8",
 						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"My Newest Tiny BadgeClass 3\",\n\t\"description\": \"New desc\"\n}"
+					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses",
+						"W6JY6DHkQNyDV9IZkbRkHw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get BadgeClass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"BadgeClass entityID obtained\", function () {",
+							"    var result = pm.response.json().result[0]",
+							"    pm.environment.set(\"latest_badgeclass_entity_id\", result.entityId);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Token 379e2625cb642327d62f1cf9bbc6cc53c9a421a8",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses",
+						"W6JY6DHkQNyDV9IZkbRkHw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete BadgeClass",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"BadgeClass entityID obtained\", function () {",
+							"    var result = pm.response.json().result[0]",
+							"    pm.environment.set(\"latest_badgeclass_entity_id\", result.entityId);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Token 379e2625cb642327d62f1cf9bbc6cc53c9a421a8",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses",
+						"W6JY6DHkQNyDV9IZkbRkHw"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Issue an Assertion to a single recipient",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/Od4wk54eRGuYWRkki95ijA/assertions",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"recipient\": {\n    \"identity\": \"benzaked@possasdat.bgu.ac.il\",\n    \"type\": \"email\",\n    \"hashed\": true\n  },\n  \"narrative\": \"This is an overall narrative describing how the badge was earned.\",\n  \"evidence\": [\n    {\n      \"url\": \"http://example.com\",\n      \"narrative\": \"This is a narrative describing the individual evidence item.\"\n    }\n  ],\n  \"expires\": \"2025-03-31T23:59:59Z\",\n  \"notify\": true\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/Od4wk54eRGuYWRkki95ijA/assertions",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses",
+						"Od4wk54eRGuYWRkki95ijA",
+						"assertions"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "get a list of assertions for a single BadgeType",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/5ealYJioSYiZVpXMrBT6ww/assertions/",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					},
 					{
 						"key": "",
 						"value": "",
-						"description": "",
 						"disabled": true
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"entityType\": \"string\",\n  \"entityId\": \"string\",\n  \"firstName\": \"Daniel\",\n  \"lastName\": \"ben\",\n  \"emails\": [\n    {\n      \"email\": \"user@example.com\",\n      \"primary\": true\n    }\n  ],\n  \"hasPasswordSet\": \"string\"\n}"
-				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/5ealYJioSYiZVpXMrBT6ww/assertions/",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"badges",
+						"BadgeClasses",
+						"5ealYJioSYiZVpXMrBT6ww",
+						"assertions",
+						""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Stream locationevent",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/locationevent",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"locationeventpertime\": {\n\t\t\"experimentId\": \"wenetTest\",\n\t\t\"userid\": \"1\",\n\t\t\"timestamp\": \"201908252357000\",\n\t\t\"day\": \"20190825\",\n\t\t\"accuracy\": 23.2,\n\t\t\"lucene\": \"lucene\",\n\t\t\"provider\": \"gps\",\n\t\t\"speed\": 2.3,\n\t\t\"point\": {\n\t\t\t\"latitude\": 22.1492,\n\t\t\t\"longitude\": -101.03609,\n\t\t\t\"altitude\": 1845.29208\n\t\t}\n\t}\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/Stream/locationevent",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"Stream",
+						"locationevent"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Stream TouchEvent",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/TouchEvent",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"touchevent\": {\n\t\t\"experimentId\": \"wenetTest\",\n                    \"userid\": \"1\",\n                    \"timestamp\": \"2020052105142943\",\n                    \"day\": \"20200521\"\n\t}\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/Stream/TouchEvent",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"Stream",
+						"TouchEvent"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Stream SocialRelation",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/Stream/SocialRelation",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"socialrelations\": {\n\t\t\"experimentid\": \"wenetTest\",\n\t\t\"userid\": \"1\",\n\t\t\"day\": \"20200521\",\n\t\t\"timestamp\": \"202004212357000\",\n\t\t\"source\": \"twitter\",\n\t\t\"content\": {\n\t\t\t\"eventtype\": \"follows\",\n\t\t\t\"value\": \"1\",\n\t\t\t\"userdestinationid\": \"8\"\n\t\t}\n\t}\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/Stream/SocialRelation",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"Stream",
+						"SocialRelation"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "POST a Task status ",
 			"request": {
-				"url": "https://wenet.u-hopper.com/dev/incentive_server/Tasks/TaskStatus/",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"user_id\": \"WeNet_user5\",\n  \"community_id\": \"WeNet_community_5\",\n  \"task_id\": \"WeNet_task\",\n  \"Action\": \"Starts\"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/Tasks/TaskStatus/",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"Tasks",
+						"TaskStatus",
+						""
+					]
+				}
 			},
 			"response": []
 		}

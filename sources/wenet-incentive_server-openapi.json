@@ -1093,20 +1093,12 @@
             }
           },
           "403": {
-            "description": "Invalid URL - broken link or not HTTPS",
+            "description": "Invalid URL - not HTTPS",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message_1": {
-                      "type": "string",
-                      "example": "An invalid URL was posted"
-                    },
-                    "status_code_1": {
-                      "type": "integer",
-                      "example": 403
-                    },
                     "message_2": {
                       "type": "string",
                       "example": "Only HTTPS URLs are allowed"
@@ -1361,7 +1353,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Successfully deleted",
             "content": {
               "application/json": {
@@ -1373,7 +1365,7 @@
                     },
                     "status_code": {
                       "type": "integer",
-                      "example": 204
+                      "example": 200
                     }
                   }
                 }
@@ -1825,13 +1817,13 @@
             "type": "string",
             "example": "WeNet_task"
           },
-          "Action": {
+          "action": {
             "type": "string",
-            "example": "Starts"
+            "example": "Questions"
           },
-          "message": {
+          "count": {
             "type": "string",
-            "example": "some message"
+            "example": 10
           }
         },
         "required": [
