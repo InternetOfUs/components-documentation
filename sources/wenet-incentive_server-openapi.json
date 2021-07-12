@@ -1822,7 +1822,7 @@
             "example": "Questions"
           },
           "count": {
-            "type": "string",
+            "type": "integer",
             "example": 10
           }
         },
