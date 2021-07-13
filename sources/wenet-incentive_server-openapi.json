@@ -1086,6 +1086,14 @@
                     "status_code_2": {
                       "type": "integer",
                       "example": 400
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "Invalid image (incompatible with badgr server)"
+                    },
+                    "status_code_3": {
+                      "type": "integer",
+                      "example": 400
                     }
                   }
                 }
@@ -1093,17 +1101,41 @@
             }
           },
           "403": {
-            "description": "Invalid URL - not HTTPS",
+            "description": "Invalid URL - either broken or not HTTPS",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "An invalid URL was posted"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 403
+                    },
                     "message_2": {
                       "type": "string",
                       "example": "Only HTTPS URLs are allowed"
                     },
                     "status_code_2": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "URL must end with .png or .svg"
+                    },
+                    "status_code_3": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "URL not found"
+                    },
+                    "status_code_4": {
                       "type": "integer",
                       "example": 403
                     }
