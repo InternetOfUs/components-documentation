@@ -1268,7 +1268,7 @@
           }
         ],
         "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
-        "description": "Fill only the fields you wish to update, remove the rest from the request body or set them as an empty string None",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body. If you wish to nullify the label field (associate the BadgeClass with a TaskType instead of TaskTransaction), set label as an empty string.",
         "responses": {
           "200": {
             "description": "Successfully updated",
@@ -2274,7 +2274,7 @@
         },
         "taskTypeId": {
           "type": "string",
-          "example": ""
+          "example": null
         },
         "label": {
           "type": "string",
@@ -2286,7 +2286,7 @@
         },
         "image": {
           "type": "string",
-          "example": "",
+          "example": null,
           "format": "url"
         }
       }
