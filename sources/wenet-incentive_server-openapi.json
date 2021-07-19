@@ -166,7 +166,7 @@
           "Tasks"
         ],
         "summary": "Post data about the task status",
-        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an enpty string - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
+        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an empty string or removed from request body - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
         "operationId": "Post Data the task status",
         "requestBody": {
           "description": "The request body",
@@ -1044,7 +1044,7 @@
           }
         ],
         "summary": "Create a new BadgeClass",
-        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an empty string - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
+        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an empty string or removed from request body - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
         "responses": {
           "201": {
             "description": "Successfully created",
@@ -1268,7 +1268,7 @@
           }
         ],
         "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
-        "description": "Fill only the fields you wish to update, delete the rest or set them as None",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body or set them as an empty string None",
         "responses": {
           "200": {
             "description": "Successfully updated",
@@ -1290,6 +1290,10 @@
                         "description": {
                           "type": "string",
                           "example": "Way to go! You have answered 13 questions!"
+                        },
+                        "label": {
+                          "type": "string",
+                          "example": "AnswerPickedMessage"
                         },
                         "threshold": {
                           "type": "integer",
@@ -2270,7 +2274,7 @@
         },
         "taskTypeId": {
           "type": "string",
-          "example": null
+          "example": ""
         },
         "label": {
           "type": "string",
@@ -2282,7 +2286,7 @@
         },
         "image": {
           "type": "string",
-          "example": null,
+          "example": "",
           "format": "url"
         }
       }
