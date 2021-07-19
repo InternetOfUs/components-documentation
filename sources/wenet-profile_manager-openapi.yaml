@@ -26,9 +26,9 @@ info:
     name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
-    name: MIT
-    url: https://opensource.org/licenses/MIT
-  version: 0.15.1
+    name: Apache V2
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 0.16.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/profile_manager
   description: Production instance
@@ -113,7 +113,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "404":
           description: Not found community
           content:
@@ -140,7 +140,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "201":
@@ -148,7 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: Bad community member to add
           content:
@@ -184,7 +184,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found community
           content:
@@ -210,7 +210,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "201":
@@ -218,7 +218,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to add
           content:
@@ -254,7 +254,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "404":
           description: Not found community
           content:
@@ -280,7 +280,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "201":
@@ -288,7 +288,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: Bad social practice to add
           content:
@@ -409,7 +409,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -417,7 +417,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -445,7 +445,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "404":
           description: Not found community
           content:
@@ -471,7 +471,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -479,7 +479,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -533,7 +533,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -541,7 +541,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -584,7 +584,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "404":
           description: Not found community or community member
           content:
@@ -619,7 +619,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "200":
@@ -627,7 +627,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: The community member to update is not valid
           content:
@@ -700,7 +700,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "200":
@@ -708,7 +708,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: The community member to merge is not valid
           content:
@@ -750,7 +750,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found community or norm
           content:
@@ -784,7 +784,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -792,7 +792,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: The norm to update is not valid
           content:
@@ -864,7 +864,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -872,7 +872,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: The norm to merge is not valid
           content:
@@ -914,7 +914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "404":
           description: Not found community or social practice
           content:
@@ -948,7 +948,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "200":
@@ -956,7 +956,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: The social practice to update is not valid
           content:
@@ -1027,7 +1027,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "200":
@@ -1035,7 +1035,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: The social practice to merge is not valid
           content:
@@ -1119,7 +1119,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: If it can not calculate the Gardner intelligences
           content:
@@ -1172,7 +1172,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: If it can not calculate the personality
           content:
@@ -1204,7 +1204,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "404":
           description: Not found profile
           content:
@@ -1231,7 +1231,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "201":
@@ -1239,7 +1239,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to add
           content:
@@ -1277,7 +1277,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "404":
           description: Not found profile
           content:
@@ -1304,7 +1304,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "201":
@@ -1312,7 +1312,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to add
           content:
@@ -1350,7 +1350,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: Not found profile
           content:
@@ -1377,7 +1377,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "201":
@@ -1385,7 +1385,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to add
           content:
@@ -1423,7 +1423,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found profile
           content:
@@ -1450,7 +1450,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "201":
@@ -1458,7 +1458,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to add
           content:
@@ -1496,7 +1496,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "404":
           description: Not found profile
           content:
@@ -1524,7 +1524,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "201":
@@ -1532,7 +1532,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to add
           content:
@@ -1570,7 +1570,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "404":
           description: Not found profile
           content:
@@ -1598,7 +1598,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "201":
@@ -1606,7 +1606,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to add
           content:
@@ -1644,7 +1644,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "404":
           description: Not found profile
           content:
@@ -1671,7 +1671,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         required: true
       responses:
         "201":
@@ -1679,7 +1679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "400":
           description: Bad relationship to add
           content:
@@ -1717,7 +1717,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "404":
           description: Not found profile
           content:
@@ -1745,7 +1745,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "201":
@@ -1753,7 +1753,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to add
           content:
@@ -1814,7 +1814,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: Dr.
@@ -1860,7 +1860,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 CreatedProfile:
                   description: CreatedProfile
@@ -1932,7 +1932,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 FoundProfile:
                   description: FoundProfile
@@ -2002,7 +2002,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: ""
@@ -2030,7 +2030,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 UpdatedProfile:
                   description: UpdatedProfile
@@ -2128,7 +2128,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: ""
@@ -2156,7 +2156,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 UpdatedProfile:
                   description: UpdatedProfile
@@ -2244,7 +2244,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "404":
           description: Not found profile or competence
           content:
@@ -2280,7 +2280,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "200":
@@ -2288,7 +2288,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to update
           content:
@@ -2363,7 +2363,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "200":
@@ -2371,7 +2371,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to merge
           content:
@@ -2415,7 +2415,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "404":
           description: Not found profile or material
           content:
@@ -2451,7 +2451,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "200":
@@ -2459,7 +2459,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to update
           content:
@@ -2534,7 +2534,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "200":
@@ -2542,7 +2542,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to merge
           content:
@@ -2586,7 +2586,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: Not found profile or meaning
           content:
@@ -2622,7 +2622,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "200":
@@ -2630,7 +2630,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to update
           content:
@@ -2705,7 +2705,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "200":
@@ -2713,7 +2713,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to merge
           content:
@@ -2726,7 +2726,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/norms/{normId}:
+  /profiles/{userId}/norms/{index}:
     get:
       tags:
       - Norms
@@ -2743,20 +2743,21 @@ paths:
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
+      - name: index
         in: path
-        description: The identifier of the norm to get
+        description: The index of the norm to get
         required: true
         schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
+          type: integer
+          format: int32
+        example: 1
       responses:
         "200":
           description: The norm defined into the profile
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found profile or norm
           content:
@@ -2779,19 +2780,20 @@ paths:
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
+      - name: index
         in: path
-        description: The identifier of the norm to get
+        description: The index of the norm to update
         required: true
         schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
+          type: integer
+          format: int32
+        example: 1
       requestBody:
         description: The new values to update the norm
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -2799,7 +2801,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to update
           content:
@@ -2828,13 +2830,14 @@ paths:
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
+      - name: index
         in: path
-        description: The identifier of the norm to delete
+        description: The index of the norm to delete
         required: true
         schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
+          type: integer
+          format: int32
+        example: 1
       responses:
         "204":
           description: The norm defined into the profile
@@ -2860,19 +2863,20 @@ paths:
         schema:
           type: string
         example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: normId
+      - name: index
         in: path
-        description: The identifier of the norm to get
+        description: The index of the norm to get
         required: true
         schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
+          type: integer
+          format: int32
+        example: 1
       requestBody:
         description: The new values to merge the norm
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -2880,7 +2884,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Norm
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to merge
           content:
@@ -2924,7 +2928,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "404":
           description: Not found profile or personal behavior
           content:
@@ -2960,7 +2964,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "200":
@@ -2968,7 +2972,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to update
           content:
@@ -3043,7 +3047,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "200":
@@ -3052,7 +3056,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to merge
           content:
@@ -3095,7 +3099,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "404":
           description: Not found profile or planned activity
           content:
@@ -3130,7 +3134,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "200":
@@ -3138,7 +3142,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to update
           content:
@@ -3211,7 +3215,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "200":
@@ -3220,7 +3224,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to merge
           content:
@@ -3264,7 +3268,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "404":
           description: Not found profile or relationship
           content:
@@ -3300,7 +3304,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         required: true
       responses:
         "200":
@@ -3308,7 +3312,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "400":
           description: Bad relationship to update
           content:
@@ -3383,7 +3387,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         required: true
       responses:
         "200":
@@ -3391,7 +3395,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "400":
           description: Bad relationship to merge
           content:
@@ -3434,7 +3438,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "404":
           description: Not found profile or relevant location
           content:
@@ -3469,7 +3473,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "200":
@@ -3477,7 +3481,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to update
           content:
@@ -3550,7 +3554,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "200":
@@ -3559,7 +3563,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to merge
           content:
@@ -3853,7 +3857,7 @@ components:
           type: array
           description: The set of communities found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
       description: Contains a set of communities found
     Info:
       type: object
@@ -3971,7 +3975,7 @@ components:
           format: int64
           example: 1571664406
         profile:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: The information of the user profile in a period of time.
     HistoricWeNetUserProfilesPage:
       type: object
@@ -3993,7 +3997,7 @@ components:
             $ref: '#/components/schemas/HistoricWeNetUserProfile'
       description: Contains a set of profiles found
     WeNetUserProfile:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
     WeNetUserProfilesPage:
       type: object
       properties:
@@ -4011,7 +4015,7 @@ components:
           type: array
           description: The set of profiles found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/99249b00800807c94cb973b08c265e0a37f820ab/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: Contains a set of profiles found
     UserPerformanceRatingEvent:
       type: object
