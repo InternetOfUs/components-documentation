@@ -1073,7 +1073,7 @@
                   "properties": {
                     "message_1": {
                       "type": "string",
-                      "example": "app and criteria are required and must be strings"
+                      "example": "app and taskTypeId are required and must be strings"
                     },
                     "status_code_1": {
                       "type": "integer",
@@ -1159,9 +1159,13 @@
                     "type": "string",
                     "example": "Way to go! You have answered 12 questions!"
                   },
-                  "criteria": {
+                  "taskTypeId": {
                     "type": "string",
-                    "example": "answerTransactions"
+                    "example": "ask4help"
+                  },
+                  "label": {
+                    "type": "string",
+                    "example": "answerTransaction"
                   },
                   "threshold": {
                     "type": "integer",
@@ -1557,7 +1561,11 @@
                   "type": "string",
                   "example": "Way to go! You have answered 12 questions!"
                 },
-                "criteria": {
+                "taskTypeId": {
+                  "type": "string",
+                  "example": "ask4help"
+                },
+                "label": {
                   "type": "string",
                   "example": "answerTransaction"
                 },
@@ -1845,13 +1853,13 @@
             "type": "string",
             "example": "xAcauSmrhd"
           },
-          "task_id": {
+          "taskTypeId": {
             "type": "string",
-            "example": "WeNet_task"
+            "example": "ask4help"
           },
-          "action": {
+          "label": {
             "type": "string",
-            "example": "Questions"
+            "example": "answerTransaction"
           },
           "count": {
             "type": "integer",
@@ -2252,15 +2260,19 @@
         },
         "name": {
           "type": "string",
-          "example": "Thirteen Answers"
+          "example": "Thirteen Accepted Answers"
         },
         "description": {
           "type": "string",
-          "example": "Way to go! You have answered 13 questions!"
+          "example": "Thirteen of your answers have been accepted!"
         },
-        "criteria": {
+        "taskTypeId": {
           "type": "string",
           "example": null
+        },
+        "label": {
+          "type": "string",
+          "example": "AnswerPickedMessage"
         },
         "threshold": {
           "type": "integer",
@@ -2278,7 +2290,7 @@
         "app",
         "name",
         "description",
-        "criteria",
+        "taskTypeId",
         "threshold",
         "image"
       ],
@@ -2295,9 +2307,13 @@
           "type": "string",
           "example": "Way to go! You have answered 12 questions!"
         },
-        "criteria": {
+        "taskTypeId": {
           "type": "string",
-          "example": "answerTransactions"
+          "example": "ask4help"
+        },
+        "label": {
+          "type": "string",
+          "example": "answerTransaction"
         },
         "threshold": {
           "type": "integer",
