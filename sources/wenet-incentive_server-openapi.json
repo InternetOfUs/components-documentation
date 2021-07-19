@@ -166,6 +166,7 @@
           "Tasks"
         ],
         "summary": "Post data about the task status",
+        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is not filled - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
         "operationId": "Post Data the task status",
         "requestBody": {
           "description": "The request body",
@@ -1043,6 +1044,7 @@
           }
         ],
         "summary": "Create a new BadgeClass",
+        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is not filled - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
         "responses": {
           "201": {
             "description": "Successfully created",
