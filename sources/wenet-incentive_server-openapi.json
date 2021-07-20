@@ -160,20 +160,20 @@
         }
       }
     },
-    "/Tasks/TaskStatus": {
+    "/Tasks/TaskTypeStatus": {
       "post": {
         "tags": [
           "Tasks"
         ],
-        "summary": "Post data about the task status",
-        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the {Parent taskTypeId}'s TaskTransaction the field holds. If it is removed from request body or inserted as None or an empty string - the BadgeClass will be associated with the TaskType held in taskTypeId field (and in the output, label field will hold an empty string).",
+        "summary": "Post data about an event of a TaskType",
+        "description": "Without label field.",
         "operationId": "Post Data the task status",
         "requestBody": {
           "description": "The request body",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/task_status"
+                "$ref": "#/components/schemas/taskType_status_body"
               }
             }
           }
@@ -184,7 +184,49 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/task_status"
+                  "$ref": "#/components/schemas/task_status_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BAD_REQUEST"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Tasks/TaskTransactionStatus": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Post data about an event of a TaskTransaction",
+        "description": "With label field. if label is removed or inserted as None or an empty list - then the event counts as of a TaskType.",
+        "operationId": "Post Data the task status",
+        "requestBody": {
+          "description": "The request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/taskTransaction_status_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfuly post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/task_status_200"
                 }
               }
             }
@@ -1994,7 +2036,38 @@
           }
         }
       },
-      "task_status": {
+      "taskType_status_body": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "example": "WeNet_user5"
+          },
+          "community_id": {
+            "type": "string",
+            "example": "WeNet_community_5"
+          },
+          "app_id": {
+            "type": "string",
+            "example": "xAcauSmrhd"
+          },
+          "taskTypeId": {
+            "type": "string",
+            "example": "ask4help"
+          },
+          "count": {
+            "type": "integer",
+            "example": 10
+          }
+        },
+        "required": [
+          "user_id",
+          "app_id",
+          "taskTypeId",
+          "count"
+        ]
+      },
+      "taskTransaction_status_body": {
         "type": "object",
         "properties": {
           "user_id": {
@@ -2025,9 +2098,151 @@
         "required": [
           "user_id",
           "app_id",
-          "task_id",
-          "Action"
+          "taskTypeId",
+          "count"
         ]
+      },
+      "task_status_200": {
+        "type": "object",
+        "properties": {
+          "message_1": {
+            "type": "string",
+            "example": "No badges to issue"
+          },
+          "status_code_1": {
+            "type": "integer",
+            "example": 200
+          },
+          "message_2": {
+            "type": "string",
+            "example": "The user already owns this badge"
+          },
+          "status_code_2": {
+            "type": "integer",
+            "example": 200
+          },
+          "message_3": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "ok"
+                  },
+                  "success": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "entityType": {
+                      "type": "string",
+                      "example": "Assertion"
+                    },
+                    "entityId": {
+                      "type": "string",
+                      "example": "CKQgqOjqTSid5FP9R57OxQ"
+                    },
+                    "openBadgeId": {
+                      "type": "string",
+                      "example": "http://127.0.0.1:8000/dev/badgr/public/assertions/vrpwWb-RRtqRbo7cADKGBg"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-07-20T09:41:20.618733Z"
+                    },
+                    "createdBy": {
+                      "type": "string",
+                      "example": "R7Kk2wD3RJaNLVIjqckQWw"
+                    },
+                    "badgeclass": {
+                      "type": "string",
+                      "example": "HxBhPyVDTHiRu2S_ylZ-sA"
+                    },
+                    "badgeclassOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://127.0.0.1:8000/dev/badgr/public/badges/3gWrry4kRSqiJ2GcHDN-Qg"
+                    },
+                    "issuer": {
+                      "type": "string",
+                      "example": "mT7hgXVkQMShRxRWIusVSg"
+                    },
+                    "issuerOpenBadgeId": {
+                      "type": "string",
+                      "example": "http://127.0.0.1:8000/dev/badgr/public/issuers/mT7hgXVkQMShRxRWIusVSg"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://nginx:8000/dev/badgr/media/uploads/badges/assertion-vrpwWb-RRtqRbo7cADKGBg.png"
+                    },
+                    "recipient": {
+                      "type": "object",
+                      "properties": {
+                        "identity": {
+                          "type": "string",
+                          "example": "sha256$087723329e19d8fae832b375a32780dcbebac95220e71c82c6243354b8ed6ec2"
+                        },
+                        "hashed": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "email"
+                        },
+                        "plaintextidentity": {
+                          "type": "string",
+                          "example": "pku@create.aau.dk"
+                        },
+                        "salt": {
+                          "type": "string",
+                          "example": "c75e5191397549a4bde3ef328541c58b"
+                        }
+                      }
+                    },
+                    "issuedOn": {
+                      "type": "string",
+                      "example": "2021-07-20T09:41:20.611001Z"
+                    },
+                    "narrative": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "evidence": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": []
+                      }
+                    },
+                    "revoked": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "revocationReason": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "expires": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "extensions": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "wrong_community_id": {
         "type": "object",
