@@ -208,7 +208,7 @@
           "Tasks"
         ],
         "summary": "Post data about an event of a TaskTransaction",
-        "description": "With label field. if label is removed or inserted as None or an empty list - then the event counts as of a TaskType.",
+        "description": "With label field. if label is removed - the event counts as of a TaskType.",
         "operationId": "Post Data the task status",
         "requestBody": {
           "description": "The request body",
