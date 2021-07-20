@@ -1576,6 +1576,7 @@
           }
         ],
         "summary": "Delete a BadgeClass",
+        "description": "Only BadgeClasses without instances (never awarded) can be deleted.",
         "parameters": [
           {
             "required": true,
@@ -1600,6 +1601,26 @@
                     "status_code": {
                       "type": "integer",
                       "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadgeClass awarded (there are instances of it)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Only BadgeClasses without instances (never awarded) can be deleted."
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 400
                     }
                   }
                 }
