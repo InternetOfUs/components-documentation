@@ -166,7 +166,7 @@
           "Tasks"
         ],
         "summary": "Post data about the task status",
-        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an empty string or removed from request body - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
+        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the {Parent taskTypeId}'s TaskTransaction the field holds. If it is removed from request body or inserted as None or an empty string - the BadgeClass will be associated with the TaskType held in taskTypeId field (and in the output, label field will hold an empty string).",
         "operationId": "Post Data the task status",
         "requestBody": {
           "description": "The request body",
@@ -1034,7 +1034,7 @@
         ]
       }
     },
-    "/badges/BadgeClasses": {
+    "/badges/BadgeClasses/TaskType": {
       "post": {
         "security": [
           {
@@ -1043,8 +1043,162 @@
             ]
           }
         ],
-        "summary": "Create a new BadgeClass",
-        "description": "label field is optional. If it is filled - the BadgeClass will be associated with the (Parent taskTypeId) TaskTransaction the field holds. If it is an empty string or removed from request body - the BadgeClass will be associated with the TaskType held in taskTypeId field.",
+        "summary": "Create a new TaskTypeBadgeClass",
+        "description": "A BadgeClass associated with a TaskType. no label field",
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entityId": {
+                      "type": "string",
+                      "example": "ONeLMeSsTXae-x9RIfJbmA"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 201
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error / Missing Field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "app and taskTypeId are required and must be strings"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "threshold is required and must to be a positive integer"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "Invalid image (incompatible with badgr server)"
+                    },
+                    "status_code_3": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid URL - either broken or not HTTPS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "An invalid URL was posted"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "Only HTTPS URLs are allowed"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "URL must end with .png or .svg"
+                    },
+                    "status_code_3": {
+                      "type": "integer",
+                      "example": 403
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "URL not found"
+                    },
+                    "status_code_4": {
+                      "type": "integer",
+                      "example": 403
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Twelve Answers"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Way to go! You have answered 12 questions!"
+                  },
+                  "taskTypeId": {
+                    "type": "string",
+                    "example": "ask4help"
+                  },
+                  "threshold": {
+                    "type": "integer",
+                    "example": 12
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://wenetbadgesimages.s3.amazonaws.com/curious_level_1.png",
+                    "format": "url"
+                  },
+                  "app": {
+                    "type": "string",
+                    "example": "I2AFRCOXx3"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeClass"
+        ]
+      }
+    },
+    "/badges/BadgeClasses/TaskTransaction": {
+      "post": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer"
+            ]
+          }
+        ],
+        "summary": "Create a new TaskTransactionBadgeClass",
+        "description": "A BadgeClass associated with a TaskTransaction. if label field inserted as None or an empty string - A TaskTypeBadgeClass will be posted.",
         "responses": {
           "201": {
             "description": "Successfully created",
@@ -1268,7 +1422,7 @@
           }
         ],
         "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
-        "description": "Fill only the fields you wish to update, remove the rest from the request body. If you wish to nullify the label field (associate the BadgeClass with a TaskType instead of TaskTransaction), set label as an empty string.",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). taskTypeId and label fields cannot be updated!",
         "responses": {
           "200": {
             "description": "Successfully updated",
@@ -1290,10 +1444,6 @@
                         "description": {
                           "type": "string",
                           "example": "Way to go! You have answered 13 questions!"
-                        },
-                        "label": {
-                          "type": "string",
-                          "example": "AnswerPickedMessage"
                         },
                         "threshold": {
                           "type": "integer",
@@ -2266,19 +2416,11 @@
         },
         "name": {
           "type": "string",
-          "example": "Thirteen Accepted Answers"
+          "example": "Thirteen Answers"
         },
         "description": {
           "type": "string",
-          "example": "Thirteen of your answers have been accepted!"
-        },
-        "taskTypeId": {
-          "type": "string",
-          "example": null
-        },
-        "label": {
-          "type": "string",
-          "example": "AnswerPickedMessage"
+          "example": "Way to go! You have answered 13 questions!"
         },
         "threshold": {
           "type": "integer",
