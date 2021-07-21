@@ -1230,6 +1230,151 @@
         ]
       }
     },
+    "/badges/BadgeClasses/TaskType/{entityId}": {
+      "put": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Update an existing TaskTypeBadgeClass.  Previously issued assertions will NOT be updated",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskTypeBadgeClass cannot be updated into a TaskTransactionBadgeClass (label field is irrelevant).",
+        "responses": {
+          "200": {
+            "description": "Successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatedFields": {
+                      "properties": {
+                        "app": {
+                          "type": "string",
+                          "example": "I2AFRCOXx4"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Thirteen Answers"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Way to go! You have answered 13 questions!"
+                        },
+                        "taskTypeId": {
+                          "type": "string",
+                          "example": "ask5help"
+                        },
+                        "threshold": {
+                          "type": "integer",
+                          "example": 13
+                        }
+                      }
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Validation Error - Invalid field in body request: {field}"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadgeClass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "BadgeClass not found - Invalid entityId"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entityId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "app": {
+                    "type": "string",
+                    "example": "I2AFRCOXx4"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Thirteen Accepted Answers"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Your answers were accepted for 13 questions!"
+                  },
+                  "taskTypeId": {
+                    "type": "string",
+                    "example": "ask5help"
+                  },
+                  "threshold": {
+                    "type": "integer",
+                    "example": 13
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": null,
+                    "format": "url"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeClass"
+        ]
+      }
+    },
     "/badges/BadgeClasses/TaskTransaction": {
       "post": {
         "security": [
@@ -1388,72 +1533,7 @@
         ]
       }
     },
-    "/badges/BadgeClasses/{entityId}": {
-      "get": {
-        "security": [
-          {
-            "oauth2": [
-              "rw:issuer",
-              "rw:issuer:*"
-            ]
-          }
-        ],
-        "summary": "Get a BadgeClass",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "name": "entityId",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "badge": {
-                      "$ref": "#/definitions/BadgeClass"
-                    },
-                    "status_code": {
-                      "type": "integer",
-                      "example": 200
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "BadgeClass not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "BadgeClass not found - Invalid entityId"
-                    },
-                    "status_code": {
-                      "type": "integer",
-                      "example": 404
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Badges_BadgeClass"
-        ]
-      },
+    "/badges/BadgeClasses/TaskTransaction/{entityId}": {
       "put": {
         "security": [
           {
@@ -1463,8 +1543,8 @@
             ]
           }
         ],
-        "summary": "Update an existing BadgeClass.  Previously issued BadgeInstances will NOT be updated",
-        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). taskTypeId and label fields cannot be updated!",
+        "summary": "Update an existing TaskTransactionBadgeClass. Previously issued assertions will NOT be updated",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskTransactionBadgeClass cannot be updated into a TaskTypeBadgeClass (empty string / None inserted to the label field will result in an unchanged label).",
         "responses": {
           "200": {
             "description": "Successfully updated",
@@ -1481,11 +1561,19 @@
                         },
                         "name": {
                           "type": "string",
-                          "example": "Thirteen Answers"
+                          "example": "Thirteen Accepted Answers"
                         },
                         "description": {
                           "type": "string",
-                          "example": "Way to go! You have answered 13 questions!"
+                          "example": "Your answers were accepted for 13 questions!"
+                        },
+                        "taskTypeId": {
+                          "type": "string",
+                          "example": "ask5help"
+                        },
+                        "label": {
+                          "type": "string",
+                          "example": "AnswersPickedMessage"
                         },
                         "threshold": {
                           "type": "integer",
@@ -1557,7 +1645,105 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/BadgeClass_put"
+                "type": "object",
+                "properties": {
+                  "app": {
+                    "type": "string",
+                    "example": "I2AFRCOXx4"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Thirteen Accepted Answers"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Your answers were accepted for 13 questions!"
+                  },
+                  "taskTypeId": {
+                    "type": "string",
+                    "example": "ask5help"
+                  },
+                  "label": {
+                    "type": "string",
+                    "example": "AnswersPickedMessage"
+                  },
+                  "threshold": {
+                    "type": "integer",
+                    "example": 13
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": null,
+                    "format": "url"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeClass"
+        ]
+      }
+    },
+    "/badges/BadgeClasses/{entityId}": {
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Get a BadgeClass",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "entityId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "badge": {
+                      "$ref": "#/definitions/BadgeClass"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadgeClass not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "BadgeClass not found - Invalid entityId"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 404
+                    }
+                  }
+                }
               }
             }
           }
@@ -1575,7 +1761,7 @@
             ]
           }
         ],
-        "summary": "Delete a BadgeClass",
+        "summary": "Delete a BadgeClass and all its assertions (instances)",
         "description": "Note: assertions (badge instances) of deleted BadgeClasses will be revoked.",
         "parameters": [
           {
