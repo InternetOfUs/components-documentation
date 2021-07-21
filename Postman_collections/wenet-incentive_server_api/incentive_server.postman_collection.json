@@ -273,7 +273,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"5 Drives\",\n  \"image\": \"https://medias.unifrance.org/medias/179/38/206515/format_page/media.png\",\n  \"description\": \"Awarded after 5 drives\",\n  \"app\": \"I2AFRCOXx3\",\n  \"taskTypeId\": \"Drives\",\n  \"threshold\": 15\n}"
+					"raw": "{\n  \"name\": \"5 Drives\",\n  \"image\": \"https://c0.klipartz.com/pngpicture/613/564/gratis-png-taxi.png\",\n  \"description\": \"Awarded after 5 drives\",\n  \"app\": \"I2AFRCOXx3\",\n  \"taskTypeId\": \"Drives\",\n  \"threshold\": 15\n}"
 				},
 				"url": {
 					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/TaskType",
@@ -318,6 +318,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -377,6 +392,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -391,10 +421,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\"name\": \"Humpty Dumpty 6 Drives\",\n\"image\": \"https://static.wikia.nocookie.net/roblox/images/5/56/Humpty_Dumpty.png\",\n\"description\": \"Humpty Dumpty driven 6 times\",\n\"app\": \"I2AFRCOXx3\",\n\"threshold\": 6\n}"
 				},
 				"url": {
-					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W3qFE4zYTUKKvwbADbzLmw",
 					"protocol": "https",
 					"host": [
 						"wenet",
@@ -406,7 +436,7 @@
 						"incentive_server",
 						"badges",
 						"BadgeClasses",
-						"W6JY6DHkQNyDV9IZkbRkHw"
+						"W3qFE4zYTUKKvwbADbzLmw"
 					]
 				}
 			},
@@ -439,6 +469,21 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -456,7 +501,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W3qFE4zYTUKKvwbADbzLmw",
 					"protocol": "https",
 					"host": [
 						"wenet",
@@ -468,7 +513,7 @@
 						"incentive_server",
 						"badges",
 						"BadgeClasses",
-						"W6JY6DHkQNyDV9IZkbRkHw"
+						"W3qFE4zYTUKKvwbADbzLmw"
 					]
 				}
 			},
@@ -498,6 +543,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -515,7 +575,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W6JY6DHkQNyDV9IZkbRkHw",
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/W3qFE4zYTUKKvwbADbzLmw",
 					"protocol": "https",
 					"host": [
 						"wenet",
@@ -527,7 +587,7 @@
 						"incentive_server",
 						"badges",
 						"BadgeClasses",
-						"W6JY6DHkQNyDV9IZkbRkHw"
+						"W3qFE4zYTUKKvwbADbzLmw"
 					]
 				}
 			},
@@ -745,6 +805,21 @@
 		{
 			"name": "POST a TaskTransaction Status",
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
