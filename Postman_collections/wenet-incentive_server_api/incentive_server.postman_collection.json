@@ -273,7 +273,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"5 Drives\",\n  \"image\": \"https://c0.klipartz.com/pngpicture/613/564/gratis-png-taxi.png\",\n  \"description\": \"Awarded after 5 drives\",\n  \"app\": \"I2AFRCOXx3\",\n  \"taskTypeId\": \"Drives\",\n  \"threshold\": 15\n}"
+					"raw": "{\n  \"name\": \"5 Drives\",\n  \"image\": \"https://c0.klipartz.com/pngpicture/613/564/gratis-png-taxi.png\",\n  \"description\": \"Awarded after 5 drives\",\n  \"message\": \"Congratz on completing 5 Drives!\",\n  \"app\": \"I2AFRCOXx3\",\n  \"taskTypeId\": \"Drives\",\n  \"threshold\": 15\n}"
 				},
 				"url": {
 					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/TaskType",
@@ -347,7 +347,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"name\": \"Helper level 2\",\n\"image\": \"https://wenetbadgesimages.s3.amazonaws.com/helper_level_2.png\",\n\"description\": \"You answered 10 questions, helping others with your knowledge!\",\n\"app\": \"I2AFRCOXx3\",\n\"taskTypeId\": \"ask4help\",\n\"label\": \"answerTransaction\",\n\"threshold\": 10\n}"
+					"raw": "{\n\"name\": \"Helper level 2\",\n\"image\": \"https://wenetbadgesimages.s3.amazonaws.com/helper_level_2.png\",\n\"description\": \"You answered 10 questions, helping others with your knowledge!\",\n\"message\": \"Thanks for answering 10 questions!\",\n\"app\": \"I2AFRCOXx3\",\n\"taskTypeId\": \"ask4help\",\n\"label\": \"answerTransaction\",\n\"threshold\": 10\n}"
 				},
 				"url": {
 					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/TaskTransaction",
@@ -421,7 +421,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"name\": \"Humpty Dumpty 6 Drives\",\n\"image\": \"https://static.wikia.nocookie.net/roblox/images/5/56/Humpty_Dumpty.png\",\n\"description\": \"Humpty Dumpty driven 6 times\",\n\"app\": \"xAcauSmrhd\",\n\"taskTypeId\": \"Drives\",\n\"threshold\": 6\n}"
+					"raw": "{\n\"name\": \"Humpty Dumpty 6 Drives\",\n\"image\": \"https://static.wikia.nocookie.net/roblox/images/5/56/Humpty_Dumpty.png\",\n\"description\": \"Humpty Dumpty driven 6 times\",\n\"message\": \"Thanks, Humpty!\",\n\"app\": \"xAcauSmrhd\",\n\"taskTypeId\": \"Drives\",\n\"threshold\": 6\n}"
 				},
 				"url": {
 					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/TaskType/y-SQ6hiHSCSTnCX54jpcog",
@@ -496,7 +496,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"name\": \"Humpty Dumpty 6 Drives\",\n\"image\": \"https://static.wikia.nocookie.net/roblox/images/5/56/Humpty_Dumpty.png\",\n\"description\": \"Humpty Dumpty driven 6 times\",\n\"app\": \"I2AFRCOXx3\",\n\"taskTypeId\": \"ask4help\",\n\"label\": \"answerTransaction\",\n\"threshold\": 6\n}"
+					"raw": "{\n\"name\": \"Humpty Dumpty 6 Drives\",\n\"image\": \"https://static.wikia.nocookie.net/roblox/images/5/56/Humpty_Dumpty.png\",\n\"description\": \"Humpty Dumpty driven 6 times\",\n\"message\": \"Thanks, Humpty!\",\n\"app\": \"I2AFRCOXx3\",\n\"taskTypeId\": \"ask4help\",\n\"label\": \"answerTransaction\",\n\"threshold\": 6\n}"
 				},
 				"url": {
 					"raw": "https://wenet.u-hopper.com/dev/incentive_server/badges/BadgeClasses/TaskTransaction/W3qFE4zYTUKKvwbADbzLmw",
@@ -931,6 +931,52 @@
 						"Tasks",
 						"TaskTransactionStatus",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inform User on Badge Assertion",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "        {\n            \"AppID\": \"I2AFRCOXx3\",\n            \"UserId\": \"1\",\n            \"Issuer\": \"WeNet issuer\",\n            \"IncentiveType\": \"Badge\",\n            \"Badge\": {\n                \"BadgeClass\": \"x0DuVE8HQlabZ7sI5zyGbw\",\n                \"ImgUrl\": \"https://wenet.u-hopper.com/dev/hub/frontend/images/badges/medals/first_question.png\",\n                \"Criteria\": \"This badge is awarded when the user asks hist first question\",\n                \"Message\":\"test message\"\n            }\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/interaction_protocol_engine/incentives",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"interaction_protocol_engine",
+						"incentives"
 					]
 				}
 			},
