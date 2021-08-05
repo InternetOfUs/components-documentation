@@ -1117,7 +1117,7 @@
                   "properties": {
                     "message_1": {
                       "type": "string",
-                      "example": "app and taskTypeId are required and must be strings"
+                      "example": "app, taskTypeId, description and message are required and must be non-null strings"
                     },
                     "status_code_1": {
                       "type": "integer",
@@ -1201,6 +1201,10 @@
                   },
                   "description": {
                     "type": "string",
+                    "example": "awarded after answering 12 questions"
+                  },
+                  "message": {
+                    "type": "string",
                     "example": "Way to go! You have answered 12 questions!"
                   },
                   "taskTypeId": {
@@ -1258,11 +1262,15 @@
                         },
                         "name": {
                           "type": "string",
-                          "example": "Thirteen Answers"
+                          "example": "Thirteen Accepted Answers"
                         },
                         "description": {
                           "type": "string",
-                          "example": "Way to go! You have answered 13 questions!"
+                          "example": "awarded after 13 answers were accepted"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Your answers were accepted for 13 questions!"
                         },
                         "taskTypeId": {
                           "type": "string",
@@ -1350,6 +1358,10 @@
                   },
                   "description": {
                     "type": "string",
+                    "example": "awarded after 13 answers were accepted"
+                  },
+                  "message": {
+                    "type": "string",
                     "example": "Your answers were accepted for 13 questions!"
                   },
                   "taskTypeId": {
@@ -1416,7 +1428,7 @@
                   "properties": {
                     "message_1": {
                       "type": "string",
-                      "example": "app and taskTypeId are required and must be strings"
+                      "example": "app, taskTypeId, description and message are required and must be non-null strings"
                     },
                     "status_code_1": {
                       "type": "integer",
@@ -1500,6 +1512,10 @@
                   },
                   "description": {
                     "type": "string",
+                    "example": "awarded after answering 12 questions"
+                  },
+                  "message": {
+                    "type": "string",
                     "example": "Way to go! You have answered 12 questions!"
                   },
                   "taskTypeId": {
@@ -1564,6 +1580,10 @@
                           "example": "Thirteen Accepted Answers"
                         },
                         "description": {
+                          "type": "string",
+                          "example": "awarded after 13 answers were accepted"
+                        },
+                        "message": {
                           "type": "string",
                           "example": "Your answers were accepted for 13 questions!"
                         },
@@ -1656,6 +1676,10 @@
                     "example": "Thirteen Accepted Answers"
                   },
                   "description": {
+                    "type": "string",
+                    "example": "awarded after 13 answers were accepted"
+                  },
+                  "message": {
                     "type": "string",
                     "example": "Your answers were accepted for 13 questions!"
                   },
@@ -1963,6 +1987,10 @@
                   "example": "Twelve Answers"
                 },
                 "description": {
+                  "type": "string",
+                  "example": "awarded after answering 12 questions"
+                },
+                "message": {
                   "type": "string",
                   "example": "Way to go! You have answered 12 questions!"
                 },
