@@ -12,7 +12,7 @@
   "tags": [
     {
       "name": "incentive",
-      "description": "get information regardid incentives"
+      "description": "get information regarding incentives"
     },
     {
       "name": "enquiry incentives",
@@ -42,9 +42,387 @@
     {
       "name": "Badges_Assertions",
       "description": "An Assertion is an instance of a BadgeClass  that is awarded to one recipient."
+    },
+    {
+      "name": "Incentive Messages/Badge-Steering",
+      "description": "A class of Incentive Messages sent after a defined period of general inactivity, in order to motivate users to earn the Badge whose threshold they are closest to reach"
     }
   ],
   "paths": {
+    "/messages/BadgeSteering/TaskType": {
+      "post": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Create a new TaskType Badge-Steering Incentive Message class",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessagePost"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entityId": {
+                      "type": "string",
+                      "example": "7NAYV0F76K7J1YKJ9C7K57"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 201
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error / Missing Field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "'taskTypeId' and 'app' are required and must be non-null strings"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/BadgeSteering/TaskType/{entityId}": {
+      "put": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Update an existing TaskType Badge-Steering Incentive Message class",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskType Badge-Steering Incentive Message cannot be updated into a TaskTransaction Badge-Steering Incentive Message (label field is irrelevant).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BadgeSteeringIncentiveMessagePut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatedFields": {
+                      "$ref": "#/definitions/BadgeSteeringIncentiveMessagePut200"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/InvalidField"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Incentive Message not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/IncentiveMessageNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/BadgeSteering/TaskTransaction": {
+      "post": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Create a new TaskTransaction Badge-Steering Incentive Message class",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entityId": {
+                      "type": "string",
+                      "example": "CUOQ62MR8SOSRIDB82QC2H"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 201
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error / Missing Field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message_1": {
+                      "type": "string",
+                      "example": "'taskTypeId', 'label' and 'app' are required and must be non-null strings"
+                    },
+                    "status_code_1": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_2": {
+                      "type": "string",
+                      "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
+                    },
+                    "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/BadgeSteering/TaskTransaction/{entityId}": {
+      "put": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Update an existing TaskTransaction Badge-Steering Incentive Message class",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskTransaction Badge-Steering Incentive Message cannot be updated into a TaskType Badge-Steering Incentive Message (empty string / None inserted to the label field will result in an unchanged label).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BadgeSteeringIncentiveMessagePut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatedFields": {
+                      "$ref": "#/definitions/BadgeSteeringIncentiveMessagePut200"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/InvalidField"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Incentive Message not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/IncentiveMessageNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/BadgeSteering/{entityId}": {
+      "get": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Get a Badge-Steering Incentive Message class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IncentiveMessage": {
+                      "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Incentive Message not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/IncentiveMessageNotFound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Incentive Messages/Badge-Steering"
+        ],
+        "summary": "Delete a Badge-Steering Incentive Message class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "entityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "IncentiveMessage": {
+                      "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Incentive Message not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/definitions/IncentiveMessageNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/norm/apps/{app_id}/users/{user_id}": {
       "post": {
         "tags": [
@@ -1817,26 +2195,6 @@
               }
             }
           },
-          "400": {
-            "description": "BadgeClass awarded (there are instances of it)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Only BadgeClasses without instances (never awarded) can be deleted."
-                    },
-                    "status_code": {
-                      "type": "integer",
-                      "example": 400
-                    }
-                  }
-                }
-              }
-            }
-          },
           "404": {
             "description": "BadgeClass not found",
             "content": {
@@ -2268,6 +2626,104 @@
                 }
               }
             }
+          }
+        }
+      },
+      "TaskTypeBadgeSteeringIncentiveMessagePost": {
+        "type": "object",
+        "properties": {
+          "taskTypeId": {
+            "type": "string",
+            "example": "ask4help"
+          },
+          "max_repeat": {
+            "type": "integer",
+            "example": 6
+          },
+          "frequency": {
+            "type": "integer",
+            "example": 2
+          },
+          "inactivity_period": {
+            "type": "integer",
+            "example": 1
+          },
+          "app": {
+            "type": "string",
+            "example": "xAcauSmrhd"
+          }
+        },
+        "required": [
+          "taskTypeId",
+          "max_repeat",
+          "frequency",
+          "inactivity_period",
+          "app"
+        ]
+      },
+      "TaskTransactionBadgeSteeringIncentiveMessagePost": {
+        "type": "object",
+        "properties": {
+          "taskTypeId": {
+            "type": "string",
+            "example": "ask4help"
+          },
+          "label": {
+            "type": "string",
+            "example": "answerTransaction"
+          },
+          "max_repeat": {
+            "type": "integer",
+            "example": 6
+          },
+          "frequency": {
+            "type": "integer",
+            "example": 2
+          },
+          "inactivity_period": {
+            "type": "integer",
+            "example": 1
+          },
+          "app": {
+            "type": "string",
+            "example": "xAcauSmrhd"
+          }
+        },
+        "required": [
+          "taskTypeId",
+          "label",
+          "max_repeat",
+          "frequency",
+          "inactivity_period",
+          "app"
+        ]
+      },
+      "BadgeSteeringIncentiveMessagePut": {
+        "type": "object",
+        "properties": {
+          "taskTypeId": {
+            "type": "string",
+            "example": "ask5help"
+          },
+          "label": {
+            "type": "string",
+            "example": null
+          },
+          "max_repeat": {
+            "type": "integer",
+            "example": null
+          },
+          "frequency": {
+            "type": "integer",
+            "example": 3
+          },
+          "inactivity_period": {
+            "type": "integer",
+            "example": null
+          },
+          "app": {
+            "type": "string",
+            "example": "I2AFRCOXx3"
           }
         }
       },
@@ -2855,6 +3311,46 @@
           "type": "string",
           "description": "Markdown narrative that describes the achievement",
           "format": "markdown"
+        }
+      }
+    },
+    "BadgeSteeringIncentiveMessagePut200": {
+      "properties": {
+        "taskTypeId": {
+          "type": "string",
+          "example": "ask5help"
+        },
+        "frequency": {
+          "type": "integer",
+          "example": 3
+        },
+        "app": {
+          "type": "string",
+          "example": "I2AFRCOXx3"
+        }
+      }
+    },
+    "InvalidField": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Validation Error - Invalid field in body request: {field}"
+        },
+        "status_code": {
+          "type": "integer",
+          "example": 400
+        }
+      }
+    },
+    "IncentiveMessageNotFound": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Incentive Message not found - Invalid entityId"
+        },
+        "status_code": {
+          "type": "integer",
+          "example": 404
         }
       }
     },
