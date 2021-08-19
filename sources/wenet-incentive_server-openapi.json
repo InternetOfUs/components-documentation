@@ -55,6 +55,7 @@
           "Incentive Messages/Badge-Steering"
         ],
         "summary": "Create a new TaskType Badge-Steering Incentive Message class",
+        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # {TaskType}s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
@@ -105,6 +106,14 @@
                       "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
                     },
                     "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "'message' must include a single '#'"
+                    },
+                    "status_code_3": {
                       "type": "integer",
                       "example": 400
                     }
@@ -193,6 +202,7 @@
           "Incentive Messages/Badge-Steering"
         ],
         "summary": "Create a new TaskTransaction Badge-Steering Incentive Message class",
+        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # {label}s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
@@ -243,6 +253,14 @@
                       "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
                     },
                     "status_code_2": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_3": {
+                      "type": "string",
+                      "example": "'message' must include a single '#'"
+                    },
+                    "status_code_3": {
                       "type": "integer",
                       "example": 400
                     }
@@ -2651,6 +2669,10 @@
           "app": {
             "type": "string",
             "example": "xAcauSmrhd"
+          },
+          "message": {
+            "type": "string",
+            "example": "you are # Questions away from a new badge!"
           }
         },
         "required": [
@@ -2687,6 +2709,10 @@
           "app": {
             "type": "string",
             "example": "xAcauSmrhd"
+          },
+          "message": {
+            "type": "string",
+            "example": "you are # Answers away from a new badge!"
           }
         },
         "required": [
@@ -3332,11 +3358,19 @@
     },
     "InvalidField": {
       "properties": {
-        "message": {
+        "message_1": {
           "type": "string",
           "example": "Validation Error - Invalid field in body request: {field}"
         },
-        "status_code": {
+        "status_code_1": {
+          "type": "integer",
+          "example": 400
+        },
+        "message_2": {
+          "type": "string",
+          "example": "Validation Error - 'message' field must include a single '#'"
+        },
+        "status_code_2": {
           "type": "integer",
           "example": 400
         }
