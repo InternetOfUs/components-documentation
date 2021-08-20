@@ -1,1237 +1,699 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "description": "This component builds and maintains the social part of a user’s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the user’s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the user’s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteer’s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are “convincing” to the user.",
-    "version": "2.0.0",
-    "title": "Social Learning API",
-    "contact": {
-      "email": "theo.mantadelis@gmail.com"
-    },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }
-  },
-  "tags": [
-    {
-      "name": "Social Relations",
-      "description": "Operations that manipulate the social relations"
-    },
-    {
-      "name": "Social User Ranking",
-      "description": "Operations that relate with user to user social ranking and social preferences"
-    },
-    {
-      "name": "Social Explanations",
-      "description": "Accessing and updating social explanations on the inclusion of volunteers"
-    },
-    {
-      "name": "Social Relation Learning",
-      "description": "Operations that learn a social relation"
-    },
-    {
-      "name": "Norms Learning",
-      "description": "This section is TBD"
-    },
-    {
-      "name": "Deprecated",
-      "description": "Operations that are kept for internal reference (to be removed when documented by others)"
-    }
-  ],
-  "paths": {
-    "/social/relations/": {
-      "get": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Returns all relations filtered by type",
-        "description": "Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "Relation_Type",
-            "description": "Relation Type to Filter",
-            "required": false,
-            "type": "integer",
-            "enum": [
-              "family",
-              "friend",
-              "contact",
-              "colleague",
-              "other"
-            ]
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "User Relations",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/user_relation"
-              }
-            }
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/relations/{userID}": {
-      "get": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Returns the user IDs that the user has relations",
-        "description": "Returns User IDs that the user has the filtered relations. Quering without a relation returns all users that have a relation with weight > 0 with the user. Quering for one relation type it returns all the users that have that type relation with weight > 0. Finally, by quering for multiple relation types by summing the integer of types you get users that have all type relations with the user.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "Relation_Type",
-            "description": "Relation Type to Filter",
-            "required": false,
-            "type": "integer",
-            "enum": [
-              "family",
-              "friend",
-              "contact",
-              "colleague",
-              "other"
-            ]
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "User Relations",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/user_relation"
-              }
-            }
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/relations/{userID}/update": {
-      "put": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Modifies the relation weight among two users",
-        "description": "Modifies the relation among two users by changing the weight",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "userID2",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "relationType",
-            "description": "Relation Type to update weight",
-            "required": true,
-            "type": "integer",
-            "enum": [
-              "family",
-              "friend",
-              "contact",
-              "colleague",
-              "other"
-            ]
-          },
-          {
-            "in": "query",
-            "name": "Weight",
-            "description": "Relation Weight",
-            "required": true,
-            "type": "number"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Modification successesful"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/relations/{userID}/create": {
-      "put": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Creates the relation entry among two users",
-        "description": "Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "userID2",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "Relation_Type",
-            "description": "Relation Type to set Weight to 0",
-            "required": true,
-            "type": "integer",
-            "enum": [
-              "family",
-              "friend",
-              "contact",
-              "colleague",
-              "other"
-            ]
-          },
-          {
-            "in": "query",
-            "name": "Weight",
-            "description": "Relation Weight 0-1",
-            "required": true,
-            "type": "number"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Creation successful"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/relations/{userID}/import": {
-      "put": {
-        "tags": [
-          "Social Relations"
-        ],
-        "summary": "Imports user relations from a social app such as Facebook (TBD what is supported)",
-        "description": "Imports user relations from a social app such as Facebook. The process after called and given access to the appropriate app will create relations that are marked with source the app. The weight of such relations is TBD",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "APP_UID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Import successful"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/explanations/{userID}/{taskID}/create": {
-      "put": {
-        "tags": [
-          "Social Explanations"
-        ],
-        "summary": "Create and initialize a social explanation structure for the user",
-        "description": "Create and initialize a social explanation structure for the user. This is contextualized on the type of task.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Social Explanation"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/explanations/{userID}/{taskID}/update": {
-      "put": {
-        "tags": [
-          "Social Explanations"
-        ],
-        "summary": "Updates a social explanation structure for the user",
-        "description": "Updates a social explanation structure for the user. This is contextualized on the type of task.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Social Explanation"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/social/explanations/{userID}/{taskID}": {
-      "get": {
-        "tags": [
-          "Social Explanations"
-        ],
-        "summary": "Returns the social explanation structure for the user",
-        "description": "Returns the social explanation structure for the user. This is contextualized on the type of task.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Social Explanation"
-          },
-          "401": {
-            "description": "Unknown user ID"
-          }
-        }
-      }
-    },
-    "/profiles": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Gets all user profile IDs",
-        "operationId": "profiles",
-        "description": "Gets all user profile IDs",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "All user IDs",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/profile_personal": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get user profile by ID",
-        "operationId": "profile_personal",
-        "description": "Get user profile by ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User Profile",
-            "schema": {
-              "$ref": "#/definitions/user_profile"
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/profile_metadata": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get user metadata profile by ID",
-        "operationId": "profile_metadata",
-        "description": "Get user metadata profile by ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User Profile",
-            "schema": {
-              "$ref": "#/definitions/user_metadata"
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/profile_friends": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get user friend list by ID",
-        "operationId": "profile_friends",
-        "description": "Get user friend list by ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User Friends List",
-            "schema": {
-              "$ref": "#/definitions/user_friends"
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/profile_message_threads": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get user message thread IDs by user ID",
-        "operationId": "profile_message_threads",
-        "description": "Get user message thread IDs by user ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All message thread IDs that a user participated",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "integer"
-              }
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/profile_message": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get a message by message ID",
-        "operationId": "profile_message",
-        "description": "Get a message by message ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A message transaction",
-            "schema": {
-              "$ref": "#/definitions/user_messages"
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/profile_thread": {
-      "get": {
-        "tags": [
-          "Deprecated"
-        ],
-        "summary": "Get a thread by thread ID",
-        "operationId": "profile_thread",
-        "description": "Get a thread by thread ID",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ID",
-            "description": "User Profile ID",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A message thread",
-            "schema": {
-              "$ref": "#/definitions/message_thread"
-            }
-          },
-          "400": {
-            "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/social/preferences/{userID}/{taskID}": {
-      "post": {
-        "tags": [
-          "Social User Ranking"
-        ],
-        "summary": "Returns an ordered list of Users based on social preferences",
-        "description": "Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "users_IDs",
-            "description": "Message ID",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Ordered list of User IDs",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/social/preferences/{userID}/{taskID}/create": {
-      "post": {
-        "tags": [
-          "Social User Ranking"
-        ],
-        "summary": "Creates the underlying structures that allow a user to rank other users.",
-        "description": "Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "users_IDs",
-            "description": "Message ID",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Created Structure succesfully"
-          }
-        }
-      }
-    },
-    "/social/preferences/{userID}/update": {
-      "post": {
-        "tags": [
-          "Social User Ranking"
-        ],
-        "summary": "Modifies the underlying structures that allow a user to rank other users.",
-        "description": "Given a set of ranked users it modifies the underlying structure to rank users taking in account the newly given order. The structure is stored under a Task Tag-ID.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "taskID",
-            "description": "Task ID, the exact form and what a Task ID is it is TBD",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "users_IDs",
-            "description": "Message ID",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Modified Structure succesfully"
-          }
-        }
-      }
-    },
-    "/suggest_connection": {
-      "post": {
-        "tags": [
-          "Social Relation Learning"
-        ],
-        "summary": "Returns a sorted list of Users that are suggested to be added as connections",
-        "description": "Returns a sorted list of Users that are suggested to be added as new connections to the user. This operation has been previously computed on a batch cycle and only return latest result.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "UID",
-            "description": "User ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sorted by weight a List of User relations to be suggested as new relations. Also the type is suggested but the user should be able to modify. The initial weight of the relation is TBD.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/learn_norms": {
-      "post": {
-        "tags": [
-          "Norms Learning"
-        ],
-        "summary": "Learns underlined community rules to be introduced as norms (TBD)",
-        "description": "Returns learned norms from community messages (TBD). This operation has been previously computed on a batch cycle and only return latest result.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "CID",
-            "description": "Community ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Norms in form of Prolog predicates",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "user_relation": {
-      "type": "object",
-      "description": "A User to User relation.",
-      "properties": {
-        "UserID1": {
-          "type": "string",
-          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
-          "description": "User ID 1 a unique identifier"
-        },
-        "UserID2": {
-          "type": "string",
-          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
-          "description": "User ID 2 a unique identifier"
-        },
-        "RelationType": {
-          "type": "integer",
-          "enum": [
-            "friend",
-            "family",
-            "contact",
-            "colleague",
-            "other"
-          ],
-          "example": "contact",
-          "description": "The relation type among the two users"
-        },
-        "Weight": {
-          "type": "number",
-          "example": 0.6,
-          "description": "A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation."
-        },
-        "SourceID": {
-          "type": "string",
-          "example": "Facebook",
-          "description": "An AppID that indicates where the relation originated from."
-        }
-      }
-    },
-    "user_profile": {
-      "type": "object",
-      "description": "User Profile Personal Information. What is filled by user.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "example": "bf274393-1e7b-4d40-a897-88cb96277edd",
-          "description": "User ID a unique identifier"
-        },
-        "birth_date": {
-          "type": "string",
-          "format": "yyyy-mm-dd",
-          "example": "1981-02-01",
-          "description": "User Birth Date following ISO 8601 (required)."
-        },
-        "nationality": {
-          "type": "string",
-          "example": "Italian",
-          "description": "The nationality of the user (could be multiple?)"
-        },
-        "ethnic_group": {
-          "type": "string",
-          "example": "Roma",
-          "description": "The ethnic group of the user (could be multiple?)"
-        },
-        "sex": {
-          "type": "integer",
-          "enum": [
-            "male",
-            "female",
-            "other?"
-          ],
-          "description": "User Biological Sex (required) --TBD--."
-        },
-        "languages": {
-          "description": "A list of user known languages (required 1 min).",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/language"
-          }
-        },
-        "competences": {
-          "description": "A list with user competences and skill level (optional).",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/competence"
-          }
-        },
-        "intelligences": {
-          "$ref": "#/definitions/intelligences"
-        },
-        "perconality": {
-          "$ref": "#/definitions/personality"
-        },
-        "occupation": {
-          "description": "Users main occupation (optional) --TBD--.",
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string",
-              "description": "Occupation Title: student, alumni, employee."
-            },
-            "program": {
-              "type": "object",
-              "description": "University related program --TBD--."
-            }
-          }
-        },
-        "locations": {
-          "description": "User different locations (optional) --TBD--.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/location"
-          }
-        },
-        "other": {
-          "type": "object",
-          "description": "All user related information that we can get!"
-        }
-      }
-    },
-    "user_metadata": {
-      "type": "object",
-      "description": "User Profile Personal Information. What is filled by user.",
-      "properties": {
-        "user_id": {
-          "type": "string",
-          "description": "User ID"
-        },
-        "app_usage": {
-          "type": "array",
-          "description": "Application Usage History",
-          "items": {
-            "type": "object"
-          }
-        },
-        "external_app_usage": {
-          "type": "array",
-          "description": "Other Applications that can be monitored?",
-          "items": {
-            "type": "object"
-          }
-        },
-        "loc_history": {
-          "type": "array",
-          "description": "User Visited locations",
-          "items": {
-            "type": "object",
-            "properties": {
-              "latitude": {
-                "type": "integer"
-              },
-              "longtitude": {
-                "type": "integer"
-              },
-              "poi": {
-                "type": "object",
-                "description": "The google pin/business or something"
-              }
-            }
-          }
-        },
-        "other": {
-          "type": "object",
-          "description": "Whatever other useful information we can get?"
-        }
-      }
-    },
-    "user_friends": {
-      "type": "object",
-      "description": "The list with the user friends",
-      "properties": {
-        "user_id": {
-          "type": "string"
-        },
-        "friends": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "user_id": {
-                "type": "string"
-              },
-              "status": {
-                "type": "string",
-                "description": "Current status, open to more suggestions here!",
-                "enum": [
-                  "added",
-                  "removed",
-                  "blocked",
-                  "suggested",
-                  "ignored_suggestion"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "message_thread": {
-      "type": "object",
-      "description": "An ordered thread of messages",
-      "properties": {
-        "thread_id": {
-          "type": "string",
-          "description": "Thread ID"
-        },
-        "messages": {
-          "type": "array",
-          "description": "The messages in the thread",
-          "items": {
-            "$ref": "#/definitions/user_messages"
-          }
-        }
-      }
-    },
-    "user_messages": {
-      "type": "object",
-      "description": "User messages.",
-      "properties": {
-        "msg_id": {
-          "type": "string",
-          "description": "Message ID"
-        },
-        "user_id_from": {
-          "type": "string",
-          "description": "User ID of sending user"
-        },
-        "user_id_to": {
-          "type": "string",
-          "description": "User ID of receiving message (this is for private messages and can be null)"
-        },
-        "thread_id": {
-          "type": "string",
-          "description": "Message Thread ID (this message is public to all that have access to thread)"
-        },
-        "msg_keywords": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "description": "Message Keywords (can be seen as message type)"
-          }
-        },
-        "msg_text": {
-          "type": "string",
-          "description": "Message"
-        },
-        "other": {
-          "type": "object",
-          "description": "Other Message information"
-        }
-      }
-    },
-    "language": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "English",
-          "description": "Language Name."
-        },
-        "code": {
-          "type": "string",
-          "example": "en",
-          "description": "Langugage ISO 639-1 code."
-        },
-        "level": {
-          "type": "string",
-          "example": "B2",
-          "description": "User Proficiency of Language."
-        }
-      }
-    },
-    "intelligences": {
-      "type": "object",
-      "description": "Provide information about the intelligences of a person",
-      "properties": {
-        "visual_spatial": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.3,
-          "description": "The visual-spatial intelligence"
-        },
-        "logic_mathematics": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.2,
-          "description": "The logic-mathematics intelligence"
-        },
-        "musical_rhythmic": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.5,
-          "description": "The musical-rhythmic intelligence"
-        },
-        "verbal": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.1,
-          "description": "The verbal intelligence"
-        },
-        "kinestesica_corporal": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.4,
-          "description": "The kinestesica-corporal intelligence"
-        },
-        "interpersonal": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.7,
-          "description": "The interpersonal intelligence"
-        },
-        "naturalist_environmental": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.8,
-          "description": "The naturalist-environmental intelligence"
-        },
-        "intrapersonal": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.6,
-          "description": "The intrapersonal intelligence"
-        }
-      }
-    },
-    "personality": {
-      "type": "object",
-      "description": "Provide information about the personality of a person",
-      "properties": {
-        "judgment": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.2,
-          "description": "The judgment grade of a person"
-        },
-        "extrovert": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.3,
-          "description": "The extrovert grade of a person"
-        },
-        "perception": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.1,
-          "description": "The perception grade of a person"
-        },
-        "attitude": {
-          "type": "number",
-          "format": "double",
-          "maximum": 1,
-          "minimum": 0,
-          "example": 0.4,
-          "description": "The attitude grade of a person"
-        }
-      }
-    },
-    "competence": {
-      "description": "A competence that an user can do.",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "cooking",
-          "description": "The name of the competence"
-        },
-        "level": {
-          "type": "string",
-          "example": "Expert",
-          "description": "The ability level of the person in the competence.",
-          "enum": [
-            "Beginner",
-            "Apprentice",
-            "Intermediate",
-            "Advanced",
-            "Expert"
-          ]
-        }
-      }
-    },
-    "location": {
-      "type": "object",
-      "description": "A user location",
-      "properties": {
-        "label": {
-          "type": "string",
-          "example": "Home",
-          "description": "The description of the location."
-        },
-        "geolocation": {
-          "$ref": "#/definitions/geolocation"
-        },
-        "address": {
-          "type": "object",
-          "description": "Physical Address --TBD--"
-        }
-      }
-    },
-    "geolocation": {
-      "description": "The geographic coordinates of a location.",
-      "type": "object",
-      "properties": {
-        "latitude": {
-          "type": "number",
-          "example": 42.4371685,
-          "description": "The latitude coordinate of the location. (Google format?)"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 1.9331308,
-          "description": "The longitude coordinate of the location. (Google format?)"
-        },
-        "poi": {
-          "type": "string",
-          "example": "EisxMyBNYXJrZXQgU3RyZWV0LCBXaWxtaW5ndG9uLCBOQyAyODQwMSwgVVNB",
-          "description": "The identifier that uniquely identifies the location."
-        }
-      }
-    }
-  },
-  "host": "virtserver.swaggerhub.com",
-  "basePath": "/theomantadelis/cpnet_reasoning/1.0.0",
-  "schemes": [
-    "https"
-  ]
-}
+swagger: "2.0"
+info:
+  description: "This component builds and maintains the social part of a userâ€™s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userâ€™s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userâ€™s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerâ€™s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are â€œconvincingâ€\x9D to the user."
+  version: 2.0.0
+  title: Social Learning API
+  contact:
+    email: christos.michail@ouc.ac.cy
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Social Relations
+    description: Operations that manipulate the social relations
+  - name: Social User Ranking
+    description: Operations that relate with user to user social ranking and social preferences
+  - name: Social Explanations
+    description: Accessing and updating social explanations on the inclusion of volunteers
+  - name: Transaction Notifications
+    description: Social interaction notifications
+paths:
+  /social/relations/:
+    get:
+      tags:
+        - Social Relations
+      summary: Returns all relations filtered by type
+      description: Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.
+      parameters:
+        - in: query
+          name: Relation_Type
+          description: Relation Type to Filter
+          required: false
+          type: integer
+          enum:
+            - family
+            - friend
+            - contact
+            - colleague
+            - other
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User Relations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user_relation'
+        '401':
+          description: Unknown user ID
+  '/social/relations/{userID}':
+    get:
+      tags:
+        - Social Relations
+      summary: Returns the user IDs that the user has relations
+      description: 'Returns User IDs that the user has the filtered relations. Quering without a relation returns all users that have a relation with weight > 0 with the user. Quering for one relation type it returns all the users that have that type relation with weight > 0. Finally, by quering for multiple relation types by summing the integer of types you get users that have all type relations with the user.'
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: query
+          name: Relation_Type
+          description: Relation Type to Filter
+          required: false
+          type: integer
+          enum:
+            - family
+            - friend
+            - contact
+            - colleague
+            - other
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User Relations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user_relation'
+        '401':
+          description: Unknown user ID
+  '/social/relations/{userID}/update':
+    put:
+      tags:
+        - Social Relations
+      summary: Modifies the relation weight among two users
+      description: Modifies the relation among two users by changing the weight
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: query
+          name: userID2
+          description: User ID
+          required: true
+          type: string
+        - in: query
+          name: relationType
+          description: Relation Type to update weight
+          required: true
+          type: integer
+          enum:
+            - family
+            - friend
+            - contact
+            - colleague
+            - other
+        - in: query
+          name: Weight
+          description: Relation Weight
+          required: true
+          type: number
+      responses:
+        '200':
+          description: Modification successesful
+        '401':
+          description: Unknown user ID
+  '/social/relations/{userID}/create':
+    put:
+      tags:
+        - Social Relations
+      summary: Creates the relation entry among two users
+      description: 'Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.'
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: query
+          name: userID2
+          description: User ID
+          required: true
+          type: string
+        - in: query
+          name: Relation_Type
+          description: Relation Type to set Weight to 0
+          required: true
+          type: integer
+          enum:
+            - family
+            - friend
+            - contact
+            - colleague
+            - other
+        - in: query
+          name: Weight
+          description: Relation Weight 0-1
+          required: true
+          type: number
+      responses:
+        '200':
+          description: Creation successful
+        '401':
+          description: Unknown user ID
+  '/social/explanations/{userID}/{taskID}/create':
+    put:
+      tags:
+        - Social Explanations
+      summary: Create and initialize a social explanation structure for the user
+      description: Create and initialize a social explanation structure for the user. This is contextualized on the type of task.
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          description: User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Social Explanation
+        '401':
+          description: Unknown user ID
+  '/social/explanations/{userID}/{taskID}/update':
+    put:
+      tags:
+        - Social Explanations
+      summary: Updates a social explanation structure for the user
+      description: Updates a social explanation structure for the user. This is contextualized on the type of task.
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          description: User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Social Explanation
+        '401':
+          description: Unknown user ID
+  '/social/explanations/{userID}/{taskID}':
+    get:
+      tags:
+        - Social Explanations
+      summary: Returns the social explanation structure for the user
+      description: Returns the social explanation structure for the user. This is contextualized on the type of task.
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          description: User ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Social Explanation
+        '401':
+          description: Unknown user ID
+  '/social/preferences/{userID}/{taskID}':
+    post:
+      tags:
+        - Social User Ranking
+      summary: Returns an ordered list of Users based on social preferences
+      description: Given a list of users and a message thread it returns an ordered list of Users based on the users social preferences. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          description: 'Task ID, the exact form and what a Task ID is it is TBD'
+          required: true
+          type: string
+        - in: body
+          name: users_IDs
+          description: Message ID
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Ordered list of User IDs
+          schema:
+            type: array
+            items:
+              type: string
+  '/social/preferences/answers/{userID}/{taskID}':
+    post:
+      tags:
+        - Social User Ranking
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          type: string
+          description: 'Task ID, the exact form and what a Task ID is it is TBD'
+          required: true
+        - in: body
+          name: data
+          description: data
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user_answer'
+      responses:
+        '200':
+          description: Ordered list of answers to a task
+          schema:
+            type: array
+            items:
+              type: string
+  '/social/preferences/{userID}/{taskID}/create':
+    post:
+      tags:
+        - Social User Ranking
+      summary: Creates the underlying structures that allow a user to rank other users.
+      description: Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: path
+          name: taskID
+          description: 'Task ID, the exact form and what a Task ID is it is TBD'
+          required: true
+          type: string
+        - in: body
+          name: users_IDs
+          description: Message ID
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Created Structure succesfully
+
+definitions:
+  volunteerfortask:
+      type: object
+      description: Accept to attent the event
+      properties:
+       volunteerId:
+        type: string
+        description: volunteer ID as a unique identifier
+  refuseTask:
+    type: object
+    description: refuseto attent the event
+    properties:
+     volunteerId:
+      type: string
+      description: volunteer ID as a unique identifier
+  refuseVolunteer:
+   type: object
+   description: refuse a volunteer to attent the event
+   properties:
+    volunteerId:
+     type: string
+     description: volunteer ID as a unique identifier
+  TaskCompleted:
+   type: object
+   description: Finish the task
+   properties:
+    outcome:
+     type: string
+     enum: ['cancelled','completed','failed']
+  user_relation:
+    type: object
+    description: A User to User relation.
+    properties:
+      UserID1:
+        type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+        description: User ID 1 a unique identifier
+      UserID2:
+        type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+        description: User ID 2 a unique identifier
+      RelationType:
+        type: integer
+        enum:
+          - friend
+          - family
+          - contact
+          - colleague
+          - other
+        example: contact
+        description: The relation type among the two users
+      Weight:
+        type: number
+        example: 0.6
+        description: A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation.
+      SourceID:
+        type: string
+        example: Facebook
+        description: An AppID that indicates where the relation originated from.
+  user_answer:
+    type: object
+    description: A User to User answer.
+    properties:
+      userId:
+        type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+        description: User ID 1 a unique identifier
+      answer:
+        type: string
+        example: the best pizza is in Napoli! 
+        description: answer for this task
+  user_profile:
+    type: object
+    description: User Profile Personal Information. What is filled by user.
+    properties:
+      id:
+        type: string
+        example: bf274393-1e7b-4d40-a897-88cb96277edd
+        description: User ID a unique identifier
+      birth_date:
+        type: string
+        format: yyyy-mm-dd
+        example: '1981-02-01'
+        description: User Birth Date following ISO 8601 (required).
+      nationality:
+        type: string
+        example: Italian
+        description: The nationality of the user (could be multiple?)
+      ethnic_group:
+        type: string
+        example: Roma
+        description: The ethnic group of the user (could be multiple?)
+      sex:
+        type: string
+        example:
+          - male
+          - female
+          - other?
+        description: User Biological Sex (required) --TBD--.
+      languages:
+        description: A list of user known languages (required 1 min).
+        type: array
+        items:
+          $ref: '#/definitions/language'
+      competences:
+        description: A list with user competences and skill level (optional).
+        type: array
+        items:
+          $ref: '#/definitions/competence'
+      intelligences:
+        $ref: '#/definitions/intelligences'
+      perconality:
+        $ref: '#/definitions/personality'
+      occupation:
+        description: Users main occupation (optional) --TBD--.
+        type: object
+        properties:
+          title:
+            type: string
+            description: 'Occupation Title: student, alumni, employee.'
+          program:
+            type: object
+            description: University related program --TBD--.
+      locations:
+        description: User different locations (optional) --TBD--.
+        type: array
+        items:
+          $ref: '#/definitions/location'
+      other:
+        type: object
+        description: All user related information that we can get!
+  user_metadata:
+    type: object
+    description: User Profile Personal Information. What is filled by user.
+    properties:
+      user_id:
+        type: string
+        description: User ID
+      app_usage:
+        type: array
+        description: Application Usage History
+        items:
+          type: object
+      external_app_usage:
+        type: array
+        description: Other Applications that can be monitored?
+        items:
+          type: object
+      loc_history:
+        type: array
+        description: User Visited locations
+        items:
+          type: object
+          properties:
+            latitude:
+              type: integer
+            longtitude:
+              type: integer
+            poi:
+              type: object
+              description: The google pin/business or something
+      other:
+        type: object
+        description: Whatever other useful information we can get?
+  user_friends:
+    type: object
+    description: The list with the user friends
+    properties:
+      user_id:
+        type: string
+      friends:
+        type: array
+        items:
+          type: object
+          properties:
+            user_id:
+              type: string
+            status:
+              type: string
+              description: 'Current status, open to more suggestions here!'
+              enum:
+                - added
+                - removed
+                - blocked
+                - suggested
+                - ignored_suggestion
+  message_thread:
+    type: object
+    description: An ordered thread of messages
+    properties:
+      thread_id:
+        type: string
+        description: Thread ID
+      messages:
+        type: array
+        description: The messages in the thread
+        items:
+          $ref: '#/definitions/user_messages'
+  user_messages:
+    type: object
+    description: User messages.
+    properties:
+      msg_id:
+        type: string
+        description: Message ID
+      user_id_from:
+        type: string
+        description: User ID of sending user
+      user_id_to:
+        type: string
+        description: User ID of receiving message (this is for private messages and can be null)
+      thread_id:
+        type: string
+        description: Message Thread ID (this message is public to all that have access to thread)
+      msg_keywords:
+        type: array
+        items:
+          type: string
+          description: Message Keywords (can be seen as message type)
+      msg_text:
+        type: string
+        description: Message
+      other:
+        type: object
+        description: Other Message information
+  language:
+    type: object
+    properties:
+      name:
+        type: string
+        example: English
+        description: Language Name.
+      code:
+        type: string
+        example: en
+        description: Langugage ISO 639-1 code.
+      level:
+        type: string
+        example: B2
+        description: User Proficiency of Language.
+  intelligences:
+    type: object
+    description: Provide information about the intelligences of a person
+    properties:
+      visual_spatial:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.3
+        description: The visual-spatial intelligence
+      logic_mathematics:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.2
+        description: The logic-mathematics intelligence
+      musical_rhythmic:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.5
+        description: The musical-rhythmic intelligence
+      verbal:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.1
+        description: The verbal intelligence
+      kinestesica_corporal:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.4
+        description: The kinestesica-corporal intelligence
+      interpersonal:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.7
+        description: The interpersonal intelligence
+      naturalist_environmental:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.8
+        description: The naturalist-environmental intelligence
+      intrapersonal:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.6
+        description: The intrapersonal intelligence
+  personality:
+    type: object
+    description: Provide information about the personality of a person
+    properties:
+      judgment:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.2
+        description: The judgment grade of a person
+      extrovert:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.3
+        description: The extrovert grade of a person
+      perception:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.1
+        description: The perception grade of a person
+      attitude:
+        type: number
+        format: double
+        maximum: 1
+        minimum: 0
+        example: 0.4
+        description: The attitude grade of a person
+  competence:
+    description: A competence that an user can do.
+    type: object
+    properties:
+      name:
+        type: string
+        example: cooking
+        description: The name of the competence
+      level:
+        type: string
+        example: Expert
+        description: The ability level of the person in the competence.
+        enum:
+          - Beginner
+          - Apprentice
+          - Intermediate
+          - Advanced
+          - Expert
+  location:
+    type: object
+    description: A user location
+    properties:
+      label:
+        type: string
+        example: Home
+        description: The description of the location.
+      geolocation:
+        $ref: '#/definitions/geolocation'
+      address:
+        type: object
+        description: Physical Address --TBD--
+  geolocation:
+    description: The geographic coordinates of a location.
+    type: object
+    properties:
+      latitude:
+        type: number
+        example: 42.4371685
+        description: The latitude coordinate of the location. (Google format?)
+      longitude:
+        type: number
+        example: 1.9331308
+        description: The longitude coordinate of the location. (Google format?)
+      poi:
+        type: string
+        example: EisxMyBNYXJrZXQgU3RyZWV0LCBXaWxtaW5ndG9uLCBOQyAyODQwMSwgVVNB
+        description: The identifier that uniquely identifies the location.
+host: wenet.u-hopper.com
+basePath: /social_context_builder
+schemes:
+  - https
