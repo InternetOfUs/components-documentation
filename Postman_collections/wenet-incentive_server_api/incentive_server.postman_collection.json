@@ -981,6 +981,287 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Create TaskTypeBadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taskTypeId\": \"ask4help\",\n  \"max_repeat\": 6,\n  \"frequency\": 2,\n  \"inactivity_period\": 1,\n  \"app\": \"xAcauSmrhd\",\n  \"message\": \"you are # Questions away from a new badge!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/TaskType",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"TaskType"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create TaskTransactionBadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taskTypeId\": \"ask4help\",\n  \"label\": \"answerTransaction\",\n  \"max_repeat\": 6,\n  \"frequency\": 2,\n  \"inactivity_period\": 1,\n  \"app\": \"xAcauSmrhd\",\n  \"message\": \"you are # Answers away from a new badge!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/TaskTransaction",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"TaskTransaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update TaskTypeBadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taskTypeId\": \"ask4help\",\n  \"max_repeat\": 6,\n  \"frequency\": 2,\n  \"inactivity_period\": 1,\n  \"app\": \"xAcauSmrhd\",\n  \"message\": \"you are # Questions away from a new badge!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/TaskType/{entityId}",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"TaskType",
+						"{entityId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update TaskTransactionBadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taskTypeId\": \"ask4help\",\n  \"label\": \"answerTransaction\",\n  \"max_repeat\": 6,\n  \"frequency\": 2,\n  \"inactivity_period\": 1,\n  \"app\": \"xAcauSmrhd\",\n  \"message\": \"you are # Answers away from a new badge!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/TaskTransaction/{entityId}",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"TaskTransaction",
+						"{entityId}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get BadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/SWUFFCR9WDBMV6RBBCSS4X",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"SWUFFCR9WDBMV6RBBCSS4X"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete BadgeSteeringIncentiveMessage",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "7-Egeu4UOfBKH1YjodQDJ4P1XHPsZZa5sb8MfO-evQo",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "x-wenet-component-apikey",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wenet.u-hopper.com/dev/incentive_server/messages/BadgeSteering/TL7DAZX40K6MDSEPDNF6OY",
+					"protocol": "https",
+					"host": [
+						"wenet",
+						"u-hopper",
+						"com"
+					],
+					"path": [
+						"dev",
+						"incentive_server",
+						"messages",
+						"BadgeSteering",
+						"TL7DAZX40K6MDSEPDNF6OY"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
