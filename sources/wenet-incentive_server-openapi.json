@@ -55,7 +55,7 @@
           "Incentive Messages/Badge-Steering"
         ],
         "summary": "Create a new TaskType Badge-Steering Incentive Message class",
-        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # {TaskType}s away from a new badge!'",
+        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (TaskType)s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
@@ -202,7 +202,7 @@
           "Incentive Messages/Badge-Steering"
         ],
         "summary": "Create a new TaskTransaction Badge-Steering Incentive Message class",
-        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # {label}s away from a new badge!'",
+        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (label)s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
@@ -242,7 +242,7 @@
                   "properties": {
                     "message_1": {
                       "type": "string",
-                      "example": "'taskTypeId', 'label' and 'app' are required and must be non-null strings"
+                      "example": "'taskTypeId' and 'app' are required and must be non-null strings"
                     },
                     "status_code_1": {
                       "type": "integer",
@@ -258,7 +258,7 @@
                     },
                     "message_3": {
                       "type": "string",
-                      "example": "'message' must include a single '#'"
+                      "example": "'message' must be a string and include a single '#'"
                     },
                     "status_code_3": {
                       "type": "integer",
@@ -368,7 +368,7 @@
                   "type": "object",
                   "properties": {
                     "IncentiveMessage": {
-                      "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+                      "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessageGet"
                     },
                     "status_code": {
                       "type": "integer",
@@ -416,7 +416,7 @@
                   "type": "object",
                   "properties": {
                     "IncentiveMessage": {
-                      "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+                      "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessageGet"
                     },
                     "status_code": {
                       "type": "integer",
@@ -2750,6 +2750,43 @@
           "app": {
             "type": "string",
             "example": "I2AFRCOXx3"
+          },
+          "message": {
+            "type": "string",
+            "example": null
+          }
+        }
+      },
+      "TaskTypeBadgeSteeringIncentiveMessageGet": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "example": "2021-08-22T06:55:44.509Z"
+          },
+          "taskTypeId": {
+            "type": "string",
+            "example": "ask4help"
+          },
+          "max_repeat": {
+            "type": "integer",
+            "example": 6
+          },
+          "frequency": {
+            "type": "integer",
+            "example": 2
+          },
+          "inactivity_period": {
+            "type": "integer",
+            "example": 1
+          },
+          "app": {
+            "type": "string",
+            "example": "xAcauSmrhd"
+          },
+          "message": {
+            "type": "string",
+            "example": "you are # Questions away from a new badge!"
           }
         }
       },
@@ -3371,6 +3408,22 @@
           "example": "Validation Error - 'message' field must include a single '#'"
         },
         "status_code_2": {
+          "type": "integer",
+          "example": 400
+        },
+        "message_3": {
+          "type": "string",
+          "example": "TaskTypeBadgeSteeringIncentiveMessage cannot be altered into a TaskTransactionBadgeSteeringIncentiveMessage"
+        },
+        "status_code_3": {
+          "type": "integer",
+          "example": 400
+        },
+        "message_4": {
+          "type": "string",
+          "example": "TaskTransactionBadgeSteeringIncentiveMessage cannot be altered into a TaskTypeBadgeSteeringIncentiveMessage"
+        },
+        "status_code_4": {
           "type": "integer",
           "example": 400
         }
