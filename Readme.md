@@ -28,7 +28,7 @@ Here's some _quick links_ for accessing the documentation currently available:
 
 * [Interaction Protocol Engine APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-interaction_protocol_engine-openapi.yaml)
 
-* [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social_context_builder-openapi.json)
+* [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social_context_builder-openapi.yaml)
 
 * [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder-openapi.json)
 
@@ -48,7 +48,7 @@ The models common to the various components can be found [here](http://swagger.u
 
 ## Postman collections
 
-_"Postman is a collaboration platform for API development. Postman's features simplify each step of building an API and streamline collaboration so you can create better APIsâ€”faster."_ - _Postman_
+_"Postman is a collaboration platform for API development. Postman's features simplify each step of building an API and streamline collaboration so you can create better APIs—faster."_ - _Postman_
 
 The postman collections of the various components defined in this documentation are available in the folder `/postman_collections`.
 In addition to each component's collection, the export of the required environmental variables may be present: use it in order to simplify the setup of the queries you are going to reproduce.
