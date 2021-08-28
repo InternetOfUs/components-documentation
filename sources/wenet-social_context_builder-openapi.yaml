@@ -278,13 +278,27 @@ paths:
             type: array
             items:
               $ref: '#/definitions/user_answer'
+            example:
+             - userId: 14
+               answer: The best pizza is in Napoli!
+             - userId: 36
+               answer: You can find a good one in Rome
+             - userId: 3
+               answer: can't beat homemade
       responses:
         '200':
-          description: Ordered list of answers to a task
+          description: Ranked list of answers to a task bases on social preferences
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/user_answer'
+            example:
+             - userId: 36
+               answer: You can find a good one in Rome
+             - userId: 14
+               answer: The best pizza is in Napoli!
+             - userId: 3
+               answer: can't beat homemade
   '/social/preferences/{userID}/{taskID}/create':
     post:
       tags:
