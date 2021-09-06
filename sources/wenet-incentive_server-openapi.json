@@ -2147,6 +2147,26 @@
               }
             }
           },
+          "400": {
+            "description": "Deprecated BadgeClass format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deprecated BadgeClass format"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "example": 400
+                    }
+                  }
+                }
+              }
+            }
+          },
           "404": {
             "description": "BadgeClass not found",
             "content": {
