@@ -41,7 +41,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.15.0
+  version: 0.14.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
   description: Production instance
@@ -838,7 +838,7 @@ components:
         license:
           type: string
           description: Contain information of the license of the API
-          example: MIT
+          example: Apache v2
       description: Provide the version information of the API
     ProtocolAddress:
       type: object

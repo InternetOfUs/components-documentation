@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This component builds and maintains the social part of a userâ€™s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userâ€™s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userâ€™s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerâ€™s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are â€œconvincingâ€\x9D to the user."
+  description: "This component builds and maintains the social part of a userÃ¢â‚¬â„¢s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userÃ¢â‚¬â„¢s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userÃ¢â‚¬â„¢s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerÃ¢â‚¬â„¢s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are Ã¢â‚¬Å“convincingÃ¢â‚¬\x9D to the user."
   version: 2.0.0
   title: Social Learning API
   contact:
@@ -119,44 +119,24 @@ paths:
           description: Modification successesful
         '401':
           description: Unknown user ID
-  '/social/relations/{userID}/create':
-    put:
+  
+  '/social/relations/initialize/{userID}':
+    post:
       tags:
         - Social Relations
-      summary: Creates the relation entry among two users
-      description: 'Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.'
+      summary: Initializes the relation of the user with the rest users of the platfom
+      description: 'Creates the relation among  the user with the rest users of the platfom and sets the initial weight.'
       parameters:
         - in: path
           name: userID
           description: User ID
           required: true
           type: string
-        - in: query
-          name: userID2
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: Relation_Type
-          description: Relation Type to set Weight to 0
-          required: true
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-        - in: query
-          name: Weight
-          description: Relation Weight 0-1
-          required: true
-          type: number
       responses:
         '200':
           description: Creation successful
         '401':
-          description: Unknown user ID
+          description: Creation failed
   '/social/explanations/{userID}/{taskID}/create':
     put:
       tags:
@@ -278,13 +258,27 @@ paths:
             type: array
             items:
               $ref: '#/definitions/user_answer'
+            example:
+             - userId: 14
+               answer: The best pizza is in Napoli!
+             - userId: 36
+               answer: You can find a good one in Rome
+             - userId: 3
+               answer: can't beat homemade
       responses:
         '200':
-          description: Ordered list of answers to a task
+          description: Ranked list of answers to a task bases on social preferences
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/user_answer'
+            example:
+             - userId: 36
+               answer: You can find a good one in Rome
+             - userId: 14
+               answer: The best pizza is in Napoli!
+             - userId: 3
+               answer: can't beat homemade
   '/social/preferences/{userID}/{taskID}/create':
     post:
       tags:

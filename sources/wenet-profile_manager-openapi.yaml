@@ -3882,7 +3882,7 @@ components:
         license:
           type: string
           description: Contain information of the license of the API
-          example: MIT
+          example: Apache v2
       description: Provide the version information of the API
     QuestionnaireAnswers:
       type: object
