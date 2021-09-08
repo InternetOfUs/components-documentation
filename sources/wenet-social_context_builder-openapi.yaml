@@ -535,8 +535,9 @@ definitions:
         type: string
         description: Transaction ID
       timestamp:
-        type: string
+        type: integer
         description: Transaction ID
+        example: 1563930000
       senderId:
         type: string
         description: User ID of sending message (this is for private messages and can be null)
@@ -546,9 +547,11 @@ definitions:
       text:
         type: string
         description: Message
+        example: the best piszza is the homemade one !
       label:
         type: string
         description: Transaction type label
+        example: QuestionToAnswerMessage
   language:
     type: object
     properties:
