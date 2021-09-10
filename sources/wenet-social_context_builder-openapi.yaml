@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This component builds and maintains the social part of a userÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œconvincingÃƒÂ¢Ã¢â€šÂ¬\x9D to the user."
+  description: "This component builds and maintains the social part of a userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“convincingÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬\x9D to the user."
   version: 2.0.0
   title: Social Learning API
   contact:
@@ -425,20 +425,6 @@ definitions:
           - female
           - other?
         description: User Biological Sex (required) --TBD--.
-      languages:
-        description: A list of user known languages (required 1 min).
-        type: array
-        items:
-          $ref: '#/definitions/language'
-      competences:
-        description: A list with user competences and skill level (optional).
-        type: array
-        items:
-          $ref: '#/definitions/competence'
-      intelligences:
-        $ref: '#/definitions/intelligences'
-      perconality:
-        $ref: '#/definitions/personality'
       occupation:
         description: Users main occupation (optional) --TBD--.
         type: object
@@ -538,127 +524,23 @@ definitions:
         type: integer
         description: Transaction ID
         example: 1563930000
-      senderId:
-        type: string
-        description: User ID of sending message (this is for private messages and can be null)
-      receiverId:
-        type: string
-        description: User ID of sending message (this is for private messages and can be null)
-      text:
-        type: string
-        description: Message
-        example: the best piszza is the homemade one !
-      label:
-        type: string
-        description: Transaction type label
-        example: QuestionToAnswerMessage
-  language:
-    type: object
-    properties:
-      name:
-        type: string
-        example: English
-        description: Language Name.
-      code:
-        type: string
-        example: en
-        description: Langugage ISO 639-1 code.
-      level:
-        type: string
-        example: B2
-        description: User Proficiency of Language.
-  intelligences:
-    type: object
-    description: Provide information about the intelligences of a person
-    properties:
-      visual_spatial:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.3
-        description: The visual-spatial intelligence
-      logic_mathematics:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.2
-        description: The logic-mathematics intelligence
-      musical_rhythmic:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.5
-        description: The musical-rhythmic intelligence
-      verbal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.1
-        description: The verbal intelligence
-      kinestesica_corporal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.4
-        description: The kinestesica-corporal intelligence
-      interpersonal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.7
-        description: The interpersonal intelligence
-      naturalist_environmental:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.8
-        description: The naturalist-environmental intelligence
-      intrapersonal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.6
-        description: The intrapersonal intelligence
-  personality:
-    type: object
-    description: Provide information about the personality of a person
-    properties:
-      judgment:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.2
-        description: The judgment grade of a person
-      extrovert:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.3
-        description: The extrovert grade of a person
-      perception:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.1
-        description: The perception grade of a person
-      attitude:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.4
-        description: The attitude grade of a person
+      message:
+       type: object
+       description: User message.
+       properties:
+        appId:
+          type: string
+          description: App ID where message was sent
+        receiverId:
+          type: string
+          description: User ID of receiving message
+        label:
+         type: string
+         description: Transaction type label
+         example: QuestionToAnswerMessage
+        attributes:
+          type: object
+          description: attributes of the message
   competence:
     description: A competence that an user can do.
     type: object
