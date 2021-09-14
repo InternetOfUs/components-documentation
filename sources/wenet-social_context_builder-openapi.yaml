@@ -297,11 +297,11 @@ paths:
                answer: The best pizza is in Napoli!
              - userId: 3
                answer: can't beat homemade
-  '/social/preferences/{userID}/{taskID}/create':
-    post:
+  '/social/preferences/{userID}/{taskID}/{selection}/update':
+    put:
       tags:
         - Social User Ranking
-      summary: Creates the underlying structures that allow a user to rank other users.
+      summary: Updates ranking structures based on previous user 
       description: Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.
       parameters:
         - in: path
@@ -314,14 +314,26 @@ paths:
           description: 'Task ID, the exact form and what a Task ID is it is TBD'
           required: true
           type: string
+        - in: path
+          type: integer
+          name: selection
+          description: 'The selection of the user as a place in the list starting from 0'
+          required: true
         - in: body
-          name: users_IDs
-          description: Message ID
+          name: data
+          description: A ranked list that was suggested to the user
           required: true
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/user_answer'
+            example:
+             - userId: 14
+               answer: The best pizza is in Napoli!
+             - userId: 36
+               answer: You can find a good one in Rome
+             - userId: 3
+               answer: can't beat homemade
       responses:
         '200':
           description: Created Structure succesfully
