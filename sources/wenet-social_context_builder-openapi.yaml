@@ -297,7 +297,7 @@ paths:
                answer: The best pizza is in Napoli!
              - userId: 3
                answer: can't beat homemade
-  '/social/preferences/{userID}/{taskID}/{selection}/update':
+  '/social/preferences/answers/{userID}/{taskID}/{selection}/update':
     put:
       tags:
         - Social User Ranking
