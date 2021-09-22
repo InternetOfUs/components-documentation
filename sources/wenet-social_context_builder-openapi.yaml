@@ -277,11 +277,11 @@ paths:
             items:
               $ref: '#/definitions/user_answer'
             example:
-             - userId: 14
+             - userId: '14'
                answer: The best pizza is in Napoli!
-             - userId: 36
+             - userId: '36'
                answer: You can find a good one in Rome
-             - userId: 3
+             - userId: '3'
                answer: can't beat homemade
       responses:
         '200':
@@ -291,11 +291,11 @@ paths:
             items:
               $ref: '#/definitions/user_answer'
             example:
-             - userId: 36
+             - userId: '36'
                answer: You can find a good one in Rome
-             - userId: 14
+             - userId: '14'
                answer: The best pizza is in Napoli!
-             - userId: 3
+             - userId: '3'
                answer: can't beat homemade
   '/social/preferences/answers/{userID}/{taskID}/{selection}/update':
     put:
@@ -328,11 +328,11 @@ paths:
             items:
               $ref: '#/definitions/user_answer'
             example:
-             - userId: 14
+             - userId: '14'
                answer: The best pizza is in Napoli!
-             - userId: 36
+             - userId: '36'
                answer: You can find a good one in Rome
-             - userId: 3
+             - userId: '3'
                answer: can't beat homemade
       responses:
         '200':
