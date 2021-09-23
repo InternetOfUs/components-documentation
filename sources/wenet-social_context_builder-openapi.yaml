@@ -18,35 +18,6 @@ tags:
   - name: Transaction Notifications
     description: Social interaction notifications
 paths:
-  /social/relations/:
-    get:
-      tags:
-        - Social Relations
-      summary: Returns all relations filtered by type
-      description: Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.
-      parameters:
-        - in: query
-          name: Relation_Type
-          description: Relation Type to Filter
-          required: false
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: User Relations
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/user_relation'
-        '401':
-          description: Unknown user ID
   '/social/relations/{userID}':
     get:
       tags:
