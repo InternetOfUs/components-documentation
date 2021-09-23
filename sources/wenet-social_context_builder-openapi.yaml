@@ -81,45 +81,6 @@ paths:
               $ref: '#/definitions/user_relation'
         '401':
           description: Unknown user ID
-  '/social/relations/{userID}/update':
-    put:
-      tags:
-        - Social Relations
-      summary: Modifies the relation weight among two users
-      description: Modifies the relation among two users by changing the weight
-      parameters:
-        - in: path
-          name: userID
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: userID2
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: relationType
-          description: Relation Type to update weight
-          required: true
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-        - in: query
-          name: Weight
-          description: Relation Weight
-          required: true
-          type: number
-      responses:
-        '200':
-          description: Modification successesful
-        '401':
-          description: Unknown user ID
-  
   '/social/relations/initialize/{userID}':
     post:
       tags:
