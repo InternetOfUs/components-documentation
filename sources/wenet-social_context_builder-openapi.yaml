@@ -427,6 +427,9 @@ definitions:
       taskId:
         type: string
         description: Task ID
+      senderId:
+        type: string
+        description: Sender Id
       transactionId:
         type: string
         description: Transaction ID
