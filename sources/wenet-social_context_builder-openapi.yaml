@@ -310,32 +310,20 @@ definitions:
     type: object
     description: A User to User relation.
     properties:
-      UserID1:
+      UserId:
         type: string
         example: bf274393-1e7b-4d40-a897-88cb96277edd
         description: User ID 1 a unique identifier
-      UserID2:
-        type: string
-        example: bf274393-1e7b-4d40-a897-88cb96277edd
-        description: User ID 2 a unique identifier
       RelationType:
-        type: integer
+        type: string
         enum:
           - friend
-          - family
-          - contact
-          - colleague
-          - other
-        example: contact
+        example: friend
         description: The relation type among the two users
       Weight:
         type: number
         example: 0.6
         description: A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation.
-      SourceID:
-        type: string
-        example: Facebook
-        description: An AppID that indicates where the relation originated from.
   user_answer:
     type: object
     description: A User to User answer.
