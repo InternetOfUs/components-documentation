@@ -69,7 +69,7 @@ paths:
           description: Creation successful
         '401':
           description: Creation failed
-  '/social/notification':
+  '/social/notification/interaction':
     post:
       tags:
         - Transaction Notifications
