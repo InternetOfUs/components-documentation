@@ -116,28 +116,6 @@ paths:
           description: Received notification
         '401':
           description: Notification failed
-  '/social/explanations/{userID}/{taskID}/create':
-    put:
-      tags:
-        - Social Explanations
-      summary: Create and initialize a social explanation structure for the user
-      description: Create and initialize a social explanation structure for the user. This is contextualized on the type of task.
-      parameters:
-        - in: path
-          name: userID
-          description: User ID
-          required: true
-          type: string
-        - in: path
-          name: taskID
-          description: User ID
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Social Explanation
-        '401':
-          description: Unknown user ID
   '/social/explanations/{userID}/{taskID}/update':
     put:
       tags:
