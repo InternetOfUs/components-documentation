@@ -155,231 +155,6 @@
 			"response": []
 		},
 		{
-			"name": "Publih a norm",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"normId\", jsonData.id);",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"norm\":{}\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/norms",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Retrieve published norm",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{server}}/norms/{{normId}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms",
-						"{{normId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Retrieve published norms",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{server}}/norms/?x-wenet-component-apikey={{WENET_COMPONENT_APIKEY}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms",
-						""
-					],
-					"query": [
-						{
-							"key": "x-wenet-component-apikey",
-							"value": "{{WENET_COMPONENT_APIKEY}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update published norm",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"norm\":{},\n    \"name\":\"New norm\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/norms/{{normId}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms",
-						"{{normId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Merge published norm",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"lastUpdateTs\", jsonData._lastUpdateTs);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"keywords\": [\n        \"keyword1\",\n        \"keyword2\"\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/norms/{{normId}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms",
-						"{{normId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete published norm",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{server}}/norms/{{normId}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"norms",
-						"{{normId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Notify task created",
 			"event": [
 				{
@@ -662,6 +437,296 @@
 					"path": [
 						"events",
 						"{{eventId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add an interaction",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"eventId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"appId\": \"1\",\n    \"communityId\": \"2\",\n    \"taskTypeId\": \"3\",\n    \"taskId\": \"4\",\n    \"senderId\": \"5\",\n    \"receiverId\": \"6\",\n    \"transactionLabel\": \"transaction\",\n    \"transactionAttributes\": {},\n    \"transactionTs\":10000,\n    \"messageLabel\": \"message\",\n    \"messageAttributes\": {},\n    \"messageTs\":10000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/interactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"interactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get interactions page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"eventId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					},
+					{
+						"key": "appId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "communityId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "taskTypeId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "taskId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "senderId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "receiverId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "hasTransaction",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionLabel",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionFrom",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionTo",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "hasMessage",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageLabel",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageFrom",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageTo",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "order",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "offset",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "limit",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/interactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"interactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete some interactions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"eventId\", jsonData.id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"type": "text",
+						"value": "{{WENET_COMPONENT_APIKEY}}"
+					},
+					{
+						"key": "appId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "communityId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "taskTypeId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "taskId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "senderId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "receiverId",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "hasTransaction",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionLabel",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionFrom",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "transactionTo",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "hasMessage",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageLabel",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageFrom",
+						"value": "",
+						"type": "text"
+					},
+					{
+						"key": "messageTo",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/interactions",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"interactions"
 					]
 				}
 			},
