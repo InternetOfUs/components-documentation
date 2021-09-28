@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This component builds and maintains the social part of a userâ€™s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userâ€™s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userâ€™s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerâ€™s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are â€œconvincingâ€\x9D to the user."
+  description: "This component builds and maintains the social part of a userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s profile, by analyzing the data collected by the various Common component connectors. The component falls into three main categories.<br /> (1) Accessing and updating the userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s social relations. <br />E.g., based on past evidence, Alice is a friend of Bob with weight 0.8.<br /> Depending on the type of the relation, the weight can be interpreted as a degree of confidence on whether the relation is actually present (e.g., how confident we are that Alice and Bob really relatives), or as a degree of strength of that relation (e.g., how close friends Alice and Bob are).<br /> (2) Accessing and updating the userÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s social preferences in ranking users for a task.<br /> E.g., for a task that requires the use of a car, rank higher a volunteer with more driving experience than a person that lives closer to the user.<br /> This functionality can be used either to rank a list of volunteers that has been computed elsewhere, or to rank a list of users that could lead to identifying and suggesting potentially new relations between the user and other users.<br /> (3) Accessing and updating social explanations on the inclusion of volunteers.<br /> E.g., for a task that requires help with moving, explain that a volunteer was included because they own a car and have helped others move in the past.<br /> This functionality is not aimed to identify the relevant information, which should be already included in the volunteerÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢s profile or in the norms that were applied in selecting that volunteer. Instead, this functionality is aimed to return explanations (based on that information) that are ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“convincingÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬\x9D to the user."
   version: 2.0.0
   title: Social Learning API
   contact:
@@ -18,35 +18,6 @@ tags:
   - name: Transaction Notifications
     description: Social interaction notifications
 paths:
-  /social/relations/:
-    get:
-      tags:
-        - Social Relations
-      summary: Returns all relations filtered by type
-      description: Returns user to user IDs that form a relation. Quering without a relation returns all relations that have a weight > 0. Quering for a relation type it returns all relations that have that type relation with weight > 0.
-      parameters:
-        - in: query
-          name: Relation_Type
-          description: Relation Type to Filter
-          required: false
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: User Relations
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/user_relation'
-        '401':
-          description: Unknown user ID
   '/social/relations/{userID}':
     get:
       tags:
@@ -81,104 +52,41 @@ paths:
               $ref: '#/definitions/user_relation'
         '401':
           description: Unknown user ID
-  '/social/relations/{userID}/update':
-    put:
+  '/social/relations/initialize/{userID}':
+    post:
       tags:
         - Social Relations
-      summary: Modifies the relation weight among two users
-      description: Modifies the relation among two users by changing the weight
+      summary: Initializes the relation of the user with the rest users of the platfom
+      description: 'Creates the relation among  the user with the rest users of the platfom and sets the initial weight.'
       parameters:
         - in: path
           name: userID
           description: User ID
           required: true
           type: string
-        - in: query
-          name: userID2
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: relationType
-          description: Relation Type to update weight
-          required: true
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-        - in: query
-          name: Weight
-          description: Relation Weight
-          required: true
-          type: number
-      responses:
-        '200':
-          description: Modification successesful
-        '401':
-          description: Unknown user ID
-  '/social/relations/{userID}/create':
-    put:
-      tags:
-        - Social Relations
-      summary: Creates the relation entry among two users
-      description: 'Creates the relation among two users and sets the initial weight. Requires the two UIDs, the relation type and the initial weight value. It inserts a specific source of relation that indicates the WeNetApp.'
-      parameters:
-        - in: path
-          name: userID
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: userID2
-          description: User ID
-          required: true
-          type: string
-        - in: query
-          name: Relation_Type
-          description: Relation Type to set Weight to 0
-          required: true
-          type: integer
-          enum:
-            - family
-            - friend
-            - contact
-            - colleague
-            - other
-        - in: query
-          name: Weight
-          description: Relation Weight 0-1
-          required: true
-          type: number
       responses:
         '200':
           description: Creation successful
         '401':
-          description: Unknown user ID
-  '/social/explanations/{userID}/{taskID}/create':
-    put:
+          description: Creation failed
+  '/social/notification/interaction':
+    post:
       tags:
-        - Social Explanations
-      summary: Create and initialize a social explanation structure for the user
-      description: Create and initialize a social explanation structure for the user. This is contextualized on the type of task.
+        - Transaction Notifications
+      summary: Notifies for the interaction of user with another user
+      description: 'Notifies for the interaction of user with another user.'
       parameters:
-        - in: path
-          name: userID
-          description: User ID
+        - in: body
+          name: data
+          description: data
           required: true
-          type: string
-        - in: path
-          name: taskID
-          description: User ID
-          required: true
-          type: string
+          schema:
+             $ref: '#/definitions/user_messages'
       responses:
         '200':
-          description: Social Explanation
+          description: Received notification
         '401':
-          description: Unknown user ID
+          description: Notification failed
   '/social/explanations/{userID}/{taskID}/update':
     put:
       tags:
@@ -278,18 +186,32 @@ paths:
             type: array
             items:
               $ref: '#/definitions/user_answer'
+            example:
+             - userId: '14'
+               answer: The best pizza is in Napoli!
+             - userId: '36'
+               answer: You can find a good one in Rome
+             - userId: '3'
+               answer: can't beat homemade
       responses:
         '200':
-          description: Ordered list of answers to a task
+          description: Ranked list of answers to a task bases on social preferences
           schema:
             type: array
             items:
-              type: string
-  '/social/preferences/{userID}/{taskID}/create':
-    post:
+              $ref: '#/definitions/user_answer'
+            example:
+             - userId: '36'
+               answer: You can find a good one in Rome
+             - userId: '14'
+               answer: The best pizza is in Napoli!
+             - userId: '3'
+               answer: can't beat homemade
+  '/social/preferences/answers/{userID}/{taskID}/{selection}/update':
+    put:
       tags:
         - Social User Ranking
-      summary: Creates the underlying structures that allow a user to rank other users.
+      summary: Updates ranking structures based on previous user 
       description: Given a set of ranked users it creates the underlying structure to rank users in a similar way. The structure is stored under a Task Tag-ID.
       parameters:
         - in: path
@@ -302,14 +224,26 @@ paths:
           description: 'Task ID, the exact form and what a Task ID is it is TBD'
           required: true
           type: string
+        - in: path
+          type: integer
+          name: selection
+          description: 'The selection of the user as a place in the list starting from 0'
+          required: true
         - in: body
-          name: users_IDs
-          description: Message ID
+          name: data
+          description: A ranked list that was suggested to the user
           required: true
           schema:
             type: array
             items:
-              type: string
+              $ref: '#/definitions/user_answer'
+            example:
+             - userId: '14'
+               answer: The best pizza is in Napoli!
+             - userId: '36'
+               answer: You can find a good one in Rome
+             - userId: '3'
+               answer: can't beat homemade
       responses:
         '200':
           description: Created Structure succesfully
@@ -347,32 +281,20 @@ definitions:
     type: object
     description: A User to User relation.
     properties:
-      UserID1:
+      UserId:
         type: string
         example: bf274393-1e7b-4d40-a897-88cb96277edd
         description: User ID 1 a unique identifier
-      UserID2:
-        type: string
-        example: bf274393-1e7b-4d40-a897-88cb96277edd
-        description: User ID 2 a unique identifier
       RelationType:
-        type: integer
+        type: string
         enum:
           - friend
-          - family
-          - contact
-          - colleague
-          - other
-        example: contact
+        example: friend
         description: The relation type among the two users
       Weight:
         type: number
         example: 0.6
         description: A number from 0 to 1 that indicates the strength of the relation. 0 indicates a deleted/non-exisiting relation.
-      SourceID:
-        type: string
-        example: Facebook
-        description: An AppID that indicates where the relation originated from.
   user_answer:
     type: object
     description: A User to User answer.
@@ -413,20 +335,6 @@ definitions:
           - female
           - other?
         description: User Biological Sex (required) --TBD--.
-      languages:
-        description: A list of user known languages (required 1 min).
-        type: array
-        items:
-          $ref: '#/definitions/language'
-      competences:
-        description: A list with user competences and skill level (optional).
-        type: array
-        items:
-          $ref: '#/definitions/competence'
-      intelligences:
-        $ref: '#/definitions/intelligences'
-      perconality:
-        $ref: '#/definitions/personality'
       occupation:
         description: Users main occupation (optional) --TBD--.
         type: object
@@ -516,136 +424,36 @@ definitions:
     type: object
     description: User messages.
     properties:
-      msg_id:
+      taskId:
         type: string
-        description: Message ID
-      user_id_from:
+        description: Task ID
+      senderId:
         type: string
-        description: User ID of sending user
-      user_id_to:
+        description: Sender Id
+      transactionId:
         type: string
-        description: User ID of receiving message (this is for private messages and can be null)
-      thread_id:
-        type: string
-        description: Message Thread ID (this message is public to all that have access to thread)
-      msg_keywords:
-        type: array
-        items:
+        description: Transaction ID
+      timestamp:
+        type: integer
+        description: Transaction ID
+        example: 1563930000
+      message:
+       type: object
+       description: User message.
+       properties:
+        appId:
           type: string
-          description: Message Keywords (can be seen as message type)
-      msg_text:
-        type: string
-        description: Message
-      other:
-        type: object
-        description: Other Message information
-  language:
-    type: object
-    properties:
-      name:
-        type: string
-        example: English
-        description: Language Name.
-      code:
-        type: string
-        example: en
-        description: Langugage ISO 639-1 code.
-      level:
-        type: string
-        example: B2
-        description: User Proficiency of Language.
-  intelligences:
-    type: object
-    description: Provide information about the intelligences of a person
-    properties:
-      visual_spatial:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.3
-        description: The visual-spatial intelligence
-      logic_mathematics:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.2
-        description: The logic-mathematics intelligence
-      musical_rhythmic:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.5
-        description: The musical-rhythmic intelligence
-      verbal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.1
-        description: The verbal intelligence
-      kinestesica_corporal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.4
-        description: The kinestesica-corporal intelligence
-      interpersonal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.7
-        description: The interpersonal intelligence
-      naturalist_environmental:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.8
-        description: The naturalist-environmental intelligence
-      intrapersonal:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.6
-        description: The intrapersonal intelligence
-  personality:
-    type: object
-    description: Provide information about the personality of a person
-    properties:
-      judgment:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.2
-        description: The judgment grade of a person
-      extrovert:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.3
-        description: The extrovert grade of a person
-      perception:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.1
-        description: The perception grade of a person
-      attitude:
-        type: number
-        format: double
-        maximum: 1
-        minimum: 0
-        example: 0.4
-        description: The attitude grade of a person
+          description: App ID where message was sent
+        receiverId:
+          type: string
+          description: User ID of receiving message
+        label:
+         type: string
+         description: Transaction type label
+         example: QuestionToAnswerMessage
+        attributes:
+          type: object
+          description: attributes of the message
   competence:
     description: A competence that an user can do.
     type: object
