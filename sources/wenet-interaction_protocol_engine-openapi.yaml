@@ -137,7 +137,7 @@ paths:
           description: The API description
   /incentives:
     post:
-      tags:
+      tags: 
       - Incentives
       summary: Send a incentive to an user that is involved in a protocol.
       description: Publish a incentive to encourage an user to participate on a protocol.
