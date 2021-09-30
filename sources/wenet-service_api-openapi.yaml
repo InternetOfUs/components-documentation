@@ -28,9 +28,13 @@ info:
 
 servers:
   - url: https://wenet.u-hopper.com/dev/service
-    description: Staging instance
+    description: Staging instance (ApikeyAuth)
+  - url: https://wenet.u-hopper.com/dev/api/service
+    description: Staging instance (Oauth2)
   - url: https://internetofus.u-hopper.com/prod/service
-    description: Production instance
+    description: Production instance (ApikeyAuth)
+  - url: https://internetofus.u-hopper.com/prod/api/service
+    description: Production instance (Oauth2)
 
 paths:
 
@@ -140,9 +144,10 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       responses:
         '200':
-          description: WeNet user correctly created
+          description: WeNet user correctly retrieved
           content:
             application/json:
               schema:
@@ -168,6 +173,7 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       responses:
         '200':
           description: WeNet user correctly created
@@ -189,6 +195,7 @@ paths:
       description: This entpoint allows to update the _core_ profile of a wenet user. This is possible by providing the complete user profile that will override the exising one.
       security:
         - ApikeyAuth: []
+        - Oauth2: []
       parameters:
         - in: path
           name: wenetUserId
@@ -196,6 +203,7 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       requestBody:
         content:
           application/json:
@@ -203,12 +211,596 @@ paths:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
       responses:
         '200':
-          description: WeNet user correctly created
+          description: WeNet user correctly updated
           content:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
         '404':
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/competences:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the competences of a profile
+      description: Allow to get all the competences defined into a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      responses:
+        "200":
+          description: The competences defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update competences of a profile
+      description: Update all the competences of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new competences
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        required: true
+      responses:
+        "200":
+          description: The updated competences of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        "400":
+          description: Bad competences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/materials:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the materials of a profile
+      description: Allow to get all the materials defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The materials defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update materials of a profile
+      description: Update all the materials of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new materials
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        required: true
+      responses:
+        "200":
+          description: The updated materials of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        "400":
+          description: Bad materials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/meanings:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the meanings of a profile
+      description: Allow to get all the meanings defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The meanings defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update meanings of a profile
+      description: Update all the meanings of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new meanings
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        required: true
+      responses:
+        "200":
+          description: The updated meanings of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        "400":
+          description: Bad meanings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/norms:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the norms of a profile
+      description: Allow to get all the norms defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The norms defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update norms of a profile
+      description: Update all the norms of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new norms
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        required: true
+      responses:
+        "200":
+          description: The updated norms of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        "400":
+          description: Bad norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/personalBehaviors:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the personal behaviors of a profile
+      description: Allow to get all the personal behaviors defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The personal behaviors defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update personal behaviors of a profile
+      description: Update all the personal behaviors of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new personal behaviors
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        required: true
+      responses:
+        "200":
+          description: The updated personal behaviors of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        "400":
+          description: Bad personal behaviors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/plannedActivities:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the planned activities of a profile
+      description: Allow to get all the planned activities defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The planned activities defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update planned activities of a profile
+      description: Update all the planned activities of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new planned activities
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        required: true
+      responses:
+        "200":
+          description: The updated planned activities of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        "400":
+          description: Bad planned activities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/relationships:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the relationships of a profile
+      description: Allow to get all the relationships defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The relationships defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update relationships of a profile
+      description: Update all the relationships of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new relationships
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        required: true
+      responses:
+        "200":
+          description: The updated relationships of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        "400":
+          description: Bad relationships
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/relevantLocations:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the relevant locations of a profile
+      description: Allow to get all the relevant locations defined into a profile
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The relevant locations defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update relevant locations of a profile
+      description: Update all the relevant locations of a profile
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new relevant locations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        required: true
+      responses:
+        "200":
+          description: The updated relevant locations of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        "400":
+          description: Bad relevant locations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
           description: No such wenet user exists
           content:
             application/json:
@@ -304,13 +896,6 @@ paths:
       security:
         - ApikeyAuth: []
         - Oauth2: []
-      parameters:
-        - in: path
-          name: taskId
-          schema:
-            type: integer
-          required: true
-          description: The Id of the task
       requestBody:
         content:
           application/json:
@@ -319,6 +904,10 @@ paths:
       responses:
         '201':
           description: Task correctly created
+          content:
+            application/json:
+              schema:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
 
 
   /task/{taskId}:
@@ -334,7 +923,7 @@ paths:
         - in: path
           name: taskId
           schema:
-            type: integer
+            type: string
           required: true
           description: The Id of the task
       responses:
@@ -531,7 +1120,6 @@ paths:
             schema:
               type: array
               items:
-                type: object
                 $ref: '#/components/schemas/Message'
       responses:
         '200':
@@ -736,8 +1324,8 @@ components:
     
     BaseContent:
       type: object
-      properties: 
-        type: 
+      properties:
+        type:
           type: string
           description: the type of the content
           
@@ -748,7 +1336,7 @@ components:
       properties:
         buttonId:
           type: string
-        buttonText: 
+        buttonText:
           type: string
         
           
@@ -760,7 +1348,6 @@ components:
         buttons:
           type: array
           items:
-            type: object
             $ref: '#/components/schemas/ActionContent'
             
             
@@ -921,13 +1508,13 @@ components:
     #   type: object
     #   description: Base model for log message
     #   properties:
-    #     type: 
+    #     type:
     #       type: string
     #     messageId:
     #       type: string
     #     channel:
     #       type: string
-    #     userId: 
+    #     userId:
     #       type: string
     #     # content:
     #     #   type: string
