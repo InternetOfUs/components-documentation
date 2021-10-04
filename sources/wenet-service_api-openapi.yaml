@@ -194,7 +194,6 @@ paths:
         - WeNet user profile
       description: This entpoint allows to update the _core_ profile of a wenet user. This is possible by providing the complete user profile that will override the exising one.
       security:
-        - ApikeyAuth: []
         - Oauth2: []
       parameters:
         - in: path
@@ -229,6 +228,8 @@ paths:
         - WeNet user profile
       summary: Return the competences of a profile
       description: Allow to get all the competences defined into a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -257,6 +258,8 @@ paths:
         - WeNet user profile
       summary: Update competences of a profile
       description: Update all the competences of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -302,6 +305,8 @@ paths:
         - WeNet user profile
       summary: Return the materials of a profile
       description: Allow to get all the materials defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -330,6 +335,8 @@ paths:
         - WeNet user profile
       summary: Update materials of a profile
       description: Update all the materials of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -375,6 +382,8 @@ paths:
         - WeNet user profile
       summary: Return the meanings of a profile
       description: Allow to get all the meanings defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -403,6 +412,8 @@ paths:
         - WeNet user profile
       summary: Update meanings of a profile
       description: Update all the meanings of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -448,6 +459,8 @@ paths:
         - WeNet user profile
       summary: Return the norms of a profile
       description: Allow to get all the norms defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -476,6 +489,8 @@ paths:
         - WeNet user profile
       summary: Update norms of a profile
       description: Update all the norms of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -521,6 +536,8 @@ paths:
         - WeNet user profile
       summary: Return the personal behaviors of a profile
       description: Allow to get all the personal behaviors defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -549,6 +566,8 @@ paths:
         - WeNet user profile
       summary: Update personal behaviors of a profile
       description: Update all the personal behaviors of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -594,6 +613,8 @@ paths:
         - WeNet user profile
       summary: Return the planned activities of a profile
       description: Allow to get all the planned activities defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -622,6 +643,8 @@ paths:
         - WeNet user profile
       summary: Update planned activities of a profile
       description: Update all the planned activities of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -667,6 +690,8 @@ paths:
         - WeNet user profile
       summary: Return the relationships of a profile
       description: Allow to get all the relationships defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -695,6 +720,8 @@ paths:
         - WeNet user profile
       summary: Update relationships of a profile
       description: Update all the relationships of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
@@ -740,6 +767,8 @@ paths:
         - WeNet user profile
       summary: Return the relevant locations of a profile
       description: Allow to get all the relevant locations defined into a profile
+      security:
+        - Oauth2: []
       parameters:
       - name: wenetUserId
         in: path
@@ -768,6 +797,8 @@ paths:
         - WeNet user profile
       summary: Update relevant locations of a profile
       description: Update all the relevant locations of a profile
+      security:
+        - Oauth2: []
       parameters:
         - name: wenetUserId
           in: path
