@@ -967,115 +967,109 @@ paths:
       - Task
       summary: Return a page of task that match the query parameters
       description: Allow to get a page of task with the specified query parameters
-      operationId: retrieveTasksPage
       security:
         - ApikeyAuth: []
         - Oauth2: []
       parameters:
       - name: appId
         in: query
-        description: An application identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the application identifier of the tasks to return.
+        description: An application identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the application identifier of the tasks to return if you write between '/'. For example to get the tasks for the applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'.
         schema:
           type: string
           example: "1"
       - name: requesterId
         in: query
-        description: An user identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the requester identifier of the tasks to return.
+        description: An user identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the requester identifier of the tasks to return if you write between '/'. For example to get the tasks for the requesters '1' and '2' you must pass as 'requesterId' '/^[1|2]$/'.
         schema:
           type: string
           example: 1e346fd440
       - name: taskTypeId
         in: query
-        description: A task type identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the task type identifier of the tasks to return.
+        description: A task type identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the task type identifier of the tasks to return if you write between '/'. For example to get the tasks for the types '1' and '2' you must pass as 'taskTypeId' '/^[1|2]$/'.
         schema:
           type: string
           example: 1e346fd440
       - name: goalName
         in: query
-        description: A goal name or a Perl compatible regular expressions (PCRE) that
-          has to match the goal name of the tasks to return.
+        description: A goal name to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the goal name of the tasks to return if you write between '/'. For example to get the tasks with a goal name with the word 'eat' you must pass as 'goalName' '/.eat./'
         schema:
           type: string
           example: .*together.*
       - name: goalDescription
         in: query
-        description: A goal description or a Perl compatible regular expressions (PCRE)
-          that has to match the goal name of the tasks to return.
+        description: A goal description to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the goal description of the tasks to return if you write between '/'. For example to get the tasks with a goal description with the word 'eat' you must pass as 'goalDescription' '/.eat./'
         schema:
           type: string
           example: .*dinner.*
-      - name: startFrom
+      - name: creationFrom
         in: query
-        description: The difference, measured in seconds, between the minimum start
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the minimum creation time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: startTo
+      - name: creationTo
         in: query
-        description: The difference, measured in seconds, between the maximum start
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum creation time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
-      - name: endFrom
+      - name: updateFrom
         in: query
-        description: The difference, measured in seconds, between the minimum end
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the minimum update time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: endTo
+      - name: updateTo
         in: query
-        description: The difference, measured in seconds, between the maximum end
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum update time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
-      - name: deadlineFrom
+      - name: hasCloseTs
         in: query
-        description: The difference, measured in seconds, between the minimum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: This is 'true' if the task to return has defined a 'closeTs', or 'false' if this fiels is not defined. In other words, get the closed or open tasks.
+        schema:
+          type: boolean
+          example: false
+      - name: closeFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum close time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: deadlineTo
+      - name: closeTo
         in: query
-        description: The difference, measured in seconds, between the maximum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum close time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
+      - name: order
+        in: query
+        description: The order in witch the tasks have to be returned. For each field it has be separated by a ',' and each field can start with '+' (or without it) to order on ascending order, or with the prefix '-' to do on descendant order.
+        schema:
+          type: string
+          example: goal.name,-goal.description,+appId
       - name: offset
         in: query
-        description: The index of the first task type to return.
+        description: The index of the first task to return.
         schema:
           type: integer
-          format: int64
-          example: 5
+          format: int32
+          example: 4
           default: 0
       - name: limit
         in: query
-        description: The number maximum of task types to return.
+        description: The number maximum of tasks to return.
         schema:
           type: integer
-          format: int64
-          example: 5
+          format: int32
+          example: 100
           default: 10
       responses:
         '200':
