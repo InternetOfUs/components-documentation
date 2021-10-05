@@ -965,7 +965,7 @@ paths:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
         '404':
-          description: No such wenet user exists
+          description: No such task exists
           content:
             application/json:
               schema:
