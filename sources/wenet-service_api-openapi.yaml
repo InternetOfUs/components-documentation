@@ -24,7 +24,7 @@ info:
 
   contact:
     email: carlo.caprini@u-hopper.com
-  version: 1.0.0
+  version: 3.0.0
 
 servers:
   - url: https://wenet.u-hopper.com/dev/service
