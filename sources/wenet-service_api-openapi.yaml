@@ -1031,7 +1031,7 @@ paths:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
       responses:
-        '200':
+        '201':
           description: Transaction correctly submitted
           content:
             application/json:
