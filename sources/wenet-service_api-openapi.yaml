@@ -38,25 +38,6 @@ servers:
 
 paths:
 
-  # /app:
-  #   post:
-  #     summary: Create a new wenet app
-  #     tags:
-  #       - App
-  #     description: This endpoint allows to create a new wenet app.
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/App'
-  #     responses:
-  #       200:
-  #         description: App created
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/App'
-
   /token:
     get:
       summary: Get the details of a given Oauth2 token
@@ -71,8 +52,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenDetails'
-
-
 
   /app/{appId}:
     get:
@@ -256,6 +235,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -335,6 +315,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -414,6 +395,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -493,6 +475,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -572,6 +555,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -651,6 +635,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -730,6 +715,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -809,6 +795,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
+
     put:
       tags:
         - WeNet user profile
@@ -856,86 +843,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-#   /messages:
-#     post:
-#       summary: Submit a list of new incoming messages
-#       tags:
-#         - Message
-#       description: This entpoint allows to submit a list of new incoming messages
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/RequestMessage'
-#       responses:
-#         201:
-#           description: Messages correctly submitted
-
-#   /messages/subscription:
-#     post:
-#       summary: Create a new message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to createa new message response subscription
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/MessageSubscription'
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
-
-#   /messages/subscription/{subscriptionId}:
-#     put:
-#       summary: Update existing message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to edit an existing message response subscription
-#       parameters:
-#         - in: path
-#           name: subscriptionId
-#           schema:
-#             type: string
-#           required: true
-#           description: The Id of the subscription
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/MessageSubscription'
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
-
-#     delete:
-#       summary: Delete existing message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to delete an existing message response subscription
-#       parameters:
-#         - in: path
-#           name: subscriptionId
-#           schema:
-#             type: string
-#           required: true
-#           description: The Id of the subscription
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
-
   /task:
     post:
       summary: Create new task
@@ -957,7 +864,6 @@ paths:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
-
 
   /task/{taskId}:
     get:
@@ -1155,7 +1061,7 @@ paths:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-task_manager-openapi.yaml#/components/schemas/TaskPage'
-    
+
   /log/messages:
     post:
       summary: Post log messages
@@ -1168,9 +1074,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Message'
+              $ref: '#/components/schemas/Messages'
       responses:
         '201':
           description: Messages correctly logged
@@ -1193,7 +1097,6 @@ components:
       scheme: bearer
       bearerFormat: oauth2
 
-
   schemas:
 
     CreateUpdateTsDetails:
@@ -1212,35 +1115,6 @@ components:
 
     # App
 
-    AppAssociationPlatform:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - telegram
-            # - wenet
-
-    # WeNetPlatform:
-    #   allOf:
-    #     - $ref: '#/components/schemas/AppAssociationPlatform'
-    #   properties:
-    #     type:
-    #       description: The type of platform
-    #       example: wenet
-
-    TelegramPlatform:
-      allOf:
-        - $ref: '#/components/schemas/AppAssociationPlatform'
-      properties:
-        type:
-          type: string
-          example: telegram
-        botUsername:
-          type: string
-          description: The username of the Telegram bot
-          example: incredible_new_bot
-
     App:
       description: The app of a wenet use case scenario
       allOf:
@@ -1251,17 +1125,6 @@ components:
           description: The Id of the wenet app
           example: 3e557acc-e846-4736-8218-3f64d8e68d8c
           readOnly: true
-        appToken:
-          type: string
-          description: The Id of the wenet app
-          example: aisfuh9s8fnkdfhg9d8fgkdjfgnhkduyfgidjkfgkdh
-          readOnly: true
-        allowedPlatforms:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/TelegramPlatform'
-              # - $ref: '#/components/schemas/WeNetPlatform'
         messageCallbackUrl:
           type: string
           nullable: true
@@ -1271,191 +1134,18 @@ components:
           type: object
           description: App metadata (such as its name and description)
 
-    # User and authentication
-
-    AuthenticationAccount:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of authentication
-          enum:
-            - telegram
-        appId:
-          type: string
-          description: The application for which the authentication should be performed
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-        metadata:
-          type: object
-          readOnly: true
-          description: Open metadata dictionary
-
-    TelegramAuthenticationAccount:
-      allOf:
-        - $ref: '#/components/schemas/AuthenticationAccount'
-      properties:
-        type:
-          type: string
-          enum:
-            - telegram
-          example: telegram
-        telegramId:
-          type: number
-          example: 785433782
-          description: The telegram id of the user
-
-    WeNetUser:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: The identifier of the WeNet user
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
-
-    WeNetUserWithAccounts:
-      allOf:
-        - $ref: '#/components/schemas/WeNetUser'
-      properties:
-        accounts:
-          type: array
-          readOnly: true
-          items:
-            allOf:
-              - $ref: '#/components/schemas/TelegramAuthenticationAccount'
-
-    # ACL
-
-    # ACL:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: string
-    #       description: The identifier of the ACL
-    #       example: 08dfogkjdnfg
-
-    # PublicACL:
-    #   description: Public access to all wenet apps
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-
-    # PrivateACL:
-    #   description: Private access only to the app that created the data piece in the first place
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-    #   properties:
-    #     appId:
-    #       type: string
-    #       description: The Id of the wenet app having access to the data
-    #       example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-
-    # CustomACL:
-    #   description: Private access only to the app that created the data piece in the first place
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-    #   properties:
-    #     rules:
-    #       type: array
-    #       items:
-    #         type: object
-    #         properties:
-    #           appId:
-    #             type: string
-    #             description: The identifier of the wenet app the rule is associated to
-    #             example: 6712a3ed-821e-4e93-95f1-3dd39dde1001
-    #           access:
-    #             type: string
-    #             description: The identifier of the wenet app having access to the data
-    #             example: 8b9c98b5-7510-4d8c-bf04-219490d0dac7
-    #             enum:
-    #               - write
-    #               - read
-
     # Messages
     
-    BaseContent:
-      type: object
-      properties:
-        type:
-          type: string
-          description: the type of the content
-          
-    ActionContent:
-      allOf:
-          - $ref: '#/components/schemas/Message'
-      type: object
-      properties:
-        buttonId:
-          type: string
-        buttonText:
-          type: string
-        
-          
-    ContentWithButtons:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        buttons:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActionContent'
-            
-            
-    TextualContent:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        value:
-          type: string
-          
-    AttachmentContent:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        value:
-          type: string
-        
+    Messages:
+      type: array
+      items:
+        anyOf:
+          - $ref: '#/components/schemas/RequestMessage'
+          - $ref: '#/components/schemas/ResponseMessage'
+          - $ref: '#/components/schemas/NotificationMessage'
 
-    TextualMessage:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["textual_message"]
-        value:
-          type: string
-          example: "I need someone to pick up my son at school"
 
-    ActionRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["action_request"]
-        payload:
-          type: string
-          example: volunteer
-        value:
-          type: string
-          example: "I can do it!"
-
-    Entity:
-      type: object
-      properties:
-        type:
-          type: string
-          example: "@city"
-        value:
-          type: string
-          example: "Boston"
-        confidence:
-          type: number
-          format: float
-          example: 0.94
-
-    Message:
+    RequestMessage:
       type: object
       properties:
         messageId:
@@ -1467,25 +1157,22 @@ components:
         userId:
           type: string
           example: "USR-JDKHEIU2-31NJDTE94"
-        conversationId:
-          type: string
-          example: "CONV-DAJKWPENVOA-314CAD"
         timestamp:
           type: string
-          description: Timestamp expressed in ISO format
-          example: "2021-01-25T14:18:36.141378"
+          example: "2019-04-04:23.11.58"
         content:
           oneOf:
-            # - $ref: '#/components/schemas/TextualRequest'
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
             - $ref: '#/components/schemas/ActionRequest'
-          example: {"type": "text", "value": "where can I eat a pizza?"}
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Entity'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
         project:
           type: string
-          example: "MyApp"
+          example: "wenet"
+        metadata:
+          type: object
         type:
           type: string
           example: "REQUEST"
@@ -1497,45 +1184,211 @@ components:
         - project
         - type
 
-    RequestMessage:
-      allOf:
-        - $ref: '#/components/schemas/Message'
-      properties:
-        type:
-          type: string
-          enum:
-            - request
-          example: request
-
     ResponseMessage:
-      allOf:
-        - $ref: '#/components/schemas/Message'
+      type: object
+      properties:
+        messageId:
+          type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+        channel:
+          type: string
+          example: "FACEBOOK"
+        userId:
+          type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+        responseTo:
+          type: string
+          example: "1FKNSM-GEKRO2-DANK2-FJ33-DASDJOW"
+        timestamp:
+          type: string
+          example: "2019-04-04:23.11.58"
+        content:
+          oneOf:
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
+            - $ref: '#/components/schemas/ActionRequest'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
+        metadata:
+          type: object
+        project:
+          type: string
+          example: 'wenet'
+        type:
+          type: string
+          example: "RESPONSE"
+      required:
+        - messageId
+        - channel
+        - userId
+        - responseTo
+        - timestamp
+        - project
+        - type
+
+    NotificationMessage:
+      type: object
+      properties:
+        messageId:
+          type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+        channel:
+          type: string
+          example: "FACEBOOK"
+        userId:
+          type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+        timestamp:
+          type: string
+          example: "2019-04-04:23.11.58"
+        content:
+          oneOf:
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
+            - $ref: '#/components/schemas/ActionRequest'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
+        metadata:
+          type: object
+        project:
+          type: string
+          example: "wenet"
+        type:
+          type: string
+          example: "NOTIFICATION"
+      required:
+        - messageId
+        - channel
+        - userId
+        - timestamp
+        - project
+        - type
+
+    LocationContent:
+      type: object
       properties:
         type:
           type: string
-          enum:
-            - response
-          example: response
+          example: 'location'
+        lon:
+          type: string
+          example: '49.3128319'
+        lat:
+          type: string
+          example: '8.3189321'
+        buttons:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - longitude
+        - latitude
 
-    MessageSubscription:
+    TextualContent:
       type: object
-      description: The MessageSubscription collects all the information relevant for allowing the platform to provide the message that are created as responses to incoming ones written by the users.
       properties:
-        subscriptionId:
+        type:
           type: string
-          readOnly: true
-          description: The identifier of the subscription
-          example: osddo9fgijdjgn
-        appId:
+          example: "text"
+        value:
           type: string
-          readOnly: true
-          description: The app the subscription is associated to
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-        webhook:
+          example: "I want to go hiking"
+        buttons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - value
+
+    ActionRequest:
+      type: object
+      properties:
+        type:
           type: string
-          format: url
-          description: The url of the webhook that is going to receive the message responsens. The specified endpoint must be configured in order to be able to receive a list of `ResponseMessage`.
-          example: "https://www.app1.wenet.com/webhook"
+          example: "action"
+        value:
+          type: string
+          example: "Let's do it!"
+      required:
+        - type
+        - value
+
+    ActionContent:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "action"
+        buttonText:
+          type: string
+          example: "Cerca hotel"
+        buttonId:
+          type: string
+          example: "BTN-DAJKSOD142-ADFGWE2"
+      required:
+        - type
+        - buttonText
+
+    AttachmentContent:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "attachment"
+        uri:
+          type: string
+          example: "http://image.com/image.png"
+        alternativeText:
+          type: string
+          example: "An hotel"
+        buttons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - uri
+
+    CarouselContent:
+        type: object
+        properties:
+          type:
+            type: string
+            example: "carousel"
+          cards:
+            type: array
+            items:
+              $ref: '#/components/schemas/Card'
+        required:
+          - type
+          - cards
+
+    Card:
+      type: object
+      properties:
+          title:
+            type: string
+            example: "Hiking activity"
+          imageUrl:
+            type: string
+            example: "http://www.google.com/logo.png"
+          subtitle:
+            type: string
+            example: "you should hike"
+          defaultAction:
+            type: object
+          buttons:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActionContent'
+      required:
+        - title
+
+    # Token
 
     TokenDetails:
       type: object
@@ -1553,27 +1406,8 @@ components:
           description: The list of scopes
           items:
             type: string
-            
-    # BaseMessage:
-    #   type: object
-    #   description: Base model for log message
-    #   properties:
-    #     type:
-    #       type: string
-    #     messageId:
-    #       type: string
-    #     channel:
-    #       type: string
-    #     userId:
-    #       type: string
-    #     # content:
-    #     #   type: string
-    #     timestap:
-    #       type: string
-    #       format: datetime
-          
-    # RequestMessage:
-    #   type: object
+
+    # Response
 
     EmptyResponse:
       type: object

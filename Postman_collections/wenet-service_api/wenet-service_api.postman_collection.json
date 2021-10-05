@@ -60,9 +60,6 @@
                         {
                             "name": "Get the list of all users associated to an app",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -128,9 +125,6 @@
                 {
                     "name": "Get the details of an app",
                     "request": {
-                        "auth": {
-                            "type": "noauth"
-                        },
                         "method": "GET",
                         "header": [],
                         "url": {
@@ -185,7 +179,7 @@
                                 }
                             ],
                             "cookie": [],
-                            "body": "{\n  \"creationTs\": 1563871899,\n  \"lastupdateTs\": 1563898764,\n  \"appId\": \"3e557acc-e846-4736-8218-3f64d8e68d8c\",\n  \"appToken\": \"aisfuh9s8fnkdfhg9d8fgkdjfgnhkduyfgidjkfgkdh\",\n  \"allowedPlatforms\": [\n    {\n      \"type\": \"telegram\",\n      \"botUsername\": \"incredible_new_bot\"\n    }\n  ],\n  \"messageCallbackUrl\": \"https://app.endpoint.com/messages\",\n  \"metadata\": {}\n}"
+                            "body": "{\n  \"creationTs\": 1563871899,\n  \"lastupdateTs\": 1563898764,\n  \"appId\": \"3e557acc-e846-4736-8218-3f64d8e68d8c\",\n  \"messageCallbackUrl\": \"https://app.endpoint.com/messages\",\n  \"metadata\": {}\n}"
                         }
                     ]
                 }
@@ -200,9 +194,6 @@
                         {
                             "name": "Return the competences of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -303,9 +294,6 @@
                         {
                             "name": "Update competences of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -452,9 +440,6 @@
                         {
                             "name": "Return the materials of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -555,9 +540,6 @@
                         {
                             "name": "Update materials of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -704,9 +686,6 @@
                         {
                             "name": "Return the meanings of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -807,9 +786,6 @@
                         {
                             "name": "Update meanings of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -956,9 +932,6 @@
                         {
                             "name": "Return the norms of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -1059,9 +1032,6 @@
                         {
                             "name": "Update norms of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -1208,9 +1178,6 @@
                         {
                             "name": "Return the personal behaviors of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -1311,9 +1278,6 @@
                         {
                             "name": "Update personal behaviors of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -1460,9 +1424,6 @@
                         {
                             "name": "Return the planned activities of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -1563,9 +1524,6 @@
                         {
                             "name": "Update planned activities of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -1712,9 +1670,6 @@
                         {
                             "name": "Return the relationships of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -1815,9 +1770,6 @@
                         {
                             "name": "Update relationships of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -1964,9 +1916,6 @@
                         {
                             "name": "Return the relevant locations of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -2067,9 +2016,6 @@
                         {
                             "name": "Update relevant locations of a profile",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -2213,9 +2159,6 @@
                 {
                     "name": "Create an empty user profile",
                     "request": {
-                        "auth": {
-                            "type": "noauth"
-                        },
                         "method": "POST",
                         "header": [],
                         "url": {
@@ -2314,9 +2257,6 @@
                 {
                     "name": "Get the profile of the specified wenet user",
                     "request": {
-                        "auth": {
-                            "type": "noauth"
-                        },
                         "method": "GET",
                         "header": [],
                         "url": {
@@ -2414,9 +2354,6 @@
                 {
                     "name": "Update the profile of a wenet user",
                     "request": {
-                        "auth": {
-                            "type": "noauth"
-                        },
                         "method": "PUT",
                         "header": [
                             {
@@ -2563,9 +2500,6 @@
                         {
                             "name": "Get the details of an existing task",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "GET",
                                 "header": [],
                                 "url": {
@@ -2660,9 +2594,6 @@
                         {
                             "name": "Update a task",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "PUT",
                                 "header": [
                                     {
@@ -2753,9 +2684,6 @@
                         {
                             "name": "Create new task transaction",
                             "request": {
-                                "auth": {
-                                    "type": "noauth"
-                                },
                                 "method": "POST",
                                 "header": [
                                     {
@@ -2831,9 +2759,6 @@
                 {
                     "name": "Create new task",
                     "request": {
-                        "auth": {
-                            "type": "noauth"
-                        },
                         "method": "POST",
                         "header": [
                             {
@@ -2933,67 +2858,67 @@
                                 },
                                 {
                                     "key": "taskTypeId",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "goalName",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "goalDescription",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "creationFrom",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "creationTo",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "updateFrom",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "updateTo",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "hasCloseTs",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "closeFrom",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "closeTo",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "order",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "offset",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 },
                                 {
                                     "key": "limit",
-                                    "value": null,
+                                    "value": "",
                                     "disabled": true
                                 }
                             ]
@@ -3120,7 +3045,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "[\n  {\n    \"messageId\": \"2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8\",\n    \"channel\": \"FACEBOOK\",\n    \"userId\": \"USR-JDKHEIU2-31NJDTE94\",\n    \"conversationId\": \"CONV-DAJKWPENVOA-314CAD\",\n    \"timestamp\": \"2021-01-25T14:18:36.141378\",\n    \"content\": {\n      \"type\": \"text\",\n      \"value\": \"where can I eat a pizza?\"\n    },\n    \"entities\": [\n      {\n        \"type\": \"@city\",\n        \"value\": \"Boston\",\n        \"confidence\": 0.94\n      }\n    ],\n    \"project\": \"MyApp\",\n    \"type\": \"REQUEST\"\n  }\n]",
+                            "raw": "[\n  {\n    \"messageId\": \"2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8\",\n    \"channel\": \"FACEBOOK\",\n    \"userId\": \"USR-JDKHEIU2-31NJDTE94\",\n    \"timestamp\": \"2019-04-04:23.11.58\",\n    \"content\": {\n      \"type\": \"text\",\n      \"value\": \"I want to go hiking\",\n      \"buttons\": [\n        {\n          \"type\": \"action\",\n          \"buttonText\": \"Cerca hotel\",\n          \"buttonId\": \"BTN-DAJKSOD142-ADFGWE2\"\n        }\n      ]\n    },\n    \"project\": \"wenet\",\n    \"metadata\": {},\n    \"type\": \"REQUEST\"\n  },\n  {\n    \"messageId\": \"2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8\",\n    \"channel\": \"FACEBOOK\",\n    \"userId\": \"USR-JDKHEIU2-31NJDTE94\",\n    \"responseTo\": \"1FKNSM-GEKRO2-DANK2-FJ33-DASDJOW\",\n    \"timestamp\": \"2019-04-04:23.11.58\",\n    \"content\": {\n      \"type\": \"text\",\n      \"value\": \"I want to go hiking\",\n      \"buttons\": [\n        {\n          \"type\": \"action\",\n          \"buttonText\": \"Cerca hotel\",\n          \"buttonId\": \"BTN-DAJKSOD142-ADFGWE2\"\n        }\n      ]\n    },\n    \"metadata\": {},\n    \"project\": \"wenet\",\n    \"type\": \"RESPONSE\"\n  },\n  {\n    \"messageId\": \"2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8\",\n    \"channel\": \"FACEBOOK\",\n    \"userId\": \"USR-JDKHEIU2-31NJDTE94\",\n    \"timestamp\": \"2019-04-04:23.11.58\",\n    \"content\": {\n      \"type\": \"text\",\n      \"value\": \"I want to go hiking\",\n      \"buttons\": [\n        {\n          \"type\": \"action\",\n          \"buttonText\": \"Cerca hotel\",\n          \"buttonId\": \"BTN-DAJKSOD142-ADFGWE2\"\n        }\n      ]\n    },\n    \"metadata\": {},\n    \"project\": \"wenet\",\n    \"type\": \"NOTIFICATION\"\n  }\n]",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -3181,11 +3106,61 @@
             ]
         }
     ],
+    "auth": {
+        "type": "apikey",
+        "apikey": [
+            {
+                "key": "value",
+                "value": "{{apikey}}",
+                "type": "string"
+            },
+            {
+                "key": "key",
+                "value": "x-wenet-component-apikey",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
     "variable": [
         {
             "key": "baseUrl",
-            "value": "https://wenet.u-hopper.com",
-            "type": "string"
+            "value": "https://wenet.u-hopper.com/dev/service"
+        },
+        {
+            "key": "appId",
+            "value": "appId"
+        },
+        {
+            "key": "wenetUserId",
+            "value": "wenetUserId"
+        },
+        {
+            "key": "taskId",
+            "value": "taskId"
+        },
+        {
+            "key": "apikey",
+            "value": "apikey"
         }
     ]
 }
