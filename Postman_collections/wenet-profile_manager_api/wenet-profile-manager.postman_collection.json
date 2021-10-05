@@ -355,112 +355,6 @@
 			"response": []
 		},
 		{
-			"name": "Retrive Personality questionnaire",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept-Language",
-						"value": "en",
-						"description": "The preferred language for the text on the questionnaire. If it is not available the texts will be on English.",
-						"type": "text"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{server}}/personalities",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"personalities"
-					]
-				},
-				"description": "Obtain all the changes that has bene done over a profile."
-			},
-			"response": []
-		},
-		{
-			"name": "Calculate personality",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"answerValues\": [\n        1,\n        -1,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        -1,\n        -1,\n        -1,\n        0,\n        -1,\n        -1,\n        0,\n        1,\n        1,\n        -1,\n        1,\n        1\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/personalities",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"personalities"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Calculate Gardner intelligences",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"answerValues\": [\n        1,\n        0.5,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        0.5,\n        0.5,\n        0.5,\n        0,\n        0.5,\n        0.5,\n        0,\n        1,\n        1,\n        0.5,\n        1,\n        1,\n        1,\n        0.5,\n        1,\n        1,\n        0,\n        0,\n        1,\n        1,\n        0.5,\n        0.5,\n        0.5,\n        0,\n        0.5,\n        0.5,\n        0,\n        1,\n        1,\n        0.5,\n        1,\n        1\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/intelligences",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"intelligences"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get trust for user",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -1508,6 +1402,57 @@
 			],
 			"request": {
 				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"friend\",\n  \"weight\": 0.9\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}",
+						"relationships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add or update relationship into a profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",

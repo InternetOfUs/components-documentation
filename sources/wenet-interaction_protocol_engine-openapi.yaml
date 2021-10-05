@@ -27,21 +27,20 @@ info:
     \ private norms of the human whose interpreter has received this message, as well\
     \ as their local profile (both private and public). This ensures that the interpreter\
     \ abides by human’s private norms without leaking any of their private norms and\
-    \ profile.\n\n## Norm\nThe functionality provided allows to publish norms, and\
-    \ manage the user and community norms.\nThere are norms on the individual (user\
-    \ level), the task level, and the community level. An individual’s norm might\
-    \ be “Suppress incoming messages at night” (and this will be applied for the user\
-    \ who sets this norm only). A task norm might be “Don’t ask my ex” (so that would\
-    \ be applied for a specific task only). A community norm might be “If you don’\
-    t volunteer, you cannot ask for help” and it would be enforced on everyone. Given\
-    \ the above, this means that norms will be attached to users, tasks and communities."
+    \ profile.\n\n## Norm\nThere are norms on the individual (user level), the task\
+    \ level, and the community level. An individual’s norm might be “Suppress incoming\
+    \ messages at night” (and this will be applied for the user who sets this norm\
+    \ only). A task norm might be “Don’t ask my ex” (so that would be applied for\
+    \ a specific task only). A community norm might be “If you don’t volunteer, you\
+    \ cannot ask for help” and it would be enforced on everyone. Given the above,\
+    \ this means that norms will be attached to users, tasks and communities."
   contact:
     name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.14.0
+  version: 0.15.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
   description: Production instance
@@ -58,9 +57,8 @@ tags:
   description: The functionality provided allows to send messages.
 - name: States
   description: The functionality to manage the states necessaries on the norm engine.
-- name: Norms
-  description: "The functionality provided allows to publish norms, and manage the\
-    \ user and community norms."
+- name: Interactions
+  description: The functionality to obtain the interactions that has been done.
 paths:
   /events/{id}:
     delete:
@@ -139,7 +137,7 @@ paths:
           description: The API description
   /incentives:
     post:
-      tags:
+      tags: 
       - Incentives
       summary: Send a incentive to an user that is involved in a protocol.
       description: Publish a incentive to encourage an user to participate on a protocol.
@@ -156,6 +154,342 @@ paths:
           description: If the accepted to be processed
         "400":
           description: Bad incentive
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /interactions:
+    get:
+      tags:
+      - Interactions
+      summary: Count the number of interactions between two users.
+      operationId: getInteractionsPage
+      parameters:
+      - name: appId
+        in: query
+        description: "The identifier of the application where the interaction happens.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the application identifier of the interactions to return if you write\
+          \ between '/'. For example to get the interactions done on the applications\
+          \ '1' and '2' you must pass as 'appId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: communityId
+        in: query
+        description: "The identifier of the community where the interaction happens.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the community identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the community '1' and\
+          \ '2' you must pass as 'communityId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: taskTypeId
+        in: query
+        description: "The identifier of the task type where the interaction happens.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task type identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the task type '1' and\
+          \ '2' you must pass as 'taskTypeId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: taskId
+        in: query
+        description: "The identifier of the task where the interaction happens. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the task '1' and '2'\
+          \ you must pass as 'taskId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: senderId
+        in: query
+        description: "The identifier of the user that has started the interaction.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the sender identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions started by the users '1' and\
+          \ '2' you must pass as 'senderId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: receiverId
+        in: query
+        description: "The identifier of the user that has end the interaction. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the receiver identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions started by the users '1' and\
+          \ '2' you must pass as 'receiverId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: hasTransaction
+        in: query
+        description: This is 'true' if the interaction requires a transaction.
+        schema:
+          type: boolean
+        example: true
+      - name: transactionLabel
+        in: query
+        description: The label of the transaction that has started the interaction.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the transaction label of the interactions to return if you write between
+          '/'. For example to get the transaction with a label that contains the word
+          'eat' you must pass as 'transactionLabel' '/.*eat.*/'
+        schema:
+          type: string
+        example: askMoreUsers
+      - name: transactionFrom
+        in: query
+        description: "the minimum time stamp, inclusive, where the interaction has\
+          \ to be started, or {@code null} to start at midnight, January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: transactionTo
+        in: query
+        description: "the maximum time stamp, inclusive, where the interaction has\
+          \ to be started or {@code null} to be the current time."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: hasMessage
+        in: query
+        description: This is 'true' if the interaction requires a message.
+        schema:
+          type: boolean
+        example: true
+      - name: messageLabel
+        in: query
+        description: The label of the message that has end the interaction. You can
+          use a Perl compatible regular expressions (PCRE) that has to match the message
+          label of the interactions to return if you write between '/'. For example
+          to get the message with a label that contains the word 'eat' you must pass
+          as 'messageLabel' '/.*eat.*/'
+        schema:
+          type: string
+        example: askMoreUsers
+      - name: messageFrom
+        in: query
+        description: "the minimum time stamp, inclusive, where the interaction has\
+          \ to be end, or {@code null} to start at midnight, January 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: messageTo
+        in: query
+        description: "the maximum time stamp, inclusive, where the interaction has\
+          \ to be end or {@code null} to be the current time."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: order
+        in: query
+        description: "The order in witch the interactions has to be returned. For\
+          \ each field it has be separated by a ',' and each field can start with\
+          \ '+' (or without it) to order on ascending order, or with the prefix '-'\
+          \ to do on descendant order."
+        style: form
+        schema:
+          type: string
+        example: "transactionTs,-messageLabel"
+      - name: offset
+        in: query
+        description: The index of the first interaction to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of interactions to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The page with the interactions that match the parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteractionsPage'
+        "400":
+          description: Bad request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Interactions
+      summary: Add a new interaction between users.
+      operationId: addInteraction
+      requestBody:
+        description: The interaction to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Interaction'
+        required: true
+      responses:
+        "201":
+          description: The stored interaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interaction'
+        "400":
+          description: Bad interaction to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Interactions
+      summary: Count the number of interactions between two users.
+      operationId: deleteInteractions
+      parameters:
+      - name: appId
+        in: query
+        description: "The identifier of the application of the interaction to delete.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the application identifier of the interactions to return if you write\
+          \ between '/'. For example to get the interactions done on the applications\
+          \ '1' and '2' you must pass as 'appId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: communityId
+        in: query
+        description: "The identifier of the community of the interaction to delete.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the community identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the community '1' and\
+          \ '2' you must pass as 'communityId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: taskTypeId
+        in: query
+        description: "The identifier of the task type of the interaction to delete.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task type identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the task type '1' and\
+          \ '2' you must pass as 'taskTypeId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: taskId
+        in: query
+        description: "The identifier of the task of the interaction to delete. You\
+          \ can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the task identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions done on the task '1' and '2'\
+          \ you must pass as 'taskId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: senderId
+        in: query
+        description: "The identifier of the user that has started the interaction\
+          \ to delete. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the sender identifier of the interactions to return if you\
+          \ write between '/'. For example to get the interactions started by the\
+          \ users '1' and '2' you must pass as 'senderId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: receiverId
+        in: query
+        description: "The identifier of the user that has end the interaction to delete.\
+          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
+          \ the receiver identifier of the interactions to return if you write between\
+          \ '/'. For example to get the interactions started by the users '1' and\
+          \ '2' you must pass as 'receiverId' '/[1|2]/'"
+        schema:
+          type: string
+        example: 1
+      - name: hasTransaction
+        in: query
+        description: This is 'true' if the interaction to delete requires a transaction.
+        schema:
+          type: boolean
+        example: true
+      - name: transactionLabel
+        in: query
+        description: The label of the transaction that has started the interaction
+          to delete. You can use a Perl compatible regular expressions (PCRE) that
+          has to match the transaction label of the interactions to return if you
+          write between '/'. For example to get the transaction with a label that
+          contains the word 'eat' you must pass as 'transactionLabel' '/.*eat.*/'
+        schema:
+          type: string
+        example: askMoreUsers
+      - name: transactionFrom
+        in: query
+        description: "the minimum time stamp, inclusive, where the interaction to\
+          \ delete has to be started, or {@code null} to start at midnight, January\
+          \ 1, 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: transactionTo
+        in: query
+        description: "the maximum time stamp, inclusive, where the interaction to\
+          \ delete has to be started or {@code null} to be the current time."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      - name: hasMessage
+        in: query
+        description: This is 'true' if the interaction to delete requires a message.
+        schema:
+          type: boolean
+        example: true
+      - name: messageLabel
+        in: query
+        description: The label of the message that has end the interaction to delete.
+          You can use a Perl compatible regular expressions (PCRE) that has to match
+          the message label of the interactions to return if you write between '/'.
+          For example to get the message with a label that contains the word 'eat'
+          you must pass as 'messageLabel' '/.*eat.*/'
+        schema:
+          type: string
+        example: questionToAnswer
+      - name: messageFrom
+        in: query
+        description: "the minimum time stamp, inclusive, where the interaction to\
+          \ delete has to be end, or {@code null} to start at midnight, January 1,\
+          \ 1970 UTC."
+        schema:
+          type: integer
+          format: int64
+        example: 1457166440
+      - name: messageTo
+        in: query
+        description: "the maximum time stamp, inclusive, where the interaction to\
+          \ delete has to be end or {@code null} to be the current time."
+        schema:
+          type: integer
+          format: int64
+        example: 1571664406
+      responses:
+        "204":
+          description: If the interaction that match the parameters has been deleted
+        "404":
+          description: Can not delete because no interaction match the parameters
           content:
             application/json:
               schema:
@@ -184,275 +518,6 @@ paths:
                 $ref: '#/components/schemas/ProtocolMessage'
         "400":
           description: Bad message
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /norms/{publishedNormId}:
-    get:
-      tags:
-      - Norms
-      summary: Return a published norm associated to the identifier
-      description: Allow to get a published norm associated to an identifier
-      operationId: retrievePublishedNorm
-      parameters:
-      - name: publishedNormId
-        in: path
-        description: The identifier of the published norm to get
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The published norm associated to the identifier
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublishedNorm'
-        "404":
-          description: Not found published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Norms
-      summary: Modify all the fields of a published norm
-      description: Change all the attributes of a published norm
-      operationId: updatePublishedNorm
-      parameters:
-      - name: publishedNormId
-        in: path
-        description: The identifier of the published norm to update
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the published norm
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublishedNorm'
-        required: true
-      responses:
-        "200":
-          description: The updated published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublishedNorm'
-        "400":
-          description: Bad published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Norms
-      summary: Delete the published norm associated to the identifier
-      description: Allow to delete a published norm associated to an identifier
-      operationId: deletePublishedNorm
-      parameters:
-      - name: publishedNormId
-        in: path
-        description: The identifier of the published norm to delete
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: The published norm was deleted successfully
-        "404":
-          description: Not found published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    patch:
-      tags:
-      - Norms
-      summary: Modify partially a published norm
-      description: Change some of the attributes of a published norm
-      operationId: mergePublishedNorm
-      parameters:
-      - name: publishedNormId
-        in: path
-        description: The identifier of the published norm to merge
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values for the published norm
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublishedNorm'
-        required: true
-      responses:
-        "200":
-          description: The merged published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublishedNorm'
-        "400":
-          description: Bad published norm to merge
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found published norm to merge
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /norms:
-    get:
-      tags:
-      - Norms
-      summary: Return some published norms
-      description: Allow to search for a published norms that match some patterns
-      operationId: retrievePublishedNormsPage
-      parameters:
-      - name: keyword
-        in: query
-        description: The keyword of the published norms to return or a Perl compatible
-          regular expressions (PCRE) that has to match the keyword of the published
-          norms to return.
-        schema:
-          type: array
-          items:
-            type: string
-            example: (?i)key(?-i)word
-      - name: name
-        in: query
-        description: A name to be equals on the published norms to return. You can
-          use a Perl compatible regular expressions (PCRE) that has to match the name
-          of the published norms to return if you write between '/'. For example to
-          get the published norms with a name with the word 'eat' you must pass as
-          'name' '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: description
-        in: query
-        description: A description to be equals on the published norms to return.
-          You can use a Perl compatible regular expressions (PCRE) that has to match
-          the description of the published norms to return if you write between '/'.
-          For example to get the published norms with a description with the word
-          'eat' you must pass as 'description' '/.*eat.*/'
-        schema:
-          type: string
-        example: /.*eat.*/
-      - name: keywords
-        in: query
-        description: "A set of keywords to be defined on the published norms to be\
-          \ returned. For each keyword is separated by a ',' and each field keyword\
-          \ can be between '/' to use a Perl compatible regular expressions (PCRE)\
-          \ instead the exact value."
-        style: form
-        schema:
-          type: string
-        example: "key1,/.*eat.*/,key3"
-      - name: publisherId
-        in: query
-        description: "An user identifier to be equals on the publisher of the norm\
-          \ to return. You can use a Perl compatible regular expressions (PCRE) that\
-          \ has to match the publisher identifier of the norms to return if you write\
-          \ between '/'. For example to get the norms published by '1' and '2' you\
-          \ must pass as 'publisherId' '/^[1|2]$/'."
-        schema:
-          type: string
-        example: 1e346fd440
-      - name: publishFrom
-        in: query
-        description: "The difference, measured in seconds, between the minimum publish\
-          \ time stamp of the task and midnight, January 1, 1970 UTC."
-        schema:
-          type: integer
-          format: int64
-        example: 1457166440
-      - name: publishTo
-        in: query
-        description: "The difference, measured in seconds, between the maximum publish\
-          \ time stamp of the task and midnight, January 1, 1970 UTC."
-        schema:
-          type: integer
-          format: int64
-        example: 1571664406
-      - name: order
-        in: query
-        description: "The order in witch the norms has to be returned. For each field\
-          \ it has be separated by a ',' and each field can start with '+' (or without\
-          \ it) to order on ascending order, or with the prefix '-' to do on descendant\
-          \ order."
-        style: form
-        schema:
-          type: string
-        example: "name,-description,+publisherId"
-      - name: offset
-        in: query
-        description: The index of the first norm to return.
-        schema:
-          type: integer
-          format: int32
-          default: 0
-        example: 4
-      - name: limit
-        in: query
-        description: The number maximum of norms to return
-        schema:
-          type: integer
-          format: int32
-          default: 10
-        example: 100
-      responses:
-        "200":
-          description: The published norms that match the patterns
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublishedNormsPage'
-        "400":
-          description: Bad request. For example if a pattern is not right
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Norms
-      summary: Publish a norm
-      description: Publish a norm to be accessible by the other users on WeNet
-      operationId: publishNorm
-      requestBody:
-        description: The norm to publish
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PublishedNorm'
-        required: true
-      responses:
-        "201":
-          description: The published norm
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PublishedNorm'
-        "400":
-          description: Bad norm to publish
           content:
             application/json:
               schema:
@@ -840,6 +905,92 @@ components:
           description: Contain information of the license of the API
           example: Apache v2
       description: Provide the version information of the API
+    Interaction:
+      type: object
+      properties:
+        appId:
+          type: string
+          description: The identifier of the application type where the interaction
+            is done.
+          nullable: true
+          example: b129e5509c9bb79
+        communityId:
+          type: string
+          description: The identifier of the community where the interaction is done.
+          nullable: true
+          example: b129e5509c9bb79
+        taskTypeId:
+          type: string
+          description: The identifier of the task type where the interaction is done.
+          nullable: true
+          example: b129e5509c9bb79
+        taskId:
+          type: string
+          description: The identifier of the task where the interaction is done.
+          nullable: true
+          example: b129e5509c9bb79
+        senderId:
+          type: string
+          description: The identifier of the user that starts this interaction.
+          nullable: true
+          example: b129e5509c9bb79
+        receiverId:
+          type: string
+          description: The identifier of the user that ends this interaction.
+          nullable: true
+          example: b129e5509c9bb79
+        transactionLabel:
+          type: string
+          description: The label of the transaction that has started the interaction.
+          nullable: true
+          example: askMoreUsers
+        transactionAttributes:
+          type: object
+          description: "the attributes of the transaction, as key-value pairs."
+          nullable: true
+        transactionTs:
+          type: integer
+          description: The UTC epoch timestamp representing the time when the transaction
+            has been done.
+          format: int64
+          nullable: true
+          example: 1563930000
+        messageLabel:
+          type: string
+          description: The label of the message that has started the interaction.
+          nullable: true
+          example: askMoreUsers
+        messageAttributes:
+          type: object
+          description: "the attributes of the message, as key-value pairs."
+          nullable: true
+        messageTs:
+          type: integer
+          description: The UTC epoch timestamp representing the time when the message
+            has been sent.
+          format: int64
+          nullable: true
+          example: 1563930000
+      description: Provide information of an interaction between two users
+    InteractionsPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first interaction returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of interactions that satisfies the search.
+          format: int64
+          example: 100
+        interactions:
+          type: array
+          description: The set of interactions found
+          items:
+            $ref: '#/components/schemas/Interaction'
+      description: Contains a set of interactions between users
     ProtocolAddress:
       type: object
       properties:
@@ -895,70 +1046,6 @@ components:
         receiver:
           $ref: '#/components/schemas/ProtocolAddress'
       description: A message that can be interchange in an interaction protocol.
-    ProtocolNorm:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
-    PublishedNorm:
-      type: object
-      properties:
-        _creationTs:
-          type: integer
-          description: The time stamp representing the account creation instant.
-          format: int64
-          readOnly: true
-          example: 1563871899
-        _lastUpdateTs:
-          type: integer
-          description: The time stamp representing the last update instant.
-          format: int64
-          readOnly: true
-          example: 1563898764
-        id:
-          type: string
-          description: The identifier of the published norm.
-          example: bf274393-1e7b-4d40-a897-88cb96277edd
-        name:
-          type: string
-          description: The name of the published norm.
-          example: WeNet
-        description:
-          type: string
-          description: The description of the published norm.
-          example: A norm of users that provide or require help
-        keywords:
-          type: array
-          description: The keywords of the published  norm
-          example:
-          - social interaction
-          - ethics
-          - diversity
-          items:
-            type: string
-        publisherId:
-          type: string
-          description: The identifier of the user that has published the norm.
-          example: bf274393-1e7b-4d40-a897-88cb96277edd
-        norm:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
-      description: A norm that is published to share with all the WeNet users.
-    PublishedNormsPage:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The index of the first published norm returned.
-          format: int32
-          example: 0
-        total:
-          type: integer
-          description: The number total of published norms that satisfies the search.
-          format: int64
-          example: 100
-        norms:
-          type: array
-          description: The set of published norms found
-          items:
-            $ref: '#/components/schemas/PublishedNorm'
-      description: Contains a set of published norms found
     State:
       type: object
       properties:
