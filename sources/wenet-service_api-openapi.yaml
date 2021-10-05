@@ -137,6 +137,7 @@ paths:
         * only the public profile (no matter the allowed scope) of a user who is not the one the token was granted for but who is using the same application
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -195,6 +196,7 @@ paths:
       description: This entpoint allows to update the _core_ profile of a wenet user. This is possible by providing the complete user profile that will override the exising one.
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -230,6 +232,7 @@ paths:
       description: Allow to get all the competences defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -260,6 +263,7 @@ paths:
       description: Update all the competences of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -307,6 +311,7 @@ paths:
       description: Allow to get all the materials defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -337,6 +342,7 @@ paths:
       description: Update all the materials of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -384,6 +390,7 @@ paths:
       description: Allow to get all the meanings defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -414,6 +421,7 @@ paths:
       description: Update all the meanings of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -461,6 +469,7 @@ paths:
       description: Allow to get all the norms defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -491,6 +500,7 @@ paths:
       description: Update all the norms of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -538,6 +548,7 @@ paths:
       description: Allow to get all the personal behaviors defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -568,6 +579,7 @@ paths:
       description: Update all the personal behaviors of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -615,6 +627,7 @@ paths:
       description: Allow to get all the planned activities defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -645,6 +658,7 @@ paths:
       description: Update all the planned activities of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -692,6 +706,7 @@ paths:
       description: Allow to get all the relationships defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -722,6 +737,7 @@ paths:
       description: Update all the relationships of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -769,6 +785,7 @@ paths:
       description: Allow to get all the relevant locations defined into a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
       - name: wenetUserId
         in: path
@@ -799,6 +816,7 @@ paths:
       description: Update all the relevant locations of a profile
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - name: wenetUserId
           in: path
@@ -1140,7 +1158,7 @@ paths:
     
   /log/messages:
     post:
-      summary: Post a log messages
+      summary: Post log messages
       tags:
         - Logging
       security:
@@ -1155,7 +1173,7 @@ paths:
                 $ref: '#/components/schemas/Message'
       responses:
         '200':
-          description: Transaction correctly submitted
+          description: Messages correctly logged
           content:
             application/json:
              schema:
