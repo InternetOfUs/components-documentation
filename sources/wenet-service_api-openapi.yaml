@@ -1172,7 +1172,7 @@ paths:
               items:
                 $ref: '#/components/schemas/Message'
       responses:
-        '200':
+        '201':
           description: Messages correctly logged
           content:
             application/json:
