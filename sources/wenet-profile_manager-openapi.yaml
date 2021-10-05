@@ -28,15 +28,13 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.16.0
+  version: 0.17.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/profile_manager
   description: Production instance
 - url: https://wenet.u-hopper.com/dev/profile_manager
   description: Staging instance
-- url: http://ardid.iiia.csic.es/wenet/profile-manager/prod/
-  description: IIIA production server
-- url: http://ardid.iiia.csic.es/wenet/profile-manager/dev/
+- url: https://ardid.iiia.csic.es/wenet/profile-manager
   description: IIIA development server
 tags:
 - name: Profiles
@@ -1072,109 +1070,124 @@ paths:
       responses:
         "200":
           description: The API description
-  /intelligences:
+  /profiles/{userId}/relationships:
     get:
       tags:
-      - Intelligences
-      summary: Obtain the intelligences test
-      description: Return the questionnaire used to obtain the intelligences of a
-        person
-      operationId: retrieveIntelligencesQuestionnaire
+      - Relationships
+      - Profiles
+      summary: Return the relationships from a profile
+      description: Allow to get all the relationships defined into a profile
+      operationId: retrieveProfileRelationships
       parameters:
-      - name: Accept-Language
-        in: header
-        description: The preferred language for the text on the questionnaire. If
-          it is not available the texts will be on English.
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
         schema:
           type: string
-          default: en
-        example: en
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
       responses:
         "200":
-          description: The questionnaire to evaluate the intelligences of a person
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Questionnaire'
-    post:
-      tags:
-      - Intelligences
-      summary: Calculate the Gardner intelligences of a person
-      description: Evaluate the answers to the intelligences test to obtain the Gardner
-        intelligences of the person
-      operationId: calculateGardnerIntelligences
-      requestBody:
-        description: The values of the answers that the person has selected on the
-          intelligences questionnaire.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/QuestionnaireAnswers'
-        required: true
-      responses:
-        "200":
-          description: The Meanings with the Gardner intelligences of the person
+          description: The relationships defined into the profile
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         "404":
-          description: If it can not calculate the Gardner intelligences
+          description: Not found profile
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /personalities:
-    get:
+    put:
       tags:
-      - Personalities
-      summary: Obtain the personality test
-      description: Return the questionnaire used to obtain the personality of a person
-      operationId: retrievePersonalityQuestionnaire
+      - Relationships
+      - Profiles
+      summary: Add or update a relationship from a profile
+      description: Allow to modify a relationship defined into a profile or add if
+        not exist yet
+      operationId: addOrUpdateProfileRelationship
       parameters:
-      - name: Accept-Language
-        in: header
-        description: The preferred language for the text on the questionnaire. If
-          it is not available the texts will be on English.
+      - name: userId
+        in: path
+        description: The identifier of the user for the profile where the relationship
+          is defined
+        required: true
         schema:
           type: string
-          default: en
-        example: en
-      responses:
-        "200":
-          description: The questionnaire to evaluate the personality of a person
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Questionnaire'
-    post:
-      tags:
-      - Personalities
-      summary: Calculate the personality of a person
-      description: Evaluate the answers to the personality test to obtain the personality
-        of the person
-      operationId: calculatePersonality
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
       requestBody:
-        description: The values of the answers that the person has selected on the
-          personality questionnaire.
+        description: The new values to update the relationship
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QuestionnaireAnswers'
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
         required: true
       responses:
         "200":
-          description: The personality of the person
+          description: The updated relationship
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "201":
+          description: The created relationship
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         "404":
-          description: If it can not calculate the personality
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    post:
+      tags:
+      - Relationships
+      - Profiles
+      summary: Add a relationship into a profile
+      description: Insert a new relationship into a profile
+      operationId: addProfileRelationship
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to the profile to add the relationship
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      requestBody:
+        description: The new relationship
+        content:
+          application/json:
+            schema:
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "201":
+          description: The added relationship into the profile
+          content:
+            application/json:
+              schema:
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to add
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: Not found profile
           content:
             application/json:
               schema:
@@ -1609,79 +1622,6 @@ paths:
                 $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to add
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/relationships:
-    get:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Return the relationships from a profile
-      description: Allow to get all the relationships defined into a profile
-      operationId: retrieveProfileRelationships
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The relationships defined into the profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Add a relationship into a profile
-      description: Insert a new relationship into a profile
-      operationId: addProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user to the profile to add the relationship
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new relationship
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        required: true
-      responses:
-        "201":
-          description: The added relationship into the profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "400":
-          description: Bad relationship to add
           content:
             application/json:
               schema:
@@ -3884,80 +3824,6 @@ components:
           description: Contain information of the license of the API
           example: Apache v2
       description: Provide the version information of the API
-    QuestionnaireAnswers:
-      type: object
-      properties:
-        answerValues:
-          type: array
-          description: The selected values for the questions on the questionnaire.
-            The answer values are on the same order of the question that refers to
-            the questionnaire.
-          example:
-          - 1
-          - -1
-          - 0
-          - 1
-          - 1
-          - -1
-          - 1
-          - 0
-          - 0
-          - 0
-          - 1
-          - -1
-          - -1
-          - -1
-          - 1
-          items:
-            type: number
-            format: double
-      description: Contains the selected answers of a questionnaire
-    Answer:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the answer
-          example: Compassionate
-        value:
-          type: number
-          description: The value associated with the answer
-          format: double
-          example: -1
-    Question:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text of the question
-          example: The judges must be
-        help:
-          type: string
-          description: A message to help to answer the question
-          example: "Example: If a judge judges your brother, you must follow the laws\
-            \ that apply to everyone equally."
-        answers:
-          type: array
-          description: The possible answers for the question
-          items:
-            $ref: '#/components/schemas/Answer'
-    Questionnaire:
-      type: object
-      properties:
-        name:
-          type: string
-          description: A name that identifies the questionnaire for a human
-          example: Personality test
-        description:
-          type: string
-          description: Explains what attribute of a person it evaluates
-          example: With this questionnaire is possible to obtain the personality of
-            a person.
-        questions:
-          type: array
-          description: The set of questions used to evaluate the person.
-          items:
-            $ref: '#/components/schemas/Question'
     HistoricWeNetUserProfile:
       type: object
       properties:
