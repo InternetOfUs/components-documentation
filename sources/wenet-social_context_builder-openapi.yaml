@@ -64,6 +64,13 @@ paths:
           description: User ID
           required: true
           type: string
+        - in: body
+          name: app_IDs
+          description: app IDs for which the user has enabled, if this is not complete then relations will be created for all appIds
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: Creation successful
