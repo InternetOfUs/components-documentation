@@ -24,34 +24,19 @@ info:
 
   contact:
     email: carlo.caprini@u-hopper.com
-  version: 1.0.0
+  version: 3.0.0
 
 servers:
   - url: https://wenet.u-hopper.com/dev/service
-    description: Staging instance
+    description: Staging instance (ApikeyAuth)
+  - url: https://wenet.u-hopper.com/dev/api/service
+    description: Staging instance (Oauth2)
   - url: https://internetofus.u-hopper.com/prod/service
-    description: Production instance
+    description: Production instance (ApikeyAuth)
+  - url: https://internetofus.u-hopper.com/prod/api/service
+    description: Production instance (Oauth2)
 
 paths:
-
-  # /app:
-  #   post:
-  #     summary: Create a new wenet app
-  #     tags:
-  #       - App
-  #     description: This endpoint allows to create a new wenet app.
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/App'
-  #     responses:
-  #       200:
-  #         description: App created
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/App'
 
   /token:
     get:
@@ -67,8 +52,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenDetails'
-
-
 
   /app/{appId}:
     get:
@@ -133,6 +116,7 @@ paths:
         * only the public profile (no matter the allowed scope) of a user who is not the one the token was granted for but who is using the same application
       security:
         - Oauth2: []
+        - ApikeyAuth: []
       parameters:
         - in: path
           name: wenetUserId
@@ -140,9 +124,10 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       responses:
         '200':
-          description: WeNet user correctly created
+          description: WeNet user correctly retrieved
           content:
             application/json:
               schema:
@@ -168,6 +153,7 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       responses:
         '200':
           description: WeNet user correctly created
@@ -188,6 +174,7 @@ paths:
         - WeNet user profile
       description: This entpoint allows to update the _core_ profile of a wenet user. This is possible by providing the complete user profile that will override the exising one.
       security:
+        - Oauth2: []
         - ApikeyAuth: []
       parameters:
         - in: path
@@ -196,6 +183,7 @@ paths:
             type: integer
           required: true
           description: The Id of the wenet user
+          example: 15
       requestBody:
         content:
           application/json:
@@ -203,7 +191,7 @@ paths:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
       responses:
         '200':
-          description: WeNet user correctly created
+          description: WeNet user correctly updated
           content:
             application/json:
               schema:
@@ -215,85 +203,645 @@ paths:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
 
-#   /messages:
-#     post:
-#       summary: Submit a list of new incoming messages
-#       tags:
-#         - Message
-#       description: This entpoint allows to submit a list of new incoming messages
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/RequestMessage'
-#       responses:
-#         201:
-#           description: Messages correctly submitted
+  /user/profile/{wenetUserId}/competences:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the competences of a profile
+      description: Allow to get all the competences defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      responses:
+        "200":
+          description: The competences defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
-#   /messages/subscription:
-#     post:
-#       summary: Create a new message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to createa new message response subscription
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/MessageSubscription'
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update competences of a profile
+      description: Update all the competences of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new competences
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        required: true
+      responses:
+        "200":
+          description: The updated competences of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+        "400":
+          description: Bad competences
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
-#   /messages/subscription/{subscriptionId}:
-#     put:
-#       summary: Update existing message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to edit an existing message response subscription
-#       parameters:
-#         - in: path
-#           name: subscriptionId
-#           schema:
-#             type: string
-#           required: true
-#           description: The Id of the subscription
-#       requestBody:
-#         content:
-#           application/json:
-#             schema:
-#               $ref: '#/components/schemas/MessageSubscription'
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
+  /user/profile/{wenetUserId}/materials:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the materials of a profile
+      description: Allow to get all the materials defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The materials defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
-#     delete:
-#       summary: Delete existing message response subscription
-#       tags:
-#         - Message subscrption
-#       description: This entpoint allows to delete an existing message response subscription
-#       parameters:
-#         - in: path
-#           name: subscriptionId
-#           schema:
-#             type: string
-#           required: true
-#           description: The Id of the subscription
-#       responses:
-#         201:
-#           description: Message subscription correctly created
-#           content:
-#             application/json:
-#               schema:
-#                 $ref: '#/components/schemas/EmptyResponse'
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update materials of a profile
+      description: Update all the materials of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new materials
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        required: true
+      responses:
+        "200":
+          description: The updated materials of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+        "400":
+          description: Bad materials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/meanings:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the meanings of a profile
+      description: Allow to get all the meanings defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The meanings defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update meanings of a profile
+      description: Update all the meanings of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new meanings
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        required: true
+      responses:
+        "200":
+          description: The updated meanings of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+        "400":
+          description: Bad meanings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/norms:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the norms of a profile
+      description: Allow to get all the norms defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The norms defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update norms of a profile
+      description: Update all the norms of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new norms
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        required: true
+      responses:
+        "200":
+          description: The updated norms of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+        "400":
+          description: Bad norms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/personalBehaviors:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the personal behaviors of a profile
+      description: Allow to get all the personal behaviors defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The personal behaviors defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update personal behaviors of a profile
+      description: Update all the personal behaviors of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new personal behaviors
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        required: true
+      responses:
+        "200":
+          description: The updated personal behaviors of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+        "400":
+          description: Bad personal behaviors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/plannedActivities:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the planned activities of a profile
+      description: Allow to get all the planned activities defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The planned activities defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update planned activities of a profile
+      description: Update all the planned activities of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new planned activities
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        required: true
+      responses:
+        "200":
+          description: The updated planned activities of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+        "400":
+          description: Bad planned activities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/relationships:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the relationships of a profile
+      description: Allow to get all the relationships defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The relationships defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update relationships of a profile
+      description: Update all the relationships of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new relationships
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        required: true
+      responses:
+        "200":
+          description: The updated relationships of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+        "400":
+          description: Bad relationships
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+  /user/profile/{wenetUserId}/relevantLocations:
+    get:
+      tags:
+        - WeNet user profile
+      summary: Return the relevant locations of a profile
+      description: Allow to get all the relevant locations defined into a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+      - name: wenetUserId
+        in: path
+        description: The Id of the wenet user
+        required: true
+        schema:
+          type: integer
+        example: 15
+      responses:
+        "200":
+          description: The relevant locations defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      tags:
+        - WeNet user profile
+      summary: Update relevant locations of a profile
+      description: Update all the relevant locations of a profile
+      security:
+        - Oauth2: []
+        - ApikeyAuth: []
+      parameters:
+        - name: wenetUserId
+          in: path
+          description: The Id of the wenet user
+          required: true
+          schema:
+            type: integer
+          example: 15
+      requestBody:
+        description: The new relevant locations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        required: true
+      responses:
+        "200":
+          description: The updated relevant locations of the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+        "400":
+          description: Bad relevant locations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+        "404":
+          description: No such wenet user exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
 
   /task:
     post:
@@ -301,6 +849,57 @@ paths:
       tags:
         - Task
       description: This entpoint allows to create a new task
+      security:
+        - ApikeyAuth: []
+        - Oauth2: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+      responses:
+        '201':
+          description: Task correctly created
+          content:
+            application/json:
+              schema:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+
+  /task/{taskId}:
+    get:
+      summary: Get the details of an existing task
+      tags:
+        - Task
+      description: This entpoint allows to get the details of an existing task
+      security:
+        - ApikeyAuth: []
+        - Oauth2: []
+      parameters:
+        - in: path
+          name: taskId
+          schema:
+            type: string
+          required: true
+          description: The Id of the task
+      responses:
+        '200':
+          description: The details of the requested task
+          content:
+            application/json:
+              schema:
+                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+        '404':
+          description: No such task exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptyResponse'
+
+    put:
+      summary: Update a task
+      tags:
+        - Task
+      description: This entpoint allows to update a task
       security:
         - ApikeyAuth: []
         - Oauth2: []
@@ -317,39 +916,12 @@ paths:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
       responses:
-        '201':
-          description: Task correctly created
-
-
-  /task/{taskId}:
-    get:
-      summary: Get the details of an existing task
-      tags:
-        - Task
-      description: This entpoint allows to get the details of an existing task
-      security:
-        - ApikeyAuth: []
-        - Oauth2: []
-      parameters:
-        - in: path
-          name: taskId
-          schema:
-            type: integer
-          required: true
-          description: The Id of the task
-      responses:
-        '200':
-          description: The details of the requested task
+        200:
+          description: Task correctly updated
           content:
             application/json:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
-        '404':
-          description: No such wenet user exists
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/EmptyResponse'
 
   /task/transaction:
     post:
@@ -365,7 +937,7 @@ paths:
             schema:
               $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
       responses:
-        '200':
+        '201':
           description: Transaction correctly submitted
           content:
             application/json:
@@ -378,115 +950,109 @@ paths:
       - Task
       summary: Return a page of task that match the query parameters
       description: Allow to get a page of task with the specified query parameters
-      operationId: retrieveTasksPage
       security:
         - ApikeyAuth: []
         - Oauth2: []
       parameters:
       - name: appId
         in: query
-        description: An application identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the application identifier of the tasks to return.
+        description: An application identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the application identifier of the tasks to return if you write between '/'. For example to get the tasks for the applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'.
         schema:
           type: string
           example: "1"
       - name: requesterId
         in: query
-        description: An user identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the requester identifier of the tasks to return.
+        description: An user identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the requester identifier of the tasks to return if you write between '/'. For example to get the tasks for the requesters '1' and '2' you must pass as 'requesterId' '/^[1|2]$/'.
         schema:
           type: string
           example: 1e346fd440
       - name: taskTypeId
         in: query
-        description: A task type identifier or or a Perl compatible regular expressions
-          (PCRE) that has to match the task type identifier of the tasks to return.
+        description: A task type identifier to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the task type identifier of the tasks to return if you write between '/'. For example to get the tasks for the types '1' and '2' you must pass as 'taskTypeId' '/^[1|2]$/'.
         schema:
           type: string
           example: 1e346fd440
       - name: goalName
         in: query
-        description: A goal name or a Perl compatible regular expressions (PCRE) that
-          has to match the goal name of the tasks to return.
+        description: A goal name to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the goal name of the tasks to return if you write between '/'. For example to get the tasks with a goal name with the word 'eat' you must pass as 'goalName' '/.eat./'
         schema:
           type: string
           example: .*together.*
       - name: goalDescription
         in: query
-        description: A goal description or a Perl compatible regular expressions (PCRE)
-          that has to match the goal name of the tasks to return.
+        description: A goal description to be equals on the tasks to return. You can use a Perl compatible regular expressions (PCRE) that has to match the goal description of the tasks to return if you write between '/'. For example to get the tasks with a goal description with the word 'eat' you must pass as 'goalDescription' '/.eat./'
         schema:
           type: string
           example: .*dinner.*
-      - name: startFrom
+      - name: creationFrom
         in: query
-        description: The difference, measured in seconds, between the minimum start
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the minimum creation time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: startTo
+      - name: creationTo
         in: query
-        description: The difference, measured in seconds, between the maximum start
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum creation time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
-      - name: endFrom
+      - name: updateFrom
         in: query
-        description: The difference, measured in seconds, between the minimum end
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the minimum update time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: endTo
+      - name: updateTo
         in: query
-        description: The difference, measured in seconds, between the maximum end
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum update time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
-      - name: deadlineFrom
+      - name: hasCloseTs
         in: query
-        description: The difference, measured in seconds, between the minimum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: This is 'true' if the task to return has defined a 'closeTs', or 'false' if this fiels is not defined. In other words, get the closed or open tasks.
+        schema:
+          type: boolean
+          example: false
+      - name: closeFrom
+        in: query
+        description: The difference, measured in seconds, between the minimum close time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1457166440
-          default: 0
-      - name: deadlineTo
+      - name: closeTo
         in: query
-        description: The difference, measured in seconds, between the maximum deadline
-          time stamp of the task and midnight, January 1, 1970 UTC
+        description: The difference, measured in seconds, between the maximum close time stamp of the task and midnight, January 1, 1970 UTC.
         schema:
           type: integer
           format: int64
           example: 1571664406
-          default: 92233720368547757
+      - name: order
+        in: query
+        description: The order in witch the tasks have to be returned. For each field it has be separated by a ',' and each field can start with '+' (or without it) to order on ascending order, or with the prefix '-' to do on descendant order.
+        schema:
+          type: string
+          example: goal.name,-goal.description,+appId
       - name: offset
         in: query
-        description: The index of the first task type to return.
+        description: The index of the first task to return.
         schema:
           type: integer
-          format: int64
-          example: 5
+          format: int32
+          example: 4
           default: 0
       - name: limit
         in: query
-        description: The number maximum of task types to return.
+        description: The number maximum of tasks to return.
         schema:
           type: integer
-          format: int64
-          example: 5
+          format: int32
+          example: 100
           default: 10
       responses:
         '200':
@@ -496,30 +1062,9 @@ paths:
               schema:
                 $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-task_manager-openapi.yaml#/components/schemas/TaskPage'
 
-    # put:
-    #   summary: Update task
-    #   tags:
-    #     - Task
-    #   description: This entpoint allows to create a new task
-    #   parameters:
-    #     - in: path
-    #       name: taskId
-    #       schema:
-    #         type: integer
-    #       required: true
-    #       description: The Id of the task
-    #   requestBody:
-    #     content:
-    #       application/json:
-    #         schema:
-    #           $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
-    #   responses:
-    #     201:
-    #       description: Task correctly created
-    
   /log/messages:
     post:
-      summary: Post a log messages
+      summary: Post log messages
       tags:
         - Logging
       security:
@@ -529,13 +1074,10 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                $ref: '#/components/schemas/Message'
+              $ref: '#/components/schemas/Messages'
       responses:
-        '200':
-          description: Transaction correctly submitted
+        '201':
+          description: Messages correctly logged
           content:
             application/json:
              schema:
@@ -555,7 +1097,6 @@ components:
       scheme: bearer
       bearerFormat: oauth2
 
-
   schemas:
 
     CreateUpdateTsDetails:
@@ -574,35 +1115,6 @@ components:
 
     # App
 
-    AppAssociationPlatform:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - telegram
-            # - wenet
-
-    # WeNetPlatform:
-    #   allOf:
-    #     - $ref: '#/components/schemas/AppAssociationPlatform'
-    #   properties:
-    #     type:
-    #       description: The type of platform
-    #       example: wenet
-
-    TelegramPlatform:
-      allOf:
-        - $ref: '#/components/schemas/AppAssociationPlatform'
-      properties:
-        type:
-          type: string
-          example: telegram
-        botUsername:
-          type: string
-          description: The username of the Telegram bot
-          example: incredible_new_bot
-
     App:
       description: The app of a wenet use case scenario
       allOf:
@@ -613,17 +1125,6 @@ components:
           description: The Id of the wenet app
           example: 3e557acc-e846-4736-8218-3f64d8e68d8c
           readOnly: true
-        appToken:
-          type: string
-          description: The Id of the wenet app
-          example: aisfuh9s8fnkdfhg9d8fgkdjfgnhkduyfgidjkfgkdh
-          readOnly: true
-        allowedPlatforms:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/TelegramPlatform'
-              # - $ref: '#/components/schemas/WeNetPlatform'
         messageCallbackUrl:
           type: string
           nullable: true
@@ -633,192 +1134,18 @@ components:
           type: object
           description: App metadata (such as its name and description)
 
-    # User and authentication
-
-    AuthenticationAccount:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of authentication
-          enum:
-            - telegram
-        appId:
-          type: string
-          description: The application for which the authentication should be performed
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-        metadata:
-          type: object
-          readOnly: true
-          description: Open metadata dictionary
-
-    TelegramAuthenticationAccount:
-      allOf:
-        - $ref: '#/components/schemas/AuthenticationAccount'
-      properties:
-        type:
-          type: string
-          enum:
-            - telegram
-          example: telegram
-        telegramId:
-          type: number
-          example: 785433782
-          description: The telegram id of the user
-
-    WeNetUser:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: The identifier of the WeNet user
-          example: 15837028-645a-4a55-9aaf-ceb846439eba
-
-    WeNetUserWithAccounts:
-      allOf:
-        - $ref: '#/components/schemas/WeNetUser'
-      properties:
-        accounts:
-          type: array
-          readOnly: true
-          items:
-            allOf:
-              - $ref: '#/components/schemas/TelegramAuthenticationAccount'
-
-    # ACL
-
-    # ACL:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: string
-    #       description: The identifier of the ACL
-    #       example: 08dfogkjdnfg
-
-    # PublicACL:
-    #   description: Public access to all wenet apps
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-
-    # PrivateACL:
-    #   description: Private access only to the app that created the data piece in the first place
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-    #   properties:
-    #     appId:
-    #       type: string
-    #       description: The Id of the wenet app having access to the data
-    #       example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-
-    # CustomACL:
-    #   description: Private access only to the app that created the data piece in the first place
-    #   allOf:
-    #     - $ref: '#/components/schemas/ACL'
-    #   properties:
-    #     rules:
-    #       type: array
-    #       items:
-    #         type: object
-    #         properties:
-    #           appId:
-    #             type: string
-    #             description: The identifier of the wenet app the rule is associated to
-    #             example: 6712a3ed-821e-4e93-95f1-3dd39dde1001
-    #           access:
-    #             type: string
-    #             description: The identifier of the wenet app having access to the data
-    #             example: 8b9c98b5-7510-4d8c-bf04-219490d0dac7
-    #             enum:
-    #               - write
-    #               - read
-
     # Messages
     
-    BaseContent:
-      type: object
-      properties: 
-        type: 
-          type: string
-          description: the type of the content
-          
-    ActionContent:
-      allOf:
-          - $ref: '#/components/schemas/Message'
-      type: object
-      properties:
-        buttonId:
-          type: string
-        buttonText: 
-          type: string
-        
-          
-    ContentWithButtons:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        buttons:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/ActionContent'
-            
-            
-    TextualContent:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        value:
-          type: string
-          
-    AttachmentContent:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/BaseContent'
-      properties:
-        value:
-          type: string
-        
+    Messages:
+      type: array
+      items:
+        anyOf:
+          - $ref: '#/components/schemas/RequestMessage'
+          - $ref: '#/components/schemas/ResponseMessage'
+          - $ref: '#/components/schemas/NotificationMessage'
 
-    TextualMessage:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["textual_message"]
-        value:
-          type: string
-          example: "I need someone to pick up my son at school"
 
-    ActionRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["action_request"]
-        payload:
-          type: string
-          example: volunteer
-        value:
-          type: string
-          example: "I can do it!"
-
-    Entity:
-      type: object
-      properties:
-        type:
-          type: string
-          example: "@city"
-        value:
-          type: string
-          example: "Boston"
-        confidence:
-          type: number
-          format: float
-          example: 0.94
-
-    Message:
+    RequestMessage:
       type: object
       properties:
         messageId:
@@ -830,25 +1157,22 @@ components:
         userId:
           type: string
           example: "USR-JDKHEIU2-31NJDTE94"
-        conversationId:
-          type: string
-          example: "CONV-DAJKWPENVOA-314CAD"
         timestamp:
           type: string
-          description: Timestamp expressed in ISO format
-          example: "2021-01-25T14:18:36.141378"
+          example: "2019-04-04:23.11.58"
         content:
           oneOf:
-            # - $ref: '#/components/schemas/TextualRequest'
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
             - $ref: '#/components/schemas/ActionRequest'
-          example: {"type": "text", "value": "where can I eat a pizza?"}
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Entity'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
         project:
           type: string
-          example: "MyApp"
+          example: "wenet"
+        metadata:
+          type: object
         type:
           type: string
           example: "REQUEST"
@@ -860,45 +1184,211 @@ components:
         - project
         - type
 
-    RequestMessage:
-      allOf:
-        - $ref: '#/components/schemas/Message'
-      properties:
-        type:
-          type: string
-          enum:
-            - request
-          example: request
-
     ResponseMessage:
-      allOf:
-        - $ref: '#/components/schemas/Message'
+      type: object
+      properties:
+        messageId:
+          type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+        channel:
+          type: string
+          example: "FACEBOOK"
+        userId:
+          type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+        responseTo:
+          type: string
+          example: "1FKNSM-GEKRO2-DANK2-FJ33-DASDJOW"
+        timestamp:
+          type: string
+          example: "2019-04-04:23.11.58"
+        content:
+          oneOf:
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
+            - $ref: '#/components/schemas/ActionRequest'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
+        metadata:
+          type: object
+        project:
+          type: string
+          example: 'wenet'
+        type:
+          type: string
+          example: "RESPONSE"
+      required:
+        - messageId
+        - channel
+        - userId
+        - responseTo
+        - timestamp
+        - project
+        - type
+
+    NotificationMessage:
+      type: object
+      properties:
+        messageId:
+          type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+        channel:
+          type: string
+          example: "FACEBOOK"
+        userId:
+          type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+        timestamp:
+          type: string
+          example: "2019-04-04:23.11.58"
+        content:
+          oneOf:
+            - $ref: '#/components/schemas/TextualContent'
+            - $ref: '#/components/schemas/ActionContent'
+            - $ref: '#/components/schemas/ActionRequest'
+            - $ref: '#/components/schemas/AttachmentContent'
+            - $ref: '#/components/schemas/LocationContent'
+            - $ref: '#/components/schemas/CarouselContent'
+        metadata:
+          type: object
+        project:
+          type: string
+          example: "wenet"
+        type:
+          type: string
+          example: "NOTIFICATION"
+      required:
+        - messageId
+        - channel
+        - userId
+        - timestamp
+        - project
+        - type
+
+    LocationContent:
+      type: object
       properties:
         type:
           type: string
-          enum:
-            - response
-          example: response
+          example: 'location'
+        lon:
+          type: string
+          example: '49.3128319'
+        lat:
+          type: string
+          example: '8.3189321'
+        buttons:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - longitude
+        - latitude
 
-    MessageSubscription:
+    TextualContent:
       type: object
-      description: The MessageSubscription collects all the information relevant for allowing the platform to provide the message that are created as responses to incoming ones written by the users.
       properties:
-        subscriptionId:
+        type:
           type: string
-          readOnly: true
-          description: The identifier of the subscription
-          example: osddo9fgijdjgn
-        appId:
+          example: "text"
+        value:
           type: string
-          readOnly: true
-          description: The app the subscription is associated to
-          example: 3e557acc-e846-4736-8218-3f64d8e68d8c
-        webhook:
+          example: "I want to go hiking"
+        buttons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - value
+
+    ActionRequest:
+      type: object
+      properties:
+        type:
           type: string
-          format: url
-          description: The url of the webhook that is going to receive the message responsens. The specified endpoint must be configured in order to be able to receive a list of `ResponseMessage`.
-          example: "https://www.app1.wenet.com/webhook"
+          example: "action"
+        value:
+          type: string
+          example: "Let's do it!"
+      required:
+        - type
+        - value
+
+    ActionContent:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "action"
+        buttonText:
+          type: string
+          example: "Cerca hotel"
+        buttonId:
+          type: string
+          example: "BTN-DAJKSOD142-ADFGWE2"
+      required:
+        - type
+        - buttonText
+
+    AttachmentContent:
+      type: object
+      properties:
+        type:
+          type: string
+          example: "attachment"
+        uri:
+          type: string
+          example: "http://image.com/image.png"
+        alternativeText:
+          type: string
+          example: "An hotel"
+        buttons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionContent'
+      required:
+        - type
+        - uri
+
+    CarouselContent:
+        type: object
+        properties:
+          type:
+            type: string
+            example: "carousel"
+          cards:
+            type: array
+            items:
+              $ref: '#/components/schemas/Card'
+        required:
+          - type
+          - cards
+
+    Card:
+      type: object
+      properties:
+          title:
+            type: string
+            example: "Hiking activity"
+          imageUrl:
+            type: string
+            example: "http://www.google.com/logo.png"
+          subtitle:
+            type: string
+            example: "you should hike"
+          defaultAction:
+            type: object
+          buttons:
+            type: array
+            items:
+              $ref: '#/components/schemas/ActionContent'
+      required:
+        - title
+
+    # Token
 
     TokenDetails:
       type: object
@@ -916,27 +1406,8 @@ components:
           description: The list of scopes
           items:
             type: string
-            
-    # BaseMessage:
-    #   type: object
-    #   description: Base model for log message
-    #   properties:
-    #     type: 
-    #       type: string
-    #     messageId:
-    #       type: string
-    #     channel:
-    #       type: string
-    #     userId: 
-    #       type: string
-    #     # content:
-    #     #   type: string
-    #     timestap:
-    #       type: string
-    #       format: datetime
-          
-    # RequestMessage:
-    #   type: object
+
+    # Response
 
     EmptyResponse:
       type: object
