@@ -44,23 +44,23 @@
       "description": "An Assertion is an instance of a BadgeClass  that is awarded to one recipient."
     },
     {
-      "name": "Incentive Messages/Badge-Steering",
+      "name": "Incentive Messages",
       "description": "A class of Incentive Messages sent after a defined period of general inactivity, in order to motivate users to earn the Badge whose threshold they are closest to reach"
     }
   ],
   "paths": {
-    "/messages/BadgeSteering/TaskType": {
+    "/messages/TaskType": {
       "post": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Create a new TaskType Badge-Steering Incentive Message class",
-        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (TaskType)s away from a new badge!'",
+        "summary": "Create a new TaskType Incentive Message class",
+        "description": "'message' field, if threshold counting is desired, must include no more than a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (TaskType)s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessagePost"
+                "$ref": "#/components/schemas/TaskTypeIncentiveMessagePost"
               }
             }
           }
@@ -103,7 +103,7 @@
                     },
                     "message_2": {
                       "type": "string",
-                      "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
+                      "example": "'max_repeat and 'frequency' are required and must be positive integers"
                     },
                     "status_code_2": {
                       "type": "integer",
@@ -111,9 +111,17 @@
                     },
                     "message_3": {
                       "type": "string",
-                      "example": "'message' must include a single '#'"
+                      "example": "'message' field must be a string and include no more than a single '#' for threshold counting"
                     },
                     "status_code_3": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "Duplicate Incentive Message POST aborted - existing combination of 'app', 'taskTypeId', 'label' and 'message' fields"
+                    },
+                    "status_code_4": {
                       "type": "integer",
                       "example": 400
                     }
@@ -125,13 +133,13 @@
         }
       }
     },
-    "/messages/BadgeSteering/TaskType/{entityId}": {
+    "/messages/TaskType/{entityId}": {
       "put": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Update an existing TaskType Badge-Steering Incentive Message class",
-        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskType Badge-Steering Incentive Message cannot be updated into a TaskTransaction Badge-Steering Incentive Message (label field is irrelevant).",
+        "summary": "Update an existing TaskType Incentive Message class",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskType\n Incentive Message cannot be updated into a TaskTransaction\n Incentive Message (label field is irrelevant).",
         "parameters": [
           {
             "in": "path",
@@ -146,7 +154,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BadgeSteeringIncentiveMessagePut"
+                "$ref": "#/components/schemas/IncentiveMessagePut"
               }
             }
           }
@@ -160,7 +168,7 @@
                   "type": "object",
                   "properties": {
                     "updatedFields": {
-                      "$ref": "#/definitions/BadgeSteeringIncentiveMessagePut200"
+                      "$ref": "#/definitions/IncentiveMessagePut200"
                     },
                     "status_code": {
                       "type": "integer",
@@ -196,18 +204,18 @@
         }
       }
     },
-    "/messages/BadgeSteering/TaskTransaction": {
+    "/messages/TaskTransaction": {
       "post": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Create a new TaskTransaction Badge-Steering Incentive Message class",
-        "description": "'message' field must include a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (label)s away from a new badge!'",
+        "summary": "Create a new TaskTransaction Incentive Message class",
+        "description": "'message' field, if threshold counting is desired, include no more than a single '#', to be substituted with the number of tasks left for the next badge. An empty (not sent, '' or None) 'message' field will result in the default message - 'You are # (label)s away from a new badge!'",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskTransactionBadgeSteeringIncentiveMessagePost"
+                "$ref": "#/components/schemas/TaskTransactionIncentiveMessagePost"
               }
             }
           }
@@ -250,7 +258,7 @@
                     },
                     "message_2": {
                       "type": "string",
-                      "example": "'max_repeat, 'frequency' and 'inactivity_period' are required and must be positive integers"
+                      "example": "'max_repeat and 'frequency' are required and must be positive integers"
                     },
                     "status_code_2": {
                       "type": "integer",
@@ -258,9 +266,17 @@
                     },
                     "message_3": {
                       "type": "string",
-                      "example": "'message' must be a string and include a single '#'"
+                      "example": "'message' field must be a string and include no more than a single '#' for threshold counting"
                     },
                     "status_code_3": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "Duplicate Incentive Message POST aborted - existing combination of 'app', 'taskTypeId', 'label' and 'message' fields"
+                    },
+                    "status_code_4": {
                       "type": "integer",
                       "example": 400
                     }
@@ -272,13 +288,13 @@
         }
       }
     },
-    "/messages/BadgeSteering/TaskTransaction/{entityId}": {
+    "/messages/TaskTransaction/{entityId}": {
       "put": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Update an existing TaskTransaction Badge-Steering Incentive Message class",
-        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskTransaction Badge-Steering Incentive Message cannot be updated into a TaskType Badge-Steering Incentive Message (empty string / None inserted to the label field will result in an unchanged label).",
+        "summary": "Update an existing TaskTransaction Incentive Message class",
+        "description": "Fill only the fields you wish to update, remove the rest from the request body (or insert None / empty string). TaskTransaction\n Incentive Message cannot be updated into a TaskType\n Incentive Message (empty string / None inserted to the\nlabel field will result in an unchanged label).",
         "parameters": [
           {
             "in": "path",
@@ -293,7 +309,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BadgeSteeringIncentiveMessagePut"
+                "$ref": "#/components/schemas/IncentiveMessagePut"
               }
             }
           }
@@ -307,7 +323,7 @@
                   "type": "object",
                   "properties": {
                     "updatedFields": {
-                      "$ref": "#/definitions/BadgeSteeringIncentiveMessagePut200"
+                      "$ref": "#/definitions/IncentiveMessagePut200"
                     },
                     "status_code": {
                       "type": "integer",
@@ -343,12 +359,12 @@
         }
       }
     },
-    "/messages/BadgeSteering/{entityId}": {
+    "/messages/{entityId}": {
       "get": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Get a Badge-Steering Incentive Message class",
+        "summary": "Get a Incentive Message class",
         "parameters": [
           {
             "in": "path",
@@ -368,7 +384,7 @@
                   "type": "object",
                   "properties": {
                     "IncentiveMessage": {
-                      "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessageGet"
+                      "$ref": "#/components/schemas/TaskTypeIncentiveMessageGet"
                     },
                     "status_code": {
                       "type": "integer",
@@ -394,9 +410,9 @@
       },
       "delete": {
         "tags": [
-          "Incentive Messages/Badge-Steering"
+          "Incentive Messages"
         ],
-        "summary": "Delete a Badge-Steering Incentive Message class",
+        "summary": "Delete a Incentive Message class",
         "parameters": [
           {
             "in": "path",
@@ -416,7 +432,7 @@
                   "type": "object",
                   "properties": {
                     "IncentiveMessage": {
-                      "$ref": "#/components/schemas/TaskTypeBadgeSteeringIncentiveMessageGet"
+                      "$ref": "#/components/schemas/TaskTypeIncentiveMessageGet"
                     },
                     "status_code": {
                       "type": "integer",
@@ -1534,6 +1550,14 @@
                     "status_code_3": {
                       "type": "integer",
                       "example": 400
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "Duplicate BadgeClass POST aborted - existing name or existing taskTypeId, label and threshold combination"
+                    },
+                    "status_code_4": {
+                      "type": "integer",
+                      "example": 400
                     }
                   }
                 }
@@ -1883,6 +1907,14 @@
                       "example": "Invalid image (incompatible with badgr server)"
                     },
                     "status_code_3": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message_4": {
+                      "type": "string",
+                      "example": "Duplicate BadgeClass POST aborted - existing name or existing taskTypeId, label and threshold combination"
+                    },
+                    "status_code_4": {
                       "type": "integer",
                       "example": 400
                     }
@@ -2727,7 +2759,7 @@
           }
         }
       },
-      "TaskTypeBadgeSteeringIncentiveMessagePost": {
+      "TaskTypeIncentiveMessagePost": {
         "type": "object",
         "properties": {
           "taskTypeId": {
@@ -2763,7 +2795,7 @@
           "app"
         ]
       },
-      "TaskTransactionBadgeSteeringIncentiveMessagePost": {
+      "TaskTransactionIncentiveMessagePost": {
         "type": "object",
         "properties": {
           "taskTypeId": {
@@ -2804,7 +2836,7 @@
           "app"
         ]
       },
-      "BadgeSteeringIncentiveMessagePut": {
+      "IncentiveMessagePut": {
         "type": "object",
         "properties": {
           "taskTypeId": {
@@ -2837,7 +2869,7 @@
           }
         }
       },
-      "TaskTypeBadgeSteeringIncentiveMessageGet": {
+      "TaskTypeIncentiveMessageGet": {
         "type": "object",
         "properties": {
           "createdAt": {
@@ -3457,7 +3489,7 @@
         }
       }
     },
-    "BadgeSteeringIncentiveMessagePut200": {
+    "IncentiveMessagePut200": {
       "properties": {
         "taskTypeId": {
           "type": "string",
@@ -3485,7 +3517,7 @@
         },
         "message_2": {
           "type": "string",
-          "example": "Validation Error - 'message' field must include a single '#'"
+          "example": "Validation Error - 'message' field must be a string and include no more than a single '#' for threshold counting"
         },
         "status_code_2": {
           "type": "integer",
@@ -3493,7 +3525,7 @@
         },
         "message_3": {
           "type": "string",
-          "example": "TaskTypeBadgeSteeringIncentiveMessage cannot be altered into a TaskTransactionBadgeSteeringIncentiveMessage"
+          "example": "TaskTypIncentiveMessage cannot be altered into a TaskTransactionIncentiveMessage"
         },
         "status_code_3": {
           "type": "integer",
@@ -3501,7 +3533,7 @@
         },
         "message_4": {
           "type": "string",
-          "example": "TaskTransactionBadgeSteeringIncentiveMessage cannot be altered into a TaskTypeBadgeSteeringIncentiveMessage"
+          "example": "TaskTransactionIncentiveMessage cannot be altered into a TaskTypeIncentiveMessage"
         },
         "status_code_4": {
           "type": "integer",
