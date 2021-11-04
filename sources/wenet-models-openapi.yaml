@@ -430,6 +430,11 @@ components:
           description: The occupation of the user
           example: nurse
           nullable: true
+        hasLocations:
+          type: boolean
+          description: This is true if the platform has any localization data about the user.
+          example: false
+          nullable: true
 
     WeNetUserProfile:
       allOf:

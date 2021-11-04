@@ -94,6 +94,30 @@ paths:
           description: Received notification
         '401':
           description: Notification failed
+  '/social/notification/profileUpdate/{userID}':
+    post:
+      tags:
+        - Transaction Notifications
+      summary: Notifies for the interaction of user with another user
+      description: 'Notifies for the update of the user profile.'
+      parameters:
+        - in: path
+          name: userID
+          description: User ID
+          required: true
+          type: string
+        - in: body
+          name: updatedFieldNames
+          description: app IDs for which the user has enabled, if this is not complete then relations will be created for all appIds
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Received notification
+        '401':
+          description: Notification failed
   '/social/explanations/{userID}/{taskID}/update':
     put:
       tags:
