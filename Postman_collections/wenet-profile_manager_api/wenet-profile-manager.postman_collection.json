@@ -138,6 +138,30 @@
 			"response": []
 		},
 		{
+			"name": "Check profile exist",
+			"request": {
+				"method": "HEAD",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/profiles/{{userId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"profiles",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Retrieve profiles",
 			"request": {
 				"method": "GET",
@@ -2367,6 +2391,30 @@
 			"name": "Retrieve community",
 			"request": {
 				"method": "GET",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/communities/{{communityId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"communities",
+						"{{communityId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check community exist",
+			"request": {
+				"method": "HEAD",
 				"header": [
 					{
 						"key": "x-wenet-component-apikey",

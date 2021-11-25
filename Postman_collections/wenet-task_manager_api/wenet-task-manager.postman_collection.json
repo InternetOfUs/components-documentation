@@ -130,6 +130,30 @@
 			"response": []
 		},
 		{
+			"name": "Check task type exist",
+			"request": {
+				"method": "HEAD",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/taskTypes/{{taskTypeId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"taskTypes",
+						"{{taskTypeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Retrieve task types",
 			"request": {
 				"method": "GET",
@@ -355,6 +379,30 @@
 			"name": "Retrieve task",
 			"request": {
 				"method": "GET",
+				"header": [
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/tasks/{{taskId}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"tasks",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check task exist",
+			"request": {
+				"method": "HEAD",
 				"header": [
 					{
 						"key": "x-wenet-component-apikey",
