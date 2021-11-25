@@ -28,7 +28,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.17.0
+  version: 0.18.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/profile_manager
   description: Production instance
@@ -1044,6 +1044,30 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found community or social practice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /communities/{communityId}:
+    head:
+      tags:
+      - Communities
+      summary: Check if exist a community with an identifier
+      description: Allow to check if an  identifier is associated to a community
+      operationId: isCommunityDefined
+      parameters:
+      - name: communityId
+        in: path
+        description: The identifier of the community to check if exist
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The community exist
+        "404":
+          description: Not found community
           content:
             application/json:
               schema:
@@ -2101,6 +2125,29 @@ paths:
       responses:
         "204":
           description: The profile was deleted successfully
+        "404":
+          description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    head:
+      tags:
+      - Profiles
+      summary: Check if exist a profile with an identifier
+      description: Allow to check if an  identifier is associated to a profile
+      operationId: isProfileDefined
+      parameters:
+      - name: userId
+        in: path
+        description: The identifier of the user to check if exist
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The profile exist
         "404":
           description: Not found profile
           content:

@@ -61,7 +61,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.9.0
+  version: 0.10.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/task_manager
   description: Production instance
@@ -881,6 +881,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+    head:
+      tags:
+      - Task Types
+      summary: Check if exist a tasktype with an identifier
+      description: Allow to check if an  identifier is associated to a tasktype
+      operationId: isTaskTypeDefined
+      parameters:
+      - name: taskTypeId
+        in: path
+        description: The identifier of the task type to check if exist
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The tasktype exist
+        "404":
+          description: Not found tasktype
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     patch:
       tags:
       - Task Types
@@ -1449,6 +1472,29 @@ paths:
       responses:
         "204":
           description: The task was deleted successfully
+        "404":
+          description: Not found task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    head:
+      tags:
+      - Tasks
+      summary: Check if exist a task with an identifier
+      description: Allow to check if an identifier is associated to a task
+      operationId: isTaskDefined
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to check if exist
+        required: true
+        schema:
+          type: string
+        example: 15837028-645a-4a55-9aaf-ceb846439eba
+      responses:
+        "204":
+          description: The task exist
         "404":
           description: Not found task
           content:
