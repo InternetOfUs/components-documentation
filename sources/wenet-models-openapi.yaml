@@ -240,6 +240,11 @@ components:
     SocialNetworkRelationship:
       type: object
       properties:
+        appId:
+          type: string
+          description: The identifier of the application where the relation happens
+          example: 4
+          nullable: true
         userId:
           type: string
           description: The identifier of the wenet user the relationship is related to
@@ -424,6 +429,11 @@ components:
           type: string
           description: The occupation of the user
           example: nurse
+          nullable: true
+        hasLocations:
+          type: boolean
+          description: This is true if the platform has any localization data about the user.
+          example: false
           nullable: true
 
     WeNetUserProfile:

@@ -46,9 +46,7 @@ servers:
   description: Production instance
 - url: https://wenet.u-hopper.com/dev/interaction_protocol_engine
   description: Staging instance
-- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/prod/
-  description: IIIA production server
-- url: http://ardid.iiia.csic.es/wenet/interaction-protocol-engine/dev/
+- url: https://ardid.iiia.csic.es/wenet/interaction-protocol-engine
   description: IIIA development server
 tags:
 - name: Other
@@ -137,7 +135,7 @@ paths:
           description: The API description
   /incentives:
     post:
-      tags: 
+      tags:
       - Incentives
       summary: Send a incentive to an user that is involved in a protocol.
       description: Publish a incentive to encourage an user to participate on a protocol.
@@ -147,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
         required: true
       responses:
         "202":
@@ -775,7 +773,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "202":
@@ -783,7 +781,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Cannot process the task transaction
           content:
@@ -804,7 +802,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "202":
@@ -812,7 +810,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/7af902b41c0d088f33ba35efd095624aa8aa6a6a/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Cannot process the created task
           content:
