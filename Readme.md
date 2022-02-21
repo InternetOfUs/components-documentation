@@ -4,11 +4,11 @@
 
 The production components can be reached at the following urls:
 
-* service APIs: https://internetofus.u-hopper.com/service
-* profile manager: https://internetofus.u-hopper.com/profile_manager
-* task manager: https://internetofus.u-hopper.com/task_manager
-* personal context builder: https://internetofus.u-hopper.com/personal_context_builder
-* social context builder: https://internetofus.u-hopper.com/social_context_builder
+* service APIs: https://internetofus.u-hopper.com/prod/service
+* profile manager: https://internetofus.u-hopper.com/prod/profile_manager
+* task manager: https://internetofus.u-hopper.com/prod/task_manager
+* personal context builder: https://internetofus.u-hopper.com/prod/personal_context_builder
+* social context builder: https://internetofus.u-hopper.com/prod/social_context_builder
 
 ## Postman collections
 
