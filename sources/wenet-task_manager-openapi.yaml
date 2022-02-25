@@ -2,66 +2,28 @@ openapi: 3.0.1
 info:
   title: WeNet - Task manager API
   description: "The task manager component is the one responsible for storing and\
-    \ maintaining the task and task types. \nA task is used to coordinate a set of\
-    \ WeNet users to do something. It is defined by the next fields:\n\n - __id__\
-    \  identifier of the task.\n - __goal__  the objective to reach. In other words\
-    \ why the users cooperate.\n - __requesterId__  the identifier of the user that\
-    \ has created the task.\n - ___creationTs__  the difference, measured in seconds,\
-    \ between the time when the task\n  is created and midnight, January 1, 1970 UTC.\n\
-    \ - ___lastUpdateTs__  the difference, measured in seconds, between the time when\
-    \ the task\n  is updated and midnight, January 1, 1970 UTC.\n - __closeTs__  the\
-    \ difference, measured in seconds, between the time when the task\n  is considered\
-    \ done (closed) and midnight, January 1, 1970 UTC.\n - __appId__  identifier of\
-    \ the application where the task is associated.\n - __communityId__  identifier\
-    \ of the community where the task is associated.\n - __taskTypeId__  identifier\
-    \ of the type. It defines the common behaviours\n  allowed to the users when interacting\
-    \ on the task.\n - __attributes__  the JSON object with the values that instantiate\
-    \ the task.\n  The possible values are defined by the type.\n - __norms__  that\
-    \ modify the default behaviour defined by the type. If you want\n to read more\
-    \ about how to define norms read the [WeNet developer documentation](https://internetofus.github.io/developer/docs/tech/conversation/norms)\n\
-    \ - __transactions__  the historic list of transactions that have been done in\n\
-    \  the task. Also, each transaction has the information of the application messages\n\
-    \  that have been sent to the users that are involved in the task.\n \nOn the\
-    \ other hand, the task type defines what the users can do in a task. For this\
-    \ purpose has the next fields:\n\n - __id__  identifier of the task type.\n -\
-    \ __name__  of the type.\n - __description__  of the type.\n - __keywords__  used\
-    \ to define the type.\n - __attributes__  is a JSON object where the fields are\
-    \ the possible attributes\n  of the task, and the value is the name is the OpenAPI\
-    \ description of the possible\n  values for the attribute.\n - __transactions__\
-    \  is a JSON object where the fields are the possible labels\n of the transactions\
-    \ that the users can do on the task, and the value is the\n OpenAPI description\
-    \ of the attributes for the transaction.\n - __callbacks__  is a JSON object where\
-    \ the fields are the possible labels\n of the messages that the norms can send\
-    \ to the application for a user, and\n the value is the OpenAPI description of\
-    \ the attributes for the message.\n - __norms__  that describe the possible behaviour\
-    \ can do in a task of this type.\n  If you want to read more about how to define\
-    \ norms read the [WeNet developer documentation](https://internetofus.github.io/developer/docs/tech/conversation/norms)\n\
-    \nThe next JSON is an example of a task type that echo the received transaction\
-    \ to the same user.\n```\n{\n   \"id\":\"wenet_echo_v1\",\n   \"name\":\"Echo\"\
-    ,\n   \"description\":\"This tasks echo the transaction messages\",\n   \"keywords\"\
-    :[\n      \"example\",\n      \"test\"\n   ],\n   \"transactions\":{\n      \"\
-    echo\":{\n         \"type\":\"object\",\n         \"description\":\"Send the echo\
-    \ message\",\n         \"properties\":{\n            \"message\":{\n         \
-    \      \"type\":\"string\",\n               \"description\":\"The message to echo\"\
-    \n            }\n         }\n      }\n   },\n   \"callbacks\":{\n      \"echo\"\
-    :{\n         \"type\":\"object\",\n         \"properties\":{\n            \"taskId\"\
-    :{\n               \"type\":\"string\",\n               \"description\":\"The\
-    \ identifier of the task\"\n            },\n            \"communityId\":{\n  \
-    \             \"type\":\"string\",\n               \"description\":\"The identifier\
-    \ of the community\"\n            },\n            \"message\":{\n            \
-    \   \"type\":\"string\",\n               \"description\":\"The echo message\"\n\
-    \            }\n         }\n      }\n   },\n   \"norms\":[\n      {\n        \
-    \ \"whenever\":\"is_received_created_task()\",\n         \"thenceforth\":\"add_created_transaction()\"\
-    \n      },\n      {\n         \"whenever\":\"is_received_do_transaction('echo',Content)\"\
-    ,\n         \"thenceforth\":\"add_message_transaction() and send_user_message('echo',Content)\"\
-    \n      }\n   ]\n}\n```"
+    \ maintaining the task and task types. The task types define the interaction protocols\
+    \ between users and the task is an instance of this type.\nThe task type uses\
+    \ the [OpenAPI](https://swagger.io/specification/) to define the possible attributes\
+    \ of a task, the actions or transactions that a user can do in a task, and the\
+    \ messages or callbacks that can be posted to the application from the task execution.\
+    \ Also, it has a set of norms that describe the behaviour of the user on the task\
+    \ execution.\nWhen a set of users want to be coordinated to do something one of\
+    \ them create a new task. This task has associated a type that describes the behaviour\
+    \ of the user on this execution. The creator of the task, if wants, can define\
+    \ new norms that can modify this default behaviour. The task manager is also responsible\
+    \ for maintaining the state of this task execution. For this reason on the task\
+    \ model are stored all the transactions that have been done on it, and on this\
+    \ transaction are stored the messages that has been sent to the application when\
+    \ this transaction is executed. As well, it provides services that can be used\
+    \ to obtain the messages sent to the users by the application callbacks."
   contact:
     name: "Bruno Rosell i Gui (UDT-IA, IIIA-CSIC)"
     email: rosell@iiia.csic.es
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.10.0
+  version: 1.0.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/task_manager
   description: Production instance
@@ -392,7 +354,7 @@ paths:
         example: 1
       - name: requesterId
         in: query
-        description: "An user identifier to be equals on the task where are the transactions\
+        description: "A user identifier to be equals on the task where are the transactions\
           \ to return. You can use a Perl compatible regular expressions (PCRE) that\
           \ has to match the requester identifier of the tasks if you write between\
           \ '/'. For example to get the transactions on the tasks for the requesters\
@@ -640,7 +602,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found task type
           content:
@@ -667,7 +629,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -675,7 +637,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm
           content:
@@ -701,8 +663,7 @@ paths:
         description: A name to be equals on the task types to return. You can use
           a Perl compatible regular expressions (PCRE) that has to match the name
           of the task types to return if you write between '/'. For example to get
-          the task types with a name with the word 'eat' you must pass as 'goalName'
-          '/.*eat.*/'
+          the task types with a name with the word 'eat' you must pass as 'name' '/.*eat.*/'
         schema:
           type: string
         example: /.*eat.*/
@@ -711,7 +672,7 @@ paths:
         description: A description to be equals on the task types to return. You can
           use a Perl compatible regular expressions (PCRE) that has to match the description
           of the task types to return if you write between '/'. For example to get
-          the task types with a description with the word 'eat' you must pass as 'goalDescription'
+          the task types with a description with the word 'eat' you must pass as 'description'
           '/.*eat.*/'
         schema:
           type: string
@@ -776,7 +737,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         required: true
       responses:
         "200":
@@ -784,7 +745,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "400":
           description: Bad task type
           content:
@@ -812,7 +773,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "404":
           description: Not found task type
           content:
@@ -838,7 +799,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         required: true
       responses:
         "200":
@@ -846,7 +807,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "400":
           description: Bad task type
           content:
@@ -923,7 +884,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         required: true
       responses:
         "200":
@@ -931,7 +892,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
         "400":
           description: Bad task type
           content:
@@ -974,7 +935,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found tasktype or norm
           content:
@@ -1009,7 +970,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -1017,7 +978,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm
           content:
@@ -1059,7 +1020,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm
           content:
@@ -1100,7 +1061,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -1108,7 +1069,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm
           content:
@@ -1147,7 +1108,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Message
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Message
         required: true
       responses:
         "201":
@@ -1155,7 +1116,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Message
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Message
         "400":
           description: Bad message
           content:
@@ -1188,7 +1149,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "201":
@@ -1196,7 +1157,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Bad task transaction
           content:
@@ -1373,7 +1334,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -1381,7 +1342,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -1409,7 +1370,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "404":
           description: Not found task
           content:
@@ -1435,7 +1396,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -1443,7 +1404,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -1520,7 +1481,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "200":
@@ -1528,7 +1489,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Bad task
           content:
@@ -1554,7 +1515,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "200":
@@ -1562,7 +1523,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Bad task transaction
           content:
@@ -1598,7 +1559,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "404":
           description: Not found task or transaction
           content:
@@ -1649,7 +1610,7 @@ components:
           type: array
           description: The set of messages found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Message
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Message
       description: Contains a set of messages
     ErrorMessage:
       type: object
@@ -1678,9 +1639,9 @@ components:
           example: 100
         transactions:
           type: array
-          description: The set of transactions found
+          description: The set of task transactions found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
       description: Contains a set of tasks
     TaskTypePage:
       type: object
@@ -1699,7 +1660,7 @@ components:
           type: array
           description: The set of task types found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskType
       description: Contains a set of task types
     TaskPage:
       type: object
@@ -1718,5 +1679,5 @@ components:
           type: array
           description: The set of tasks found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Task
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
       description: Contains a set of tasks

@@ -1,23 +1,28 @@
 openapi: 3.0.1
 info:
   title: WeNet - Profile manager API
-  description: "The profile manager component is the one responsible for storing and\
-    \ maintaining the WeNet user profiles and its historic. A user profile is a set\
-    \ of attributes that define the state of the user. Some of these attributes are\
-    \ filled in by the user, such as name, email, telephone,... , or by  other components\
-    \ of the platform, such as social relationships, routines,.... Every time a profile\
-    \ is modified a copy of the previous profile values is stored in the historic.\
-    \ This allows knowing, to the rest of the components, how the state of the user\
-    \ evolves in the time.\nAnother responsibility of the profile manager is to evaluate\
-    \ the trust of one user over another when it is doing some action. The trust is\
-    \ dynamic and will be updated every time they collaborate to achieve a task. When\
-    \ a user has received help it can rate the performance of the user that has helped\
+  description: "The profile manager component is responsible for storing and maintaining\
+    \ the WeNet user profiles. A user profile is a set of attributes that define the\
+    \ state of the user. Some of these attributes are filled in by the user, such\
+    \ as name, email, telephone,..., or by  other components of the platform, such\
+    \ routines.\nThe social relationships of a user are not stored on the profile,\
+    \ because a user can have a relationship with all the playing applications of\
+    \ the user, and this could be a lot of relationships. For this reason, the profile\
+    \ manager provides web services to add/update/delete/get these relationships.\n\
+    The profile manager has the capability to maintain a historic with the profile\
+    \ changes. By default, this behaviour is disabled and it can be enabled on the\
+    \ server configuration, or using a parameter on the update profile requests. This\
+    \ allows knowing, to the rest of the components, how the state of the user evolves\
+    \ in time.\nAnother responsibility of the profile manager is to evaluate the trust\
+    \ of one user over another when it is doing some action. The trust is dynamic\
+    \ and will be updated every time they collaborate to achieve a task. When a user\
+    \ has received some help it can rate the performance of the user that has helped\
     \ it. For this, it has to post a performance rating event to the profile manager.\
     \ These events are used by the profile manager when it has to provide the trust\
     \ that has a user that another does a certain action. When you want to calculate\
-    \ the trust, you must specify some parameters that are used to select with events\
-    \ has to be aggregated to obtain the trust. Also, you must define the aggregation\
-    \ function, that can be:\n\n - RECENCY_BASED: the trust is the average of the\
+    \ the trust, you must specify some parameters that are used to select events that\
+    \ have to be aggregated to obtain the trust. Also, you must define the aggregation\
+    \ function, which can be:\n\n - RECENCY_BASED: the trust is the average of the\
     \ last 'n' rating events. At the moment n=5.\n - AVERAGE: the trust is the average\
     \ of all the rating events.\n - MEDIAN: the trust is the median of all the rating\
     \ events.\n - MINIMUM: the trust is the minimum rating of all the events.\n -\
@@ -28,7 +33,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 0.18.0
+  version: 1.0.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/profile_manager
   description: Production instance
@@ -113,7 +118,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "404":
           description: Not found community
           content:
@@ -140,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "201":
@@ -148,7 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: Bad community member to add
           content:
@@ -184,7 +189,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found community
           content:
@@ -210,7 +215,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "201":
@@ -218,7 +223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to add
           content:
@@ -254,7 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "404":
           description: Not found community
           content:
@@ -280,7 +285,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "201":
@@ -288,7 +293,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: Bad social practice to add
           content:
@@ -409,7 +414,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -417,7 +422,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -445,7 +450,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "404":
           description: Not found community
           content:
@@ -471,7 +476,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -479,7 +484,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -533,7 +538,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         required: true
       responses:
         "200":
@@ -541,7 +546,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
         "400":
           description: Bad community
           content:
@@ -584,7 +589,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "404":
           description: Not found community or community member
           content:
@@ -619,7 +624,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "200":
@@ -627,7 +632,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: The community member to update is not valid
           content:
@@ -700,7 +705,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         required: true
       responses:
         "200":
@@ -708,7 +713,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityMember
         "400":
           description: The community member to merge is not valid
           content:
@@ -750,7 +755,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found community or norm
           content:
@@ -784,7 +789,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -792,7 +797,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: The norm to update is not valid
           content:
@@ -864,7 +869,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -872,7 +877,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: The norm to merge is not valid
           content:
@@ -914,7 +919,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "404":
           description: Not found community or social practice
           content:
@@ -948,7 +953,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "200":
@@ -956,7 +961,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: The social practice to update is not valid
           content:
@@ -1027,7 +1032,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         required: true
       responses:
         "200":
@@ -1035,7 +1040,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialPractice
         "400":
           description: The social practice to merge is not valid
           content:
@@ -1152,128 +1157,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/relationships:
-    get:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Return the relationships from a profile
-      description: Allow to get all the relationships defined into a profile
-      operationId: retrieveProfileRelationships
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      responses:
-        "200":
-          description: The relationships defined into the profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Add or update a relationship from a profile
-      description: Allow to modify a relationship defined into a profile or add if
-        not exist yet
-      operationId: addOrUpdateProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new values to update the relationship
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        required: true
-      responses:
-        "200":
-          description: The updated relationship
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "201":
-          description: The created relationship
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "400":
-          description: Bad relationship to update
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    post:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Add a relationship into a profile
-      description: Insert a new relationship into a profile
-      operationId: addProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user to the profile to add the relationship
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      requestBody:
-        description: The new relationship
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        required: true
-      responses:
-        "201":
-          description: The added relationship into the profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "400":
-          description: Bad relationship to add
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found profile
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
   /profiles/{userId}/competences:
     get:
       tags:
@@ -1299,7 +1182,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "404":
           description: Not found profile
           content:
@@ -1314,6 +1197,12 @@ paths:
       description: Insert a new competence into a profile
       operationId: addProfileCompetence
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the competence
@@ -1326,7 +1215,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "201":
@@ -1334,7 +1223,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to add
           content:
@@ -1372,7 +1261,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "404":
           description: Not found profile
           content:
@@ -1387,6 +1276,12 @@ paths:
       description: Insert a new material into a profile
       operationId: addProfileMaterial
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the material
@@ -1399,7 +1294,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "201":
@@ -1407,7 +1302,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to add
           content:
@@ -1445,7 +1340,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: Not found profile
           content:
@@ -1460,6 +1355,12 @@ paths:
       description: Insert a new meaning into a profile
       operationId: addProfileMeaning
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the meaning
@@ -1472,7 +1373,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "201":
@@ -1480,7 +1381,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to add
           content:
@@ -1518,7 +1419,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found profile
           content:
@@ -1533,6 +1434,12 @@ paths:
       description: Insert a new norm into an user profile
       operationId: addProfileNorm
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user profile to add the norm
@@ -1545,7 +1452,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "201":
@@ -1553,7 +1460,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to add
           content:
@@ -1591,7 +1498,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "404":
           description: Not found profile
           content:
@@ -1606,6 +1513,12 @@ paths:
       description: Insert a new personal behavior into a profile
       operationId: addProfilePersonalBehavior
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the personal
@@ -1619,7 +1532,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "201":
@@ -1627,7 +1540,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to add
           content:
@@ -1665,7 +1578,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "404":
           description: Not found profile
           content:
@@ -1680,6 +1593,12 @@ paths:
       description: Insert a new planned activity into a profile
       operationId: addProfilePlannedActivity
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the planned
@@ -1693,7 +1612,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "201":
@@ -1701,7 +1620,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to add
           content:
@@ -1739,7 +1658,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "404":
           description: Not found profile
           content:
@@ -1754,6 +1673,12 @@ paths:
       description: Insert a new relevant location into a profile
       operationId: addProfileRelevantLocation
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to the profile to add the relevant
@@ -1767,7 +1692,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "201":
@@ -1775,7 +1700,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to add
           content:
@@ -1836,7 +1761,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: Dr.
@@ -1882,7 +1807,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 CreatedProfile:
                   description: CreatedProfile
@@ -1954,7 +1879,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 FoundProfile:
                   description: FoundProfile
@@ -2012,6 +1937,12 @@ paths:
       description: Change a profile
       operationId: updateProfile
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to update
@@ -2024,7 +1955,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: ""
@@ -2052,7 +1983,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 UpdatedProfile:
                   description: UpdatedProfile
@@ -2116,6 +2047,12 @@ paths:
       description: Allow to delete a profile with an specific identifier
       operationId: deleteProfile
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to delete
@@ -2161,6 +2098,12 @@ paths:
       description: Change some attributes of a profile
       operationId: mergeProfile
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user to update
@@ -2173,7 +2116,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
             example:
               name:
                 prefix: ""
@@ -2201,7 +2144,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
               examples:
                 UpdatedProfile:
                   description: UpdatedProfile
@@ -2289,7 +2232,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "404":
           description: Not found profile or competence
           content:
@@ -2304,6 +2247,12 @@ paths:
       description: Allow to modify a competence defined into a profile
       operationId: updateProfileCompetence
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the competence
@@ -2325,7 +2274,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "200":
@@ -2333,7 +2282,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to update
           content:
@@ -2354,6 +2303,12 @@ paths:
       description: Allow to delete a defined competence from a profile
       operationId: deleteProfileCompetence
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the competence
@@ -2387,6 +2342,12 @@ paths:
       description: Allow to modify parts of a competence defined into a profile
       operationId: mergeProfileCompetence
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the competence
@@ -2408,7 +2369,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         required: true
       responses:
         "200":
@@ -2416,7 +2377,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Competence
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Competence
         "400":
           description: Bad competence to merge
           content:
@@ -2460,7 +2421,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "404":
           description: Not found profile or material
           content:
@@ -2475,6 +2436,12 @@ paths:
       description: Allow to modify a material defined into a profile
       operationId: updateProfileMaterial
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the material
@@ -2496,7 +2463,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "200":
@@ -2504,7 +2471,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to update
           content:
@@ -2525,6 +2492,12 @@ paths:
       description: Allow to delete a defined material from a profile
       operationId: deleteProfileMaterial
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the material
@@ -2558,6 +2531,12 @@ paths:
       description: Allow to modify parts of a material defined into a profile
       operationId: mergeProfileMaterial
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the material
@@ -2579,7 +2558,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         required: true
       responses:
         "200":
@@ -2587,7 +2566,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Material
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Material
         "400":
           description: Bad material to merge
           content:
@@ -2631,7 +2610,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "404":
           description: Not found profile or meaning
           content:
@@ -2646,6 +2625,12 @@ paths:
       description: Allow to modify a meaning defined into a profile
       operationId: updateProfileMeaning
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the meaning
@@ -2667,7 +2652,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "200":
@@ -2675,7 +2660,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to update
           content:
@@ -2696,6 +2681,12 @@ paths:
       description: Allow to delete a defined meaning from a profile
       operationId: deleteProfileMeaning
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the meaning
@@ -2729,6 +2720,12 @@ paths:
       description: Allow to modify parts of a meaning defined into a profile
       operationId: mergeProfileMeaning
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the meaning
@@ -2750,7 +2747,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         required: true
       responses:
         "200":
@@ -2758,7 +2755,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Meaning
         "400":
           description: Bad meaning to merge
           content:
@@ -2802,7 +2799,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "404":
           description: Not found profile or norm
           content:
@@ -2817,6 +2814,12 @@ paths:
       description: Allow to modify a norm defined into a profile
       operationId: updateProfileNorm
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the norm is
@@ -2838,7 +2841,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -2846,7 +2849,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to update
           content:
@@ -2867,6 +2870,12 @@ paths:
       description: Allow to delete a defined norm from a profile
       operationId: deleteProfileNorm
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the norm is
@@ -2900,6 +2909,12 @@ paths:
       description: Allow to modify parts of a norm defined into a profile
       operationId: mergeProfileNorm
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the norm is
@@ -2921,7 +2936,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         required: true
       responses:
         "200":
@@ -2929,7 +2944,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm
         "400":
           description: Bad norm to merge
           content:
@@ -2973,7 +2988,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "404":
           description: Not found profile or personal behavior
           content:
@@ -2988,6 +3003,12 @@ paths:
       description: Allow to modify a personal behavior defined into a profile
       operationId: updateProfilePersonalBehavior
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the personal
@@ -3009,7 +3030,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "200":
@@ -3017,7 +3038,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to update
           content:
@@ -3038,6 +3059,12 @@ paths:
       description: Allow to delete a defined personal behavior from a profile
       operationId: deleteProfilePersonalBehavior
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the personal
@@ -3071,6 +3098,12 @@ paths:
       description: Allow to modify parts of a personal behavior defined into a profile
       operationId: mergeProfilePersonalBehavior
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the personal
@@ -3092,7 +3125,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         required: true
       responses:
         "200":
@@ -3101,7 +3134,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/Routine
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/Routine
         "400":
           description: Bad personal behavior to merge
           content:
@@ -3144,7 +3177,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "404":
           description: Not found profile or planned activity
           content:
@@ -3159,6 +3192,12 @@ paths:
       description: Allow to modify a planned activity defined into a profile
       operationId: updateProfilePlannedActivity
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the planned
@@ -3179,7 +3218,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "200":
@@ -3187,7 +3226,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to update
           content:
@@ -3208,6 +3247,12 @@ paths:
       description: Allow to delete a defined planned activity from a profile
       operationId: deleteProfilePlannedActivity
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the planned
@@ -3240,6 +3285,13 @@ paths:
       description: Allow to modify parts of a planned activity defined into a profile
       operationId: mergeProfilePlannedActivity
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true when the merged provokes a change it is stored in
+          the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the planned
@@ -3260,7 +3312,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         required: true
       responses:
         "200":
@@ -3269,7 +3321,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity
         "400":
           description: Bad planned activity to merge
           content:
@@ -3278,177 +3330,6 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         "404":
           description: Not found profile or planned activity
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-  /profiles/{userId}/relationships/{index}:
-    get:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Return a relationship from a profile
-      description: Allow to get a relationship defined into a profile
-      operationId: retrieveProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: index
-        in: path
-        description: The index of the relationship to get
-        required: true
-        schema:
-          type: integer
-          format: int32
-        example: 1
-      responses:
-        "200":
-          description: The relationship defined into the profile
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "404":
-          description: Not found profile or relationship
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    put:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Update a relationship from a profile
-      description: Allow to modify a relationship defined into a profile
-      operationId: updateProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: index
-        in: path
-        description: The index of the relationship to update
-        required: true
-        schema:
-          type: integer
-          format: int32
-        example: 1
-      requestBody:
-        description: The new values to update the relationship
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        required: true
-      responses:
-        "200":
-          description: The updated relationship
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "400":
-          description: Bad relationship to update
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found profile or relationship
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    delete:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Delete a relationship from a profile
-      description: Allow to delete a defined relationship from a profile
-      operationId: deleteProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: index
-        in: path
-        description: The index of the relationship to delete
-        required: true
-        schema:
-          type: integer
-          format: int32
-        example: 1
-      responses:
-        "204":
-          description: The relationship defined into the profile
-        "404":
-          description: Not found profile or relationship
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-    patch:
-      tags:
-      - Relationships
-      - Profiles
-      summary: Change a relationship from a profile
-      description: Allow to modify parts of a relationship defined into a profile
-      operationId: mergeProfileRelationship
-      parameters:
-      - name: userId
-        in: path
-        description: The identifier of the user for the profile where the relationship
-          is defined
-        required: true
-        schema:
-          type: string
-        example: 15837028-645a-4a55-9aaf-ceb846439eba
-      - name: index
-        in: path
-        description: The identifier of the relationship to merge
-        required: true
-        schema:
-          type: integer
-          format: int32
-        example: 1
-      requestBody:
-        description: The new values to merge the relationship
-        content:
-          application/json:
-            schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        required: true
-      responses:
-        "200":
-          description: The current values of the relationship after it has been merged
-          content:
-            application/json:
-              schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
-        "400":
-          description: Bad relationship to merge
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Not found profile or relationship
           content:
             application/json:
               schema:
@@ -3483,7 +3364,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "404":
           description: Not found profile or relevant location
           content:
@@ -3498,6 +3379,12 @@ paths:
       description: Allow to modify a relevant location defined into a profile
       operationId: updateProfileRelevantLocation
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the relevant
@@ -3518,7 +3405,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "200":
@@ -3526,7 +3413,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to update
           content:
@@ -3547,6 +3434,12 @@ paths:
       description: Allow to delete a defined relevant location from a profile
       operationId: deleteProfileRelevantLocation
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: This is true if what to store the changes in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the relevant
@@ -3579,6 +3472,13 @@ paths:
       description: Allow to modify parts of a relevant location defined into a profile
       operationId: mergeProfileRelevantLocation
       parameters:
+      - name: storeProfileChangesInHistory
+        in: query
+        description: If this is true and the merged profile is different to the original
+          the changes are stored in the historical.
+        schema:
+          type: boolean
+        example: false
       - name: userId
         in: path
         description: The identifier of the user for the profile where the relevant
@@ -3599,7 +3499,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         required: true
       responses:
         "200":
@@ -3608,7 +3508,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation
         "400":
           description: Bad relevant location to merge
           content:
@@ -3689,6 +3589,228 @@ paths:
                 $ref: '#/components/schemas/HistoricWeNetUserProfilesPage'
         "404":
           description: Not found profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /relationships:
+    get:
+      tags:
+      - Profiles
+      - Relationships
+      summary: Return the relationships that match the request parameters
+      description: Allow to get all the relationships that match the request parameters
+      operationId: retrieveSocialNetworkRelationshipsPage
+      parameters:
+      - name: appId
+        in: query
+        description: "An application identifier to be equals on the social network\
+          \ relationships to return. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the application identifier of the relationships\
+          \ if you write between '/'. For example to get the relationships for the\
+          \ applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: source
+        in: query
+        description: "A user identifier to be equals on the relationships source to\
+          \ return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the user identifier of the relationships source if you write\
+          \ between '/'. For example to get the relationships with the source users\
+          \ '1' and '2' you must pass as 'source' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: target
+        in: query
+        description: "A user identifier to be equals on the relationships target to\
+          \ return. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the user identifier of the relationships target if you write\
+          \ between '/'. For example to get the relationships with the target users\
+          \ '1' and '2' you must pass as 'target' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: type
+        in: query
+        description: "The type for the relationships to return. You can use a Perl\
+          \ compatible regular expressions (PCRE) that has to match the type of the\
+          \ relationships if you write between '/'. For example to get the relationships\
+          \ with the types 'friend' and 'colleague' you must pass as 'type' '/^[friend|colleague]$/'."
+        schema:
+          type: string
+        example: friend
+      - name: weightFrom
+        in: query
+        description: "The minimal weight, inclusive, of the relationships to return."
+        schema:
+          type: number
+          format: double
+        example: 0.3
+      - name: weightTo
+        in: query
+        description: "The maximal weight, inclusive, of the relationships to return."
+        schema:
+          type: number
+          format: double
+        example: 0.8
+      - name: order
+        in: query
+        description: "The order in witch the relationships has to be returned. For\
+          \ each field it has be separated by a ',' and each field can start with\
+          \ '+' (or without it) to order on ascending order, or with the prefix '-'\
+          \ to do on descendant order."
+        style: form
+        schema:
+          type: string
+        example: "sourceId,-weight,+type"
+      - name: offset
+        in: query
+        description: The index of the first social network relationship to return.
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 4
+      - name: limit
+        in: query
+        description: The number maximum of social network relationships to return
+        schema:
+          type: integer
+          format: int32
+          default: 10
+        example: 100
+      responses:
+        "200":
+          description: The relationships defined into the profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SocialNetworkRelationshipsPage'
+    put:
+      tags:
+      - Profiles
+      - Relationships
+      summary: Add or update a relationship between users
+      description: Add or modify a relationship between WeNet users
+      operationId: addOrUpdateRelationship
+      requestBody:
+        description: The new values for the relationship
+        content:
+          application/json:
+            schema:
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "200":
+          description: The added or updated relationship between users
+          content:
+            application/json:
+              schema:
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationship to update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+      - Profiles
+      - Relationships
+      summary: Return the relationships that match the request parameters
+      description: Allow to get all the relationships that match the request parameters
+      operationId: deleteSocialNetworkRelationships
+      parameters:
+      - name: appId
+        in: query
+        description: "An application identifier to be equals on the social network\
+          \ relationships to delete. You can use a Perl compatible regular expressions\
+          \ (PCRE) that has to match the application identifier of the relationships\
+          \ if you write between '/'. For example to get the relationships for the\
+          \ applications '1' and '2' you must pass as 'appId' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1
+      - name: source
+        in: query
+        description: "A user identifier to be equals on the relationships source to\
+          \ delete. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the user identifier of the relationships source if you write\
+          \ between '/'. For example to delete the relationships with the source users\
+          \ '1' and '2' you must pass as 'source' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: target
+        in: query
+        description: "A user identifier to be equals on the relationships target to\
+          \ delete. You can use a Perl compatible regular expressions (PCRE) that\
+          \ has to match the user identifier of the relationships target if you write\
+          \ between '/'. For example to delete the relationships with the target users\
+          \ '1' and '2' you must pass as 'target' '/^[1|2]$/'."
+        schema:
+          type: string
+        example: 1e346fd440
+      - name: type
+        in: query
+        description: "The type for the relationships to delete. You can use a Perl\
+          \ compatible regular expressions (PCRE) that has to match the type of the\
+          \ relationships if you write between '/'. For example to delete the relationships\
+          \ with the types 'friend' and 'colleague' you must pass as 'type' '/^[friend|colleague]$/'."
+        schema:
+          type: string
+        example: friend
+      - name: weightFrom
+        in: query
+        description: "The minimal weight, inclusive, of the relationships to return."
+        schema:
+          type: number
+          format: double
+        example: 0.3
+      - name: weightTo
+        in: query
+        description: "The maximal weight, inclusive, of the relationships to return."
+        schema:
+          type: number
+          format: double
+        example: 0.8
+      responses:
+        "204":
+          description: If the relationships has been removed
+        "404":
+          description: If any relationships has not been removed
+  /relationships/batch:
+    put:
+      tags:
+      - Profiles
+      - Relationships
+      summary: Update some relationships between users
+      description: Modify some relationships between WeNet users
+      operationId: addOrUpdateSomeRelationships
+      requestBody:
+        description: The new values for the relationships
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        required: true
+      responses:
+        "200":
+          description: The updated relationships between users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+        "400":
+          description: Bad relationships to update
           content:
             application/json:
               schema:
@@ -3902,7 +4024,7 @@ components:
           type: array
           description: The set of communities found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
       description: Contains a set of communities found
     Info:
       type: object
@@ -4002,7 +4124,7 @@ components:
           format: int64
           example: 1571664406
         profile:
-          $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+          $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: The information of the user profile in a period of time.
     HistoricWeNetUserProfilesPage:
       type: object
@@ -4024,7 +4146,7 @@ components:
             $ref: '#/components/schemas/HistoricWeNetUserProfile'
       description: Contains a set of profiles found
     WeNetUserProfile:
-      $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+      $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
     WeNetUserProfilesPage:
       type: object
       properties:
@@ -4042,8 +4164,27 @@ components:
           type: array
           description: The set of profiles found
           items:
-            $ref: https://bitbucket.org/wenet/wenet-components-documentation/raw/940e9403246417419c8dcce9f3b19c5bb754028b/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: Contains a set of profiles found
+    SocialNetworkRelationshipsPage:
+      type: object
+      properties:
+        offset:
+          type: integer
+          description: The index of the first community returned.
+          format: int32
+          example: 0
+        total:
+          type: integer
+          description: The number total of communities that satisfies the search.
+          format: int64
+          example: 100
+        relationships:
+          type: array
+          description: The set of communities found
+          items:
+            $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.1.0/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship
+      description: Contains a set of communities found
     UserPerformanceRatingEvent:
       type: object
       properties:

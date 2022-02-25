@@ -1412,364 +1412,6 @@
 			"response": []
 		},
 		{
-			"name": "Add relationship into a profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"friend\",\n  \"weight\": 0.9\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Add or update relationship into a profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"friend\",\n  \"weight\": 0.9\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get relationships from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get a relationship from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships",
-						"{{index}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update a relationship from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"userId\": \"{{friendId}}\",\n  \"type\": \"colleague\",\n  \"weight\": 0.5\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships",
-						"{{index}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Merge a relationship from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"weight\": 0.39\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships",
-						"{{index}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Remove a relationship from profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					},
-					{
-						"key": "x-wenet-component-apikey",
-						"value": "{{WENET_COMPONENT_APIKEY}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{server}}/profiles/{{userId}}/relationships/{{index}}",
-					"host": [
-						"{{server}}"
-					],
-					"path": [
-						"profiles",
-						"{{userId}}",
-						"relationships",
-						"{{index}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Add social practice into a profile",
 			"event": [
 				{
@@ -3497,6 +3139,264 @@
 						{
 							"key": "limit",
 							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get some social network relationships",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"relationships"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "sourceId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "targetId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "weightFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "weightTo",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add or Update social network relationship",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appId\": \"{{appId}}\",\n  \"sourceId\": \"{{userId}}\",\n  \"targetId\": \"{{friendId}}\",\n  \"type\": \"colleague\",\n  \"weight\": 0.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"relationships"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add or Update some social network relationships",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"appId\": \"{{appId}}\",\n        \"sourceId\": \"{{userId}}\",\n        \"targetId\": \"{{friendId}}\",\n        \"type\": \"colleague\",\n        \"weight\": 0.5\n    },\n    {\n        \"appId\": \"{{appId}}\",\n        \"sourceId\": \"{{userId}}\",\n        \"targetId\": \"{{friendId}}\",\n        \"type\": \"familiar\",\n        \"weight\": 0.9\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/relationships/batch",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"relationships",
+						"batch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove some social network relationships",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "x-wenet-component-apikey",
+						"value": "{{WENET_COMPONENT_APIKEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/relationships",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"relationships"
+					],
+					"query": [
+						{
+							"key": "appId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "sourceId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "targetId",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "weightFrom",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "weightTo",
+							"value": null,
+							"disabled": true
 						}
 					]
 				}
