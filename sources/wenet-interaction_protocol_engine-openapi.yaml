@@ -354,7 +354,7 @@ paths:
     delete:
       tags:
       - Interactions
-      summary: Count the number of interactions between two users.
+      summary: Delete some interactions.
       operationId: deleteInteractions
       parameters:
       - name: appId
