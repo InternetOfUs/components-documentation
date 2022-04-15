@@ -700,6 +700,52 @@ paths:
         schema:
           type: integer
         example: 15
+        
+      - name: targetId
+        in: query
+        description: A user identifier to be equals on the relationships target to return. You can use a Perl compatible regular expressions (PCRE) that has to match the user identifier of the relationships target if you write between '/'. For example to get the relationships with the target users '1' and '2' you must pass as 'target' '/^[1|2]$/'.
+        schema: 
+          type: string
+        required: false
+      - name: type
+        in: query
+        description: The type for the relationships to return. You can use a Perl compatible regular expressions (PCRE) that has to match the type of the relationships if you write between '/'. For example to get the relationships with the types 'friend' and 'colleague' you must pass as 'type' '/^[friend|colleague]$/'.
+        schema:
+          type: string
+        required: false
+      - name: weightFrom
+        in: query
+        description: The minimal weight, inclusive, of the relationships to return.
+        schema: 
+          type: number
+          format: double
+        required: false
+      - name: weightTo
+        in: query
+        description: The maximal weight, inclusive, of the relationships to return.
+        schema: 
+          type: number
+          format: double
+        required: false
+      - name: order
+        in: query
+        description: "The order in witch the relationships has to be returned. For each field it has be separated by a ',' and each field can start with '+' (or without it) to order on ascending order, or with the prefix '-' to do on descendant order. Example : sourceId,-weight,+type"
+        schema: 
+          type: string
+        required: false
+
+      - name: offset
+        in: query
+        description: The index of the first social network relationship to return.
+        schema:
+          type: integer
+        required: false
+      - name: limit
+        in: query
+        description: The number maximum of social network relationships to return
+        schema:
+          type: integer
+        required: false
       responses:
         "200":
           description: The relationships defined into the profile
@@ -708,7 +754,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-profile_manager-openapi.yaml#/components/schemas/SocialNetworkRelationshipsPage'
         "404":
           description: No such wenet user exists
           content:
