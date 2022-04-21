@@ -3683,9 +3683,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SocialNetworkRelationshipsPage'
+                $ref: '#/components/schemas/SocialNetworkRelationshipsPage'
     put:
       tags:
       - Profiles
