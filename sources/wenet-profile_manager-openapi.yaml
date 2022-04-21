@@ -4051,11 +4051,18 @@ components:
         userIds:
           type: array
           description: The user profile identifiers of calculate the diversity
+          example:
+          - "1"
+          - "2"
           items:
             type: string
         attributes:
           type: array
           description: The name of the profile attributes to calculate the diversity
+          example:
+          - gender
+          - nationality
+          - meanings.extraversion
           items:
             type: string
       description: The information necessary to calculate the diversity between some
@@ -4077,11 +4084,11 @@ components:
           type: string
           description: The identifier of the user to calculate the similarity of its
             attributes.
-          example: '"1"'
+          example: "1"
         source:
           type: string
           description: The text to compare the profile attributes.
-          example: '"Where to buy the best pizza?"'
+          example: Where to buy the best pizza?
       description: The information necessary to calculate the diversity between some
         users.
     SimilarityResult:
