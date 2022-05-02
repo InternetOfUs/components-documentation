@@ -606,6 +606,11 @@ components:
           description: The ontology used on the norms.
           example: get_participants(P) :- get_task_state_attribute(UserIds,'participants',[]), get_profile_id(Me), wenet_remove(P,Me,UserIds).
           nullable: true
+        priority:
+          type: integer
+          description: The order that the norm has to be evaluated. The high value represents the highest priority.
+          example: 1001
+          nullable: true
 
     Task:
       allOf:
