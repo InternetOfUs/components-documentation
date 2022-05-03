@@ -40,7 +40,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 1.1.0
+  version: 1.2.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
   description: Production instance
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
         required: true
       responses:
         "202":
@@ -730,7 +730,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "202":
@@ -738,7 +738,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Cannot process the task transaction
           content:
@@ -759,7 +759,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "202":
@@ -767,7 +767,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Cannot process the created task
           content:
