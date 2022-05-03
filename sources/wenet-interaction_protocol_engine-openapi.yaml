@@ -40,7 +40,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 1.1.0
+  version: 1.2.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/interaction_protocol_engine
   description: Production instance
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Incentive
         required: true
       responses:
         "202":
@@ -716,49 +716,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-  /states:
-    get:
-      tags:
-      - States
-      summary: Return the state
-      description: Retrieve the state that satisfy the query parameters.
-      operationId: retrieveStates
-      parameters:
-      - name: communityId
-        in: query
-        description: "A community identifier to be equals on the state to return.\
-          \ You can use a Perl compatible regular expressions (PCRE) that has to match\
-          \ the community identifier of the state if you write between '/'. For example\
-          \ to get the state for communities '1' and '2' you must pass as 'communityId'\
-          \ '/^[1|2]$/'."
-        schema:
-          type: string
-        example: 1
-      - name: taskId
-        in: query
-        description: "An task identifier to be equals on the state to return. You\
-          \ can use a Perl compatible regular expressions (PCRE) that has to match\
-          \ the task of the state if you write between '/'. For example to get the\
-          \ state for tasks '1' and '2' you must pass as 'taskId' '/^[1|2]$/'."
-        schema:
-          type: string
-        example: 1
-      - name: userId
-        in: query
-        description: "a user identifier to be equals on the state to return. You can\
-          \ use a Perl compatible regular expressions (PCRE) that has to match the\
-          \ user of the state if you write between '/'. For example to get the state\
-          \ for users '1' and '2' you must pass as 'userId' '/^[1|2]$/'."
-        schema:
-          type: string
-        example: 1
-      responses:
-        "200":
-          description: The state associated to the query
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/StatesPage'
   /tasks/transactions:
     post:
       tags:
@@ -773,7 +730,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         required: true
       responses:
         "202":
@@ -781,7 +738,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction
         "400":
           description: Cannot process the task transaction
           content:
@@ -802,7 +759,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
+              $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         required: true
       responses:
         "202":
@@ -810,7 +767,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.2.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
+                $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.3.0/sources/wenet-models-openapi.yaml#/components/schemas/Task
         "400":
           description: Cannot process the created task
           content:
@@ -1079,22 +1036,3 @@ components:
           description: The attributes that define the state.
           nullable: true
       description: Model that describe a state.
-    StatesPage:
-      type: object
-      properties:
-        offset:
-          type: integer
-          description: The index of the first state returned.
-          format: int32
-          example: 0
-        total:
-          type: integer
-          description: The number total of states that satisfies the search.
-          format: int64
-          example: 100
-        states:
-          type: array
-          description: The set of states found
-          items:
-            $ref: '#/components/schemas/State'
-      description: Contains a set of states

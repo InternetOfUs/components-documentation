@@ -5,7 +5,7 @@ info:
 
   contact:
     email: carlo.caprini@u-hopper.com
-  version: 2.2.0
+  version: 2.3.0
 
 components:
   schemas:
@@ -605,6 +605,11 @@ components:
           type: string
           description: The ontology used on the norms.
           example: get_participants(P) :- get_task_state_attribute(UserIds,'participants',[]), get_profile_id(Me), wenet_remove(P,Me,UserIds).
+          nullable: true
+        priority:
+          type: integer
+          description: The order that the norm has to be evaluated. The high value represents the highest priority.
+          example: 1001
           nullable: true
 
     Task:
