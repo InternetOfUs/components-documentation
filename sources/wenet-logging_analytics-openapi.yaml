@@ -5,247 +5,641 @@ openapi: 3.0.0
 # Optional info section
 #######################
 info:
+
   title: WeNet - Interactions Logger and Analytics APIs
   description: This component is responsible for collecting and analyzing the messages produced by the WeNet applications together with lower level component logs that allow to monitor the functioning of the applications built on top of the platform and of the platform itself.
 
+  version: "1.5.0"
   contact:
     email: "carlo.caprini@u-hopper.com"
 
+servers:
+
+  - url: https://internetofus.u-hopper.com/prod/logger
+    description: WeNet production server
+  - url: https://wenet.u-hopper.com/dev/logger
+    description: WeNet development server
+
 tags:
+
   - name: message
     description: APIs allowing to register incoming and outgoing messages of a conversation
   - name: logging
     description: APIs allowing to log events
-  - name: analytics
-    description: APIs to retrieve analytics based on both messages and event logs
-
+  - name: logging [not implemented]
+  - name: analytic
+    description: APIs to retrieve analytics based on messages
 
 paths:
-    # MESSAGES APIs
 
-    /logging/messages:
-      post:
-        tags:
-          - message
-        summary: Add a batch of messages to the database
-        description: This end-point allows to log a set of messages into the database
-        requestBody:
+  # MESSAGES APIS
+  /messages:
+    post:
+      tags:
+        - message
+      summary: Register a batch of messages
+      description: This end-point allows to log a set of messages into the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Messages'
+      responses:
+        '201':
+          description: messages stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_201_list'
+        '400':
+          description: malformed message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+
+    get:
+      tags:
+        - message
+      summary: Retrieve a list of messages
+      description: This end-point allows to retrieve all the messages from the database of a project within a time range, plus the possibility to specify other optional filters. It is necessary to specify the `project`, the `fromTime` and the `toTime`. Optionally you can specify also the `type`, the `channel`, the `userId` and the `maxSize`.
+      parameters:
+        - in: query
+          name: project
+          schema:
+            type: string
+          example: "wenet-ask-for-help"
+          description: the name of the project related to the messages you want to retrieve
+          required: true
+        - in: query
+          name: fromTime
+          schema:
+            type: string
+            format: date-time
+          example: "2021-01-25T14:18:36.141378"
+          description: the timestamp expressed in ISO format from which you want to retrieve the messages
+          required: true
+        - in: query
+          name: toTime
+          schema:
+            type: string
+            format: date-time
+          example: "2021-01-25T14:28:36.141378"
+          description: the timestamp expressed in ISO format up to which you want to retrieve the messages
+          required: true
+        - in: query
+          name: userId
+          schema:
+            type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+          description: the id of the user related to the messages you want to retrieve
+        - in: query
+          name: channel
+          schema:
+            type: string
+          example: "FACEBOOK"
+          description: the channel from which you want to retrieve the messages
+        - in: query
+          name: type
+          schema:
+            type: string
+          example: "request"
+          description: the type of the messages you want to retrieve
+        - in: query
+          name: maxSize
+          schema:
+            type: number
+            format: int32
+          example: 5000
+          description: the maximum number of messages you want to retrieve (by default is set to `1000` and the maximum available is `10000`)
+      responses:
+        '200':
+          description: messages retrived
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Messages'
-        responses:
-          '201':
-            description: success
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_201'
-          '405':
-            description: malformed message
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_405'
-
-    /logging/message:
-      get:
-        tags:
-          - message
-        summary: Retrieve a single message by specifying the trace id
-        description: This end-point can be used to retrieve all the information of a single message
-        parameters:
-          - in: query
-            name: project
-            schema:
-              type: string
-            required: true
-            description: the name of the project related to the message you want to retrieve
-          - in: query
-            name: messageId
-            schema:
-              type: string
-            required: true
-            description: the id of the message you want to retrieve
-        responses:
-          '200':
-            description: success
-            content:
-              application/json:
-                schema:
-                  oneOf:
-                  - $ref: '#/components/schemas/RequestMessage'
-                  - $ref: '#/components/schemas/ResponseMessage'
-                  - $ref: '#/components/schemas/NotificationMessage'
-
-          '404':
-            description: message not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
-
-      put:
-        tags:
-          - message
-        summary: Update a message
-        description: Update a message that is already stored
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: The id of the message
-        responses:
-          '200':
-            description: Message updated
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_201'
-          '404':
-            description: message not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
-
-      delete:
-        tags:
-          - message
-        summary: Delete a message
-        description: This method should be used to delete a message from the database
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: The id of the message
-        responses:
-          '200':
-            description: Message removed
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_200'
-          '404':
-            description: message not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
-
-
-
-    # GENERAL LOGGING APIS
-
-    /logging/logs:
-      post:
-        tags:
-          - logging
-        summary: Add a batch of messages to the database
-        description: This end-point allows to log a set of messages into the database
-        requestBody:
+        '400':
+          description: malformed request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Logs'
-        responses:
-          '201':
-            description: success
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_201'
-          '405':
-            description: malformed log
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_405'
+                $ref: '#/components/schemas/HTTP_400'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
 
-    /logging/log/{id}:
-      get:
-        tags:
-          - logging
-        summary: Retrieve a single log by specifying the trace id
-        description: This end-point can be used to retrieve all the information of a single log
-        parameters:
-          - in: path
-            name: id
+  /message:
+    get:
+      tags:
+        - message
+      summary: Get details of a message
+      description: This end-point allows to retrieve all the information of a single message from the database, it is necessary to specify the `project`, the `messageId` and the `userId`, or instead of specifying these three parameters is possible to specify only the `traceId`
+      parameters:
+        - in: query
+          name: project
+          schema:
+            type: string
+          example: "wenet-ask-for-help"
+          description: the name of the project related to the message you want to retrieve
+        - in: query
+          name: messageId
+          schema:
+            type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+          description: the id of the message you want to retrieve
+        - in: query
+          name: userId
+          schema:
+            type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+          description: the id of the user related to the message you want to retrieve
+        - in: query
+          name: traceId
+          schema:
+            type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+          description: the trace id of the message you want to retrieve
+      responses:
+        '200':
+          description: message retrived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageRetrieved'
+        '400':
+          description: malformed request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '404':
+          description: message not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+
+    delete:
+      tags:
+        - message
+      summary: Delete a specific message
+      description: This end-point allows to delete a message from the database, it is necessary to specify the `project`, the `messageId` and the `userId`, or instead of specifying these three parameters is possible to specify only the `traceId`
+      parameters:
+        - in: query
+          name: project
+          schema:
+            type: string
+          example: "wenet-ask-for-help"
+          description: the name of the project related to the message you want to delete
+        - in: query
+          name: messageId
+          schema:
+            type: string
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+          description: The id of the message you want to delete
+        - in: query
+          name: userId
+          schema:
+            type: string
+          example: "USR-JDKHEIU2-31NJDTE94"
+          description: the id of the user related to the message you want to delete
+        - in: query
+          name: traceId
+          schema:
+            type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+          description: the traceId of the message you want to delete
+      responses:
+        '200':
+          description: message deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_200_basic'
+        '400':
+          description: malformed request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_500'
+
+  # LOG APIS
+  /logs:
+    post:
+      tags:
+        - logging
+      summary: Add a batch of messages to the database
+      description: This end-point allows to log a set of messages into the database
+      requestBody:
+        content:
+          application/json:
             schema:
-              type: string
-            required: true
-            description: The trace id of the log
-        responses:
-          '200':
-            description: success
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Log'
+              $ref: '#/components/schemas/Logs'
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_201_list'
+        '400':
+          description: malformed log
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
 
-          '404':
-            description: log not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
+  /log:
+    get:
+      tags:
+        - logging [not implemented]
+      summary: Retrieve a single log by specifying the trace id
+      description: This end-point can be used to retrieve all the information of a single log
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The trace id of the log
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Log'
 
-      put:
-        tags:
-          - logging
-        summary: Update an already existing log
-        description: This method should be used to update existing logs
-        parameters:
-          - in: path
-            name: id
+        '404':
+          description: log not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+
+    put:
+      tags:
+        - logging [not implemented]
+      summary: Update an already existing log
+      description: This method should be used to update existing logs
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The id of the log
+      responses:
+        '200':
+          description: Log updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_201'
+        '404':
+          description: Log not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+
+    delete:
+      tags:
+        - logging [not implemented]
+      summary: Delete a log
+      description: This method should be used to delete a log from the database
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The  id of the log
+      responses:
+        '200':
+          description: Log removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_200'
+        '404':
+          description: Log not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+
+  # ANALYTICS APIS
+  /analytic:
+    post:
+      tags:
+        - analytic
+      summary: Create an analytic
+      description: "
+      This end-point allows to create an analytic. Upon a successful creation, it returns the `id` of the new analytic.
+
+
+      Analytics are created by specifying the **descriptor**. Three types exists and they respectively allow to define:
+
+      1. `count` a counter analytic, able to compute the number of occurrences of a certain type of event.
+
+      2. `segmentation` a segmentation analytic, able to create a segmentation map collecting all value occurrences of a certain event together with the associated occurrence counter.
+
+      3. `aggregation` an aggregation analytic, it requires the specification of the *field* to aggregate over and the *type* of aggregation to be applied. The following are the supported types: *avg*, *min*, *max*, *sum*, *stats*, *extended_stats, *value_count*, *cardinality* and *percentiles*.
+
+
+      ## User analytics
+
+      They are identified by the value of *dimension* set to `user`.
+      The following *metric* values are supported.
+
+      ### Count
+
+      * `total`: the number of total users in a certain time range (that have sent/received at least a message).
+
+      * `active`: the number of active users in a certain time range (that have sent at least a request message).
+
+      * `engaged`: the number of engaged users in a certain time range (that have received at least a notification message).
+
+      * `new`: the number of new users in a certain time range (that have sent/received at least a message for the first time).
+
+      ### Segmentation
+
+      * `age`: the segmentation of the app users based on the age.
+
+      * `gender`: the segmentation of the app users based on the gender.
+
+
+      ## Message analytics
+
+      They are identified by the value of *dimension* set to `message`.
+      The following *metric* values are supported.
+
+      ### Count
+
+      * `requests`: the number of request messages in a certain time range.
+
+      * `responses`: the number of response messages in a certain time range.
+
+      * `notifications`: the number of notification messages in a certain time range.
+
+      ### Segmentation
+
+      * `all`: the segmentation of the messages based on the type in a certain time range.
+
+      * `requests`: the segmentation of the request messages based on the type in a certain time range.
+
+
+      ## Task analytics
+
+      They are identified by the value of *dimension* set to `task`.
+      The following *metric* values are supported.
+
+      ### Count
+
+      * `total`: the number of total tasks in a certain time range.
+
+      * `new`: the number of new tasks created in a certain time range.
+
+      * `new_active`: the number of new tasks created in a certain time range that are active at the end of that time range.
+
+      * `active`: the number of tasks active at the end of a certain time range.
+
+      * `new_closed`: the number of new tasks created in a certain time range that has been closed in that time range.
+
+      * `closed`: the number of tasks closed up to the end of a certain time range.
+
+
+      ## Transaction analytics
+
+      They are identified by the value of *dimension* set to `transaction`.
+      The following *metric* values are supported.
+
+      ### Count
+
+      * `total`: the number of total transactions in a certain time range.
+
+      ### Segmentation
+
+      * `label`: the segmentation of the transactions based on the label in a certain time range.
+
+      "
+      requestBody:
+        content:
+          application/json:
             schema:
-              type: string
-            required: true
-            description: The id of the log
-        responses:
-          '200':
-            description: Log updated
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_201'
-          '404':
-            description: Log not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
+              oneOf:
+                - $ref: '#/components/schemas/UserCountDescriptor'
+                - $ref: '#/components/schemas/MessageCountDescriptor'
+                - $ref: '#/components/schemas/TaskCountDescriptor'
+                - $ref: '#/components/schemas/TransactionCountDescriptor'
+                - $ref: '#/components/schemas/ConversationCountDescriptor'
+                - $ref: '#/components/schemas/DialogueCountDescriptor'
+                - $ref: '#/components/schemas/BotCountDescriptor'
+                - $ref: '#/components/schemas/UserSegmentationDescriptor'
+                - $ref: '#/components/schemas/MessageSegmentationDescriptor'
+                - $ref: '#/components/schemas/TransactionSegmentationDescriptor'
+                - $ref: '#/components/schemas/AggregationDescriptor'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "bcpg8XYBHD_pmQ1jA7b8"
+        '400':
+          description: malformed request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
 
-      delete:
-        tags:
-          - logging
-        summary: Delete a log
-        description: This method should be used to delete a log from the database
-        parameters:
-          - in: path
-            name: id
-            schema:
-              type: string
-            required: true
-            description: The  id of the log
-        responses:
-          '200':
-            description: Log removed
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_200'
-          '404':
-            description: Log not found
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/HTTP_404'
+    get:
+      tags:
+        - analytic
+      summary: Retrieve an analytic
+      description: "
+      This end-point allows to retrieve an analytic or an aggregation based on an `id`.
 
+
+      For the analytics, the endpoint will return a `Analytic` object. The object contained in the `result` field is a:
+
+      * `CountResult` object if the descriptor of the analytic is a `CountDescriptor`;
+
+      * `SegmentationResult` object if the descriptor of the analytic is a `SegmentationDescriptor`;
+
+      * `AggregationResult` object if the descriptor of the analytic is a `AggregationDescriptor`.
+      "
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+          required: true
+          description: the identifier of the analytic
+
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analytic'
+        '400':
+          description: malformed request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+        '404':
+          description: analytic not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_404'
+
+    delete:
+      tags:
+        - analytic
+      summary: Delete an analytic
+      description: "This end-point allows to delete an analytic based on an `id`."
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+          required: true
+          description: the identifier of the analytic
+
+      responses:
+        '200':
+          description: analytic deleted
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: malformed request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTP_400'
+
+  /analytic/compute:
+    post:
+      tags:
+        - analytic
+      summary: Compute the update of the analytics
+      description: "
+      The endpoint will run the task for computing the update of the analytics.
+
+      It is possible to set the `type` of time window of analytics to update, if not specified all analytics will be updated.
+
+      It is possible to update only one specific analytic specifying the `id`.
+      "
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+          description: the identifier of the analytic
+        - in: query
+          name: timeWindowType
+          schema:
+            type: string
+            enum: ["moving", "fixed"]
+          example: "moving"
+          description: the type of time window of analytics to update
+      responses:
+        '200':
+          description: analytic update started
+          content:
+            application/json:
+              schema:
+                type: object
+
+
+#  /analytic/usercount:
+#    get:
+#      tags:
+#        - analytic
+#      parameters:
+#        - in: query
+#          name: userId
+#          schema:
+#            type: string
+#          required: true
+#          description: the identifier of the user for which you want to count the clicks
+#      summary: Retrieve the number click based on a user identifier
+#      description: Retrieve the number click based on a user identifier
+#      responses:
+#        '200':
+#          description: success
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/200_user_count'
+#
+#  /analytic/eventcount:
+#    get:
+#      tags:
+#        - analytic
+#      parameters:
+#        - in: query
+#          name: eventId
+#          schema:
+#            type: string
+#          required: true
+#          description: the identifier of the event for which you want to count the clicks
+#      summary: Retrieve the number click based on an event identifier
+#      description: Retrieve the number click based on an event identifier
+#      responses:
+#        '200':
+#          description: success
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/200_event_count'
+
+  # DOCUMENTATION API
+  /documentation:
+    get:
+      tags:
+        - documentation
+      summary: Retrieve the documentation
+      description: Retrieve the documentation in a yaml format
+      responses:
+        '200':
+          description: success
 
 components:
 
@@ -257,11 +651,22 @@ components:
     Messages:
       type: array
       items:
-        anyOf:
+        oneOf:
           - $ref: '#/components/schemas/RequestMessage'
           - $ref: '#/components/schemas/ResponseMessage'
           - $ref: '#/components/schemas/NotificationMessage'
 
+    MessageRetrieved:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/RequestMessage'
+        - $ref: '#/components/schemas/ResponseMessage'
+        - $ref: '#/components/schemas/NotificationMessage'
+      properties:
+        traceId:
+          type: string
+          example: "bcpg8XYBHD_pmQ1jA7b8"
+      example: { "messageId": "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8", "channel": "FACEBOOK", "userId": "USR-JDKHEIU2-31NJDTE94", "conversationId": "CONV-DAJKWPENVOA-314CAD", "timestamp": "2021-01-25T14:18:36.141378", "content": { "type": "text", "value": "devo fare un bonifico di 40 euro" }, "domain": "pagamenti", "intent": { "name": "bonifico", "confidence": 0.87 }, "entities": [ { "type": "@city", "value": "Boston", "confidence": 0.94 } ], "project": "wenet-ask-for-help", "language": "IT", "metadata": { }, "type": "REQUEST", "traceId": "bcpg8XYBHD_pmQ1jA7b8" }
 
     RequestMessage:
       type: object
@@ -269,18 +674,21 @@ components:
         messageId:
           type: string
           example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+        conversationId:
+          type: string
+          example: "CONV-DAJKWPENVOA-314CAD"
+          nullable: true
         channel:
           type: string
           example: "FACEBOOK"
         userId:
           type: string
           example: "USR-JDKHEIU2-31NJDTE94"
-        conversationId:
-          type: string
-          example: "CONV-DAJKWPENVOA-314CAD"
         timestamp:
           type: string
-          example: "2019-04-04:23.11.58"
+          format: date-time
+          description: Timestamp expressed in ISO format
+          example: "2021-01-25T14:18:36.141378"
         content:
           oneOf:
             - $ref: '#/components/schemas/TextualRequest'
@@ -288,35 +696,44 @@ components:
             - $ref: '#/components/schemas/AttachmentRequest'
             - $ref: '#/components/schemas/LocationRequest'
             - $ref: '#/components/schemas/UserInfoRequest'
-          example: "devo fare un bonifico di 40 euro"
+          example: { "type": "text", "value": "devo fare un bonifico di 40 euro" }
+          nullable: true
         domain:
           type: string
           example: "pagamenti"
+          nullable: true
         intent:
           type: object
           properties:
             name:
               type: string
               example: "bonifico"
+              nullable: true
             confidence:
               type: number
               format: float
               example: 0.87
+              nullable: true
+          nullable: true
         entities:
           type: array
           items:
             $ref: '#/components/schemas/Entity'
-        project:
-          type: string
-          example: "wenet"
         language:
           type: string
           example: "IT"
+          nullable: true
         metadata:
           type: object
+          example: {}
+          nullable: true
+        project:
+          type: string
+          example: "wenet-ask-for-help"
         type:
           type: string
-          example: "REQUEST"
+          enum: [ "request" ]
+          example: "request"
       required:
         - messageId
         - channel
@@ -330,10 +747,11 @@ components:
       properties:
         messageId:
           type: string
-          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A9"
         conversationId:
           type: string
           example: "CONV-DOWI41-DAJPRTI3"
+          nullable: true
         channel:
           type: string
           example: "FACEBOOK"
@@ -345,22 +763,29 @@ components:
           example: "1FKNSM-GEKRO2-DANK2-FJ33-DASDJOW"
         timestamp:
           type: string
-          example: "2019-04-04:23.11.58"
+          format: date-time
+          description: Timestamp expressed in ISO format
+          example: "2021-01-25T14:18:36.141378"
         content:
-            anyOf:
-              - $ref: '#/components/schemas/TextualResponse'
-              - $ref: '#/components/schemas/MultiActionResponse'
-              - $ref: '#/components/schemas/AttachmentResponse'
-              - $ref: '#/components/schemas/CarouselResponse'
-              - $ref: '#/components/schemas/LocationResponse'
+          oneOf:
+            - $ref: '#/components/schemas/TextualResponse'
+            - $ref: '#/components/schemas/MultiActionResponse'
+            - $ref: '#/components/schemas/AttachmentResponse'
+            - $ref: '#/components/schemas/CarouselResponse'
+            - $ref: '#/components/schemas/LocationResponse'
+          example: { "type": "text", "value": "va bene" }
+          nullable: true
         metadata:
           type: object
+          example: {}
+          nullable: true
         project:
           type: string
-          example: 'wenet'
+          example: "wenet-ask-for-help"
         type:
           type: string
-          example: "RESPONSE"
+          enum: [ "response" ]
+          example: "response"
       required:
         - messageId
         - channel
@@ -375,10 +800,11 @@ components:
       properties:
         messageId:
           type: string
-          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A8"
+          example: "2A6F67A4-42D2-4DE0-9F00-DE4A564A83A0"
         conversationId:
           type: string
           example: "CONV-DOWI41-DAJPRTI3"
+          nullable: true
         channel:
           type: string
           example: "FACEBOOK"
@@ -387,22 +813,29 @@ components:
           example: "USR-JDKHEIU2-31NJDTE94"
         timestamp:
           type: string
-          example: "2019-04-04:23.11.58"
+          format: date-time
+          description: Timestamp expressed in ISO format
+          example: "2021-01-25T14:18:36.141378"
         content:
-            anyOf:
-              - $ref: '#/components/schemas/TextualResponse'
-              - $ref: '#/components/schemas/ActionResponse'
-              - $ref: '#/components/schemas/AttachmentResponse'
-              - $ref: '#/components/schemas/CarouselResponse'
-              - $ref: '#/components/schemas/LocationResponse'
+          oneOf:
+            - $ref: '#/components/schemas/TextualResponse'
+            - $ref: '#/components/schemas/ActionResponse'
+            - $ref: '#/components/schemas/AttachmentResponse'
+            - $ref: '#/components/schemas/CarouselResponse'
+            - $ref: '#/components/schemas/LocationResponse'
+          example: { "type": "text", "value": "attenzione, hai meno di 100 euro sul conto" }
+          nullable: true
         metadata:
           type: object
+          example: {}
+          nullable: true
         project:
           type: string
-          example: "wenet"
+          example: "wenet-ask-for-help"
         type:
           type: string
-          example: "NOTIFICATION"
+          enum: [ "notification" ]
+          example: "notification"
       required:
         - messageId
         - channel
@@ -411,19 +844,20 @@ components:
         - project
         - type
 
-
     LocationRequest:
       type: object
       properties:
         type:
           type: string
-          example: 'location'
+          example: "location"
         longitude:
-          type: string
-          example: '47.3123451'
+          type: number
+          format: float
+          example: 47.3123451
         latitude:
-          type: string
-          example: '9.321151'
+          type: number
+          format: float
+          example: 9.321151
       required:
         - type
         - longitude
@@ -434,17 +868,19 @@ components:
       properties:
         type:
           type: string
-          example: 'location'
+          example: "location"
         longitude:
-          type: string
-          example: '49.3128319'
+          type: number
+          format: float
+          example: 47.3123451
         latitude:
-          type: string
-          example: '8.3189321'
+          type: number
+          format: float
+          example: 9.321151
         buttons:
-            type: array
-            items:
-              $ref: '#/components/schemas/ActionResponse'
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionResponse'
       required:
         - type
         - longitude
@@ -455,13 +891,14 @@ components:
       properties:
         type:
           type: string
-          enum: ['firstName','lastName','profilePic','locale','timezone','gender','isPaymentEnable','userId']
+          enum: [ "firstName", "lastName", "profilePic", "locale", "timezone", "gender", "isPaymentEnable", "userId" ]
+          example: "firstName"
         value:
           type: string
+          example: "Matteo"
       required:
         - type
         - value
-
 
     TextualRequest:
       type: object
@@ -518,6 +955,7 @@ components:
         buttonId:
           type: string
           example: "BTN-DAJKSOD142-ADFGWE2"
+          nullable: true
       required:
         - type
         - buttonText
@@ -533,7 +971,6 @@ components:
           items:
             $ref: '#/components/schemas/ActionResponse'
 
-
     AttachmentRequest:
       type: object
       properties:
@@ -546,6 +983,7 @@ components:
         alternativeText:
           type: string
           example: "An hotel"
+          nullable: true
       required:
         - type
         - uri
@@ -562,6 +1000,7 @@ components:
         alternativeText:
           type: string
           example: "An hotel"
+          nullable: true
         buttons:
           type: array
           items:
@@ -579,12 +1018,12 @@ components:
           cards:
             type: array
             items:
-              $ref: '#/components/schemas/Card'
+              $ref: '#/components/schemas/CarouselCardResponse'
         required:
           - type
           - cards
 
-    Card:
+    CarouselCardResponse:
       type: object
       properties:
           title:
@@ -593,11 +1032,15 @@ components:
           imageUrl:
             type: string
             example: "http://www.google.com/logo.png"
+            nullable: true
           subtitle:
             type: string
             example: "you should hike"
+            nullable: true
           defaultAction:
             type: object
+            example: {}
+            nullable: true
           buttons:
             type: array
             items:
@@ -618,11 +1061,10 @@ components:
           type: number
           format: float
           example: 0.94
-
-
-
-    # Schema for an array of Message
-
+      required:
+        - type
+        - value
+        - confidence
 
     Log:
       type: object
@@ -632,7 +1074,7 @@ components:
           example: "LOG31235141"
         project:
           type: string
-          example: "wenet"
+          example: "wenet-ask-for-help"
         component:
           type: string
           example: "dimension"
@@ -641,425 +1083,552 @@ components:
           example: "nlu"
         severity:
           type: string
-          enum: ['error','warning','info','debug']
           example: "error"
         logContent:
           type: string
           example: "bot stopped"
         timestamp:
           type: string
-          example: "2019-07-04T08:33:48.35408Z"
+          format: date-time
+          description: Timestamp expressed in ISO format
+          example: "2021-01-25T14:18:36.141378"
         botVersion:
           type: string
-          example: "1.0.2"
+          example: "mem-1.0.2"
         metadata:
           type: object
+          example: {}
 
     Logs:
       type: array
       items:
         $ref: '#/components/schemas/Log'
 
-    # Analytics
-    Analytic:
+    CountDescriptor:
       type: object
       properties:
+        project:
+          type: string
+          example: "wenet-ask-for-help"
         timespan:
           type: object
           oneOf:
-            - $ref: '#/components/schemas/DefaultTime'
-            - $ref: '#/components/schemas/CustomTime'
+            - $ref: '#/components/schemas/MovingTimeWindow'
+            - $ref: '#/components/schemas/FixedTimeWindow'
+        type:
+          type: string
+          enum: [ "count" ]
+          example: "count"
+        dimension:
+          type: string
         metric:
-           oneOf:
-            - $ref: '#/components/schemas/Average'
-            - $ref: '#/components/schemas/WeightedAverage'
-            - $ref: '#/components/schemas/Cardinality'
-            - $ref: '#/components/schemas/GeoBounds'
-            - $ref: '#/components/schemas/GeoCentrality'
-            - $ref: '#/components/schemas/Max'
-            - $ref: '#/components/schemas/Min'
-            - $ref: '#/components/schemas/Percentiles'
-            - $ref: '#/components/schemas/Sum'
-            - $ref: '#/components/schemas/Stats'
-            - $ref: '#/components/schemas/Extended'
-            - $ref: '#/components/schemas/ValueCount'
-            - $ref: '#/components/schemas/MedianAbsoluteDeviation'
+          type: string
+      required:
+        - project
+        - timespan
+        - type
+        - dimension
+        - metric
+
+    UserCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: [ "user" ]
+          example: "user"
+        metric:
+          type: string
+          enum: [ "total", "active", "engaged", "new" ]
+          example: "active"
+
+    MessageCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: [ "message" ]
+          example: "message"
+        metric:
+          type: string
+          enum: [ "requests", "responses", "notifications" ]  # removed "from_bot", "m:unhandled"
+          example: "requests"
+
+    TaskCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        project:
+          type: string
+          description: "Note that for the task analytics the project is not related to the name used in the db. It is requested the id of the application"
+          example: "I2BIO3UXx6"
+        dimension:
+          type: string
+          enum: [ "task" ]
+          example: "task"
+        metric:
+          type: string
+          enum: [ "total", "new", "new_active", "active", "new_closed", "closed" ]
+          example: "active"
+
+    TransactionCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        project:
+          type: string
+          description: "For the transaction analytics, the project is not related to the name used in the db. It is requested the id of the application"
+          example: "I2BIO3UXx6"
+        dimension:
+          type: string
+          enum: [ "transaction" ]
+          example: "transaction"
+        metric:
+          type: string
+          enum: [ "total" ]
+          example: "total"
+        taskId:
+          type: string
+          example: "704ad78d6d52bf159d1d7a97"
+
+    ConversationCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: [ "conversation" ]
+          example: "conversation"
+        metric:
+          type: string
+          enum: [ "total", "new" ]  # removed "c:length", "c:path"
+          example: "new"
+
+    DialogueCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: [ "dialogue" ]
+          example: "dialogue"
+        metric:
+          type: string
+          enum: [ "fallback", "intents", "domains" ]
+          example: "domains"
+
+    BotCountDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/CountDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: [ "bot" ]
+          example: "bot"
+        metric:
+          type: string
+          enum: [ "response" ]
+          example: "response"
+
+    SegmentationDescriptor:
+      type: object
+      properties:
+        project:
+          type: string
+          example: "wenet-ask-for-help"
+        timespan:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/MovingTimeWindow'
+            - $ref: '#/components/schemas/FixedTimeWindow'
+        type:
+          type: string
+          enum: [ "segmentation" ]
+          example: "segmentation"
+        dimension:
+          type: string
+        metric:
+          type: string
+      required:
+        - project
+        - timespan
+        - type
+        - dimension
+        - metric
+
+    UserSegmentationDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/SegmentationDescriptor'
+      properties:
+        project:
+          type: string
+          description: "Note that for the user segmentation based on age or gender analytics, the project is not related to the name used in the db. It is requested the id of the application"
+        dimension:
+          type: string
+          enum: ["user"]
+          example: "user"
+        metric:
+          type: string
+          enum: ["age", "gender"]
+          example: "age"
+
+    MessageSegmentationDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/SegmentationDescriptor'
+      properties:
+        dimension:
+          type: string
+          enum: ["message"]
+          example: "message"
+        metric:
+          type: string
+          enum: ["all", "requests"]
+          example: "all"
+
+    TransactionSegmentationDescriptor:
+      allOf:
+        - $ref: '#/components/schemas/SegmentationDescriptor'
+      properties:
+        project:
+          type: string
+          description: "For the transaction analytics, the project is not related to the name used in the db. It is requested the id of the application"
+          example: "I2BIO3UXx6"
+        dimension:
+          type: string
+          enum: ["transaction"]
+          example: "transaction"
+        metric:
+          type: string
+          enum: ["label"]
+          example: "label"
+        taskId:
+          type: string
+          example: "704ad78d6d52bf159d1d7a97"
+
+    AggregationDescriptor:
+      type: object
+      properties:
+        project:
+          type: string
+          example: "wenet-ask-for-help"
+        timespan:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/MovingTimeWindow'
+            - $ref: '#/components/schemas/FixedTimeWindow'
+        type:
+          type: string
+          enum: [ "aggregation" ]
+        field:
+          type: string
+          description: The field has to be a numeric field
+          example: "intent.confidence"
+        aggregation:
+          type: string
+          enum: [ "avg", "min", "max", "sum", "stats", "extended_stats", "value_count", "cardinality", "percentiles" ]
+          example: "min"
         filters:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
       required:
+        - project
         - timespan
-        - metric
-
-    DefaultTime:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["DEFAULT"]
-        value:
-          type: string
-          enum: ["TODAY","YESTERDAY","7D","30D"]
-      required:
-        - type
-        - value
-
-    CustomTime:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["CUSTOM"]
-        start:
-          type: string
-          format: date-time
-          example: "2019-07-23T16:31:24.432000"
-        end:
-          type: string
-          format: date-time
-          example: "2019-07-23T16:35:50.00"
-      required:
-        - type
-        - start
-        - end
-
-    Average:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["AVG"]
-        field:
-          type: string
-          example: "accuracy"
-        missing:
-          type: string
-          example: "N/A"
-      required:
         - type
         - field
-
-    WeightedAverage:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["WAVG"]
-        field:
-          type: string
-          example: "accuracy"
-        missing:
-          type: string
-          example: "N/A"
-        weight:
-          type: string
-          example: "language_frequency"
-        format:
-          type: string
-          enum: ["NUMERIC","PERCENTAGE"]
-      required:
-        - type
-        - field
-        - weight
-
-    Cardinality:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["CARDINALITY"]
-        field:
-          type: string
-          example: "language"
-        precisionThreshold:
-          type: integer
-          format: int32
-          example: 100
-      required:
-        - type
-        - field
-
-    GeoBounds:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["GEOBOUNDS"]
-        field:
-          type: string
-          example: "zone"
-        wrap_longitude:
-          type: boolean
-          example: True
-          default: True
-      required:
-        - type
-        - field
-
-    GeoCentrality:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["GEOCENTRALITY"]
-        field:
-          type: string
-          example: "zone"
-      required:
-        - type
-        - field
-
-    Max:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["MAX"]
-        field:
-          type: string
-          example: "accuracy"
-        missing:
-          type: number
-          format: int32
-          example: 10
-      required:
-        - type
-        - field
-
-    Min:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["MIN"]
-        field:
-          type: string
-          example: "accuracy"
-        missing:
-          type: number
-          format: int32
-          example: 10
-      required:
-        - type
-        - field
-
-    Percentiles:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["PERCENTILES"]
-        field:
-          type: string
-          example: "age"
-        percents:
-          type: array
-          items:
-            type: number
-            example: [92.0, 85.0]
-            default: [1.0,5.0,25.0,50.0,75.0,95.0,99.0]
-      required:
-        - type
-        - field
-
-    Sum:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["SUM"]
-        field:
-          type: string
-          example: "age"
-        missing:
-          type: number
-          format: int32
-          example: 10
-      required:
-        - type
-        - field
-
-    Stats:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["STATS"]
-        field:
-          type: string
-          example: "age"
-        missing:
-          type: number
-          format: int32
-          example: 10
-      required:
-        - type
-        - field
-
-    Extended:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["ESTATS"]
-        field:
-          type: string
-          example: "weight"
-        missing:
-          type: number
-          format: int32
-          example: 10
-      required:
-        - type
-        - field
-
-    ValueCount:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["VCOUNT"]
-        field:
-          type: string
-          example: "messageID"
-      required:
-        - type
-        - field
-
-    MedianAbsoluteDeviation:
-      type: object
-      properties:
-        type:
-          type: string
-          enum: ["MAD"]
-        field:
-          type: string
-          example: "weight"
-        compression:
-          type: number
-          format: int32
-          example: 100
-      required:
-        - type
-        - field
+        - aggregation
 
     Filter:
       type: object
       properties:
         field:
           type: string
-          example: "language"
-        comparison:
+          example: "text"
+        operation:
+          type: string
+          enum: [ "gr", "gre", "lq", "lqe", "term", "match" ]
+          example: "match"
+        value:
+          type: string
+          example: "Hi"
+      required:
+        - field
+        - operation
+        - value
+
+    MovingTimeWindow:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["moving"]
+          example: "moving"
+        value:
+          type: string
+          description: "Arbitrary time range, it supports any values for days (d), weeks (w), months (m), and years (y) in the format `<value><descriptor>` (the descriptor is case insensitive) or in alternative you can also use `today` for an analytic about the current day and `all` for an analytic moving in time but without considering any time limitation"
+          example: "7d"
+      required:
+        - type
+        - value
+
+    FixedTimeWindow:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["fixed"]
+          example: "fixed"
+        start:
+          type: string
+          format: date-time
+          example: "2021-01-25T14:18:36.141378"
+        end:
+          type: string
+          format: date-time
+          example: "2021-01-25T14:28:36.141378"
+      required:
+        - type
+        - start
+        - end
+
+    Analytic:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "wAu4EW4BFurD9NUGZY3z"
+        descriptor:
           oneOf:
-            - $ref: "#/components/schemas/ValueComparison"
-            - $ref: "#/components/schemas/MultiValueComparison"
-            - $ref: "#/components/schemas/NumberComparison"
-            - $ref: "#/components/schemas/RangeComparison"
-            - $ref: "#/components/schemas/FieldExistanceComparison"
+            - $ref: '#/components/schemas/UserCountDescriptor'
+            - $ref: '#/components/schemas/MessageCountDescriptor'
+            - $ref: '#/components/schemas/TaskCountDescriptor'
+            - $ref: '#/components/schemas/TransactionCountDescriptor'
+            - $ref: '#/components/schemas/ConversationCountDescriptor'
+            - $ref: '#/components/schemas/DialogueCountDescriptor'
+            - $ref: '#/components/schemas/BotCountDescriptor'
+            - $ref: '#/components/schemas/UserSegmentationDescriptor'
+            - $ref: '#/components/schemas/MessageSegmentationDescriptor'
+            - $ref: '#/components/schemas/TransactionSegmentationDescriptor'
+            - $ref: '#/components/schemas/AggregationDescriptor'
+        result:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/CountResult'
+            - $ref: '#/components/schemas/SegmentationResult'
+            - $ref: '#/components/schemas/AggregationResult'
+      required:
+        - id
+        - descriptor
+        - result
 
-          enum: ["IS", "IS_NOT", "IN", "NOT_IN", "EXISTS", "NOT_EXISTS", "BETWEEN"]
-    ValueComparison:
+    CommonResult:
       type: object
       properties:
-        operator:
+        creationDt:
           type: string
-          enum: ["IS", "IS_NOT"]
-        value:
-          example: "IT"
+          format: date-time
+          example: "2021-02-25T14:18:36.141378"
+        fromDt:
+          type: string
+          format: date-time
+          example: "2021-01-25T14:18:36.141378"
+          nullable: true
+        toDt:
+          type: string
+          format: date-time
+          example: "2021-02-25T14:18:36.141378"
+        type:
+          type: string
+      required:
+        - creationDt
+        - fromDt
+        - toDt
+        - type
 
-    MultiValueComparison:
+    CountResult:
+      allOf:
+        - $ref: '#/components/schemas/CommonResult'
       type: object
       properties:
-        operator:
+        count:
+          type: number
+          format: int32
+          example: 3
+        type:
           type: string
-          enum: ["ONE_OF", "IS_NOT_ONE_OF"]
-        value:
+          example: "count"
+      required:
+        - creationDt
+        - fromDt
+        - toDt
+        - type
+        - count
+
+    SegmentationResult:
+      allOf:
+        - $ref: '#/components/schemas/CommonResult'
+      type: object
+      properties:
+        segments:
           type: array
           items:
-            anyOf:
-              - type: string
-              - type: number
+            type: object
+            properties:
+              type:
+                type: string
+                example: "response"
+              count:
+                type: number
+                format: int32
+                example: 26
+        type:
+          type: string
+          enum: [ "segmentation" ]
+          example: "segmentation"
+      required:
+        - creationDt
+        - fromDt
+        - toDt
+        - type
+        - segments
 
-    NumberComparison:
+    AggregationResult:
+      allOf:
+        - $ref: '#/components/schemas/CommonResult'
       type: object
       properties:
-        operator:
+        aggregation:
+          description: "The value is an object with key the aggregation and value the resulting number in the case of the simple aggregations. For `stats` it is an object with keys: [`count`, `min`, `max`, `avg`, `sum`]. For `extended_stats` it is an object with keys: [`count`, `min`, `max`, `avg`, `sum`, `sum_of_squares`, `variance`, `std_deviation` and `std_deviation_bounds` which is an object with keys `upper` and `lower`]. For `percentiles` it is an object with keys: [`1.0`, `5.0`, `25.0`, `50.0`, `75.0`, `95.0`, `99.0`]."
+          type: object
+          example: {"min": 3}
+        type:
           type: string
-          enum: ["EQ","NEQ","GR","LE","GREQ","LEQ"]
-        value:
-          type: number
-          example: 40
-
-    RangeComparison:
-      type: object
-      properties:
-        operator:
-          type: string
-          enum: ["BETWEEN", "NOT_BETWEEN"]
-        from:
-          example: 1
-        to:
-          example: 10
-
-    FieldExistanceComparison:
-      type: object
-      properties:
-        operator:
-          type: string
-          enum: ["EXIST", "NOT_EXIST"]
+          enum: [ "aggregation" ]
+          example: "aggregation"
+      required:
+        - creationDt
+        - fromDt
+        - toDt
+        - type
+        - aggregation
 
     # Responses
+
+    HTTP_200_basic:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Ok"
+        code:
+          enum: [ '200' ]
+          example: 200
 
     HTTP_200:
       type: object
       properties:
         traceId:
           type: string
-          example: "DSADK-IPOWN-3G3478"
+          example: "bcpg8XYBHD_pmQ1jA7b8"
         status:
           type: string
-          example: "Object Created"
+          example: "Object deleted"
         code:
-          enum: ['200']
+          enum: [ '200' ]
           example: 200
 
-    HTTP_201 :
+    HTTP_201:
       type: object
       properties:
         traceId:
           type: string
-          example: "DSADK-IPOWN-3G3478"
+          example: "bcpg8XYBHD_pmQ1jA7b8"
         status:
           type: string
           example: "Object Created"
         code:
-          enum: ['201']
+          enum: [ '201' ]
           example: 201
 
+    HTTP_201_list:
+      type: object
+      properties:
+        traceIds:
+          type: array
+          items:
+            type: string
+            example: "bcpg8XYBHD_pmQ1jA7b8"
+        status:
+          type: string
+          example: "Created"
+        code:
+          enum: [ '201' ]
+          example: 201
+
+#    200_event_count:
+#      type: object
+#      properties:
+#        type:
+#          enum: ["click_per_event"]
+#          example: "click_per_event"
+#        event:
+#          type: string
+#          example: "EV321423"
+#        click:
+#          type: object
+#        status:
+#          enum: ['ok']
+#          example: 'ok'
+#        cose:
+#          enum: [ '200' ]
+#          example: '200'
+#
+#    200_user_count:
+#      type: object
+#      properties:
+#        type:
+#          enum: ["click_per_user"]
+#          example: "click_per_user"
+#        user:
+#          type: string
+#          example: "USR30942"
+#        click:
+#          type: object
+#        status:
+#          enum: ['ok']
+#          example: 'ok'
+#        cose:
+#          enum: [ '200' ]
+#          example: '200'
+
+    HTTP_400:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "Malformed request"
+        code:
+          enum: [ '400' ]
+          example: 400
 
     HTTP_404:
       type: object
       properties:
-        traceId:
-          type: string
-          example: "DSADK-IPOWN-3G3478"
         status:
           type: string
-          example: "Cannot find message {traceId}"
+          example: "Not found"
         code:
-          enum: ['404']
+          enum: [ '404' ]
           example: 404
 
-    HTTP_405:
+    HTTP_500:
       type: object
       properties:
-        traceId:
-          type: string
-          example: "DSADK-IPOWN-3G3478"
         status:
           type: string
-          example: "Field {name} is missing in the message"
+          example: "Internal server error"
         code:
-          enum: ['405']
-          example: 405
+          enum: [ '500' ]
+          example: 500
