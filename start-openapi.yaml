@@ -3,31 +3,31 @@ info:
   title: WeNet - Documentation
   description: This document is the starting point for accessing the various API documentation documents describing the components of the WeNet platform. You can get started by jumping to the documentation of your desired component!
 
-    - [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-service_api-openapi.yaml)
+    - [Service REST APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-service_api-openapi.yaml)
 
-    - [Service REST APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-hub-openapi.yaml)
+    - [Hub REST APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-hub-openapi.yaml)
 
-    - [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-logging_analytics-openapi.yaml)
+    - [Interactions Logger and Analytics APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-logging_analytics-openapi.yaml)
 
-    - [Authentication Manager APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-auth_manager-openapi.yaml)
+    - [Authentication Manager APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-auth_manager-openapi.yaml)
 
-    - [Incentive Server APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-incentive_server-openapi.json)
+    - [Incentive Server APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-incentive_server-openapi.json)
 
-    - [Profile Manager APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-profile_manager-openapi.yaml)
+    - [Profile Manager APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-profile_manager-openapi.yaml)
 
-    - [Interaction Protocol Engine APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-interaction_protocol_engine-openapi.yaml)
+    - [Interaction Protocol Engine APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-interaction_protocol_engine-openapi.yaml)
 
-    - [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-social_context_builder-openapi.yaml)
+    - [Social Context Builder APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-social_context_builder-openapi.yaml)
 
-    - [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-personal_context_builder-openapi.json)
+    - [Personal Context Builder APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-personal_context_builder-openapi.json)
 
-    - [Stream Base APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-ilogbase-openapi.yaml)
+    - [Stream Base APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-ilogbase-openapi.yaml)
 
-    - [Common APIs](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-common_api-openapi.yaml)
+    - [Common APIs](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-common_api-openapi.yaml)
 
-    The structures of the messages created by WeNet for the applications as responses to the users' messages are described [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-messages_for_apps-openapi.yaml).
+    The structures of the messages created by WeNet for the applications as responses to the users' messages are described [here](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-messages_for_apps-openapi.yaml).
 
-    The models common to the various components can be found [here](http://swagger.u-hopper.com/?url=https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml).
+    The models common to the various components can be found [here](http://swagger.u-hopper.com/?url=https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml).
 
   contact:
     email: carlo.caprini@u-hopper.com
