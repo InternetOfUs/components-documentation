@@ -131,7 +131,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
         '401':
           description: Unauthorised request
           content:
@@ -188,14 +188,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
+              $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/CoreWeNetUserProfile'
       responses:
         '200':
           description: WeNet user correctly updated
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile'
         '404':
           description: No such wenet user exists
           content:
@@ -228,7 +228,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
         "404":
           description: No such wenet user exists
           content:
@@ -259,7 +259,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
         required: true
       responses:
         "200":
@@ -269,7 +269,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Competence'
         "400":
           description: Bad competences
           content:
@@ -308,7 +308,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
         "404":
           description: No such wenet user exists
           content:
@@ -339,7 +339,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
         required: true
       responses:
         "200":
@@ -349,7 +349,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Material'
         "400":
           description: Bad materials
           content:
@@ -388,7 +388,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
         "404":
           description: No such wenet user exists
           content:
@@ -419,7 +419,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
         required: true
       responses:
         "200":
@@ -429,7 +429,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Meaning'
         "400":
           description: Bad meanings
           content:
@@ -468,7 +468,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
         "404":
           description: No such wenet user exists
           content:
@@ -499,7 +499,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
         required: true
       responses:
         "200":
@@ -509,7 +509,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/ProtocolNorm'
         "400":
           description: Bad norms
           content:
@@ -548,7 +548,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
         "404":
           description: No such wenet user exists
           content:
@@ -579,7 +579,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
         required: true
       responses:
         "200":
@@ -589,7 +589,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Routine'
         "400":
           description: Bad personal behaviors
           content:
@@ -628,7 +628,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
         "404":
           description: No such wenet user exists
           content:
@@ -659,7 +659,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
         required: true
       responses:
         "200":
@@ -669,7 +669,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/PlannedActivity'
         "400":
           description: Bad planned activities
           content:
@@ -785,7 +785,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
         required: true
       responses:
         "200":
@@ -795,7 +795,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/SocialNetworkRelationship'
         "400":
           description: Bad relationships
           content:
@@ -834,7 +834,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
         "404":
           description: No such wenet user exists
           content:
@@ -865,7 +865,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
         required: true
       responses:
         "200":
@@ -875,7 +875,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
+                  $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/RelevantLocation'
         "400":
           description: Bad relevant locations
           content:
@@ -902,14 +902,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+              $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
       responses:
         '201':
           description: Task correctly created
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
 
   /task/{taskId}:
     get:
@@ -933,7 +933,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
         '404':
           description: No such task exists
           content:
@@ -960,14 +960,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+              $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
       responses:
         200:
           description: Task correctly updated
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/Task'
 
   /task/transaction:
     post:
@@ -981,7 +981,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
+              $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-models-openapi.yaml#/components/schemas/TaskTransaction'
       responses:
         '201':
           description: Transaction correctly submitted
@@ -1106,7 +1106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://bitbucket.org/wenet/wenet-components-documentation/raw/master/sources/wenet-task_manager-openapi.yaml#/components/schemas/TaskPage'
+                $ref: 'https://raw.githubusercontent.com/InternetOfUs/components-documentation/master/sources/wenet-task_manager-openapi.yaml#/components/schemas/TaskPage'
 
   /log/messages:
     post:
