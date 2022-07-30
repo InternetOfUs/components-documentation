@@ -13,6 +13,8 @@ tags:
     description: Operations that manipulate the social relations
   - name: Social User Ranking
     description: Operations that relate with user to user social ranking and social preferences
+  - name: Social User diversity Shuffling
+    description: Ranking of users based on diversity attributes
   - name: Social Explanations
     description: Accessing and updating social explanations on the inclusion of volunteers
   - name: Transaction Notifications
@@ -278,6 +280,28 @@ paths:
       responses:
         '200':
           description: Created Structure succesfully
+  '/social/shuffle':
+    post:
+      tags:
+        - Social User diversity Shuffling
+      summary: Returns an ordered list of Users based on diversity attributes
+      description: Given a list of users and a message thread it returns an ordered list of Users based on the users diversity attributes. Computed on-demand and immediatly return the result (result is up to date). Uses data structures that have been learned at a batch cycle.
+      parameters:
+        - in: body
+          name: users_IDs
+          description: Message ID
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Ordered list of User IDs
+          schema:
+            type: array
+            items:
+              type: string
 
 definitions:
   volunteerfortask:
