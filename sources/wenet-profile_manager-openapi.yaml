@@ -33,7 +33,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 1.2.0
+  version: 1.3.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/profile_manager
   description: Production instance
@@ -4065,6 +4065,14 @@ components:
           - meanings.extraversion
           items:
             type: string
+        match:
+          type: string
+          description: The name of the profile attributes to calculate the diversity
+          example: AT_LEAST_ONE
+          default: ALL
+          enum:
+          - AT_LEAST_ONE
+          - ALL
       description: The information necessary to calculate the diversity between some
         users.
     DiversityValue:
