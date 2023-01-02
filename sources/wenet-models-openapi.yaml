@@ -5,7 +5,7 @@ info:
 
   contact:
     email: carlo.caprini@u-hopper.com
-  version: 2.3.0
+  version: 2.4.0
 
 components:
   schemas:
@@ -525,6 +525,9 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/DeprecatedSocialNetworkRelationship"
+        latestKnownActivity:
+          nullable: true
+          $ref: "#/components/schemas/KnownActivity"
 
     # Tasks
 
@@ -992,3 +995,27 @@ components:
           example: b129e5509c9bb79
           nullable: false
           type: string
+
+    KnownActivity:
+      type: object
+      description: The information of an activity that is done by an user.
+      properties:
+        activity:
+          description: The name of the activity
+          example: Play piano
+          type: string
+          nullable: true
+        timestamp:
+          type: integer
+          description: The time stamp when the activity was happened
+          example: 1563898764
+          nullable: true
+          minimum: 0
+        confidence:
+          type: number
+          description: The confidence that the activity has been done
+          example: 0.8
+          nullable: true
+          minimum: 0
+          maximum: 1
+
