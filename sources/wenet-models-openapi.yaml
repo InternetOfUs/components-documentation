@@ -526,6 +526,7 @@ components:
           items:
             $ref: "#/components/schemas/DeprecatedSocialNetworkRelationship"
         latestKnownActivity:
+          type: object
           nullable: true
           $ref: "#/components/schemas/KnownActivity"
 
