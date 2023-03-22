@@ -122,7 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Info'
+                $ref: '#/components/schemas/APIInfo'
   /help/openapi.yaml:
     get:
       tags:
@@ -777,6 +777,7 @@ paths:
 components:
   schemas:
     ErrorMessage:
+      title: ErrorMessage
       type: object
       properties:
         code:
@@ -789,6 +790,7 @@ components:
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
     ProtocolEvent:
+      title: ProtocolEvent
       type: object
       properties:
         appId:
@@ -835,7 +837,8 @@ components:
           type: string
           description: The agent that send the message
       description: An event that will be fired on a protocol.
-    Info:
+    APIInfo:
+      title: Info
       type: object
       properties:
         name:
@@ -861,6 +864,7 @@ components:
           example: Apache v2
       description: Provide the version information of the API
     Interaction:
+      title: Interaction
       type: object
       properties:
         appId:
@@ -964,6 +968,7 @@ components:
           description: The user associated the component that interact.
       description: The component that send/receive a message.
     ProtocolMessage:
+      title: ProtocolMessage
       type: object
       properties:
         appId:
@@ -1002,6 +1007,7 @@ components:
           $ref: '#/components/schemas/ProtocolAddress'
       description: A message that can be interchange in an interaction protocol.
     State:
+      title: State
       type: object
       properties:
         _creationTs:

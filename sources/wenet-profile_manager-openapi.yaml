@@ -1086,7 +1086,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Info'
+                $ref: '#/components/schemas/APIInfo'
   /help/openapi.yaml:
     get:
       tags:
@@ -3990,6 +3990,7 @@ paths:
 components:
   schemas:
     ErrorMessage:
+      title: ErrorMessage
       type: object
       properties:
         code:
@@ -4002,6 +4003,7 @@ components:
           example: Error readable by a human
       description: Inform of an error that happens when interacts with the API
     CommunityProfilesPage:
+      title: CommunityProfilesPage
       type: object
       properties:
         offset:
@@ -4020,7 +4022,8 @@ components:
           items:
             $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.4.0/sources/wenet-models-openapi.yaml#/components/schemas/CommunityProfile
       description: Contains a set of communities found
-    Info:
+    APIInfo:
+      title: Info
       type: object
       properties:
         name:
@@ -4117,6 +4120,7 @@ components:
             gender: 0.4
       description: The similarity of the user attributes to a text.
     HistoricWeNetUserProfile:
+      title: HistoricWeNetUserProfile
       type: object
       properties:
         from:
@@ -4136,6 +4140,7 @@ components:
           $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.4.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: The information of the user profile in a period of time.
     HistoricWeNetUserProfilesPage:
+      title: HistoricWeNetUserProfilesPage
       type: object
       properties:
         offset:
@@ -4157,6 +4162,7 @@ components:
     WeNetUserProfile:
       $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.4.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
     WeNetUserProfilesPage:
+      title: WeNetUserProfilesPage
       type: object
       properties:
         offset:
@@ -4176,6 +4182,7 @@ components:
             $ref: https://raw.githubusercontent.com/InternetOfUs/components-documentation/MODELS_2.4.0/sources/wenet-models-openapi.yaml#/components/schemas/WeNetUserProfile
       description: Contains a set of profiles found
     SocialNetworkRelationshipsPage:
+      title: SocialNetworkRelationshipsPage
       type: object
       properties:
         offset:
@@ -4198,11 +4205,13 @@ components:
       type: object
       properties:
         sourceId:
+          title: sourceId
           type: string
           description: The identifier of the user that is providing the performance
             of another user.
           example: 88cb96277edd
         targetId:
+          title: targetId
           type: string
           description: The identifier of the user that has perform the task.
           example: bf2743937ed6
@@ -4264,6 +4273,7 @@ components:
           example: 1571412479710
       description: The calculated trust between two users.
     UserIdentifiersPage:
+      title: UserIdentifiersPage
       type: object
       properties:
         offset:
