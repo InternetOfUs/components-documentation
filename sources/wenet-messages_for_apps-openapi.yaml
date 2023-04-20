@@ -11,9 +11,7 @@ info:
     Any application built on top of the WeNet platform will need to expose a dedicated endpoint where the messages for the application are going to be posted by WeNet.
     Such endpoint is going to be specified in the application configuration.
 
-  contact:
-    email: nicolo.pomini@u-hopper.com
-  version: 2.0.0
+  version: 3.3.3
 
 components:
   schemas:
@@ -312,3 +310,103 @@ components:
               description: The identifier of the target task
               example: 28961582-84d2-41d1-b555-c09dce046831
               nullable: true
+
+    QuestionToAnswerMessage:
+      title: Question to answer
+      type: object
+      properties:
+        taskId:
+          description: The id of the task associated with the question
+          type: string
+          nullable: false
+        question:
+          description: The question to answer to
+          type: string
+          nullable: false
+        userId:
+          description: The id of the user who proposed the question
+          type: string
+          nullable: false
+        sensitive:
+          description: Whether the question is sensitive or not, if it is sensitive the bot will let other people know to take extra care in answering the question
+          type: boolean
+          default: 'false'
+          nullable: false
+        anonymous:
+          description: Whether to ask the question anonymously or not, if anonymous is chosen then the name of the user will not be shown
+          type: boolean
+          default: 'false'
+          nullable: false
+        positionOfAnswerer:
+          description: How close the users should be to receive the question, if nearby is chosen the question has not the possibility to be postponed because the question requires a fast answer
+          type: string
+          nullable: false
+          enum:
+            - nearby
+            - anywhere
+
+    AnsweredQuestionMessage:
+      title: Answer to question
+      type: object
+      properties:
+        taskId:
+          description: The id of the task associated with the question
+          type: string
+          nullable: false
+        question:
+          description: The question to answer to
+          type: string
+          nullable: false
+        transactionId:
+          description: The id of the transaction associated to the answer
+          type: string
+          nullable: false
+        answer:
+          description: The answer to the question
+          type: string
+          nullable: false
+        userId:
+          description: The id of the user who answered the question
+          type: string
+          nullable: false
+        anonymous:
+          description: Whether the user prefers to answer the question anonymously or not, if anonymous is chosen then the name of the user will not be shown
+          type: boolean
+          default: 'false'
+          nullable: false
+
+    AnsweredPickedMessage:
+      title: Answer picked
+      type: object
+      properties:
+        taskId:
+          description: The id of the task associated with the question
+          type: string
+          nullable: false
+        question:
+          description: The question for which was picked the answer
+          type: string
+          nullable: false
+        transactionId:
+          description: The id of the transaction associated to the answer
+          type: string
+          nullable: false
+
+    QuestionExpirationMessage:
+      title: Question expiration
+      type: object
+      properties:
+        taskId:
+          description: The id of the task associated with the question
+          type: string
+          nullable: false
+        question:
+          description: The question for which was picked the answer
+          type: string
+          nullable: false
+        listOfTransactionIds:
+          description: The ids of the transactions associated to the answer
+          type: array
+          items:
+            type: string
+          nullable: false
