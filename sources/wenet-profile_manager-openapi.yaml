@@ -2043,12 +2043,6 @@ paths:
       description: Allow to delete a profile with an specific identifier
       operationId: deleteProfile
       parameters:
-      - name: storeProfileChangesInHistory
-        in: query
-        description: This is true if what to store the changes in the historical.
-        schema:
-          type: boolean
-        example: false
       - name: userId
         in: path
         description: The identifier of the user to delete
@@ -3809,6 +3803,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}:
+    delete:
+      tags:
+      - Tasks
+      summary: Delete task information
+      description: Allow to delete the information associated to a task
+      operationId: taskDeleted
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to delete its information
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: The information of the task was deleted successfully
   /trusts/rating:
     post:
       tags:

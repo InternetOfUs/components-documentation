@@ -23,7 +23,7 @@ info:
   license:
     name: Apache V2
     url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 1.2.0
+  version: 1.3.0
 servers:
 - url: https://internetofus.u-hopper.com/prod/task_manager
   description: Production instance
@@ -333,6 +333,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{profileId}:
+    delete:
+      tags:
+      - Profiles
+      summary: Called when a profile has been deleted
+      description: Allow to delete all information associated to a profile
+      operationId: profileDeleted
+      parameters:
+      - name: profileId
+        in: path
+        description: The identifier of the profile to delete its information
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: All the information of the profile was started to be deleted
   /taskTransactions:
     get:
       tags:

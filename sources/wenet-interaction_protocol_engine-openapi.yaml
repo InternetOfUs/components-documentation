@@ -520,6 +520,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /profiles/{profileId}:
+    delete:
+      tags:
+      - Profiles
+      summary: Called when a profile has been deleted
+      description: Allow to delete all information associated to a profile
+      operationId: profileDeleted
+      parameters:
+      - name: profileId
+        in: path
+        description: The identifier of the profile to delete its information
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: All the information of the profile was started to be deleted
   /states/communities/{communityId}/users/{userId}:
     get:
       tags:
@@ -774,6 +791,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /tasks/{taskId}:
+    delete:
+      tags:
+      - Tasks
+      summary: Called when a task has been deleted
+      description: Allow to delete all information associated to a task
+      operationId: taskDeleted
+      parameters:
+      - name: taskId
+        in: path
+        description: The identifier of the task to delete its information
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: All the information of the task was started to be deleted
 components:
   schemas:
     ErrorMessage:
