@@ -366,15 +366,15 @@ paths:
           schema:
             type: integer
           required: true
-          description: retrieve data starting from date, in YYYYMMDD format.
-          example: '20200201'
+          description: retrieve data starting from date, in yyyyMMddHHmmssSSS format.
+          example: '202002010000000'
         - name: to
           in: query
           schema:
             type: integer
           required: true
-          description: retrieve data up to date in in YYYYMMDD format.
-          example: '20200202'
+          description: retrieve data up to date in in yyyyMMddHHmmssSSS format.
+          example: '202002020000000'
         - name: properties
           in: query
           required: true
@@ -406,8 +406,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmptyResponse'
-
-
+  '/data/{userId}':
+    delete:
+      tags:
+        - Delete user (Internal Use).
+      summary: delete location and user values of a single user.
+      description: |-
+        Delete user locations and the user.
+      parameters:
+        - name: userId
+          in: Path
+          schema:
+            type: string
+          required: true
+          description: Id of the user to be deleted.
+          example: ai123123
+        - name: from
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: delete data starting (>=) from date, in yyyyMMddHHmmssSSS format.
+          example: '202002010000000'
+        - name: to
+          in: query
+          schema:
+            type: integer
+          required: true
+          description: delete data up (<=) to date, in yyyyMMddHHmmssSSS format.
+          example: '202002020000000'
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+          description: source identification.
+          example: "wenet"
+      responses:
+        '200':
+          description: 'user with id: userId deleted!'
+          content:
+            application/json: {}
+        '404':
+          description: 'user with id: userId not founded!'
+          content:
+            application/json: {}
 components:
   securitySchemes:
     apikey:
