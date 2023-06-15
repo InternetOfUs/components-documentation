@@ -2,11 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "description": "Incentive Server APIs",
-    "version": "1.0.0",
+    "version": 1.1,
     "title": "Incentive Server APIs",
     "contact": {
-      "name": "Daniel Benzaken",
-      "email": "Benzaked@post.bgu.ac.il"
+      "name": "Daniel Izmaylov",
+      "email": "Izmaylov@post.bgu.ac.il"
     }
   },
   "tags": [
@@ -359,6 +359,38 @@
         }
       }
     },
+    "/messages/TaskType/": {
+      "get": {
+        "tags": [
+          "Incentive Messages"
+        ],
+        "summary": "Get all Incentive Message classes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "IncentiveMessage": {
+                        "$ref": "#/components/schemas/TaskTypeIncentiveMessageGet"
+                      },
+                      "status_code": {
+                        "type": "integer",
+                        "example": 200
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/messages/{entityId}": {
       "get": {
         "tags": [
@@ -621,7 +653,7 @@
         ],
         "summary": "Post data about an event of a TaskTransaction",
         "description": "With label field. if label is removed - the event counts as of a TaskType.",
-        "operationId": "Post Data the task status",
+        "operationId": "Post Data the task transaction status",
         "requestBody": {
           "description": "The request body",
           "content": {
@@ -2215,6 +2247,47 @@
         },
         "tags": [
           "Badges_BadgeClass"
+        ]
+      }
+    },
+    "/badges/BadgeClasses/": {
+      "get": {
+        "security": [
+          {
+            "oauth2": [
+              "rw:issuer",
+              "rw:issuer:*"
+            ]
+          }
+        ],
+        "summary": "Get all available badges",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "badge": {
+                        "$ref": "#/definitions/BadgeClass"
+                      },
+                      "status_code": {
+                        "type": "integer",
+                        "example": 200
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Badges_BadgeClass",
+          null
         ]
       }
     },
