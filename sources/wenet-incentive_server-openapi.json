@@ -359,38 +359,6 @@
         }
       }
     },
-    "/messages/TaskType/": {
-      "get": {
-        "tags": [
-          "Incentive Messages"
-        ],
-        "summary": "Get all Incentive Message classes",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "IncentiveMessage": {
-                        "$ref": "#/components/schemas/TaskTypeIncentiveMessageGet"
-                      },
-                      "status_code": {
-                        "type": "integer",
-                        "example": 200
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/messages/{entityId}": {
       "get": {
         "tags": [
@@ -482,6 +450,46 @@
                 "schema": {
                   "type": "object",
                   "$ref": "#/definitions/IncentiveMessageNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/Issued/{user_id}": {
+      "delete": {
+        "tags": [
+          "Incentive Messages"
+        ],
+        "summary": "Delete a Incentive Message class",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/incentive_info_user"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong user id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/wrong_user_id"
                 }
               }
             }
@@ -2247,47 +2255,6 @@
         },
         "tags": [
           "Badges_BadgeClass"
-        ]
-      }
-    },
-    "/badges/BadgeClasses/": {
-      "get": {
-        "security": [
-          {
-            "oauth2": [
-              "rw:issuer",
-              "rw:issuer:*"
-            ]
-          }
-        ],
-        "summary": "Get all available badges",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "badge": {
-                        "$ref": "#/definitions/BadgeClass"
-                      },
-                      "status_code": {
-                        "type": "integer",
-                        "example": 200
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Badges_BadgeClass",
-          null
         ]
       }
     },
